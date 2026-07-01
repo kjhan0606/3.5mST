@@ -7,7 +7,8 @@ telescope, written for the 3.5 m segmented-mirror R=1000 cosmology proposal but
 usable for any aperture. Fidelity target is a Euclid/Roman/Pandeia-class ETC.
 
 ## Modes and calculations
-- **Spectroscopy** (slitless emission line) and **Imaging** (broadband point source).
+- **Spectroscopy** (slitless emission line), **Imaging** (broadband point source), or
+  **Both** at once (the output and the plot split into an imaging and a spectroscopy panel).
 - **Limiting depth** (Nσ line flux or AB magnitude), **S/N for a source**, and
   **exposure time for a target S/N** — all invertible.
 - **Telescope aperture is an input** (any diameter), as are R, pixel scale,
@@ -33,6 +34,15 @@ usable for any aperture. Fidelity target is a Euclid/Roman/Pandeia-class ETC.
   saturation model follows the Pandeia engine (Pontoppidan et al. 2016).
 - **Saturation** — brightest source before the central pixel reaches full well.
 - Exact Nσ depth by solving the quadratic (source shot noise retained).
+
+## Galaxy templates and redshift photometry
+- `make_galaxy_templates.py` uses **FSPS** to generate 10 diverse galaxy SEDs (E, S0,
+  Sa--Sd, Irr, starburst, dusty starburst, quiescent) with nebular emission, saved under
+  `galaxy_templates/` so the ETC is standalone (no FSPS needed to run).
+- `galaxy_etc.py` redshifts a template, normalises it to an absolute magnitude, and returns
+  the observed AB magnitude per filter vs redshift (k-correction + distance modulus) and the
+  exposure time to a target S/N. `MV_LEVELS` spans giant galaxies down to dwarfs.
+- `make_galaxy_demo.py` plots mag-vs-z (per filter, per type) and hours-to-5σ-vs-z.
 
 ## Files
 | file | purpose |

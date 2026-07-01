@@ -46,10 +46,10 @@ class ETCGui:
         self.elem_cb.bind("<<ComboboxSelected>>", lambda _e: self.apply_element())
 
         # -- mode & calculation type --
-        self.mode = tk.StringVar(value="Spectroscopy")
+        self.mode = tk.StringVar(value="Both")
         self.calc = tk.StringVar(value="Limiting depth")
         mf = ttk.LabelFrame(panel, text="mode", padding=4); mf.pack(fill="x")
-        for m in ("Spectroscopy", "Imaging"):
+        for m in ("Spectroscopy", "Imaging", "Both"):
             ttk.Radiobutton(mf, text=m, value=m, variable=self.mode,
                             command=self.on_mode_change).pack(side="left")
         cf = ttk.LabelFrame(panel, text="calculation", padding=4); cf.pack(fill="x", pady=2)
@@ -157,12 +157,20 @@ class ETCGui:
         self.refresh_elements()
         self.compute()
 
+    def _modes(self):
+        """(imaging_on, spectroscopy_on) from the mode selector, both true for Both."""
+        m = self.mode.get()
+        return (m in ("Imaging", "Both"), m in ("Spectroscopy", "Both"))
+
     def on_mode_change(self):
         self.refresh_elements()
         self.compute()
+        self.plot_main()
 
     def refresh_elements(self):
-        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get(self.mode.get(), {})
+        _, spec = self._modes()
+        self._elem_mode = "Spectroscopy" if spec else "Imaging"
+        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get(self._elem_mode, {})
         names = list(els.keys())
         self.elem_cb["values"] = names
         if names and self.element.get() not in names:
@@ -172,11 +180,12 @@ class ETCGui:
             self.element.set("")
 
     def apply_element(self, compute=True):
-        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get(self.mode.get(), {})
+        pm = getattr(self, "_elem_mode", "Spectroscopy")
+        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get(pm, {})
         el = els.get(self.element.get())
         if el:
             self.v["lam"].set(str(el[0])); self.v["fw_um"].set(str(el[1]))
-            if self.mode.get() == "Spectroscopy" and len(el) > 2:
+            if pm == "Spectroscopy" and len(el) > 2:
                 self.v["R"].set(str(el[2]))
         if compute:
             self.compute()
@@ -194,126 +203,138 @@ class ETCGui:
         c = self.cfg(); lamA = self._f("lam") * 1e4; fwA = self._f("fw_um") * 1e4
         t = self._f("thr") * HR; src = self._f("src"); o = self.out
         o.delete("1.0", "end")
+        img, spec = self._modes()
         det = etc.TELESCOPE_PRESETS.get(self.telescope.get(), {}).get("det", "")
-        o.insert("end", f"{self.telescope.get()} [{det}]  {self.mode.get()} / {self.calc.get()}\n")
+        active = "+".join([m for m, on in [("Imaging", img), ("Spectroscopy", spec)] if on])
+        o.insert("end", f"{self.telescope.get()} [{det}]  {active} / {self.calc.get()}\n")
         o.insert("end", f"D={c.diameter_cm/100:.2f} m  pix={c.pix_scale}″  "
                         f"PSF={c.psf_fwhm(lamA):.3f}″\n")
-        if self.mode.get() == "Spectroscopy":
+        if spec:
             o.insert("end", f"R={c.R:.0f}  Δλ={c.resolution_element_A(lamA):.1f}Å  "
                             f"disp={c.dispersion_A_per_pix(lamA):.1f}Å/pix\n")
-        o.insert("end", "-"*40 + "\n")
-        imaging = self.mode.get() == "Imaging"
+        if img:
+            o.insert("end", "="*40 + "\nIMAGING\n")
+            self._out_imaging(o, c, lamA, fwA, t)
+        if spec:
+            o.insert("end", "="*40 + "\nSPECTROSCOPY\n")
+            self._out_spectrum(o, c, lamA, t, src, fwA)
 
-        if self.calc.get() == "Limiting depth":
-            if imaging:
-                els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
-                o.insert("end", f"5σ limiting AB in {self._f('thr'):.2f} hr, per filter:\n")
-                o.insert("end", f"{'filter':>12} {'λ[µm]':>7} {'5σ AB':>8}\n")
-                for name, (lam_um, w_um) in els.items():
-                    m = etc.imaging_maglimit(c, lam_um*1e4, w_um*1e4, t)
-                    mark = "  <" if name == self.element.get() else ""
-                    o.insert("end", f"{name:>12} {lam_um:>7.2f} {m:>8.2f}{mark}\n")
-            else:
-                o.insert("end", f"{'t[hr]':>7} {'F5σ line [cgs]':>16}\n")
-                for tt in sorted({self._f("thr"), 0.75, 3.0, 12.0}):
-                    f = etc.f_limit(c, lamA, tt*HR, source_fwhm=src)
-                    o.insert("end", f"{tt:>7.2f} {f:>14.2e}\n")
-        elif self.calc.get() == "S/N for source":
-            if imaging:
-                sn = etc.imaging_snr(c, self._f("mag"), lamA, fwA, t)
-                o.insert("end", f"AB={self._f('mag'):.1f}, {self._f('thr'):.2f} hr\n  S/N = {sn:.1f}\n")
-            else:
-                sn = etc.line_sn(c, self._f("lflux"), lamA, t, source_fwhm=src)
-                o.insert("end", f"line flux={self._f('lflux'):.2e}, {self._f('thr'):.2f} hr\n  S/N = {sn:.1f}\n")
-        else:  # Exposure for S/N
-            tgt = self._f("snr")
-            if imaging:
-                fn = lambda ts: etc.imaging_snr(c, self._f("mag"), lamA, fwA, ts)
-            else:
-                fn = lambda ts: etc.line_sn(c, self._f("lflux"), lamA, ts, source_fwhm=src)
-            texp = etc.exposure_for_snr(fn, tgt)
-            o.insert("end", f"time for S/N={tgt:.0f} = {texp/HR:.3f} hr ({texp:.0f} s)\n")
-
-        # count rates + saturation (imaging) / noise note
-        o.insert("end", "-"*40 + "\n")
-        if imaging:
-            cr = etc.count_rates(c, self._f("mag"), lamA, fwA)
-            o.insert("end", f"source {cr['source_e_s']:.2f} e-/s (peak {cr['peak_e_s']:.2f})\n"
-                            f"sky {cr['sky_e_s_pix']:.2f}  dark {cr['dark_e_s_pix']:.3f} e-/s/pix\n")
-            tsingle = t / max(1, int(self._f("nexp")))
-            msat = etc.saturation_maglimit(c, lamA, fwA, tsingle)
-            warn = "  <-- SATURATED" if self._f("mag") < msat else ""
-            o.insert("end", f"saturation bright limit ({tsingle:.0f}s): {msat:.2f} AB{warn}\n")
+    def _out_imaging(self, o, c, lamA, fwA, t):
+        calc = self.calc.get()
+        if calc == "Limiting depth":
+            els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
+            o.insert("end", f"5σ AB in {self._f('thr'):.2f} hr, per filter:\n")
+            o.insert("end", f"{'filter':>12} {'λ[µm]':>7} {'5σ AB':>8}\n")
+            for name, (lam_um, w_um) in els.items():
+                m = etc.imaging_maglimit(c, lam_um*1e4, w_um*1e4, t)
+                o.insert("end", f"{name:>12} {lam_um:>7.2f} {m:>8.2f}\n")
+        elif calc == "S/N for source":
+            sn = etc.imaging_snr(c, self._f("mag"), lamA, fwA, t)
+            o.insert("end", f"AB={self._f('mag'):.1f}, {self._f('thr'):.2f} hr -> S/N = {sn:.1f}\n")
         else:
-            nb = etc.noise_breakdown(c, lamA, t, source_fwhm=src, filter_width_A=fwA)
-            tot = nb["sky_e"] + nb["dark_e"] + nb["read_e2"]
-            o.insert("end", f"n_pix={nb['n_pix']:.0f}  sky {nb['sky_e']:.0f}  "
-                            f"dark {nb['dark_e']:.0f}  read² {nb['read_e2']:.0f} e-\n"
-                            f"sky-limited fraction {nb['sky_e']/tot*100:.0f}%\n")
+            fn = lambda ts: etc.imaging_snr(c, self._f("mag"), lamA, fwA, ts)
+            texp = etc.exposure_for_snr(fn, self._f("snr"))
+            o.insert("end", f"AB={self._f('mag'):.1f}: S/N={self._f('snr'):.0f} in {texp/HR:.3f} hr\n")
+        tsingle = t / max(1, int(self._f("nexp")))
+        msat = etc.saturation_maglimit(c, lamA, fwA, tsingle)
+        warn = "  <-- SATURATED" if self._f("mag") < msat else ""
+        cr = etc.count_rates(c, self._f("mag"), lamA, fwA)
+        o.insert("end", f"src {cr['source_e_s']:.2f} e-/s  sat<{msat:.2f} AB ({tsingle:.0f}s){warn}\n")
+
+    def _out_spectrum(self, o, c, lamA, t, src, fwA):
+        calc = self.calc.get()
+        if calc == "Limiting depth":
+            o.insert("end", f"{'t[hr]':>7} {'F5σ line [cgs]':>16}\n")
+            for tt in sorted({self._f("thr"), 0.75, 3.0, 12.0}):
+                f = etc.f_limit(c, lamA, tt*HR, source_fwhm=src)
+                o.insert("end", f"{tt:>7.2f} {f:>14.2e}\n")
+        elif calc == "S/N for source":
+            sn = etc.line_sn(c, self._f("lflux"), lamA, t, source_fwhm=src)
+            o.insert("end", f"F={self._f('lflux'):.2e}, {self._f('thr'):.2f} hr -> S/N = {sn:.1f}\n")
+        else:
+            fn = lambda ts: etc.line_sn(c, self._f("lflux"), lamA, ts, source_fwhm=src)
+            texp = etc.exposure_for_snr(fn, self._f("snr"))
+            o.insert("end", f"F={self._f('lflux'):.2e}: S/N={self._f('snr'):.0f} in {texp/HR:.3f} hr\n")
+        nb = etc.noise_breakdown(c, lamA, t, source_fwhm=src, filter_width_A=fwA)
+        tot = nb["sky_e"] + nb["dark_e"] + nb["read_e2"]
+        o.insert("end", f"n_pix={nb['n_pix']:.0f}  sky-limited {nb['sky_e']/tot*100:.0f}%\n")
 
     # ---- plots --------------------------------------------------------------
     def plot_main(self):
-        c = self.cfg(); fwA = self._f("fw_um") * 1e4; src = self._f("src")
-        imaging = self.mode.get() == "Imaging"; self.ax.clear()
-        if self.calc.get() == "Limiting depth":
-            if imaging:
-                els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
-                lam_um = np.array([v[0] for v in els.values()])
-                w_um = np.array([v[1] for v in els.values()])
-                for mult, col in [(1, "#3898ec"), (4, "#4ec9b0"), (16, "#d97757")]:
-                    tt = self._f("thr")*mult
-                    m = [etc.imaging_maglimit(c, l*1e4, w*1e4, tt*HR) for l, w in zip(lam_um, w_um)]
-                    self.ax.errorbar(lam_um, m, xerr=w_um/2, fmt="o", color=col,
-                                     capsize=2, label=f"{tt:.2f} hr")
-                self.ax.set_xlabel("filter λ [µm]"); self.ax.set_ylabel("5σ limiting AB mag")
-                self.ax.invert_yaxis()
-                self.ax.set_title(f"{self.telescope.get()} imaging depth per filter")
-            else:
-                lam = np.linspace(c.band_min_A+200, c.band_max_A-200, 220)
-                for mult, col in [(1, "#3898ec"), (4, "#4ec9b0"), (16, "#d97757")]:
-                    tt = self._f("thr")*mult
-                    y = [etc.f_limit(c, l, tt*HR, source_fwhm=src) for l in lam]
-                    self.ax.plot(lam/1e4, y, color=col, lw=2, label=f"{tt:.2f} hr")
-                self.ax.set_yscale("log"); self.ax.axhline(1e-16, ls=":", color="k", lw=1)
-                self.ax.set_xlabel("observed λ [µm]"); self.ax.set_ylabel(r"$F_{5\sigma}$ [erg s$^{-1}$ cm$^{-2}$]")
-                self.ax.set_title("Limiting depth vs wavelength")
+        img, spec = self._modes()
+        self.fig.clear()
+        if img and spec:
+            self._plot_imaging(self.fig.add_subplot(211))
+            self._plot_spectrum(self.fig.add_subplot(212))
+        elif img:
+            self._plot_imaging(self.fig.add_subplot(111))
         else:
-            ts = np.logspace(np.log10(60), np.log10(48*HR), 120)
-            lamA = self._f("lam")*1e4
-            if imaging:
-                sn = [etc.imaging_snr(c, self._f("mag"), lamA, fwA, t) for t in ts]
-                lab = f"AB={self._f('mag'):.1f}"
-            else:
-                sn = [etc.line_sn(c, self._f("lflux"), lamA, t, source_fwhm=src) for t in ts]
-                lab = f"F={self._f('lflux'):.1e}"
-            self.ax.plot(ts/HR, sn, color="#3898ec", lw=2, label=lab)
-            self.ax.axhline(self._f("snr"), ls=":", color="k", label=f"S/N={self._f('snr'):.0f}")
-            self.ax.set_xscale("log"); self.ax.set_yscale("log")
-            self.ax.set_xlabel("exposure [hr]"); self.ax.set_ylabel("S/N")
-            self.ax.set_title("S/N vs exposure")
-        self.ax.legend(fontsize=8); self.ax.grid(alpha=0.2, which="both")
+            self._plot_spectrum(self.fig.add_subplot(111))
         self.fig.tight_layout(); self.canvas.draw()
+
+    def _plot_imaging(self, ax):
+        c = self.cfg(); fwA = self._f("fw_um") * 1e4
+        if self.calc.get() == "Limiting depth":
+            els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
+            lam_um = np.array([v[0] for v in els.values()])
+            w_um = np.array([v[1] for v in els.values()])
+            for mult, col in [(1, "#3898ec"), (4, "#4ec9b0"), (16, "#d97757")]:
+                tt = self._f("thr")*mult
+                m = [etc.imaging_maglimit(c, l*1e4, w*1e4, tt*HR) for l, w in zip(lam_um, w_um)]
+                ax.errorbar(lam_um, m, xerr=w_um/2, fmt="o", color=col, capsize=2, label=f"{tt:.2f} hr")
+            ax.set_xlabel("filter λ [µm]"); ax.set_ylabel("5σ AB mag"); ax.invert_yaxis()
+            ax.set_title(f"{self.telescope.get()} imaging depth per filter")
+        else:
+            ts = np.logspace(np.log10(60), np.log10(48*HR), 120); lamA = self._f("lam")*1e4
+            sn = [etc.imaging_snr(c, self._f("mag"), lamA, fwA, t) for t in ts]
+            ax.plot(ts/HR, sn, color="#3898ec", lw=2, label=f"AB={self._f('mag'):.1f}")
+            ax.axhline(self._f("snr"), ls=":", color="k", label=f"S/N={self._f('snr'):.0f}")
+            ax.set_xscale("log"); ax.set_yscale("log")
+            ax.set_xlabel("exposure [hr]"); ax.set_ylabel("imaging S/N"); ax.set_title("Imaging S/N vs exposure")
+        ax.legend(fontsize=8); ax.grid(alpha=0.2, which="both")
+
+    def _plot_spectrum(self, ax):
+        c = self.cfg(); src = self._f("src"); fwA = self._f("fw_um") * 1e4
+        if self.calc.get() == "Limiting depth":
+            lam = np.linspace(c.band_min_A+200, c.band_max_A-200, 220)
+            for mult, col in [(1, "#3898ec"), (4, "#4ec9b0"), (16, "#d97757")]:
+                tt = self._f("thr")*mult
+                y = [etc.f_limit(c, l, tt*HR, source_fwhm=src) for l in lam]
+                ax.plot(lam/1e4, y, color=col, lw=2, label=f"{tt:.2f} hr")
+            ax.set_yscale("log"); ax.axhline(1e-16, ls=":", color="k", lw=1)
+            ax.set_xlabel("observed λ [µm]"); ax.set_ylabel(r"$F_{5\sigma}$ [cgs]")
+            ax.set_title("Slitless depth vs wavelength")
+        else:
+            ts = np.logspace(np.log10(60), np.log10(48*HR), 120); lamA = self._f("lam")*1e4
+            sn = [etc.line_sn(c, self._f("lflux"), lamA, t, source_fwhm=src) for t in ts]
+            ax.plot(ts/HR, sn, color="#d97757", lw=2, label=f"F={self._f('lflux'):.1e}")
+            ax.axhline(self._f("snr"), ls=":", color="k", label=f"S/N={self._f('snr'):.0f}")
+            ax.set_xscale("log"); ax.set_yscale("log")
+            ax.set_xlabel("exposure [hr]"); ax.set_ylabel("line S/N"); ax.set_title("Line S/N vs exposure")
+        ax.legend(fontsize=8); ax.grid(alpha=0.2, which="both")
 
     def plot_cooling(self):
         c0 = self.cfg(); src = self._f("src"); fwA = self._f("fw_um")*1e4
-        lam = np.linspace(10000, c0.band_max_A, 180); self.ax.clear()
+        lam = np.linspace(10000, c0.band_max_A, 180)
+        self.fig.clear(); ax = self.fig.add_subplot(111)
         import matplotlib.cm as cm
         temps = [150, 180, 210, 240, 270, 290]
-        imaging = self.mode.get() == "Imaging"
+        img, spec = self._modes()
+        imaging = img and not spec        # spectroscopy depth is the default cooling view
         for T, col in zip(temps, cm.viridis(np.linspace(0, 0.9, len(temps)))):
             c = replace(c0, tel_temp=T)
             if imaging:
                 y = [etc.imaging_maglimit(c, l, fwA, 3*HR) for l in lam]
             else:
                 y = [etc.f_limit(c, l, 3*HR, source_fwhm=src) for l in lam]
-            self.ax.plot(lam/1e4, y, color=col, lw=2, label=f"{T} K")
-        self.ax.set_xlabel("observed λ [µm]")
+            ax.plot(lam/1e4, y, color=col, lw=2, label=f"{T} K")
+        ax.set_xlabel("observed λ [µm]")
         if imaging:
-            self.ax.set_ylabel("5σ AB (3 hr)"); self.ax.invert_yaxis()
+            ax.set_ylabel("5σ AB (3 hr)"); ax.invert_yaxis()
         else:
-            self.ax.set_yscale("log"); self.ax.set_ylabel(r"$F_{5\sigma}$ (3 hr)")
-        self.ax.set_title("Telescope-temperature tradeoff")
-        self.ax.legend(fontsize=7, ncol=2, title="optics T"); self.ax.grid(alpha=0.2, which="both")
+            ax.set_yscale("log"); ax.set_ylabel(r"$F_{5\sigma}$ (3 hr)")
+        ax.set_title("Telescope-temperature tradeoff")
+        ax.legend(fontsize=7, ncol=2, title="optics T"); ax.grid(alpha=0.2, which="both")
         self.fig.tight_layout(); self.canvas.draw()
 
     def validate(self):
