@@ -58,3 +58,60 @@ ax.set_title("Slitless 5σ line-flux depth: 3.5 m ST vs Roman")
 ax.legend(fontsize=8); ax.grid(alpha=0.2, which="both")
 fig.savefig("etc_compare_spec.png", bbox_inches="tight")
 print("wrote etc_compare_spec.png")
+
+# ============================ multi-telescope comparison ============================
+COLORS = {"3.5mST": "#3898ec", "Roman WFI": "#d97757", "Euclid": "#4ec9b0",
+          "JWST": "#7d3c98"}
+cfgs = {name: cfg_from_preset(name) for name in
+        ("3.5mST", "Roman WFI", "Euclid", "JWST NIRCam SW", "JWST NIRCam LW")}
+
+
+def in_band(name, lam_um, margin=0.06):
+    b = etc.TELESCOPE_PRESETS[name]["band"]
+    return b[0] + margin <= lam_um <= b[1] - margin
+
+
+def jwst_cfg(lam_um):
+    return cfgs["JWST NIRCam SW"] if lam_um <= 2.35 else cfgs["JWST NIRCam LW"]
+
+
+# ---- table: imaging 5sigma AB at common wavelengths (0.3 um band, 1 hr) ----
+wl = [0.6, 1.0, 1.5, 2.0, 2.5, 3.5]
+cols = ["3.5mST", "Roman WFI", "Euclid", "JWST"]
+print("\nMulti-telescope imaging 5sigma AB (1 hr, 0.3um band):")
+print(f"{'lam[um]':>7} " + " ".join(f"{c:>10}" for c in cols))
+lines = []
+for lam in wl:
+    cells = []
+    for c in cols:
+        if c == "JWST":
+            ok = in_band("JWST NIRCam SW", lam) or in_band("JWST NIRCam LW", lam)
+            cc = jwst_cfg(lam)
+        else:
+            ok = in_band(c, lam); cc = cfgs[c]
+        cells.append(f"{etc.imaging_maglimit(cc, lam*1e4, 3000., t_img):.2f}" if ok else "--")
+    print(f"{lam:>7.1f} " + " ".join(f"{x:>10}" for x in cells))
+    lines.append(f"{lam:.1f} & " + " & ".join(cells) + "\\\\\n")
+with open("compare_multi_rows.tex", "w") as f:
+    f.writelines(lines)
+print("wrote compare_multi_rows.tex")
+
+# ---- figure: native imaging filters of each telescope, overlaid (1 hr) ----
+fig2, ax2 = plt.subplots(figsize=(7.4, 5.0), dpi=150)
+for tel, mark in [("3.5mST", "o"), ("Roman WFI", "s"), ("Euclid", "^"),
+                  ("JWST NIRCam SW", "D"), ("JWST NIRCam LW", "D")]:
+    els = etc.INSTRUMENT_ELEMENTS[tel]["Imaging"]
+    lam = np.array([v[0] for v in els.values()])
+    w = np.array([v[1] for v in els.values()])
+    m = [etc.imaging_maglimit(cfgs[tel], l*1e4, ww*1e4, t_img) for l, ww in zip(lam, w)]
+    key = "JWST" if tel.startswith("JWST") else tel
+    lab = "JWST NIRCam" if tel == "JWST NIRCam SW" else (None if tel == "JWST NIRCam LW" else tel)
+    ax2.errorbar(lam, m, xerr=w/2, fmt=mark, color=COLORS[key], capsize=2,
+                 ms=6, label=lab)
+ax2.invert_yaxis()
+ax2.set_xlabel("filter central wavelength [µm]")
+ax2.set_ylabel("imaging 5σ limiting AB mag  (1 hr, point source)")
+ax2.set_title("Imaging depth per filter: 3.5 m ST vs Roman, Euclid, JWST")
+ax2.legend(fontsize=8); ax2.grid(alpha=0.2)
+fig2.savefig("etc_compare_imaging.png", bbox_inches="tight")
+print("wrote etc_compare_imaging.png")
