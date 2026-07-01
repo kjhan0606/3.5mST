@@ -7,6 +7,8 @@
 !/slitless_etc.py
 !/etc_gui.py
 !/make_etc_data.py
+!/make_compare_roman.py
+!/etc_compare_spec.png
 !/etc_qe.csv
 !/etc_throughput.csv
 !/etc_zodi.csv
