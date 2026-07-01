@@ -15,6 +15,20 @@ def wrap(ra_deg):
     return np.radians(r)
 
 
+# Legacy HST/Subaru deep fields (name, RA, Dec [deg], area [deg^2], facility, cap)
+DEEPFIELDS = [
+    ("COSMOS",    150.12,   2.21, 2.00, "multi",  "N"),
+    ("GOODS-N",   189.23,  62.24, 0.04, "HST",    "N"),
+    ("EGS/AEGIS", 214.80,  52.80, 0.06, "HST",    "N"),
+    ("Subaru DF", 201.20,  27.40, 0.25, "Subaru", "N"),
+    ("ELAIS-N1",  242.80,  54.00, 1.00, "Subaru", "N"),
+    ("GOODS-S",    53.12, -27.80, 0.04, "HST",    "S"),
+    ("UDS/SXDS",   34.40,  -5.20, 0.80, "multi",  "S"),
+    ("XMM-LSS",    35.70,  -4.75, 3.50, "Subaru", "S"),
+]
+FCOL = {"HST": "#e67e22", "Subaru": "#2980b9", "multi": "#27ae60"}
+
+
 fig = plt.figure(figsize=(9.2, 5.4), dpi=150)
 ax = fig.add_subplot(111, projection="mollweide")
 ax.grid(alpha=0.3)
@@ -53,7 +67,37 @@ ax.text(wrap(158), np.radians(33), "N cap:\nDESI NGC + Euclid N\n+ Rubin edge",
         fontsize=6.5, ha="center", color="#145a32")
 ax.text(wrap(6), np.radians(-25), "S cap:\nDESI SGC + Euclid S\n+ Rubin/LSST + Roman",
         fontsize=6.5, ha="center", color="#154360")
+# legacy deep fields as gold stars within the caps
+for name, ra, dec, area, fac, cap in DEEPFIELDS:
+    ax.plot(wrap(ra), np.radians(dec), marker="*", ms=10, color="#f1c40f",
+            mec="k", mew=0.5, zorder=6)
+ax.plot([], [], marker="*", ls="", color="#f1c40f", mec="k", label="HST/Subaru deep fields")
 fig.tight_layout()
 fig.savefig("elg_skymap.png", bbox_inches="tight")
 print("wrote elg_skymap.png")
 print(f"N-cap points: {ngc.sum()}, S-cap points: {sgc.sum()}, MW-avoid points: {mw.sum()}")
+
+
+# ---- zoom-in view of the legacy deep fields inside each cap ----
+from matplotlib.lines import Line2D
+fig3, axes = plt.subplots(1, 2, figsize=(11.0, 4.8), dpi=150)
+for axx, cap, title in [(axes[0], "N", "North Galactic cap"), (axes[1], "S", "South Galactic cap")]:
+    off = {"GOODS-N": (8, -18), "UDS/SXDS": (8, -20), "XMM-LSS": (8, 8),
+           "COSMOS": (-10, 10), "ELAIS-N1": (8, -18)}
+    for name, ra, dec, area, fac, c in DEEPFIELDS:
+        if c != cap:
+            continue
+        axx.scatter(ra, dec, s=90*np.sqrt(area)+40, color=FCOL[fac], alpha=0.65,
+                    edgecolor="k", linewidth=0.5, zorder=3)
+        axx.annotate(f"{name}\n({area:g} deg$^2$)", (ra, dec), textcoords="offset points",
+                     xytext=off.get(name, (8, 7)), fontsize=7.5)
+    axx.set_xlabel("RA [deg]"); axx.set_ylabel("Dec [deg]"); axx.set_title(title, pad=12)
+    axx.grid(alpha=0.3); axx.invert_xaxis(); axx.margins(0.28)
+handles = [Line2D([0], [0], marker="o", ls="", markerfacecolor=FCOL[k], markeredgecolor="k",
+                  markersize=9, label=v) for k, v in
+           [("HST", "HST (+JWST)"), ("Subaru", "Subaru/HSC"), ("multi", "HST+Subaru(+JWST)")]]
+axes[0].legend(handles=handles, fontsize=7.5, loc="best")
+fig3.suptitle("Legacy deep fields within the proposed ELG caps (marker size $\\propto\\sqrt{\\rm area}$)", y=1.02)
+fig3.tight_layout()
+fig3.savefig("elg_deepfields_zoom.png", bbox_inches="tight")
+print("wrote elg_deepfields_zoom.png")
