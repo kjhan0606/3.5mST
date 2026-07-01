@@ -1,0 +1,12 @@
+# This repository tracks only the slitless emission-line ETC package.
+# Ignore everything at top level, then un-ignore the ETC files explicitly.
+/*
+!/.gitignore
+!/README.md
+!/slitless_etc.py
+!/make_etc_data.py
+!/etc_qe.csv
+!/etc_throughput.csv
+!/etc_zodi.csv
+!/etc_f5sigma.png
+!/etc_cooling.png
