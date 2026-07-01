@@ -117,6 +117,7 @@ class ETCGui:
         root.bind("<Configure>", self._on_resize)
         self.refresh_elements()
         self.compute()
+        self.plot_main()          # show a plot in the default window
 
     def _on_resize(self, _event=None):
         if self._resize_job:

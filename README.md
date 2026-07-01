@@ -1,5 +1,7 @@
 # Space ETC — imaging & slitless spectroscopy
 
+![ETC GUI](etc_gui_capture.png)
+
 A wavelength-resolved exposure-time / depth calculator for a wide-field space
 telescope, written for the 3.5 m segmented-mirror R=1000 cosmology proposal but
 usable for any aperture. Fidelity target is a Euclid/Roman/Pandeia-class ETC.
