@@ -269,18 +269,40 @@ ZODI_LEVELS = {"low (ecliptic pole)": 23.3, "typical": 22.1, "high (near eclipti
 
 # Telescope presets with real detector specs (read/dark/full-well/pixel/cutoff).
 # Sources: Roman WFI technical page (H4RG-10, effective noise ~6 e-, dark ~0.02,
-# QE 0.89, 0.11"/pix, 2.5um cutoff); JWST NIRCam/NIRSpec H2RG (jdox: read ~6 e-,
-# dark ~0.003 e-/s, 0.063" LW pix, 5um); Euclid-III NISP H2RG (read ~7 e-, dark
-# ~0.02, 0.30"/pix, 2.3um). Read noise is the effective ramp-sampled value.
+# QE 0.89, 0.11"/pix, 2.5um cutoff); JWST NIRCam jdox (H2RG: read ~6 e-, SW dark
+# ~0.002 / LW ~0.034 e-/s, SW 0.031" / LW 0.063" pix); Euclid-III NISP H2RG
+# (read ~7 e-, dark ~0.02, 0.30"/pix, 2.3um). Read noise is the effective value.
 TELESCOPE_PRESETS = {
-    "3.5mST":    dict(det="HgCdTe (concept)", diam=350., obstruction=0.15, pix=0.11,  eta=0.30,
-                      read=8.,  dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, realistic=True),
-    "Roman WFI": dict(det="H4RG-10", diam=240., obstruction=0.31, pix=0.11,  eta=0.42,
-                      read=6.,  dark=0.020, nexp=4, fw=100000., ttel=270., R=461.,  band=(0.48, 2.30), lam=1.5, realistic=False),
-    "Euclid":    dict(det="H2RG (NISP)", diam=120., obstruction=0.40, pix=0.30,  eta=0.30,
-                      read=7.,  dark=0.020, nexp=4, fw=80000.,  ttel=140., R=450.,  band=(0.90, 2.00), lam=1.5, realistic=False),
-    "JWST":      dict(det="H2RG (NIRCam/NIRSpec)", diam=650., obstruction=0.485, pix=0.063, eta=0.45,
-                      read=6.,  dark=0.003, nexp=4, fw=80000.,  ttel=45.,  R=1000., band=(0.60, 5.00), lam=2.0, realistic=False),
+    "3.5mST":         dict(det="HgCdTe (concept)", diam=350., obstruction=0.15,  pix=0.11,  eta=0.30,
+                           read=8., dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, realistic=True),
+    "Roman WFI":      dict(det="H4RG-10", diam=240., obstruction=0.31,  pix=0.11,  eta=0.42,
+                           read=6., dark=0.020, nexp=4, fw=100000., ttel=270., R=461.,  band=(0.48, 2.30), lam=1.5, realistic=False),
+    "Euclid":         dict(det="H2RG (NISP)", diam=120., obstruction=0.40,  pix=0.30,  eta=0.30,
+                           read=7., dark=0.020, nexp=4, fw=80000.,  ttel=140., R=450.,  band=(0.90, 2.00), lam=1.5, realistic=False),
+    "JWST NIRCam SW": dict(det="H2RG (short-wave)", diam=650., obstruction=0.485, pix=0.031, eta=0.45,
+                           read=6., dark=0.002, nexp=4, fw=80000.,  ttel=45.,  R=1000., band=(0.60, 2.35), lam=1.5, realistic=False),
+    "JWST NIRCam LW": dict(det="H2RG (long-wave)", diam=650., obstruction=0.485, pix=0.063, eta=0.45,
+                           read=6., dark=0.034, nexp=4, fw=80000.,  ttel=45.,  R=1600., band=(2.40, 5.00), lam=3.5, realistic=False),
+}
+
+# Filters (imaging) and dispersers (spectroscopy) per telescope.
+# Imaging element -> (central lambda [um], width [um]); spectral -> (lam, width, R).
+INSTRUMENT_ELEMENTS = {
+    "3.5mST": {"Imaging": {"g~0.5": (0.50, 0.15), "z~0.9": (0.90, 0.20), "J~1.2": (1.25, 0.30),
+                           "H~1.6": (1.60, 0.40), "K~2.2": (2.20, 0.50)},
+               "Spectroscopy": {"R1000 opt": (0.70, 0.40, 1000), "R1000 NIR": (1.60, 0.40, 1000),
+                                "R1000 K": (2.50, 0.50, 1000)}},
+    "Roman WFI": {"Imaging": {"F062": (0.62, 0.28), "F087": (0.87, 0.22), "F106": (1.06, 0.27),
+                              "F129": (1.29, 0.31), "F158": (1.58, 0.40), "F184": (1.84, 0.32),
+                              "F213": (2.13, 0.35), "F146 (wide)": (1.46, 1.03)},
+                  "Spectroscopy": {"Grism": (1.46, 0.93, 600), "Prism": (1.28, 1.05, 130)}},
+    "Euclid": {"Imaging": {"Y": (1.085, 0.26), "J": (1.375, 0.39), "H": (1.772, 0.50)},
+               "Spectroscopy": {"Red grism": (1.55, 0.60, 450), "Blue grism": (1.09, 0.32, 380)}},
+    "JWST NIRCam SW": {"Imaging": {"F070W": (0.704, 0.128), "F090W": (0.902, 0.194),
+                                   "F115W": (1.154, 0.225), "F150W": (1.501, 0.318), "F200W": (1.990, 0.457)},
+                       "Spectroscopy": {"NIRSpec G140M": (1.25, 0.60, 1000), "NIRSpec PRISM": (2.00, 3.40, 100)}},
+    "JWST NIRCam LW": {"Imaging": {"F277W": (2.786, 0.672), "F356W": (3.563, 0.787), "F444W": (4.421, 1.024)},
+                       "Spectroscopy": {"LW grism": (4.00, 1.90, 1600), "NIRSpec G395M": (3.60, 1.60, 1000)}},
 }
 
 
