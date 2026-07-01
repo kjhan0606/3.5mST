@@ -112,8 +112,24 @@ class ETCGui:
         self.canvas.get_tk_widget().pack(fill="both", expand=True)
         NavigationToolbar2Tk(self.canvas, right)
         root.columnconfigure(1, weight=1); root.rowconfigure(0, weight=1)
+        # redraw the embedded figure on resize (fixes black-out / stale repaint over remote X)
+        self._resize_job = None
+        root.bind("<Configure>", self._on_resize)
         self.refresh_elements()
         self.compute()
+
+    def _on_resize(self, _event=None):
+        if self._resize_job:
+            self.root.after_cancel(self._resize_job)
+        self._resize_job = self.root.after(120, self._redraw)
+
+    def _redraw(self):
+        self._resize_job = None
+        try:
+            self.canvas.draw_idle()
+            self.root.update_idletasks()
+        except Exception:
+            pass
 
     # ---- helpers ------------------------------------------------------------
     def _guard(self, fn):

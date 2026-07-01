@@ -100,6 +100,7 @@ class InstrumentConfig:
     extraction_eff: float = 0.70        # optimal-extraction aperture + contamination loss
     full_well: float = 100000.0         # detector full well [e-] (saturation)
     flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
+    psf_floor: float = 0.04             # delivered image-quality floor [arcsec] (jitter+optics+charge diffusion)
     # --- optional data files (lambda_A, value) override the analytic models ---
     throughput_csv: str = ""
     zodi_csv: str = ""
@@ -122,9 +123,11 @@ class InstrumentConfig:
         return self.resolution_element_A(lam_A) / self.res_element_pix
 
     def psf_fwhm(self, lam_A):
-        """Diffraction-limited PSF FWHM [arcsec] = 1.22 lambda / D."""
+        """Delivered PSF FWHM [arcsec]: diffraction 1.22 lambda/D added in
+        quadrature with the image-quality floor (jitter, optics, charge diffusion)."""
         lam_cm = np.asarray(lam_A, float) * 1e-8
-        return 1.22 * lam_cm / self.diameter_cm * 206265.0
+        diff = 1.22 * lam_cm / self.diameter_cm * 206265.0
+        return np.hypot(diff, self.psf_floor)
 
     # ---- throughput(lambda) ----
     def throughput(self, lam_A):
@@ -251,8 +254,8 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
     """
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
     Bpix = background_per_pixel(cfg, band)
-    r_ap = aper_fwhm_mult * cfg.psf_fwhm(lam_A)          # aperture radius [arcsec]
-    npix = max(1.0, np.pi * (r_ap / cfg.pix_scale)**2)
+    r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)          # aperture radius [arcsec]
+    npix = np.pi * (r_ap / cfg.pix_scale)**2
     Btot = (Bpix + cfg.dark_current) * npix * t_s + npix * cfg.n_exp * cfg.read_noise**2
     # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture
     k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
@@ -310,8 +313,8 @@ def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
     """Broadband imaging S/N for a point source of AB magnitude mag_ab."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
     Bpix = background_per_pixel(cfg, band)
-    r_ap = aper_fwhm_mult * cfg.psf_fwhm(lam_A)
-    npix = max(1.0, np.pi * (r_ap / cfg.pix_scale)**2)
+    r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)
+    npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
     S = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
          * t_s * filter_width_A * Flam * cfg.extraction_eff)
@@ -355,8 +358,8 @@ def count_rates(cfg, mag_ab, lam_A, filter_width_A, aper_fwhm_mult=1.0):
     """Source and background electron rates for an imaging point source [e-/s]."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
     Bpix = background_per_pixel(cfg, band)
-    r_ap = aper_fwhm_mult * cfg.psf_fwhm(lam_A)
-    npix = max(1.0, np.pi * (r_ap / cfg.pix_scale)**2)
+    r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)
+    npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
     Srate = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
              * filter_width_A * Flam * cfg.extraction_eff)
