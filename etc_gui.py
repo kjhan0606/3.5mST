@@ -33,6 +33,14 @@ class ETCGui:
         panel = ttk.Frame(root, padding=6)
         panel.grid(row=0, column=0, sticky="ns")
 
+        # -- telescope preset (auto-fills the specs) --
+        self._obs = 0.15
+        self._band = (0.36, 3.00)
+        tf = ttk.LabelFrame(panel, text="telescope", padding=4); tf.pack(fill="x")
+        self.telescope = tk.StringVar(value="3.5mST")
+        ttk.OptionMenu(tf, self.telescope, "3.5mST", *etc.TELESCOPE_PRESETS.keys(),
+                       command=lambda _=None: self.apply_preset()).pack(fill="x")
+
         # -- mode & calculation type --
         self.mode = tk.StringVar(value="Spectroscopy")
         self.calc = tk.StringVar(value="Limiting depth")
@@ -118,12 +126,20 @@ class ETCGui:
         self.v["zodi"].set(str(etc.ZODI_LEVELS[self.zlevel.get()]))
         self.compute()
 
+    def apply_preset(self):
+        p = etc.TELESCOPE_PRESETS[self.telescope.get()]
+        for key in ("diam", "pix", "eta", "read", "dark", "nexp", "fw", "ttel", "R", "lam"):
+            self.v[key].set(str(p[key]))
+        self._obs = p["obstruction"]; self._band = tuple(p["band"])
+        self.realistic.set(p["realistic"])
+        self.compute()
+
     def cfg(self):
-        kw = dict(diameter_cm=self._f("diam"), R=self._f("R"), pix_scale=self._f("pix"),
-                  eta_peak=self._f("eta"), read_noise=self._f("read"),
+        kw = dict(diameter_cm=self._f("diam"), obstruction=self._obs, R=self._f("R"),
+                  pix_scale=self._f("pix"), eta_peak=self._f("eta"), read_noise=self._f("read"),
                   dark_current=self._f("dark"), n_exp=int(self._f("nexp")),
-                  full_well=self._f("fw"), zodi_mu_ref=self._f("zodi"),
-                  tel_temp=self._f("ttel"))
+                  full_well=self._f("fw"), zodi_mu_ref=self._f("zodi"), tel_temp=self._f("ttel"),
+                  band_min_A=self._band[0]*1e4, band_max_A=self._band[1]*1e4)
         return etc.realistic_cfg(**kw) if self.realistic.get() else etc.InstrumentConfig(**kw)
 
     # ---- main compute -------------------------------------------------------
@@ -131,7 +147,8 @@ class ETCGui:
         c = self.cfg(); lamA = self._f("lam") * 1e4; fwA = self._f("fw_um") * 1e4
         t = self._f("thr") * HR; src = self._f("src"); o = self.out
         o.delete("1.0", "end")
-        o.insert("end", f"{self.mode.get()} / {self.calc.get()}\n")
+        det = etc.TELESCOPE_PRESETS.get(self.telescope.get(), {}).get("det", "")
+        o.insert("end", f"{self.telescope.get()} [{det}]  {self.mode.get()} / {self.calc.get()}\n")
         o.insert("end", f"D={c.diameter_cm/100:.2f} m  pix={c.pix_scale}″  "
                         f"PSF={c.psf_fwhm(lamA):.3f}″\n")
         if self.mode.get() == "Spectroscopy":
@@ -187,7 +204,7 @@ class ETCGui:
         c = self.cfg(); fwA = self._f("fw_um") * 1e4; src = self._f("src")
         imaging = self.mode.get() == "Imaging"; self.ax.clear()
         if self.calc.get() == "Limiting depth":
-            lam = np.linspace(max(4000, c.band_min_A+200), min(25000, c.band_max_A-200), 200)
+            lam = np.linspace(c.band_min_A+200, c.band_max_A-200, 220)
             for mult, col in [(1, "#3898ec"), (4, "#4ec9b0"), (16, "#d97757")]:
                 tt = self._f("thr")*mult
                 if imaging:
@@ -221,7 +238,7 @@ class ETCGui:
 
     def plot_cooling(self):
         c0 = self.cfg(); src = self._f("src"); fwA = self._f("fw_um")*1e4
-        lam = np.linspace(10000, 30000, 180); self.ax.clear()
+        lam = np.linspace(10000, c0.band_max_A, 180); self.ax.clear()
         import matplotlib.cm as cm
         temps = [150, 180, 210, 240, 270, 290]
         imaging = self.mode.get() == "Imaging"

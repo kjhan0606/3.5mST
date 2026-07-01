@@ -10,6 +10,9 @@ usable for any aperture. Fidelity target is a Euclid/Roman/Pandeia-class ETC.
   **exposure time for a target S/N** — all invertible.
 - **Telescope aperture is an input** (any diameter), as are R, pixel scale,
   throughput, read noise, dark, number of exposures, and full well.
+- **Telescope presets** (JWST, Roman WFI, Euclid, 3.5mST) auto-fill the aperture
+  and the real detector specs (H4RG-10 / H2RG read noise, dark current, full well,
+  pixel scale, band cutoff), from the mission technical documentation.
 
 ## What it models
 - **Zodiacal background as a spectrum** — the real STScI CALSPEC solar reference

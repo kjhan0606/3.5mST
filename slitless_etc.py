@@ -267,6 +267,23 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
 ZODI_LEVELS = {"low (ecliptic pole)": 23.3, "typical": 22.1, "high (near ecliptic)": 21.0}
 
 
+# Telescope presets with real detector specs (read/dark/full-well/pixel/cutoff).
+# Sources: Roman WFI technical page (H4RG-10, effective noise ~6 e-, dark ~0.02,
+# QE 0.89, 0.11"/pix, 2.5um cutoff); JWST NIRCam/NIRSpec H2RG (jdox: read ~6 e-,
+# dark ~0.003 e-/s, 0.063" LW pix, 5um); Euclid-III NISP H2RG (read ~7 e-, dark
+# ~0.02, 0.30"/pix, 2.3um). Read noise is the effective ramp-sampled value.
+TELESCOPE_PRESETS = {
+    "3.5mST":    dict(det="HgCdTe (concept)", diam=350., obstruction=0.15, pix=0.11,  eta=0.30,
+                      read=8.,  dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, realistic=True),
+    "Roman WFI": dict(det="H4RG-10", diam=240., obstruction=0.31, pix=0.11,  eta=0.42,
+                      read=6.,  dark=0.020, nexp=4, fw=100000., ttel=270., R=461.,  band=(0.48, 2.30), lam=1.5, realistic=False),
+    "Euclid":    dict(det="H2RG (NISP)", diam=120., obstruction=0.40, pix=0.30,  eta=0.30,
+                      read=7.,  dark=0.020, nexp=4, fw=80000.,  ttel=140., R=450.,  band=(0.90, 2.00), lam=1.5, realistic=False),
+    "JWST":      dict(det="H2RG (NIRCam/NIRSpec)", diam=650., obstruction=0.485, pix=0.063, eta=0.45,
+                      read=6.,  dark=0.003, nexp=4, fw=80000.,  ttel=45.,  R=1000., band=(0.60, 5.00), lam=2.0, realistic=False),
+}
+
+
 def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
     """Broadband imaging S/N for a point source of AB magnitude mag_ab."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
