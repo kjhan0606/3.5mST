@@ -23,3 +23,14 @@
 !/galaxy_exptime_vs_z.png
 !/galaxy_templates
 !/galaxy_templates/*
+!/make_snia_demo.py
+!/make_jwst_validation.py
+!/make_icl_darkgal.py
+!/make_skymap.py
+!/sn_templates
+!/sn_templates/*
+!/snia_mag_vs_z.png
+!/snia_nuv_depth.png
+!/icl_exptime_vs_z.png
+!/darkgal_exptime_vs_sfr.png
+!/elg_skymap.png
