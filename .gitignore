@@ -16,3 +16,10 @@
 !/etc_f5sigma.png
 !/etc_cooling.png
 !/etc_gui_capture.png
+!/galaxy_etc.py
+!/make_galaxy_templates.py
+!/make_galaxy_demo.py
+!/galaxy_mag_vs_z.png
+!/galaxy_exptime_vs_z.png
+!/galaxy_templates
+!/galaxy_templates/*
