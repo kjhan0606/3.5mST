@@ -3,7 +3,9 @@
 /*
 !/.gitignore
 !/README.md
+!/Makefile
 !/slitless_etc.py
+!/etc_gui.py
 !/make_etc_data.py
 !/etc_qe.csv
 !/etc_throughput.csv

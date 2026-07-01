@@ -98,6 +98,8 @@ class InstrumentConfig:
     tel_emissivity: float = 0.10
     include_thermal: bool = True
     extraction_eff: float = 0.70        # optimal-extraction aperture + contamination loss
+    full_well: float = 100000.0         # detector full well [e-] (saturation)
+    flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
     # --- optional data files (lambda_A, value) override the analytic models ---
     throughput_csv: str = ""
     zodi_csv: str = ""
@@ -214,7 +216,8 @@ def line_sn(cfg: InstrumentConfig, F_line, lam_A, t_s, source_fwhm=0.3,
     var = (S
            + (Bpix + cfg.dark_current) * npix * t_s
            + Ccont * t_s
-           + npix * cfg.n_exp * cfg.read_noise**2)
+           + npix * cfg.n_exp * cfg.read_noise**2
+           + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
 
@@ -235,6 +238,91 @@ def f_limit(cfg: InstrumentConfig, lam_A, t_s, snr=5.0, source_fwhm=0.3,
          * t_s * cfg.extraction_eff)   # e- per unit flux
     S = 0.5 * (snr**2 + np.sqrt(snr**4 + 4.0 * snr**2 * Btot))               # required e-
     return float(S / k)
+
+
+def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
+                     snr=5.0, aper_fwhm_mult=1.0):
+    """Broadband imaging 5-sigma point-source limiting AB magnitude.
+
+    Same detector and background machinery as the spectroscopic depth, but the
+    source is a point source whose whole in-band flux lands in a photometric
+    aperture of radius ~ aper_fwhm_mult * PSF FWHM, and the background is the sky
+    over the imaging filter bandwidth.
+    """
+    band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
+    Bpix = background_per_pixel(cfg, band)
+    r_ap = aper_fwhm_mult * cfg.psf_fwhm(lam_A)          # aperture radius [arcsec]
+    npix = max(1.0, np.pi * (r_ap / cfg.pix_scale)**2)
+    Btot = (Bpix + cfg.dark_current) * npix * t_s + npix * cfg.n_exp * cfg.read_noise**2
+    # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture
+    k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+         * t_s * filter_width_A * cfg.extraction_eff)
+    S = 0.5 * (snr**2 + np.sqrt(snr**4 + 4.0 * snr**2 * Btot))   # required e-
+    F_lambda = S / k                                     # erg/s/cm^2/A
+    F_nu = F_lambda * lam_A**2 / C_A                      # erg/s/cm^2/Hz
+    return -2.5 * np.log10(F_nu) - 48.60                  # AB mag
+
+
+# Zodiacal pointing levels (Leinert et al. 1998): AB mu at 0.5 um
+ZODI_LEVELS = {"low (ecliptic pole)": 23.3, "typical": 22.1, "high (near ecliptic)": 21.0}
+
+
+def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
+    """Broadband imaging S/N for a point source of AB magnitude mag_ab."""
+    band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
+    Bpix = background_per_pixel(cfg, band)
+    r_ap = aper_fwhm_mult * cfg.psf_fwhm(lam_A)
+    npix = max(1.0, np.pi * (r_ap / cfg.pix_scale)**2)
+    Flam = ab_to_flambda(mag_ab, lam_A)
+    S = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+         * t_s * filter_width_A * Flam * cfg.extraction_eff)
+    var = (S + (Bpix + cfg.dark_current) * npix * t_s
+           + npix * cfg.n_exp * cfg.read_noise**2 + (cfg.flat_error * S)**2)
+    return float(S / np.sqrt(var))
+
+
+def exposure_for_snr(snr_func, target_snr, tlo=1.0, thi=1.0e7):
+    """Invert a monotonically increasing snr_func(t_s) for the exposure [s]."""
+    for _ in range(60):
+        mid = np.sqrt(tlo * thi)
+        if snr_func(mid) < target_snr:
+            tlo = mid
+        else:
+            thi = mid
+    return np.sqrt(tlo * thi)
+
+
+def peak_fraction(cfg, lam_A):
+    """Fraction of a point source's flux landing in the central pixel (Gaussian PSF)."""
+    sigma = cfg.psf_fwhm(lam_A) / 2.35482
+    return float(min(0.95, cfg.pix_scale**2 / (2 * np.pi * sigma**2)))
+
+
+def saturation_maglimit(cfg, lam_A, filter_width_A, t_single):
+    """Brightest imaging AB magnitude before the central pixel saturates in one
+    exposure of t_single seconds (full-well limit)."""
+    band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
+    Bpix = background_per_pixel(cfg, band)
+    avail = cfg.full_well / t_single - Bpix - cfg.dark_current      # e-/s left for source peak
+    if avail <= 0:
+        return np.nan
+    Srate = avail / peak_fraction(cfg, lam_A)                       # total source e-/s
+    Flam = Srate / (cfg.area_cm2 * cfg.throughput(lam_A)
+                    * _photon_factor(lam_A) * filter_width_A)
+    return float(-2.5 * np.log10(Flam * lam_A**2 / C_A) - 48.60)
+
+
+def count_rates(cfg, mag_ab, lam_A, filter_width_A, aper_fwhm_mult=1.0):
+    """Source and background electron rates for an imaging point source [e-/s]."""
+    band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
+    Bpix = background_per_pixel(cfg, band)
+    r_ap = aper_fwhm_mult * cfg.psf_fwhm(lam_A)
+    npix = max(1.0, np.pi * (r_ap / cfg.pix_scale)**2)
+    Flam = ab_to_flambda(mag_ab, lam_A)
+    Srate = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+             * filter_width_A * Flam * cfg.extraction_eff)
+    return {"source_e_s": Srate, "sky_e_s_pix": Bpix, "n_pix": npix,
+            "dark_e_s_pix": cfg.dark_current, "peak_e_s": Srate*peak_fraction(cfg, lam_A)}
 
 
 def noise_breakdown(cfg, lam_A, t_s, source_fwhm=0.3, filter_width_A=4000.0):
