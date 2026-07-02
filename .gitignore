@@ -25,6 +25,7 @@
 !/galaxy_templates
 !/galaxy_templates/*
 !/make_snia_demo.py
+!/make_snia_uvtwins_obs.py
 !/make_jwst_validation.py
 !/make_icl_darkgal.py
 !/make_skymap.py
