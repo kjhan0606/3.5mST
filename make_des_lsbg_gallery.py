@@ -56,7 +56,9 @@ for k in range(NSEL):
     sel.append(inb[np.argmax(inb["gReff"])])
 print(f"selected {len(sel)} galaxies")
 
-fig, axes = plt.subplots(2, 6, figsize=(13.2, 4.9), dpi=150)
+fig, axes = plt.subplots(2, 6, figsize=(12.9, 4.78), dpi=150)
+fig.subplots_adjust(left=0.004, right=0.996, top=0.90, bottom=0.008,
+                    wspace=0.03, hspace=0.03)     # uniform thin white gaps
 for ax, row in zip(axes.ravel(), sel):
     reff = float(row["gReff"])                    # arcsec (angular, DES DR1)
     fov = max(8.0 * reff, 40.0)                   # arcsec
@@ -76,8 +78,7 @@ for ax, row in zip(axes.ravel(), sel):
             ha="center", transform=ax.transAxes)
 fig.suptitle("Low-surface-brightness galaxies from the DES DR1 LSBG catalog "
              "(Tanoglidis et al. 2021), DECam Legacy Surveys DR10 imaging",
-             fontsize=11)
-fig.tight_layout(rect=(0, 0, 1, 0.96))
+             fontsize=11, y=0.98)
 fig.savefig("des_lsbg_gallery.png", bbox_inches="tight")
 print("wrote des_lsbg_gallery.png")
 for r in sel:
