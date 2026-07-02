@@ -1269,6 +1269,7 @@ The southern anchor contributes the complementary strength, depth in the near-in
 
 Taken together the two anchors give the program three things that a single field cannot. First, they combine an emission-line truth sample in the north with deep continuum redshifts in the south, so both failure modes of the slitless selection, missing real lines and misidentifying interlopers, are calibrated against independent external data. Second, the panchromatic coverage in both fields supplies the morphology and size priors that set the blending factor $C_{\rm blend}$ of Eq.~\eqref{eq:snline} and the line-ratio and continuum-proxy conversions behind the luminosity-function counts of Tables~\ref{tab:desiFOVsum} and~\ref{tab:desiMcounts}, so the count model of Section~\ref{sec:elgdepth} is anchored on measured rather than assumed inputs. Third, the northern field near right ascension $14^{\rm h}30^{\rm m}$ and the southern field near $2^{\rm h}20^{\rm m}$ sit in opposite hemispheres, giving year-round scheduling, two statistically independent volumes for cosmic-variance control, and a cross-hemisphere test of instrumental and selection systematics. Both fields are also deep-drilling targets for Rubin, Euclid, and Roman, so the anchor placement keeps the survey inside a coordinated multi-facility footprint from the first pointing.
 
+\clearpage
 \section{Companion Science Programs}
 
 \subsection{Type Ia Supernovae}
@@ -1953,6 +1954,7 @@ The program is also a long-lived legacy resource. The optically dark and almost-
 \item A low-density control sample, observed with identical selection and instrumentation, for the environmental comparisons of the dwarf dark-matter program.
 \end{itemize}
 
+\clearpage
 \section{Program Triage}
 
 Table~\ref{tab:triage} collects the program-level scope implied by the preceding sections. It separates the core ELG BAO/RSD survey from companion programs whose requirements are compatible with the same slitless architecture but should not drive the flagship performance claims.
@@ -1977,6 +1979,7 @@ LBG topology & Ancillary & 100--200 bright systems in overdensities & $3\times5$
 \label{tab:triage}
 \end{table}
 
+\clearpage
 \section{Observing Architecture}
 
 \begin{figure}[h]
@@ -2040,6 +2043,7 @@ The wide survey targets two high-Galactic-latitude caps that avoid the Milky Way
 
 The \fovsmall\ mode is valuable for deeper fields where the science is not area-limited. Examples are supernova cadence fields, deep calibration fields, quasar monitoring, and algorithm validation fields with existing spectroscopy. It should not define the wide RSD survey unless the mission accepts a much smaller cosmological footprint.
 
+\clearpage
 \section{Expected Deliverables}
 
 The mission will release science-ready products rather than only calibrated images:
@@ -2054,6 +2058,7 @@ The mission will release science-ready products rather than only calibrated imag
   \item public image-level simulations matching the final survey selection.
 \end{itemize}
 
+\clearpage
 \section{Conclusion}
 
 The \facility\ is a coherent cosmology mission when it is built around the real strength of slitless spectroscopy. That strength is dense, homogeneous, robotic redshift mapping over large solid angle. The \fovlarge\ option is therefore not an optional upgrade. It is the enabling survey mode for the ELG BAO/RSD program. The \fovsmall\ mode remains useful for deep calibration, supernova cadence, and targeted quasar work.
@@ -2066,6 +2071,7 @@ The revised mission statement is:
 \section*{Figures and Sources}
 Most schematic figures in this document are generated directly in \LaTeX\ using TikZ. Figure~\ref{fig:elgspectrum} uses an observed bright SDSS DR17 low-redshift emission-line galaxy spectrum converted to a local plotting table, and Figure~\ref{fig:elgobswavez} stacks actual SDSS/BOSS and DESI DR1 spectra retrieved through SPARCL together with HST WFC3/G141 3D-HST COSMOS grism spectra (v4.1.5 1D extractions) and JWST/NIRSpec PRISM star-forming galaxy spectra (msaexp 1D extractions from the DAWN JWST Archive) on an approximately uniform display grid in redshift, spanning the full $0.36$--$3.0\,\mu$m proposed range. Figures~\ref{fig:elgmagdepth} and \ref{fig:desiMlf} use the DESI DR1 LSS ELG catalog with an observed-frame absolute-magnitude proxy computed locally from the downloaded FITS table. In Figure~\ref{fig:desiMlf} the binned proxy LF is additionally fit with a Schechter function on the bright side of each redshift bin and shown as smooth curves. Figure~\ref{fig:phillips} plots the real Carnegie Supernova Project\,I sample of 139 SNe Ia (Burns et~al.\ \cite{burns2018csp}, VizieR catalog J/ApJ/869/56), computing the host-extinction-corrected peak absolute magnitude $M_V=V_{\max}-\mu_{\rm CV}-R_V\,E(B\!-\!V)$ from the tabulated distance modulus and reddening, plotting it against the tabulated $\Delta m_{15}(B)$, and overlaying a quadratic Phillips relation fitted locally to those points; the figure layout follows Figure 11 of Zeng et~al.\ \cite{zeng2025sn2023ehl}. Figure~\ref{fig:uvtwins} (rest-frame UV--optical optical-twin spectra) is adapted from the author's companion SN Ia spectroscopy study, after Graham et~al.\ \cite{graham2015} and Lentz et~al.\ \cite{lentz2000}. Figure~\ref{fig:sniacosmo} (the multi-cosmology SN Ia Hubble diagram with current and target Hubble-residual scatter) is generated locally with \texttt{astropy} distance moduli for the four cosmologies against the real Pantheon$+$SH0ES sample \cite{brout2022}, retaining the 1580 Hubble-flow SNe Ia ($z>0.01$, Cepheid calibrators removed). Figure~\ref{fig:nuvband} is generated in TikZ and shows the redshifting of fixed rest-frame wavelengths into the proposed observed band. Figure~\ref{fig:lyathreshold} is computed locally, integrating a Voigt profile to obtain the Ly$\alpha$ curve of growth and inverting it against the $R=1000$ detection limit of Eq.~\eqref{eq:wmin} to give the minimum detectable H\,\textsc{i} column density. Figure~\ref{fig:lya3dexternal} is an external CLAMATO 3D Ly$\alpha$ forest tomography rendering from the arXiv source package. Figure~\ref{fig:hr4xi} is the supplied Horizon Run 4 two-dimensional correlation-function image. Literature and documentation sources are listed below.
 
+\clearpage
 \begin{thebibliography}{99}
 \bibitem{cess2024}
 X. Wang et al.,
