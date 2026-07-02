@@ -52,5 +52,11 @@
 !/make_hr4_xi2d.py
 !/make_elg_absmag_depth.py
 !/make_snia_hubble_cosmologies.py
+!/make_sparc_diversity.py
+!/make_fdm_constraints.py
+!/sidm_sigmav.png
+!/fdm_wave_slice.jpg
+!/sparc_diversity.png
+!/fdm_mass_constraints.png
 !/make_imaging_fields.py
 !/imaging_fields_zoom.png
