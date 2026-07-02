@@ -553,15 +553,49 @@ Because the same calculator runs on any instrument, it places the concept direct
 \toprule
 \textbf{$\lambda$ [$\mu$m]} & \textbf{3.5\,m ST} & \textbf{Roman} & \textbf{Euclid} & \textbf{JWST}\\
 \midrule
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\textbf{1\,hr}}\\[1pt]
 0.6 & 29.01 & 28.23 & -- & --\\
 1.0 & 28.28 & 27.63 & 25.59 & 29.62\\
 1.5 & 28.25 & 27.21 & 25.30 & 29.03\\
 2.0 & 27.02 & 26.03 & -- & 28.73\\
 2.5 & 24.49 & -- & -- & 28.41\\
 3.5 & -- & -- & -- & 28.17\\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\textbf{5\,hr}}\\[1pt]
+0.6 & 29.89 & 29.12 & -- & --\\
+1.0 & 29.16 & 28.53 & 26.50 & 30.53\\
+1.5 & 29.13 & 28.12 & 26.21 & 29.96\\
+2.0 & 27.90 & 26.92 & -- & 29.68\\
+2.5 & 25.36 & -- & -- & 29.33\\
+3.5 & -- & -- & -- & 29.09\\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\textbf{10\,hr}}\\[1pt]
+0.6 & 30.27 & 29.50 & -- & --\\
+1.0 & 29.54 & 28.91 & 26.88 & 30.91\\
+1.5 & 29.51 & 28.50 & 26.59 & 30.34\\
+2.0 & 28.28 & 27.29 & -- & 30.06\\
+2.5 & 25.74 & -- & -- & 29.71\\
+3.5 & -- & -- & -- & 29.47\\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\textbf{24\,hr}}\\[1pt]
+0.6 & 30.75 & 29.98 & -- & --\\
+1.0 & 30.02 & 29.38 & 27.35 & 31.39\\
+1.5 & 29.99 & 28.98 & 27.07 & 30.82\\
+2.0 & 28.75 & 27.77 & -- & 30.54\\
+2.5 & 26.21 & -- & -- & 30.19\\
+3.5 & -- & -- & -- & 29.95\\
+\addlinespace[2pt]
+\multicolumn{5}{@{}l}{\textbf{48\,hr}}\\[1pt]
+0.6 & 31.12 & 30.36 & -- & --\\
+1.0 & 30.40 & 29.76 & 27.73 & 31.77\\
+1.5 & 30.36 & 29.36 & 27.44 & 31.19\\
+2.0 & 29.13 & 28.15 & -- & 30.91\\
+2.5 & 26.59 & -- & -- & 30.57\\
+3.5 & -- & -- & -- & 30.33\\
 \bottomrule
 \end{tabularx}
-\caption{Imaging $5\sigma$ point-source limiting AB magnitude in a $1$\,hr exposure through a $0.3\,\mu$m band, for the four telescopes evaluated with the same calculator from their real apertures and detector parameters. Dashes mark wavelengths outside a mission's band. JWST is deepest (largest, cold aperture), followed by the $3.5$\,m concept, Roman, and Euclid. The $3.5$\,m entry at $2.5\,\mu$m is depressed by warm-optics thermal background, which cooling removes.}
+\caption{Imaging $5\sigma$ point-source limiting AB magnitude through a $0.3\,\mu$m band in exposures of $1$, $5$, $10$, $24$, and $48$\,hr, for the four telescopes evaluated with the same calculator from their real apertures and detector parameters. Dashes mark wavelengths outside a mission's band. JWST is deepest (largest, cold aperture), followed by the $3.5$\,m concept, Roman, and Euclid. The $3.5$\,m entry at $2.5\,\mu$m is depressed by warm-optics thermal background, which cooling removes.}
 \label{tab:compareimg}
 \end{table}
 
@@ -1212,14 +1246,14 @@ The two high-Galactic-latitude caps that anchor the wide survey were chosen not 
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.92\textwidth]{elg_skymap.png}
-\caption{Proposed ELG survey fields on an equatorial Mollweide projection. The north and south Galactic caps at $|b|\gtrsim45^\circ$ (green and blue) avoid the Milky Way zone ($|b|<20^\circ$, red) and lie within the DESI, Euclid, Rubin/LSST, and Roman footprints for cross-survey synergy. Gold stars mark the legacy HST and Subaru deep fields that fall within the caps (Figure~\ref{fig:deepzoom}).}
+\caption{Proposed ELG survey fields on an equatorial Mollweide projection. The background is the real COBE/DIRBE 2.2\,$\mu$m near-infrared all-sky map \cite{hauser1998} (CADE HEALPix rendering through the CDS \textit{hips2fits} service) with its intensity scale below, so the near-infrared foreground that the field selection must avoid, the Galactic plane, the bulge, and the bright-star population, is shown directly rather than schematically. The north and south Galactic caps at $|b|\gtrsim45^\circ$ (green and blue outlines) avoid the Milky Way zone ($|b|<20^\circ$, red curves) and lie within the DESI, Euclid, Rubin/LSST, and Roman footprints for cross-survey synergy. Gold stars mark the legacy HST and Subaru deep fields that fall within the caps (Figure~\ref{fig:deepzoom}).}
 \label{fig:skymap}
 \end{figure}
 
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.98\textwidth]{elg_deepfields_zoom.png}
-\caption{Nested wedding-cake tiers of the proposed ELG survey, one Galactic cap per panel, in the gnomonic (TAN) tangent-plane projection standard for imaging fields. Each main panel spans about $\pm30^\circ$ so the spherical curvature of the sky is apparent, the parallels of declination bowing and the meridians of right ascension converging away from the tangent point. The tiers are anchored on high-Galactic-latitude fields, the NDWFS/HETDEX Bo\"otes field ($b\simeq+67^\circ$) in the north and the SXDS/UDS/XMM-LSS deep field ($b\simeq-59^\circ$) in the south, both far from the Milky Way. The neighbouring high-latitude legacy fields (ELAIS-N1, the Extended Groth Strip, the Subaru Deep Field, GOODS-S) are shown for context. The inset in each panel is a $\pm4^\circ$ zoom on the anchor that reveals two features invisible at the wide scale. First, each tier is a square region paved with an integer number of $30'\times30'$ tiles matching the large field of view, so its boundary is a clean rectangle rather than a circle, which simplifies the statistical boundary treatment of the two-point functions. Second, the tiers nest as a wedding cake, the wide tier ($\sim$150 deg$^2$, gold) enclosing the medium tier (30 deg$^2$, orange) enclosing the deep tier (1--3 deg$^2$, red). The insets also draw the legacy footprints in their true shape, the Bo\"otes field in the north and, in the south, the SXDS five-pointing Subaru cross with the UKIDSS/WFCAM UDS tile (dashed) overlaid, rather than as single rectangles. The remaining legacy fields of the caps are marked on the all-sky map of Figure~\ref{fig:skymap}.}
+\caption{Nested wedding-cake tiers of the proposed ELG survey, one Galactic cap per panel, in the gnomonic (TAN) tangent-plane projection standard for imaging fields. The background of both panels and their insets is the Planck 857\,GHz thermal-dust map \cite{planck2018hfi} at its native $\sim$5$'$ resolution (CDS \textit{hips2fits} rendering) with the shared intensity scale at right, so the Galactic cirrus toward each anchor field, the dominant diffuse foreground for the low-surface-brightness science, is shown directly. Both anchors sit in dark low-cirrus windows, while the bright complex at the upper left of the southern panel, toward Taurus, illustrates the foreground the field selection avoids. Each main panel spans about $\pm30^\circ$ so the spherical curvature of the sky is apparent, the parallels of declination bowing and the meridians of right ascension converging away from the tangent point. The tiers are anchored on high-Galactic-latitude fields, the NDWFS/HETDEX Bo\"otes field ($b\simeq+67^\circ$) in the north and the SXDS/UDS/XMM-LSS deep field ($b\simeq-59^\circ$) in the south, both far from the Milky Way. The neighbouring high-latitude legacy fields (ELAIS-N1, the Extended Groth Strip, the Subaru Deep Field, GOODS-S) are shown for context. The inset in each panel is a $\pm4^\circ$ zoom on the anchor that reveals two features invisible at the wide scale. First, each tier is a square region paved with an integer number of $30'\times30'$ tiles matching the large field of view, so its boundary is a clean rectangle rather than a circle, which simplifies the statistical boundary treatment of the two-point functions. Second, the tiers nest as a wedding cake, the wide tier ($\sim$150 deg$^2$, gold) enclosing the medium tier (30 deg$^2$, orange) enclosing the deep tier (1--3 deg$^2$, red). The insets also draw the legacy footprints in their true shape, the Bo\"otes field in the north and, in the south, the SXDS five-pointing Subaru cross with the UKIDSS/WFCAM UDS tile (dashed) overlaid, rather than as single rectangles. The remaining legacy fields of the caps are marked on the all-sky map of Figure~\ref{fig:skymap}.}
 \label{fig:deepzoom}
 \end{figure}
 
@@ -3151,6 +3185,18 @@ Ch. Leinert et al.,
 ``The 1997 reference of diffuse night sky brightness,''
 \emph{Astronomy \& Astrophysics Supplement Series}, 127, 1, 1998.
 \url{https://ui.adsabs.harvard.edu/abs/1998A\%26AS..127....1L/abstract}
+
+\bibitem{hauser1998}
+M. G. Hauser et al.,
+``The COBE Diffuse Infrared Background Experiment Search for the Cosmic Infrared Background. I. Limits and Detections,''
+\emph{Astrophysical Journal}, 508, 25, 1998.
+\url{https://ui.adsabs.harvard.edu/abs/1998ApJ...508...25H/abstract}
+
+\bibitem{planck2018hfi}
+Planck Collaboration,
+``Planck 2018 results. III. High Frequency Instrument data processing and frequency maps,''
+\emph{Astronomy \& Astrophysics}, 641, A3, 2020.
+\url{https://ui.adsabs.harvard.edu/abs/2020A\%26A...641A...3P/abstract}
 
 \bibitem{ienaka2013}
 N. Ienaka et al.,

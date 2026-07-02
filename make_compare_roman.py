@@ -76,23 +76,29 @@ def jwst_cfg(lam_um):
     return cfgs["JWST NIRCam SW"] if lam_um <= 2.35 else cfgs["JWST NIRCam LW"]
 
 
-# ---- table: imaging 5sigma AB at common wavelengths (0.3 um band, 1 hr) ----
+# ---- table: imaging 5sigma AB at common wavelengths (0.3 um band),
+# ----        for survey-relevant exposures of 1, 5, 10, 24, 48 hr ----
 wl = [0.6, 1.0, 1.5, 2.0, 2.5, 3.5]
 cols = ["3.5mST", "Roman WFI", "Euclid", "JWST"]
-print("\nMulti-telescope imaging 5sigma AB (1 hr, 0.3um band):")
-print(f"{'lam[um]':>7} " + " ".join(f"{c:>10}" for c in cols))
+EXPS_HR = (1.0, 5.0, 10.0, 24.0, 48.0)
 lines = []
-for lam in wl:
-    cells = []
-    for c in cols:
-        if c == "JWST":
-            ok = in_band("JWST NIRCam SW", lam) or in_band("JWST NIRCam LW", lam)
-            cc = jwst_cfg(lam)
-        else:
-            ok = in_band(c, lam); cc = cfgs[c]
-        cells.append(f"{etc.imaging_maglimit(cc, lam*1e4, 3000., t_img):.2f}" if ok else "--")
-    print(f"{lam:>7.1f} " + " ".join(f"{x:>10}" for x in cells))
-    lines.append(f"{lam:.1f} & " + " & ".join(cells) + "\\\\\n")
+for t_hr in EXPS_HR:
+    t_img_e = t_hr * HR
+    print(f"\nMulti-telescope imaging 5sigma AB ({t_hr:g} hr, 0.3um band):")
+    print(f"{'lam[um]':>7} " + " ".join(f"{c:>10}" for c in cols))
+    lines.append("\\addlinespace[2pt]\n\\multicolumn{5}{@{}l}{\\textbf{"
+                 f"{t_hr:g}\\,hr" + "}}\\\\[1pt]\n")
+    for lam in wl:
+        cells = []
+        for c in cols:
+            if c == "JWST":
+                ok = in_band("JWST NIRCam SW", lam) or in_band("JWST NIRCam LW", lam)
+                cc = jwst_cfg(lam)
+            else:
+                ok = in_band(c, lam); cc = cfgs[c]
+            cells.append(f"{etc.imaging_maglimit(cc, lam*1e4, 3000., t_img_e):.2f}" if ok else "--")
+        print(f"{lam:>7.1f} " + " ".join(f"{x:>10}" for x in cells))
+        lines.append(f"{lam:.1f} & " + " & ".join(cells) + "\\\\\n")
 with open("compare_multi_rows.tex", "w") as f:
     f.writelines(lines)
 print("wrote compare_multi_rows.tex")

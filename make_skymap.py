@@ -1,13 +1,40 @@
 #!/usr/bin/env python3
 """All-sky map (equatorial Mollweide) of the proposed ELG survey fields: two
 high-Galactic-latitude caps that avoid the Milky Way and overlap existing
-wide surveys (DESI, Euclid, Rubin/LSST, Roman) for cross-survey synergy."""
+wide surveys (DESI, Euclid, Rubin/LSST, Roman) for cross-survey synergy.
+
+The backgrounds are real sky maps rendered through the CDS hips2fits service:
+the COBE/DIRBE 2.2 um near-infrared all-sky map (CADE HEALPix rendering) for
+the Mollweide view, and the Planck 857 GHz map (5' resolution, thermal dust /
+cirrus) for the high-resolution tangent-plane zooms. Both carry their native
+intensity units (MJy/sr), shown on the colour bars.
+"""
+import os
+import urllib.parse
+import urllib.request
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+from astropy.io import fits
 from astropy.coordinates import SkyCoord
 import astropy.units as u
+
+HIPS2FITS = "https://alasky.cds.unistra.fr/hips-image-services/hips2fits?"
+
+
+def fetch_hips(fname, **params):
+    """Download (once, cached) a FITS rendering of a HiPS map with the given
+    WCS parameters through the CDS hips2fits service."""
+    os.makedirs("hips_cache", exist_ok=True)
+    path = os.path.join("hips_cache", fname)
+    if not os.path.exists(path):
+        url = HIPS2FITS + urllib.parse.urlencode({"format": "fits", **params})
+        print("fetching", fname)
+        urllib.request.urlretrieve(url, path)
+    h = fits.open(path)[0]
+    return h.data.astype(float), h.header
 
 
 def wrap(ra_deg):
@@ -40,9 +67,26 @@ DEEPFIELDS = [
 FCOL = {"HST": "#e67e22", "Subaru": "#2980b9", "multi": "#27ae60", "wide": "#8e44ad"}
 
 
-fig = plt.figure(figsize=(9.2, 5.4), dpi=150)
+fig = plt.figure(figsize=(9.2, 5.8), dpi=150)
 ax = fig.add_subplot(111, projection="mollweide")
-ax.grid(alpha=0.3)
+
+# real near-infrared all-sky background: COBE/DIRBE band 2 (2.2 um), MJy/sr
+nir, nhdr = fetch_hips("dirbe2_allsky_car1440.fits", hips="ov-gso/P/DIRBE/2",
+                       width=1440, height=720, fov=360, projection="CAR",
+                       coordsys="icrs", ra=0, dec=0)
+ny, nx = nir.shape
+ra_e = nhdr["CRVAL1"] + nhdr["CDELT1"] * (np.arange(nx + 1) + 0.5 - nhdr["CRPIX1"])
+dec_e = nhdr["CRVAL2"] + nhdr["CDELT2"] * (np.arange(ny + 1) + 0.5 - nhdr["CRPIX2"])
+dec_e = np.clip(dec_e, -90.0, 90.0)
+lo, hi = np.nanpercentile(nir, [2.0, 99.95])
+pcm = ax.pcolormesh(np.radians(ra_e), np.radians(dec_e), nir,
+                    norm=LogNorm(vmin=max(lo, 0.05), vmax=hi), cmap="gray",
+                    rasterized=True, zorder=0)
+cb = fig.colorbar(pcm, ax=ax, orientation="horizontal", fraction=0.05,
+                  pad=0.05, aspect=45)
+cb.set_label(r"COBE/DIRBE 2.2 $\mu$m intensity [MJy sr$^{-1}$]", fontsize=8)
+cb.ax.tick_params(labelsize=7)
+ax.grid(alpha=0.4, color="0.75", lw=0.5)
 
 # sky grid, split by Galactic latitude and ecliptic latitude
 ra = np.linspace(-179.9, 179.9, 360)
@@ -53,31 +97,34 @@ b = c.galactic.b.deg
 elat = c.barycentricmeanecliptic.lat.deg
 
 mw = np.abs(b) < 20.0                                   # Milky Way avoidance
-ax.scatter(wrap(RA[mw]), np.radians(DEC[mw]), s=2, color="#c0392b", alpha=0.10)
-
-# proposed caps: high |b|, split into North and South Galactic caps
 ngc = b > 45.0     # North Galactic cap
 sgc = b < -45.0    # South Galactic cap
-for m, lab, col in [(ngc, "proposed N cap", "#2ecc71"), (sgc, "proposed S cap", "#3498db")]:
-    ax.scatter(wrap(RA[m]), np.radians(DEC[m]), s=3, color=col, alpha=0.35, label=lab)
+
+def gal_curve(bb, **kw):
+    """Curve of constant galactic latitude, split at the RA wrap."""
+    lg = np.linspace(0, 360, 720)
+    g = SkyCoord(lg * u.deg, np.full_like(lg, bb) * u.deg, frame="galactic").icrs
+    x = wrap(g.ra.deg); y = np.radians(g.dec.deg)
+    jump = np.where(np.abs(np.diff(x)) > np.pi)[0]
+    x = np.insert(x, jump + 1, np.nan); y = np.insert(y, jump + 1, np.nan)
+    ax.plot(x, y, **kw)
+
+gal_curve(45.0, color="#2ecc71", lw=2.2, alpha=0.95, label="proposed N cap (b>45°)")
+gal_curve(-45.0, color="#3498db", lw=2.2, alpha=0.95, label="proposed S cap (b<−45°)")
 
 # Galactic plane and |b|=20 boundaries as guide curves
-lgrid = np.linspace(0, 360, 400)
 for bb, ls in [(0, "-"), (20, "--"), (-20, "--")]:
-    g = SkyCoord(lgrid * u.deg, np.full_like(lgrid, bb) * u.deg, frame="galactic").icrs
-    order = np.argsort(g.ra.wrap_at(180 * u.deg).deg)
-    ax.plot(wrap(g.ra.deg[order]), np.radians(g.dec.deg[order]), color="#7f2d1a",
-            lw=1.2 if bb == 0 else 0.8, ls=ls, alpha=0.7)
+    gal_curve(bb, color="#ff8a80", lw=1.2 if bb == 0 else 0.8, ls=ls, alpha=0.75)
 
 ax.set_title("Proposed ELG survey fields: high-latitude caps away from the Milky Way", pad=14)
 ax.legend(loc="lower right", fontsize=8, framealpha=0.9)
-ax.text(wrap(-110), np.radians(42), "Milky Way\n|b|<20° (avoid)", color="#7f2d1a",
+ax.text(wrap(-110), np.radians(42), "Milky Way\n|b|<20° (avoid)", color="#ff8a80",
         fontsize=7, ha="center")
 # synergy annotations placed on their caps
 ax.text(wrap(158), np.radians(33), "N cap:\nDESI NGC + Euclid N\n+ Rubin edge",
-        fontsize=6.5, ha="center", color="#145a32")
+        fontsize=6.5, ha="center", color="#a9dfbf")
 ax.text(wrap(6), np.radians(-25), "S cap:\nDESI SGC + Euclid S\n+ Rubin/LSST + Roman",
-        fontsize=6.5, ha="center", color="#154360")
+        fontsize=6.5, ha="center", color="#aed6f1")
 # legacy deep fields as gold stars within the caps
 for name, ra, dec, w, h, fac, cap in DEEPFIELDS:
     ax.plot(wrap(ra), np.radians(dec), marker="*", ms=10, color="#f1c40f",
@@ -153,13 +200,43 @@ def tile_tier(cx, cy):
     return None
 
 
-fig3 = plt.figure(figsize=(11.6, 5.6), dpi=150)
+# high-resolution background for the zooms: Planck 857 GHz (thermal dust /
+# cirrus, ~5' resolution), rendered on the same TAN tangent plane per cap.
+PLANCK = {}
+for cap in ("N", "S"):
+    ra0, dec0 = ANCHOR[cap]["cen"]
+    PLANCK[cap] = dict(zip(("main", "inset"), (
+        fetch_hips(f"planck857_{cap}_main.fits", hips="CDS/P/PLANCK/R3/HFI857",
+                   width=640, height=640, fov=64, projection="TAN",
+                   coordsys="icrs", ra=ra0, dec=dec0),
+        fetch_hips(f"planck857_{cap}_inset.fits", hips="CDS/P/PLANCK/R3/HFI857",
+                   width=400, height=400, fov=8.2, projection="TAN",
+                   coordsys="icrs", ra=ra0, dec=dec0))))
+_pl_all = np.concatenate([PLANCK[c]["main"][0].ravel() for c in ("N", "S")])
+PL_NORM = LogNorm(vmin=np.nanpercentile(_pl_all, 2.0),
+                  vmax=np.nanpercentile(_pl_all, 99.8))
+
+
+def show_planck(axes, data, hdr, zorder=0):
+    """Draw a hips2fits TAN cutout in the tangent-plane (deg) frame of the
+    plotting WCS (same CRVAL, cdelt = 1 deg/pix), preserving orientation."""
+    n = data.shape[1]
+    hw = abs(hdr["CDELT1"]) * n / 2.0                # tangent-plane half-width
+    return axes.imshow(data, origin="lower", extent=(-hw, hw, -hw, hw),
+                       cmap="gray", norm=PL_NORM, zorder=zorder,
+                       interpolation="bilinear")
+
+
+fig3 = plt.figure(figsize=(11.6, 5.9), dpi=150)
+main_axes = []
 for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galactic cap")]):
     a = ANCHOR[cap]
     ra0, dec0 = a["cen"]
     w = cap_wcs(ra0, dec0)                         # projection centred on the anchor
     axx = fig3.add_subplot(1, 2, i + 1, projection=w)
+    main_axes.append(axx)
     tw = axx.get_transform("world")
+    im_pl = show_planck(axx, *PLANCK[cap]["main"])
     # pave the nested tiers with 30'x30' tiles on a 0.5 deg tangent-plane grid
     # (pixel = deg here); tiles whose centre is inside a tier radius are kept, so
     # each tier boundary comes out jagged rather than a clean rectangle.
@@ -172,7 +249,7 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
                 continue
             axx.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
                                      facecolor=TIERS[k][1], edgecolor="white",
-                                     lw=0.15, alpha=0.9, zorder=1 + k))
+                                     lw=0.15, alpha=0.45, zorder=1 + k))
     # neighbouring legacy deep fields in view (the anchor field is shown in the
     # inset instead, so it is drawn here without a label to avoid clutter).
     off = {"EGS/AEGIS": (-58, 2), "Subaru DF": (10, -15),
@@ -197,9 +274,9 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
         if name != "NDWFS Bootes":                # anchor field is labelled in the inset
             axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)", (float(px), float(py)),
                          textcoords="offset points", xytext=off.get(name, (9, 8)),
-                         fontsize=7.4, zorder=7)
+                         fontsize=7.4, color="white", zorder=7)
     axx.set_xlim(-half, half); axx.set_ylim(-half, half)
-    axx.coords.grid(color="0.5", alpha=0.55, ls=":")
+    axx.coords.grid(color="0.8", alpha=0.55, ls=":")
     axx.coords[0].set_axislabel("R.A. (TAN)"); axx.coords[1].set_axislabel("Dec. (TAN)")
     axx.coords[0].set_major_formatter("d"); axx.coords[1].set_major_formatter("d")
     axx.coords[0].set_ticks(spacing=10 * u.deg); axx.coords[1].set_ticks(spacing=10 * u.deg)
@@ -211,6 +288,7 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
     # are invisible at the wide scale needed to show the sky curvature.
     ih = 4.0
     axins = axx.inset_axes([0.61, 0.57, 0.37, 0.40])
+    show_planck(axins, *PLANCK[cap]["inset"])
     for cx in grid:
         for cy in grid:
             if abs(cx) > ih or abs(cy) > ih:
@@ -219,13 +297,13 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
             if k is not None:
                 axins.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
                                           facecolor=TIERS[k][1], edgecolor="white",
-                                          lw=0.3, alpha=0.95))
+                                          lw=0.3, alpha=0.45))
     if cap == "N":
         bpx, bpy = w.world_to_pixel_values(218.0, 34.0)
         # outline only, so the 30' tiles paving the NDWFS region remain visible
         axins.add_patch(Rectangle((float(bpx) - 3.5 / 2, float(bpy) - 2.65 / 2), 3.5, 2.65,
                                   facecolor="none", edgecolor=FCOL["wide"], lw=2.0))
-        axins.text(0, 3.0, "NDWFS Bootes (9.3 deg$^2$)", ha="center", fontsize=6.4)
+        axins.text(0, 3.0, "NDWFS Bootes (9.3 deg$^2$)", ha="center", fontsize=6.4, color="white")
     else:
         for pra, pdec in SXDS_POINTINGS:
             spx, spy = w.world_to_pixel_values(pra, pdec)
@@ -234,14 +312,14 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
                                       edgecolor="k", lw=0.6))
         upx, upy = w.world_to_pixel_values(UDS_TILE[0], UDS_TILE[1])
         axins.add_patch(Rectangle((float(upx) - 0.877 / 2, float(upy) - 0.877 / 2), 0.877, 0.877,
-                                  facecolor="none", edgecolor="#145a32", lw=1.4, ls="--"))
-        axins.text(0, 3.0, "SXDS cross + UDS tile", ha="center", fontsize=6.4)
+                                  facecolor="none", edgecolor="#58d68d", lw=1.4, ls="--"))
+        axins.text(0, 3.0, "SXDS cross + UDS tile", ha="center", fontsize=6.4, color="white")
     axins.set_xlim(-ih, ih); axins.set_ylim(-ih, ih)       # RA increases to the left
     axins.set_xticks([]); axins.set_yticks([])
     for s in axins.spines.values():
         s.set_edgecolor("0.3")
-    axins.set_title(f"deep-tier zoom (±{ih:.0f}°, 30$'$ tiles)", fontsize=6.6, pad=2)
-    axx.indicate_inset_zoom(axins, edgecolor="0.35", alpha=0.6, lw=0.8)
+    axins.set_title(f"deep-tier zoom (±{ih:.0f}°, 30$'$ tiles)", fontsize=6.6, pad=2, color="white")
+    axx.indicate_inset_zoom(axins, edgecolor="0.85", alpha=0.7, lw=0.8)
     axx.set_title(f"{ttl}\n{a['where']}", fontsize=9.5, pad=8)
 
 handles = [Rectangle((0, 0), 1, 1, facecolor=fc, edgecolor="0.4", lw=0.4, alpha=0.9, label=lab)
@@ -251,12 +329,16 @@ handles += [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.95
                          ("multi", "HST+Subaru(+JWST)")]]
 handles += [Rectangle((0, 0), 1, 1, facecolor="none", edgecolor=FCOL["wide"], lw=2.0,
                       label="NDWFS/HETDEX (outline)"),
-            Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#145a32", lw=1.6, ls="--",
+            Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#58d68d", lw=1.6, ls="--",
                       label="UDS (UKIDSS/WFCAM tile)")]
 fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=4,
             bbox_to_anchor=(0.5, -0.12))
 fig3.suptitle("Proposed ELG survey tiers (nested square regions paved with "
-              "30$'\\!\\times\\!$30$'$ tiles) and the legacy deep fields they cover", y=0.995)
-fig3.tight_layout(rect=(0, 0.11, 1, 1))
+              "30$'\\!\\times\\!$30$'$ tiles) and the legacy deep fields they cover,\n"
+              "on the Planck 857 GHz thermal-dust (cirrus) map", y=1.00)
+fig3.tight_layout(rect=(0, 0.11, 1, 0.97))
+cb3 = fig3.colorbar(im_pl, ax=main_axes, fraction=0.03, pad=0.015)
+cb3.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=8)
+cb3.ax.tick_params(labelsize=7)
 fig3.savefig("elg_deepfields_zoom.png", bbox_inches="tight")
 print("wrote elg_deepfields_zoom.png")
