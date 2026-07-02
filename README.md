@@ -32,8 +32,36 @@ usable for any aperture. Fidelity target is a Euclid/Roman/Pandeia-class ETC.
 - **Full per-pixel noise budget** — source shot + sky + dark + read (ramp) +
   optional flat-field residual, over the line/aperture footprint. The noise and
   saturation model follows the Pandeia engine (Pontoppidan et al. 2016).
-- **Saturation** — brightest source before the central pixel reaches full well.
+- **Saturation** — brightest source before the central pixel reaches full well,
+  in imaging and in spectroscopy (continuum trace and emission-line peak pixel).
 - Exact Nσ depth by solving the quadratic (source shot noise retained).
+- **Two-arm focal plane** — CCD optical arm (CCD273-class read/dark, Euclid VIS
+  heritage; Cropper et al. 2016) below the 1 µm dichroic, HgCdTe above; each
+  wavelength uses its own arm's read noise and dark current.
+- **Galactic cirrus** — diffuse galactic light scaled from the 100 µm intensity
+  of the field, S_ν(DGL) = b(λ)·S_ν(100 µm) with b measured by Ienaka et al.
+  2013; the 100 µm level comes from an input galactic latitude (cosecant law,
+  Lockman-hole normalisation) or a measured IRAS/SFD map value.
+- **Zodiacal geometry** — optional ecliptic-latitude input interpolates the
+  Leinert 1998 anchors (22.1 ecliptic → 23.3 pole AB/arcsec² at 0.5 µm).
+- **Obscured-Airy PSF** — diffraction FWHM and encircled energy computed from the
+  annular-aperture Airy pattern; imaging photometry uses the physical
+  encircled energy of the delivered PSF in the aperture.
+- **Direct-imaging throughput** — separate curve without the grism blaze
+  (`etc_throughput_imaging.csv`).
+- **Up-the-ramp read noise** — Rauscher et al. 2007 slope-fit gain for
+  n_groups samples per exposure; read noise scales with the number of
+  exposures for long integrations.
+- **Cosmic rays** — JWST-ETC convention (8 events s⁻¹ cm⁻², 9 pixels per hit)
+  as an exposure-efficiency term, optionally folded into the S/N.
+- **Galactic extinction** — CCM89 A(λ) for a per-field E(B−V).
+- **Redshift precision** — σ_z from line-centroid statistics at the slitless
+  effective resolution, plus a wavelength-calibration floor.
+- **[O II] doublet** — effective blended FWHM at the instrument R (split needs
+  R > ~1340).
+- **Self-contamination and completeness** — Poisson trace-covering fraction for
+  a catalog source density, EE-based extraction decomposition, and a
+  Monte-Carlo inject-recover completeness curve.
 
 ## Galaxy templates and redshift photometry
 - `make_galaxy_templates.py` uses **FSPS** to generate 10 diverse galaxy SEDs (E, S0,

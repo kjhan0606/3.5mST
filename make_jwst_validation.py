@@ -20,13 +20,14 @@ def jwst_img(channel):
     return etc.InstrumentConfig(diameter_cm=p["diam"], obstruction=p["obstruction"],
         pix_scale=p["pix"], eta_peak=p["eta"], read_noise=p["read"], dark_current=p["dark"],
         n_exp=p["nexp"], full_well=p["fw"], tel_temp=p["ttel"], R=p["R"],
+        dichroic_split_A=p.get("split", 0.0),
         band_min_A=p["band"][0]*1e4, band_max_A=p["band"][1]*1e4)
 
 
 # NIRSpec: 6.5 m, cold optics, R=1000, point source; slit throughput ~0.4
 jwst_spec = etc.InstrumentConfig(diameter_cm=650.0, obstruction=0.485, pix_scale=0.10,
     eta_peak=0.40, read_noise=6.0, dark_current=0.002, n_exp=2, tel_temp=45.0, R=1000.0,
-    band_min_A=6000.0, band_max_A=53000.0, extraction_eff=1.0)
+    dichroic_split_A=0.0, band_min_A=6000.0, band_max_A=53000.0, extraction_eff=1.0)
 
 rows = []
 # --- imaging targets ---

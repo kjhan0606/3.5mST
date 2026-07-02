@@ -77,6 +77,61 @@ def telescope_flambda(lam_A, T_tel=270.0, emissivity=0.10):
     return emissivity * planck_lambda(lam_A, T_tel) * SR_PER_ARCSEC2
 
 
+# Diffuse galactic light (cirrus) slope b = S_nu(optical)/S_nu(100um), measured
+# by Ienaka et al. 2013 (ApJ 767, 80; MBM32) in B, g, V, R.  Extended flat in
+# S_nu ratio outside the measured 0.44-0.65 um range (documented approximation;
+# CIBER, Arai et al. 2015, finds the DGL continues smoothly into the near-IR).
+_DGL_B = ([4400.0, 4900.0, 5500.0, 6500.0],
+          [1.61e-3, 2.25e-3, 4.00e-3, 3.37e-3])
+
+
+def cirrus_flambda(lam_A, I100_MJysr):
+    """Galactic cirrus (diffuse galactic light) surface brightness
+    [erg s^-1 cm^-2 A^-1 arcsec^-2] scaled from the 100 um intensity.
+
+    S_nu(DGL) = b(lambda) * S_nu(100um) with b from Ienaka et al. 2013.
+    """
+    lam_A = np.asarray(lam_A, float)
+    b = np.interp(lam_A, _DGL_B[0], _DGL_B[1])          # flat outside range
+    fnu = b * I100_MJysr * 1e6 * 1e-23 * SR_PER_ARCSEC2  # erg/s/cm^2/Hz/arcsec^2
+    return fnu * C_A / lam_A ** 2
+
+
+def cirrus_I100_from_lat(gal_lat_deg, I100_pole=0.8):
+    """100 um cirrus intensity [MJy/sr] from a plane-parallel cosecant law,
+    normalised to the darkest high-latitude sky (~0.8 MJy/sr, Lockman Hole;
+    Lockman, Jahoda & McCammon 1986).  For a real field use the measured
+    IRAS/SFD map value instead via cirrus_I100_MJysr."""
+    s = abs(np.sin(np.radians(gal_lat_deg)))
+    return I100_pole / max(s, 0.10)          # cap the law below |b|~6 deg
+
+
+def zodi_mu_from_ecl_lat(ecl_lat_deg):
+    """Zodiacal reference brightness mu(0.5um) [AB/arcsec^2] versus ecliptic
+    latitude at solar elongation ~90 deg, interpolated in sin|beta| between the
+    two Leinert et al. 1998 anchors already used by this ETC, 22.1 in the
+    ecliptic and 23.3 at the pole."""
+    s = abs(np.sin(np.radians(ecl_lat_deg)))
+    return 22.1 + (23.3 - 22.1) * s
+
+
+# --- Galactic extinction, CCM89 (Cardelli, Clayton & Mathis 1989), R_V=3.1 ---
+def extinction_A_lambda(lam_A, EBV, RV=3.1):
+    """A(lambda) [mag] for the CCM89 mean law (IR + optical/NIR pieces,
+    0.3 <= 1/lambda[um] <= 3.3)."""
+    x = 1e4 / np.asarray(lam_A, float)            # 1/um
+    a = np.empty_like(x); b = np.empty_like(x)
+    ir = x < 1.1
+    a[ir] = 0.574 * x[ir] ** 1.61
+    b[ir] = -0.527 * x[ir] ** 1.61
+    y = x[~ir] - 1.82
+    a[~ir] = (1 + 0.17699*y - 0.50447*y**2 - 0.02427*y**3 + 0.72085*y**4
+              + 0.01979*y**5 - 0.77530*y**6 + 0.32999*y**7)
+    b[~ir] = (1.41338*y + 2.28305*y**2 + 1.07233*y**3 - 5.38434*y**4
+              - 0.62251*y**5 + 5.30260*y**6 - 2.09002*y**7)
+    return EBV * (RV * a + b)
+
+
 # ---------------------------------------------------------------- instrument model
 @dataclass
 class InstrumentConfig:
@@ -87,9 +142,24 @@ class InstrumentConfig:
     R: float = 1000.0                   # spectral resolving power lambda/dlambda
     pix_scale: float = 0.11             # arcsec / pixel  (spatial plate scale)
     res_element_pix: float = 2.0        # detector pixels sampling one resolution element
-    read_noise: float = 8.0             # e- / pix per exposure (ramp-sampled CDS-equiv)
-    dark_current: float = 0.010         # e- / s / pix
+    read_noise: float = 8.0             # e- / pix per exposure (CDS-equivalent), NIR arm
+    dark_current: float = 0.010         # e- / s / pix, NIR HgCdTe arm
     n_exp: int = 3                      # independent exposures (the three rolls)
+    # --- two-arm focal plane: optical CCD arm below the dichroic split ---
+    # (CCD273-class values, Euclid VIS heritage: read ~3.6 e-, dark <~1e-3 e-/s;
+    #  Cropper et al. 2016.  dichroic_split_A=0 disables the split: single array.)
+    dichroic_split_A: float = 10000.0   # optical arm at lambda < this [A]
+    read_noise_opt: float = 3.6         # e- / pix per exposure, CCD arm
+    dark_opt: float = 0.001             # e- / s / pix, CCD arm
+    n_groups: int = 2                   # samples up the ramp per exposure (2 = plain CDS);
+                                        # >2 applies the Rauscher et al. 2007 slope-fit gain
+    # --- cosmic rays (JWST ETC convention: 8 events/s/cm^2, 9 pix/hit; JDox,
+    #     measured L2 rate 2.3-4.3 ions/cm^2/s, Giardino et al. 2025) ---
+    cr_rate: float = 8.0                # events / s / cm^2
+    cr_pix_per_hit: float = 9.0         # pixels affected per hit
+    pix_pitch_um: float = 18.0          # physical pixel pitch [um] (H2RG/H4RG)
+    include_cr: bool = False            # fold CR losses into S/N explicitly
+                                        # (default off: extraction_eff lump partly covers it)
     # --- throughput model (total: optics x disperser x QE) ---
     eta_peak: float = 0.30              # peak end-to-end efficiency (optics x grism x QE)
     band_min_A: float = 3600.0          # optical edge
@@ -97,9 +167,15 @@ class InstrumentConfig:
     edge_roll_A: float = 1500.0         # cosine roll-off width at band edges
     # --- backgrounds ---
     zodi_mu_ref: float = 22.1           # AB/arcsec^2 at 0.5 um (typical ecliptic; Leinert 1998)
+    ecl_lat_deg: float | None = None    # set to derive zodi_mu_ref from ecliptic latitude
     tel_temp: float = 270.0             # K  (passively cooled optics)
     tel_emissivity: float = 0.10
     include_thermal: bool = True
+    # --- galactic cirrus (diffuse galactic light; Ienaka et al. 2013 scaling) ---
+    include_cirrus: bool = True
+    gal_lat_deg: float = 60.0           # survey caps sit at |b| >~ 60 deg
+    cirrus_I100_MJysr: float | None = None   # measured IRAS/SFD 100um value; None ->
+                                             # cosecant law from gal_lat_deg
     extraction_eff: float = 0.70        # optimal-extraction aperture + contamination loss
     full_well: float = 100000.0         # detector full well [e-] (saturation)
     flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
@@ -129,12 +205,14 @@ class InstrumentConfig:
         return self.resolution_element_A(lam_A) / self.res_element_pix
 
     def psf_fwhm(self, lam_A):
-        """Delivered PSF FWHM [arcsec]: diffraction-limited Airy FWHM
-        (1.028 lambda/D; 1.22 lambda/D is the first-dark-ring *radius*, not the
-        FWHM) added in quadrature with the image-quality floor (jitter, optics,
-        charge diffusion)."""
+        """Delivered PSF FWHM [arcsec]: diffraction FWHM of the centrally
+        obscured Airy pattern (computed numerically from the aperture
+        autocorrelation amplitude; 1.028 lambda/D at zero obscuration, slightly
+        narrower for an obscured pupil) added in quadrature with the
+        image-quality floor (jitter, optics, charge diffusion)."""
         lam_cm = np.asarray(lam_A, float) * 1e-8
-        diff = 1.028 * lam_cm / self.diameter_cm * 206265.0
+        k = _airy_fwhm_coeff(self.obstruction)
+        diff = k * lam_cm / self.diameter_cm * 206265.0
         return np.hypot(diff, self.psf_floor)
 
     # ---- throughput(lambda) ----
@@ -168,16 +246,102 @@ class InstrumentConfig:
         rolls, growing as the integration is split into t_single exposures."""
         return max(float(self.n_exp), np.ceil(t_s / self.t_single))
 
+    def detector_at(self, lam_A):
+        """(read_noise, dark_current) of the arm that sees wavelength lam_A."""
+        if self.dichroic_split_A > 0 and lam_A < self.dichroic_split_A:
+            return self.read_noise_opt, self.dark_opt
+        return self.read_noise, self.dark_current
+
+    def read_noise_eff(self, lam_A):
+        """Effective read noise per exposure [e-].  For n_groups=2 this is the
+        plain CDS value.  For n_groups>2 the unweighted least-squares slope fit
+        to n equally spaced samples gives sigma_eff = sigma_frame *
+        sqrt(12(n-1)/(n(n+1))) with sigma_frame = CDS/sqrt(2)
+        (Rauscher et al. 2007, PASP 119, 768)."""
+        read, _ = self.detector_at(lam_A)
+        n = max(2, int(self.n_groups))
+        sigma_frame = read / np.sqrt(2.0)
+        return sigma_frame * np.sqrt(12.0 * (n - 1) / (n * (n + 1.0)))
+
+    def cr_exposure_efficiency(self):
+        """Mean fraction of the accumulated signal that survives cosmic-ray
+        hits in one t_single exposure.  A pixel is hit with probability
+        f = rate * pix_per_hit * pitch^2 * t_single; with up-the-ramp fitting
+        the slope before the hit is recovered, so a hit pixel keeps on average
+        half its integration (uniform hit times), giving efficiency 1 - f/2.
+        Rate and hit footprint follow the JWST ETC convention (JDox)."""
+        a_pix = (self.pix_pitch_um * 1e-4) ** 2                  # cm^2
+        f = min(1.0, self.cr_rate * self.cr_pix_per_hit * a_pix * self.t_single)
+        return 1.0 - 0.5 * f
+
     # ---- background radiance spectrum (per arcsec^2) ----
     def sky_flambda(self, lam_A):
+        mu_ref = (zodi_mu_from_ecl_lat(self.ecl_lat_deg)
+                  if self.ecl_lat_deg is not None else self.zodi_mu_ref)
         if self.zodi_csv:
             z = np.loadtxt(self.zodi_csv, delimiter=",")
             sky = np.interp(lam_A, z[:, 0], z[:, 1])
+            if self.ecl_lat_deg is not None:      # rescale the tabulated zodi
+                sky = sky * 10.0 ** (-0.4 * (mu_ref - 22.1))
         else:
-            sky = zodi_flambda(lam_A, mu_ref=self.zodi_mu_ref)
+            sky = zodi_flambda(lam_A, mu_ref=mu_ref)
+        if self.include_cirrus:
+            I100 = (self.cirrus_I100_MJysr if self.cirrus_I100_MJysr is not None
+                    else cirrus_I100_from_lat(self.gal_lat_deg))
+            sky = sky + cirrus_flambda(lam_A, I100)
         if self.include_thermal:
             sky = sky + telescope_flambda(lam_A, self.tel_temp, self.tel_emissivity)
         return sky
+
+
+# --------------------------------------------------- obscured-Airy diffraction
+def _airy_intensity(v, eps):
+    """Normalised intensity of an annular (obscured) aperture at reduced radius
+    v = pi D theta / lambda:  U = [2J1(v)/v - eps^2 2J1(eps v)/(eps v)]/(1-eps^2)."""
+    from scipy.special import j1
+    v = np.asarray(v, float)
+    small = v < 1e-9
+    vv = np.where(small, 1e-9, v)
+    U = 2.0 * j1(vv) / vv
+    if eps > 0:
+        U = (U - eps ** 2 * 2.0 * j1(eps * vv) / (eps * vv)) / (1.0 - eps ** 2)
+    return np.where(small, 1.0, U) ** 2
+
+
+_AIRY_CACHE = {}
+
+
+def _airy_fwhm_coeff(eps):
+    """FWHM of the obscured Airy core in units of lambda/D (1.0290 at eps=0)."""
+    key = round(float(eps), 3)
+    if key not in _AIRY_CACHE:
+        v = np.linspace(1e-4, 4.0, 4000)
+        I = _airy_intensity(v, key)
+        v_half = np.interp(0.5, I[::-1], v[::-1])       # I falls monotonic in core
+        _AIRY_CACHE[key] = 2.0 * v_half / np.pi
+    return _AIRY_CACHE[key]
+
+
+def encircled_energy(cfg, lam_A, r_arcsec):
+    """Fraction of a point source's diffraction PSF (obscured Airy) inside
+    radius r_arcsec, by numerical integration of the radial profile."""
+    lam_cm = float(lam_A) * 1e-8
+    v_of_r = np.pi * cfg.diameter_cm / lam_cm * (r_arcsec / 206265.0)
+    v = np.linspace(1e-4, max(v_of_r, 60.0), 60000)
+    I = _airy_intensity(v, cfg.obstruction)
+    cum = np.cumsum(I * v)
+    return float(np.interp(v_of_r, v, cum) / cum[-1])
+
+
+def aperture_ee(cfg, lam_A, r_arcsec):
+    """Encircled energy of the delivered PSF in a photometric aperture: the
+    obscured-Airy diffraction EE times the EE of the Gaussian image-quality
+    floor (jitter, optics, charge diffusion), treated as independent losses."""
+    ee = encircled_energy(cfg, lam_A, r_arcsec)
+    if cfg.psf_floor > 0:
+        sig = cfg.psf_floor / 2.35482
+        ee *= 1.0 - float(np.exp(-0.5 * (r_arcsec / sig) ** 2))
+    return ee
 
 
 # ---------------------------------------------------------------- ETC core
@@ -239,15 +403,17 @@ def line_sn(cfg: InstrumentConfig, F_line, lam_A, t_s, source_fwhm=0.3,
     """S/N of an emission line of flux F_line [erg/s/cm^2] at lam_A in t_s seconds."""
     band = (max(cfg.band_min_A, lam_A - filter_width_A/2),
             min(cfg.band_max_A, lam_A + filter_width_A/2))
+    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     S = (F_line * cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
-         * t_s * cfg.extraction_eff)
+         * teff * cfg.extraction_eff)
     Bpix = background_per_pixel(cfg, band)
     npix = line_footprint_pixels(cfg, source_fwhm, lam_A)
     Ccont = continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm)
+    _, dark = cfg.detector_at(lam_A)
     var = (S
-           + (Bpix + cfg.dark_current) * npix * t_s
-           + Ccont * t_s
-           + npix * cfg.n_reads(t_s) * cfg.read_noise**2
+           + (Bpix + dark) * npix * teff
+           + Ccont * teff
+           + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2
            + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
@@ -261,13 +427,15 @@ def f_limit(cfg: InstrumentConfig, lam_A, t_s, snr=5.0, source_fwhm=0.3,
     """
     band = (max(cfg.band_min_A, lam_A - filter_width_A/2),
             min(cfg.band_max_A, lam_A + filter_width_A/2))
+    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     Bpix = background_per_pixel(cfg, band)
     npix = line_footprint_pixels(cfg, source_fwhm, lam_A)
     Ccont = continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm)
-    Btot = ((Bpix + cfg.dark_current) * npix * t_s + Ccont * t_s
-            + npix * cfg.n_reads(t_s) * cfg.read_noise**2)
+    _, dark = cfg.detector_at(lam_A)
+    Btot = ((Bpix + dark) * npix * teff + Ccont * teff
+            + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2)
     k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
-         * t_s * cfg.extraction_eff)   # e- per unit flux
+         * teff * cfg.extraction_eff)   # e- per unit flux
     a = 1.0 - (snr * cfg.flat_error) ** 2          # =1 when flat_error=0
     if a <= 0:
         return float("inf")                        # flat floor caps S/N below snr
@@ -285,13 +453,16 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
     over the imaging filter bandwidth.
     """
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
+    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)          # aperture radius [arcsec]
     npix = np.pi * (r_ap / cfg.pix_scale)**2
-    Btot = (Bpix + cfg.dark_current) * npix * t_s + npix * cfg.n_reads(t_s) * cfg.read_noise**2
-    # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture
+    _, dark = cfg.detector_at(lam_A)
+    Btot = (Bpix + dark) * npix * teff + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2
+    # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture;
+    # the aperture loss is the physical encircled energy of the delivered PSF
     k = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
-         * t_s * filter_width_A * cfg.extraction_eff)
+         * teff * filter_width_A * aperture_ee(cfg, lam_A, r_ap))
     S = 0.5 * (snr**2 + np.sqrt(snr**4 + 4.0 * snr**2 * Btot))   # required e-
     F_lambda = S / k                                     # erg/s/cm^2/A
     F_nu = F_lambda * lam_A**2 / C_A                      # erg/s/cm^2/Hz
@@ -309,15 +480,15 @@ ZODI_LEVELS = {"low (ecliptic pole)": 23.3, "typical": 22.1, "high (near eclipti
 # (read ~7 e-, dark ~0.02, 0.30"/pix, 2.3um). Read noise is the effective value.
 TELESCOPE_PRESETS = {
     "3.5mST":         dict(det="HgCdTe (concept)", diam=350., obstruction=0.15,  pix=0.11,  eta=0.30,
-                           read=8., dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, realistic=True),
+                           read=8., dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, split=10000., realistic=True),
     "Roman WFI":      dict(det="H4RG-10", diam=240., obstruction=0.31,  pix=0.11,  eta=0.42,
-                           read=6., dark=0.020, nexp=4, fw=100000., ttel=270., R=461.,  band=(0.48, 2.30), lam=1.5, realistic=False),
+                           read=6., dark=0.020, nexp=4, fw=100000., ttel=270., R=461.,  band=(0.48, 2.30), lam=1.5, split=0., realistic=False),
     "Euclid":         dict(det="H2RG (NISP)", diam=120., obstruction=0.40,  pix=0.30,  eta=0.30,
-                           read=7., dark=0.020, nexp=4, fw=80000.,  ttel=140., R=450.,  band=(0.90, 2.00), lam=1.5, realistic=False),
+                           read=7., dark=0.020, nexp=4, fw=80000.,  ttel=140., R=450.,  band=(0.90, 2.00), lam=1.5, split=0., realistic=False),
     "JWST NIRCam SW": dict(det="H2RG (short-wave)", diam=650., obstruction=0.485, pix=0.031, eta=0.45,
-                           read=6., dark=0.002, nexp=4, fw=80000.,  ttel=45.,  R=1000., band=(0.60, 2.35), lam=1.5, realistic=False),
+                           read=6., dark=0.002, nexp=4, fw=80000.,  ttel=45.,  R=1000., band=(0.60, 2.35), lam=1.5, split=0., realistic=False),
     "JWST NIRCam LW": dict(det="H2RG (long-wave)", diam=650., obstruction=0.485, pix=0.063, eta=0.45,
-                           read=6., dark=0.034, nexp=4, fw=80000.,  ttel=45.,  R=1600., band=(2.40, 5.00), lam=3.5, realistic=False),
+                           read=6., dark=0.034, nexp=4, fw=80000.,  ttel=45.,  R=1600., band=(2.40, 5.00), lam=3.5, split=0., realistic=False),
 }
 
 # Filters (imaging) and dispersers (spectroscopy) per telescope.
@@ -344,14 +515,16 @@ INSTRUMENT_ELEMENTS = {
 def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
     """Broadband imaging S/N for a point source of AB magnitude mag_ab."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
+    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
     S = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
-         * t_s * filter_width_A * Flam * cfg.extraction_eff)
-    var = (S + (Bpix + cfg.dark_current) * npix * t_s
-           + npix * cfg.n_reads(t_s) * cfg.read_noise**2 + (cfg.flat_error * S)**2)
+         * teff * filter_width_A * Flam * aperture_ee(cfg, lam_A, r_ap))
+    _, dark = cfg.detector_at(lam_A)
+    var = (S + (Bpix + dark) * npix * teff
+           + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2 + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
 
@@ -382,7 +555,7 @@ def saturation_maglimit(cfg, lam_A, filter_width_A, t_single):
     exposure of t_single seconds (full-well limit)."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
     Bpix = background_per_pixel(cfg, band, imaging=True)
-    avail = cfg.full_well / t_single - Bpix - cfg.dark_current      # e-/s left for source peak
+    avail = cfg.full_well / t_single - Bpix - cfg.detector_at(lam_A)[1]   # e-/s left for source peak
     if avail <= 0:
         return np.nan
     Srate = avail / peak_fraction(cfg, lam_A)                       # total source e-/s
@@ -399,9 +572,10 @@ def count_rates(cfg, mag_ab, lam_A, filter_width_A, aper_fwhm_mult=1.0):
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
     Srate = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
-             * filter_width_A * Flam * cfg.extraction_eff)
+             * filter_width_A * Flam * aperture_ee(cfg, lam_A, r_ap))
     return {"source_e_s": Srate, "sky_e_s_pix": Bpix, "n_pix": npix,
-            "dark_e_s_pix": cfg.dark_current, "peak_e_s": Srate*peak_fraction(cfg, lam_A)}
+            "dark_e_s_pix": cfg.detector_at(lam_A)[1],
+            "peak_e_s": Srate*peak_fraction(cfg, lam_A)}
 
 
 def noise_breakdown(cfg, lam_A, t_s, source_fwhm=0.3, filter_width_A=4000.0):
@@ -409,13 +583,139 @@ def noise_breakdown(cfg, lam_A, t_s, source_fwhm=0.3, filter_width_A=4000.0):
             min(cfg.band_max_A, lam_A + filter_width_A/2))
     Bpix = background_per_pixel(cfg, band)
     npix = line_footprint_pixels(cfg, source_fwhm, lam_A)
+    _, dark = cfg.detector_at(lam_A)
     return {
         "Bpix_e_per_s": Bpix,
         "n_pix": npix,
         "sky_e": Bpix * npix * t_s,
-        "dark_e": cfg.dark_current * npix * t_s,
-        "read_e2": npix * cfg.n_reads(t_s) * cfg.read_noise**2,
+        "dark_e": dark * npix * t_s,
+        "read_e2": npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2,
     }
+
+
+# ------------------------------------------------- redshift precision estimator
+def sigma_z(cfg, F_line, lam_obs_A, t_s, z, source_fwhm=0.3,
+            filter_width_A=4000.0, wavecal_A=0.0, **kw):
+    """Redshift uncertainty of a single emission line: Gaussian centroid
+    statistics sigma_lambda = (FWHM_eff/2.355)/(S/N) added in quadrature with a
+    wavelength-calibration floor.  FWHM_eff is the resolution element broadened
+    by the source size (the slitless effective resolution)."""
+    sn = line_sn(cfg, F_line, lam_obs_A, t_s, source_fwhm=source_fwhm,
+                 filter_width_A=filter_width_A, **kw)
+    if sn <= 0:
+        return np.inf
+    theta = np.hypot(source_fwhm, cfg.psf_fwhm(lam_obs_A))
+    fwhm_A = np.hypot(cfg.res_element_pix, theta / cfg.pix_scale) \
+        * cfg.dispersion_A_per_pix(lam_obs_A)
+    sig_lam = np.hypot(fwhm_A / 2.35482 / sn, wavecal_A)
+    return float(sig_lam * (1.0 + z) / lam_obs_A)
+
+
+# ------------------------------------------------- spectroscopic saturation
+def saturation_contmag_spectro(cfg, lam_A, t_single=None):
+    """Brightest continuum point source [AB mag] before its spectral trace
+    saturates the full well in one exposure.  The per-pixel rate is the
+    continuum in one pixel's dispersion width times the central-pixel spatial
+    fraction, on top of sky and dark."""
+    t1 = cfg.t_single if t_single is None else t_single
+    band = (max(cfg.band_min_A, lam_A - 2000.0), min(cfg.band_max_A, lam_A + 2000.0))
+    Bpix = background_per_pixel(cfg, band)
+    avail = cfg.full_well / t1 - Bpix - cfg.detector_at(lam_A)[1]
+    if avail <= 0:
+        return np.nan
+    from math import erf
+    sigma = cfg.psf_fwhm(lam_A) / 2.35482
+    frac_spatial = erf(cfg.pix_scale / (2.0 * np.sqrt(2.0) * sigma))   # 1-D central pixel
+    Flam = avail / (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+                    * cfg.dispersion_A_per_pix(lam_A) * frac_spatial)
+    return float(-2.5 * np.log10(Flam * lam_A**2 / C_A) - 48.60)
+
+
+def saturation_lineflux_spectro(cfg, lam_A, t_single=None):
+    """Brightest unresolved emission line [erg/s/cm^2] before its brightest
+    pixel saturates in one exposure (line spread over the resolution element
+    along the dispersion and the PSF across it)."""
+    t1 = cfg.t_single if t_single is None else t_single
+    band = (max(cfg.band_min_A, lam_A - 2000.0), min(cfg.band_max_A, lam_A + 2000.0))
+    Bpix = background_per_pixel(cfg, band)
+    avail = cfg.full_well / t1 - Bpix - cfg.detector_at(lam_A)[1]
+    if avail <= 0:
+        return np.nan
+    from math import erf
+    sigma = cfg.psf_fwhm(lam_A) / 2.35482
+    frac_spatial = erf(cfg.pix_scale / (2.0 * np.sqrt(2.0) * sigma))
+    frac_spectral = 1.0 / cfg.res_element_pix          # line spread over the res element
+    rate_per_flux = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+                     * frac_spatial * frac_spectral)   # peak-pixel e-/s per unit line flux
+    return float(avail / rate_per_flux)
+
+
+# ------------------------------------------------- [O II] doublet at R=1000
+OII_SEP_REST_A = 2.783        # 3728.815 - 3726.032 (vacuum rest separation)
+
+
+def oii_effective_fwhm_A(cfg, z):
+    """Effective FWHM [A, observed] of the [O II] doublet through the
+    spectrograph: two equal Gaussian components at the instrumental resolution,
+    separated by the redshifted doublet splitting, measured numerically.
+    The doublet is split only for R > ~1340 (3727/2.78)."""
+    lam_obs = 3727.4 * (1.0 + z)
+    res_A = lam_obs / cfg.R
+    sep = OII_SEP_REST_A * (1.0 + z)
+    x = np.linspace(-6 * res_A, 6 * res_A + sep, 4000)
+    sig = res_A / 2.35482
+    prof = np.exp(-0.5 * (x / sig) ** 2) + np.exp(-0.5 * ((x - sep) / sig) ** 2)
+    prof /= prof.max()
+    above = x[prof >= 0.5]
+    return float(above.max() - above.min())
+
+
+# ------------------------------------------------- slitless self-contamination
+def trace_covering_fraction(cfg, density_arcmin2, filter_width_A, lam_A=16000.0,
+                            width_pix=3.0):
+    """Fraction of the detector covered by dispersed traces, and so the
+    probability that a random source's own trace is overlapped (Poisson
+    covering, 1 - exp(-N A_trace)).
+
+    density_arcmin2 must come from a real catalog of sources bright enough to
+    matter at the survey depth (e.g. the 3D-HST photometric catalogs, Skelton
+    et al. 2014); no default is assumed here.
+    """
+    trace_len_pix = filter_width_A / cfg.dispersion_A_per_pix(lam_A)
+    area_pix2 = trace_len_pix * width_pix
+    area_arcsec2 = area_pix2 * cfg.omega_pix
+    n_per_arcsec2 = density_arcmin2 / 3600.0
+    return float(1.0 - np.exp(-n_per_arcsec2 * area_arcsec2))
+
+
+def effective_extraction(cfg, lam_A, r_ap_arcsec=None, contam_frac=0.0):
+    """Physically decomposed extraction efficiency: diffraction encircled
+    energy inside the extraction aperture times the uncontaminated fraction.
+    An alternative to the lumped extraction_eff=0.70."""
+    r = r_ap_arcsec if r_ap_arcsec is not None else cfg.psf_fwhm(lam_A)
+    return encircled_energy(cfg, lam_A, r) * (1.0 - contam_frac)
+
+
+# ------------------------------------------------- Monte-Carlo completeness
+def completeness_curve(cfg, lam_A, t_s, F_grid=None, snr_thresh=5.0, n_mc=4000,
+                       source_fwhm=0.3, filter_width_A=4000.0, contam_frac=0.0,
+                       seed=12345):
+    """Inject-recover completeness on the ETC noise model: for each line flux,
+    draw n_mc Gaussian realisations of the measured S/N and count the fraction
+    exceeding snr_thresh, multiplied by the uncontaminated fraction.
+    Returns (F_grid, completeness)."""
+    rng = np.random.default_rng(seed)
+    if F_grid is None:
+        f5 = f_limit(cfg, lam_A, t_s, snr=snr_thresh, source_fwhm=source_fwhm,
+                     filter_width_A=filter_width_A)
+        F_grid = f5 * np.logspace(-0.6, 0.6, 25)
+    comp = []
+    for F in np.asarray(F_grid, float):
+        sn = line_sn(cfg, F, lam_A, t_s, source_fwhm=source_fwhm,
+                     filter_width_A=filter_width_A)
+        meas = sn + rng.standard_normal(n_mc)          # unit-variance S/N estimator
+        comp.append((meas >= snr_thresh).mean() * (1.0 - contam_frac))
+    return np.asarray(F_grid, float), np.asarray(comp)
 
 
 # ---------------------------------------------------------------- mission presets
@@ -432,7 +732,7 @@ def roman_cfg(lam_A):
     return InstrumentConfig(
         diameter_cm=240.0, obstruction=0.31, pix_scale=0.11,
         R=461.0 * (lam_A / 1e4), res_element_pix=2.0,
-        read_noise=6.0, dark_current=0.020, n_exp=4,
+        read_noise=6.0, dark_current=0.020, n_exp=4, dichroic_split_A=0.0,
         eta_peak=0.32, band_min_A=10000.0, band_max_A=19300.0, edge_roll_A=800.0,
         zodi_mu_ref=22.1, extraction_eff=1.0)   # eta is already an effective throughput
 
@@ -440,7 +740,7 @@ def euclid_cfg(lam_A=16000.0):
     return InstrumentConfig(
         diameter_cm=120.0, obstruction=0.40, pix_scale=0.30,
         R=450.0, res_element_pix=2.0,
-        read_noise=6.0, dark_current=0.020, n_exp=4,
+        read_noise=6.0, dark_current=0.020, n_exp=4, dichroic_split_A=0.0,
         eta_peak=0.25, band_min_A=12500.0, band_max_A=18500.0, edge_roll_A=600.0,
         zodi_mu_ref=22.1, extraction_eff=1.0)
 
@@ -573,8 +873,33 @@ def main(cfg=None):
         print(f"  {name:15s} {lam/1e4:6.3f}um " +
               "".join(f"{v:8.1e}" for v in vals))
 
-    # compare to the proposal Eq.(12) anchor at 1.6 um
+    # ---- new-physics summary (two arms, cirrus, CR, sigma_z, saturation) ----
     lam = 16000.0
+    I100 = (cfg.cirrus_I100_MJysr if cfg.cirrus_I100_MJysr is not None
+            else cirrus_I100_from_lat(cfg.gal_lat_deg))
+    mu_cir = -2.5*np.log10(cirrus_flambda(5500., I100)*5500.**2/C_A) - 48.6
+    print(f"\nDetector arms             : CCD {cfg.read_noise_opt} e-/{cfg.dark_opt} e-/s "
+          f"below {cfg.dichroic_split_A/1e4:.1f} um, HgCdTe {cfg.read_noise} e-/"
+          f"{cfg.dark_current} e-/s above (n_groups={cfg.n_groups})")
+    if cfg.include_cirrus:
+        print(f"Galactic cirrus           : |b|={cfg.gal_lat_deg:.0f} deg -> "
+              f"I100={I100:.2f} MJy/sr, mu_V(DGL)={mu_cir:.1f} AB/arcsec^2 "
+              f"(Ienaka+13 scaling)")
+    print(f"Cosmic rays               : efficiency {cfg.cr_exposure_efficiency():.3f} "
+          f"per {cfg.t_single:.0f} s exposure (JWST-ETC rate; "
+          f"{'folded in' if cfg.include_cr else 'reported only'})")
+    print(f"Saturation (spectroscopy) : continuum AB < "
+          f"{saturation_contmag_spectro(cfg, lam):.1f}, line < "
+          f"{saturation_lineflux_spectro(cfg, lam):.1e} erg/s/cm^2 per "
+          f"{cfg.t_single:.0f} s")
+    sz = sigma_z(cfg, 1e-16, lam, 0.75*hr, z=lam/6563.0-1.0)
+    print(f"Redshift precision        : sigma_z = {sz:.1e} for Halpha of "
+          f"1e-16 erg/s/cm^2 at 1.6 um, 0.75 hr")
+    print(f"[OII] doublet at z=1.5    : effective FWHM "
+          f"{oii_effective_fwhm_A(cfg, 1.5):.1f} A vs resolution "
+          f"{3727.4*2.5/cfg.R*1000/1000:.1f} A (split needs R>1340)")
+
+    # compare to the proposal Eq.(12) anchor at 1.6 um
     f075 = f_limit(cfg, lam, 0.75*hr)
     print(f"\nAt 1.6 um, 0.75 hr : ETC F_5sigma = {f075:.2e} erg/s/cm^2")
     print(f"                     Eq.(12) anchor = 1.0e-16 erg/s/cm^2 (Roman/Euclid)")
@@ -596,7 +921,7 @@ def main(cfg=None):
         sky = cfg.sky_flambda(lam)
         fnu = sky * lam**2 / C_A
         mu = -2.5*np.log10(fnu) - 48.6
-        a1.plot(lam/1e4, mu, color="#b8860b", lw=2, label="zodiacal + telescope")
+        a1.plot(lam/1e4, mu, color="#b8860b", lw=2, label="zodiacal + cirrus + telescope")
         a1.plot(lam/1e4, -2.5*np.log10(zodi_flambda(lam)*lam**2/C_A)-48.6,
                 color="#333", lw=1, ls="--", label="zodiacal only")
         a1.set_ylabel(r"sky $\mu$  [AB arcsec$^{-2}$]"); a1.invert_yaxis()

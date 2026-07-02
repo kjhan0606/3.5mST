@@ -195,6 +195,7 @@ class ETCGui:
                   pix_scale=self._f("pix"), eta_peak=self._f("eta"), read_noise=self._f("read"),
                   dark_current=self._f("dark"), n_exp=int(self._f("nexp")),
                   full_well=self._f("fw"), zodi_mu_ref=self._f("zodi"), tel_temp=self._f("ttel"),
+                  dichroic_split_A=etc.TELESCOPE_PRESETS.get(self.telescope.get(), {}).get("split", 0.0),
                   band_min_A=self._band[0]*1e4, band_max_A=self._band[1]*1e4)
         return etc.realistic_cfg(**kw) if self.realistic.get() else etc.InstrumentConfig(**kw)
 

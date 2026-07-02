@@ -15,6 +15,7 @@ def cfg_from_preset(name):
     kw = dict(diameter_cm=p["diam"], obstruction=p["obstruction"], pix_scale=p["pix"],
               eta_peak=p["eta"], read_noise=p["read"], dark_current=p["dark"],
               n_exp=p["nexp"], full_well=p["fw"], tel_temp=p["ttel"], R=p["R"],
+              dichroic_split_A=p.get("split", 0.0),
               band_min_A=p["band"][0]*1e4, band_max_A=p["band"][1]*1e4)
     return etc.realistic_cfg(**kw) if p["realistic"] else etc.InstrumentConfig(**kw)
 
