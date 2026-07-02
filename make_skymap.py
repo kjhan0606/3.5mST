@@ -113,6 +113,25 @@ def gal_curve(bb, **kw):
 gal_curve(45.0, color="#2ecc71", lw=2.2, alpha=0.95, label="proposed N cap (b>45°)")
 gal_curve(-45.0, color="#3498db", lw=2.2, alpha=0.95, label="proposed S cap (b<−45°)")
 
+# outline of the wide survey tier at true scale (25x25 tiles of 30', 12.5 deg
+# square in the tangent plane) around each anchor, low-cirrus windows in both
+from astropy.wcs import WCS as _WCS
+
+def survey_outline(ra0, dec0, halfdeg=6.25, **kw):
+    w = _WCS(naxis=2)
+    w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
+    w.wcs.crval = [ra0, dec0]; w.wcs.crpix = [1.0, 1.0]; w.wcs.cdelt = [-1.0, 1.0]
+    tgrid = np.linspace(-halfdeg, halfdeg, 120)
+    per = ([(t, -halfdeg) for t in tgrid] + [(halfdeg, t) for t in tgrid]
+           + [(t, halfdeg) for t in tgrid[::-1]] + [(-halfdeg, t) for t in tgrid[::-1]])
+    px = np.array([q[0] for q in per]); py = np.array([q[1] for q in per])
+    ra_o, dec_o = w.pixel_to_world_values(px, py)
+    ax.plot(wrap(np.asarray(ra_o)), np.radians(np.asarray(dec_o)), **kw)
+
+survey_outline(218.0, 34.0, color="#f5b041", lw=1.8,
+               label="wide imaging tier ($\sim$150 deg$^2$/cap)")
+survey_outline(34.7, -5.05, color="#f5b041", lw=1.8)
+
 # Galactic plane and |b|=20 boundaries as guide curves
 for bb, ls in [(0, "-"), (20, "--"), (-20, "--")]:
     gal_curve(bb, color="#ff8a80", lw=1.2 if bb == 0 else 0.8, ls=ls, alpha=0.75)
