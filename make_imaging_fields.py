@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Low-cirrus imaging-survey fields: zoomed confirmation on the Planck 857 GHz
-thermal-dust map.
+thermal-dust map, in the same gnomonic (TAN) WCS style as the ELG survey zoom.
 
 The two fields are the minima of the mean Planck 857 GHz intensity over a
 survey-footprint-sized aperture, searched over all |b| > 48 deg sky on the
-2000x1000 all-sky rendering (see make_skymap.py). Each panel is a gnomonic
-(TAN) zoom on one field with the 12.5-deg wide-tier tiling boundary overlaid
-and the measured mean intensity annotated, so the absence of cirrus structure
-inside the footprint is verified directly on the data.
+2000x1000 all-sky rendering (see make_skymap.py). Each panel is a TAN zoom
+with the RA/Dec graticule, the 12.5-deg wide-tier tiling paved with its
+30'x30' tiles, and the measured mean intensity annotated. In the north the
+overlapping ELG wide tier on the Bootes anchor is outlined for context.
 """
+import os
+import urllib.parse
+import urllib.request
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -16,13 +19,17 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 from matplotlib.patches import Rectangle
 from astropy.io import fits
+from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
 import astropy.units as u
-import os
-import urllib.parse
-import urllib.request
+import astropy.visualization.wcsaxes            # registers the WCS projection
 
 HIPS2FITS = "https://alasky.cds.unistra.fr/hips-image-services/hips2fits?"
+FIELDS = {"N": (210.0, 38.0), "S": (344.0, -48.0)}   # cirrus minima per cap
+ELG_N = (218.0, 34.0)                                # Bootes ELG anchor
+HALF = 6.25                                          # wide tier half-size [deg]
+FOVTILE = 0.5                                        # 30' tile
+VIEW = 16.0                                          # half-size of the view [deg]
 
 
 def fetch_hips(fname, **params):
@@ -36,14 +43,17 @@ def fetch_hips(fname, **params):
     return h.data.astype(float), h.header
 
 
-FIELDS = {"N": (210.0, 38.0), "S": (344.0, -48.0)}   # cirrus minima per cap
-HALF = 6.25                                          # wide tier half-size [deg]
-FOV = 40.0                                           # zoom field of view [deg]
+def cap_wcs(ra0, dec0):
+    w = WCS(naxis=2)
+    w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
+    w.wcs.crval = [ra0, dec0]
+    w.wcs.crpix = [1.0, 1.0]
+    w.wcs.cdelt = [-1.0, 1.0]
+    return w
 
 
 def field_stats(ra0, dec0):
-    """Mean Planck 857 GHz intensity within 7 deg of the centre, and the
-    all-sky median, from the cached all-sky CAR rendering."""
+    """Mean Planck 857 GHz intensity within 7 deg, and the all-sky median."""
     h = fits.open("hips_cache/planck857_allsky_car.fits")[0]
     d = h.data.astype(float)
     ny, nx = d.shape
@@ -57,44 +67,70 @@ def field_stats(ra0, dec0):
     return np.sum(d[m] * w[m]) / np.sum(w[m]), np.nanmedian(d)
 
 
-fig, axes = plt.subplots(1, 2, figsize=(11.6, 5.6), dpi=150)
-fig.subplots_adjust(left=0.06, right=0.88, top=0.86, bottom=0.09, wspace=0.18)
-ims = []
-for ax, (cap, (ra0, dec0)) in zip(axes, FIELDS.items()):
+# shared display normalisation across both fields
+cuts = []
+for cap, (ra0, dec0) in FIELDS.items():
     data, hdr = fetch_hips(f"planck857_img{cap}.fits", hips="CDS/P/PLANCK/R3/HFI857",
-                           width=520, height=520, fov=FOV, projection="TAN",
+                           width=520, height=520, fov=40.0, projection="TAN",
                            coordsys="icrs", ra=ra0, dec=dec0)
+    cuts.append((cap, ra0, dec0, data, hdr))
+allpix = np.concatenate([c[3].ravel() for c in cuts])
+norm = LogNorm(vmin=np.nanpercentile(allpix, 2.0), vmax=np.nanpercentile(allpix, 99.8))
+
+fig = plt.figure(figsize=(11.6, 5.9), dpi=150)
+axes = []
+for i, (cap, ra0, dec0, data, hdr) in enumerate(cuts):
+    w = cap_wcs(ra0, dec0)
+    ax = fig.add_subplot(1, 2, i + 1, projection=w)
+    axes.append(ax)
     n = data.shape[1]
     hw = abs(hdr["CDELT1"]) * n / 2.0
-    ims.append((ax, data, hw))
-lo = np.nanpercentile(np.concatenate([d.ravel() for _, d, _ in ims]), 2.0)
-hi = np.nanpercentile(np.concatenate([d.ravel() for _, d, _ in ims]), 99.8)
-norm = LogNorm(vmin=lo, vmax=hi)
-for (ax, data, hw), (cap, (ra0, dec0)) in zip(ims, FIELDS.items()):
     im = ax.imshow(data, origin="lower", extent=(-hw, hw, -hw, hw),
-                   cmap="gray", norm=norm, interpolation="bilinear")
+                   cmap="gray", norm=norm, interpolation="bilinear", zorder=0)
+    # pave the imaging footprint with its 30' tiles, semi-transparent
+    grid = np.arange(-HALF + FOVTILE / 2, HALF, FOVTILE)
+    for cx in grid:
+        for cy in grid:
+            ax.add_patch(Rectangle((cx - FOVTILE / 2, cy - FOVTILE / 2),
+                                   FOVTILE, FOVTILE, facecolor="#00e5ff",
+                                   edgecolor="white", lw=0.1, alpha=0.22, zorder=2))
     ax.add_patch(Rectangle((-HALF, -HALF), 2 * HALF, 2 * HALF, fill=False,
-                           edgecolor="#f5b041", lw=2.2))
-    for t in np.arange(-HALF + 0.5, HALF, 0.5):     # 30' tiling grid, faint
-        ax.plot([t, t], [-HALF, HALF], color="#f5b041", lw=0.15, alpha=0.5)
-        ax.plot([-HALF, HALF], [t, t], color="#f5b041", lw=0.15, alpha=0.5)
+                           edgecolor="#00e5ff", lw=2.2, zorder=3))
+    if cap == "N":                                 # overlapping ELG wide tier
+        welg = cap_wcs(*ELG_N)
+        t = np.linspace(-HALF, HALF, 160)
+        per = ([(v, -HALF) for v in t] + [(HALF, v) for v in t]
+               + [(v, HALF) for v in t[::-1]] + [(-HALF, v) for v in t[::-1]])
+        ra_o, dec_o = welg.pixel_to_world_values([q[0] for q in per],
+                                                 [q[1] for q in per])
+        px, py = w.world_to_pixel_values(np.asarray(ra_o), np.asarray(dec_o))
+        ax.plot(px, py, color="#f5b041", lw=2.0, zorder=4)
+        ax.text(11.0, -9.0, "ELG wide tier\n(Boötes anchor)", color="#f5b041",
+                fontsize=8.5, ha="center", zorder=5)
     mean, med = field_stats(ra0, dec0)
     gal = SkyCoord(ra0 * u.deg, dec0 * u.deg).galactic
-    ax.set_title(f"{cap} imaging field   $\\alpha={ra0:.0f}^\\circ$, "
-                 f"$\\delta={dec0:+.0f}^\\circ$  ($b={gal.b.deg:+.0f}^\\circ$)",
-                 fontsize=10.5)
-    ax.text(0.03, 0.965,
+    ax.text(0.03, 0.97,
             f"$\\langle I_{{857}}\\rangle$ = {mean:.2f} MJy sr$^{{-1}}$\n"
             f"all-sky median {med:.1f} MJy sr$^{{-1}}$",
-            transform=ax.transAxes, color="white", fontsize=9, va="top")
-    ax.set_xlabel(r"$\Delta$ tangent-plane [deg]")
-    ax.set_ylabel(r"$\Delta$ tangent-plane [deg]")
-    ax.set_xlim(-hw, hw); ax.set_ylim(-hw, hw)
-    print(f"{cap}: mean I857(7deg) = {mean:.3f}, all-sky median = {med:.2f}")
-cax = fig.add_axes([0.905, 0.09, 0.02, 0.77])
+            transform=ax.transAxes, color="white", fontsize=9, va="top", zorder=5)
+    ax.set_xlim(-VIEW, VIEW); ax.set_ylim(-VIEW, VIEW)
+    ax.coords.grid(color="0.8", alpha=0.55, ls=":")
+    ax.coords[0].set_axislabel("R.A. (TAN)"); ax.coords[1].set_axislabel("Dec. (TAN)")
+    ax.coords[0].set_major_formatter("d"); ax.coords[1].set_major_formatter("d")
+    ax.coords[0].set_ticks(spacing=5 * u.deg); ax.coords[1].set_ticks(spacing=5 * u.deg)
+    for cc, pos in ((0, "b"), (1, "l")):
+        ax.coords[cc].set_ticks_position(pos)
+        ax.coords[cc].set_ticklabel_position(pos)
+        ax.coords[cc].set_axislabel_position(pos)
+    ax.set_title(f"{cap} imaging field   $\\alpha={ra0:.0f}^\\circ$, "
+                 f"$\\delta={dec0:+.0f}^\\circ$  ($b={gal.b.deg:+.0f}^\\circ$)",
+                 fontsize=10.5, pad=8)
+    print(f"{cap}: mean I857(7deg) = {mean:.3f}, median = {med:.2f}")
+fig.subplots_adjust(left=0.06, right=0.86, top=0.86, bottom=0.09, wspace=0.16)
+cax = fig.add_axes([0.885, 0.09, 0.02, 0.77])
 cb = fig.colorbar(im, cax=cax)
 cb.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=9)
-fig.suptitle("Low-cirrus imaging-survey fields, the Planck 857 GHz minima of the "
-             "two caps, with the $12.5^\\circ$ wide-tier tiling overlaid", fontsize=11.5)
+fig.suptitle("Dedicated low-cirrus imaging fields, the Planck 857 GHz minima of "
+             "the two caps, paved with the 30$'$ survey tiles", fontsize=11.5)
 fig.savefig("imaging_fields_zoom.png", bbox_inches="tight")
 print("wrote imaging_fields_zoom.png")
