@@ -24,18 +24,20 @@ def wrap(ra_deg):
 #   ELAIS-N1   HSC-Deep ~1 deg^2                 -> 1.0 x 1.0 deg
 #   UDS/SXDS   SXDS 1.22 deg^2 (Furusawa+ 2008)  -> 1.10 x 1.10 deg
 #   XMM-LSS    ~3.5 deg^2 deep tier              -> 1.87 x 1.87 deg
+#   NDWFS/HETDEX Bootes 9.3 deg^2 (Jannuzi & Dey 1999) -> 3.5 x 2.65 deg
 # (name, RA, Dec [deg], w [deg], h [deg], facility, cap)
 DEEPFIELDS = [
-    ("COSMOS",    150.12,   2.21, 1.400, 1.400, "multi",  "N"),
-    ("GOODS-N",   189.23,  62.24, 0.273, 0.168, "HST",    "N"),
-    ("EGS/AEGIS", 214.80,  52.80, 1.175, 0.168, "HST",    "N"),
-    ("Subaru DF", 201.20,  27.40, 0.567, 0.450, "Subaru", "N"),
-    ("ELAIS-N1",  242.80,  54.00, 1.000, 1.000, "Subaru", "N"),
-    ("GOODS-S",    53.12, -27.80, 0.273, 0.168, "HST",    "S"),
-    ("UDS/SXDS",   34.40,  -5.20, 1.100, 1.100, "multi",  "S"),
-    ("XMM-LSS",    35.70,  -4.75, 1.870, 1.870, "Subaru", "S"),
+    ("COSMOS",       150.12,   2.21, 1.400, 1.400, "multi",  "N"),
+    ("GOODS-N",      189.23,  62.24, 0.273, 0.168, "HST",    "N"),
+    ("EGS/AEGIS",    214.80,  52.80, 1.175, 0.168, "HST",    "N"),
+    ("Subaru DF",    201.20,  27.40, 0.567, 0.450, "Subaru", "N"),
+    ("ELAIS-N1",     242.80,  54.00, 1.000, 1.000, "Subaru", "N"),
+    ("NDWFS Bootes", 218.00,  34.00, 3.500, 2.650, "wide",   "N"),
+    ("GOODS-S",       53.12, -27.80, 0.273, 0.168, "HST",    "S"),
+    ("UDS/SXDS",      34.40,  -5.20, 1.100, 1.100, "multi",  "S"),
+    ("XMM-LSS",       35.70,  -4.75, 1.870, 1.870, "Subaru", "S"),
 ]
-FCOL = {"HST": "#e67e22", "Subaru": "#2980b9", "multi": "#27ae60"}
+FCOL = {"HST": "#e67e22", "Subaru": "#2980b9", "multi": "#27ae60", "wide": "#8e44ad"}
 
 
 fig = plt.figure(figsize=(9.2, 5.4), dpi=150)
@@ -99,13 +101,22 @@ from astropy.wcs import WCS
 import astropy.visualization.wcsaxes            # registers the WCS projection
 from astropy.visualization.wcsaxes import Quadrangle
 
-# Anchor of the nested wedding-cake tiers per cap. North is anchored on COSMOS,
-# South on the XMM-LSS / SXDS / UDS complex; the projection is centred on the
+# Anchor of the nested wedding-cake tiers per cap. North is anchored on the
+# high-Galactic-latitude NDWFS/HETDEX Bootes field ($b=+67^\circ$), South on the
+# SXDS/UDS/XMM-LSS deep field ($b=-59^\circ$); the projection is centred on the
 # anchor so the 30'x30' tiling is locally undistorted.
 ANCHOR = {
-    "N": dict(cen=(150.12, 2.21), where="wide survey on COSMOS"),
-    "S": dict(cen=(35.0, -5.0),   where="wide survey on XMM-LSS / SXDS / UDS"),
+    "N": dict(cen=(218.0, 34.0), where="wide survey on Bootes/HETDEX ($b\\!=\\!+67^\\circ$)"),
+    "S": dict(cen=(34.7, -5.05), where="wide survey on SXDS/UDS/XMM-LSS ($b\\!=\\!-59^\\circ$)"),
 }
+# Real footprints of the SXDS/UDS/XMM-LSS deep field for the South zoom. SXDS is
+# five Subaru Suprime-Cam pointings (34'x27' each) in a cross (Furusawa+ 2008);
+# UDS is one UKIDSS/WFCAM tile (~0.77 deg^2, roughly square). These are drawn
+# instead of a single rectangle. (RA, Dec, w, h) in deg.
+SC = 0.567, 0.450                                 # Suprime-Cam field 34'x27'
+SXDS_POINTINGS = [(34.53, -5.02), (34.53, -4.52), (34.53, -5.52),
+                  (35.05, -5.02), (34.01, -5.02)]     # C, N, S, E, W cross
+UDS_TILE = (34.40, -5.10, 0.877, 0.877)           # UKIDSS/WFCAM ~0.77 deg^2
 FOV = 0.5                                         # 30 arcmin = 0.5 deg square survey tile
 # wedding-cake tiers (area deg^2, tile fill colour, label). Each tier is paved
 # with 30'x30' tiles, so its boundary is a jagged staircase, not a smooth box.
@@ -157,11 +168,14 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
             axx.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
                                      facecolor=TIERS[k][1], edgecolor="white",
                                      lw=0.15, alpha=0.9, zorder=1 + k))
-    # legacy deep fields inside this field of view, at true footprint size
-    off = {"COSMOS": (12, 9), "XMM-LSS": (10, 13), "UDS/SXDS": (12, -15)}
-    half = R_WIDE + 1.5
+    # neighbouring legacy deep fields in view (the anchor field is shown in the
+    # inset instead, so it is drawn here without a label to avoid clutter).
+    off = {"EGS/AEGIS": (-58, 2), "Subaru DF": (10, -15),
+           "ELAIS-N1": (-12, 9), "GOODS-S": (10, -8)}
+    half = 32.0                                   # wide window so the TAN sky curvature shows
+    zoom_skip = {"UDS/SXDS", "XMM-LSS"}           # shown as their real footprints in the inset
     for name, ra, dec, ww, hh, fac, c in DEEPFIELDS:
-        if c != cap:
+        if c != cap or name in zoom_skip:
             continue
         px, py = w.world_to_pixel_values(ra, dec)
         if abs(px) > half or abs(py) > half:      # outside this zoom
@@ -171,27 +185,64 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
                                  w_ra * u.deg, hh * u.deg, transform=tw,
                                  facecolor=FCOL[fac], alpha=0.95, edgecolor="k",
                                  lw=0.9, zorder=6))
-        axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)", (float(px), float(py)),
-                     textcoords="offset points", xytext=off.get(name, (9, 8)),
-                     fontsize=7.4, zorder=7)
+        if name != "NDWFS Bootes":                # anchor field is labelled in the inset
+            axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)", (float(px), float(py)),
+                         textcoords="offset points", xytext=off.get(name, (9, 8)),
+                         fontsize=7.4, zorder=7)
     axx.set_xlim(-half, half); axx.set_ylim(-half, half)
-    axx.coords.grid(color="0.5", alpha=0.5, ls=":")
-    axx.coords[0].set_axislabel("R.A."); axx.coords[1].set_axislabel("Dec.")
+    axx.coords.grid(color="0.5", alpha=0.55, ls=":")
+    axx.coords[0].set_axislabel("R.A. (TAN)"); axx.coords[1].set_axislabel("Dec. (TAN)")
     axx.coords[0].set_major_formatter("d"); axx.coords[1].set_major_formatter("d")
-    axx.coords[0].set_ticks(spacing=5 * u.deg); axx.coords[1].set_ticks(spacing=5 * u.deg)
+    axx.coords[0].set_ticks(spacing=10 * u.deg); axx.coords[1].set_ticks(spacing=10 * u.deg)
     for cc, pos in ((0, "b"), (1, "l")):                   # RA on bottom, Dec on left
         axx.coords[cc].set_ticks_position(pos)
         axx.coords[cc].set_ticklabel_position(pos)
         axx.coords[cc].set_axislabel_position(pos)
+    # inset: reveal the 30' tiling (jagged) and the true footprint shapes, which
+    # are invisible at the wide scale needed to show the sky curvature.
+    ih = 4.0
+    axins = axx.inset_axes([0.61, 0.57, 0.37, 0.40])
+    for cx in grid:
+        for cy in grid:
+            if abs(cx) > ih or abs(cy) > ih:
+                continue
+            k = tile_tier(np.hypot(cx, cy))
+            if k is not None:
+                axins.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
+                                          facecolor=TIERS[k][1], edgecolor="white",
+                                          lw=0.3, alpha=0.95))
+    if cap == "N":
+        bpx, bpy = w.world_to_pixel_values(218.0, 34.0)
+        axins.add_patch(Rectangle((float(bpx) - 3.5 / 2, float(bpy) - 2.65 / 2), 3.5, 2.65,
+                                  facecolor=FCOL["wide"], alpha=0.85, edgecolor="k", lw=0.8))
+        axins.text(0, 3.0, "NDWFS Bootes (9.3 deg$^2$)", ha="center", fontsize=6.4)
+    else:
+        for pra, pdec in SXDS_POINTINGS:
+            spx, spy = w.world_to_pixel_values(pra, pdec)
+            axins.add_patch(Rectangle((float(spx) - SC[0] / 2, float(spy) - SC[1] / 2),
+                                      SC[0], SC[1], facecolor=FCOL["Subaru"], alpha=0.85,
+                                      edgecolor="k", lw=0.6))
+        upx, upy = w.world_to_pixel_values(UDS_TILE[0], UDS_TILE[1])
+        axins.add_patch(Rectangle((float(upx) - 0.877 / 2, float(upy) - 0.877 / 2), 0.877, 0.877,
+                                  facecolor="none", edgecolor="#145a32", lw=1.4, ls="--"))
+        axins.text(0, 3.0, "SXDS cross + UDS tile", ha="center", fontsize=6.4)
+    axins.set_xlim(-ih, ih); axins.set_ylim(-ih, ih)       # RA increases to the left
+    axins.set_xticks([]); axins.set_yticks([])
+    for s in axins.spines.values():
+        s.set_edgecolor("0.3")
+    axins.set_title(f"deep-tier zoom (±{ih:.0f}°, 30$'$ tiles)", fontsize=6.6, pad=2)
+    axx.indicate_inset_zoom(axins, edgecolor="0.35", alpha=0.6, lw=0.8)
     axx.set_title(f"{ttl}\n{a['where']}", fontsize=9.5, pad=8)
 
 handles = [Rectangle((0, 0), 1, 1, facecolor=fc, edgecolor="0.4", lw=0.4, alpha=0.9, label=lab)
            for (area, fc, lab) in TIERS]
 handles += [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.95, label=v)
             for k, v in [("HST", "HST (+JWST)"), ("Subaru", "Subaru/HSC"),
-                         ("multi", "HST+Subaru(+JWST)")]]
-fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=3,
-            bbox_to_anchor=(0.5, -0.1))
+                         ("multi", "HST+Subaru(+JWST)"), ("wide", "NDWFS/HETDEX wide")]]
+handles += [Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#145a32", lw=1.6, ls="--",
+                      label="UDS (UKIDSS/WFCAM tile)")]
+fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=4,
+            bbox_to_anchor=(0.5, -0.12))
 fig3.suptitle("Proposed ELG survey tiers paved with 30$'\\!\\times\\!$30$'$ tiles "
               "(jagged boundaries) and the legacy deep fields they cover", y=0.995)
 fig3.tight_layout(rect=(0, 0.11, 1, 1))
