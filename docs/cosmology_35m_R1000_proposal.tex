@@ -523,21 +523,21 @@ NIRSpec R=1000 (line) & $5.7\times10^{-19}$ @\,2\,$\mu$m & 100\,ks & 10 & 8.4\\
 
 The same calculation exposes a hard wavelength limit set by the telescope temperature. Below $\sim2\,\mu$m the background is zodiacal and the depth is nearly independent of the optics temperature, but the telescope thermal self-emission rises steeply to the red and overtakes the zodiacal light at a crossover wavelength that moves blueward as the optics warm (Figure~\ref{fig:etccool}). For passively warm optics near $270$\,K the crossover sits at $\sim1.9\,\mu$m and the $5\sigma$ depth at $2.7\,\mu$m degrades by more than an order of magnitude, whereas cooling the optics to $\lesssim200$\,K pushes the thermal wall beyond $2.5\,\mu$m and keeps the full $1$--$3\,\mu$m channel background-limited. The flagship BAO sample sits at $\lambda\lesssim2\,\mu$m and is insensitive to this term, but the reddest part of the band, and the operating temperature chosen for the near-infrared optics, are governed by it.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.82\textwidth]{etc_f5sigma.png}
 \caption{Full numerical exposure-time calculation for the slitless survey. \emph{Top}: the modelled sky as an AB surface brightness, the zodiacal light (observed solar spectrum scattered and reddened per Leinert et~al.\ \cite{leinert1998}, plus interplanetary-dust thermal emission) together with the telescope thermal self-emission that rises beyond $2\,\mu$m. \emph{Bottom}: the resulting $5\sigma$ line-flux depth $F_{5\sigma}(\lambda)$ for three exposures, deepest near $1.6\,\mu$m where the sky is darkest, with the conservative $10^{-16}$ planning anchor of Eq.~\eqref{eq:f5sigma} marked for reference.}
 \label{fig:etc}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.72\textwidth]{etc_cooling.png}
 \caption{Telescope-temperature tradeoff from the same calculator. The $5\sigma$ depth in a $3$\,hr exposure is nearly independent of the optics temperature below $\sim2\,\mu$m, where the background is zodiacal, but the telescope thermal self-emission builds a wall at longer wavelengths whose onset moves blueward as the optics warm. Cooling the optics to $\lesssim200$\,K keeps the full $1$--$3\,\mu$m channel background-limited.}
 \label{fig:etccool}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.9\textwidth]{etc_gui_capture.png}
 \caption{The open-source exposure-time calculator with its Tk interface (\url{https://github.com/kjhan0606/3.5mST}). A telescope preset (JWST, Roman, Euclid, or this $3.5$\,m concept) and an imaging or slitless-spectroscopy mode set the aperture and the real detector parameters, and a filter or disperser sets the wavelength, bandwidth, and resolution. The panel shown is the $3.5$\,m concept in slitless mode, with the $5\sigma$ line-flux depth as a function of wavelength for three exposures.}
@@ -565,14 +565,14 @@ Because the same calculator runs on any instrument, it places the concept direct
 \label{tab:compareimg}
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.78\textwidth]{etc_compare_imaging.png}
 \caption{Imaging $5\sigma$ point-source depth in a $1$\,hr exposure, plotted for each mission in its own imaging filters (Roman F062--F213, Euclid Y/J/H, JWST NIRCam F070W--F444W, and representative $3.5$\,m bands). The depth ordering JWST $>$ $3.5$\,m $>$ Roman $>$ Euclid follows collecting area and detector temperature.}
 \label{fig:compareimg}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.8\textwidth]{etc_compare_spec.png}
 \caption{Slitless $5\sigma$ line-flux depth versus wavelength in a $0.75$\,hr exposure for the $3.5$\,m concept (band-limiting $0.4\,\mu$m filters, $R=1000$) and the Roman WFI grism, which disperses its full $1.0$--$1.93\,\mu$m band onto each pixel. In the overlap region the $3.5$\,m reaches several times deeper, from its larger aperture and its narrower filters, and it also covers the full $0.36$--$3.0\,\mu$m range. The Roman HLSS planning depth is marked.}
@@ -1209,14 +1209,14 @@ The survey must be proven by simulated images, not by analytic exposure-time arg
 
 The two high-Galactic-latitude caps that anchor the wide survey were chosen not only to avoid the Milky Way but to enclose the richest legacy deep fields in the sky (Figure~\ref{fig:skymap}). The north cap contains COSMOS, GOODS-N, the Extended Groth Strip, and the Subaru Deep Field, and the south cap contains GOODS-S with the Hubble Ultra Deep Field together with the UDS/SXDS and XMM-LSS fields. These fields carry decades of deep HST and Subaru imaging, extensive ground and space spectroscopy, and now JWST coverage from CEERS in the Extended Groth Strip, JADES in GOODS-S, and COSMOS-Web, so the wide survey inherits an unusually complete set of ancillary data over its own footprint. Within each cap the $100$--$300$ deg$^2$ wide tier and its nested medium and deep tiers are sited on a high-Galactic-latitude legacy concentration, the NDWFS/HETDEX Bo\"otes field ($b\simeq+67^\circ$) in the north and the SXDS/UDS/XMM-LSS deep field ($b\simeq-59^\circ$) in the south, as shown in Figure~\ref{fig:deepzoom}, both chosen at high $|b|$ to stay clear of Galactic extinction and cirrus. The Bo\"otes anchor is particularly valuable because the HETDEX blind emission-line survey covers the same field, giving a direct external comparison sample for the slitless emission-line selection, while the remaining legacy fields lie elsewhere in the same caps and anchor additional deep and calibration pointings.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.92\textwidth]{elg_skymap.png}
 \caption{Proposed ELG survey fields on an equatorial Mollweide projection. The north and south Galactic caps at $|b|\gtrsim45^\circ$ (green and blue) avoid the Milky Way zone ($|b|<20^\circ$, red) and lie within the DESI, Euclid, Rubin/LSST, and Roman footprints for cross-survey synergy. Gold stars mark the legacy HST and Subaru deep fields that fall within the caps (Figure~\ref{fig:deepzoom}).}
 \label{fig:skymap}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.98\textwidth]{elg_deepfields_zoom.png}
 \caption{Nested wedding-cake tiers of the proposed ELG survey, one Galactic cap per panel, in the gnomonic (TAN) tangent-plane projection standard for imaging fields. Each main panel spans about $\pm30^\circ$ so the spherical curvature of the sky is apparent, the parallels of declination bowing and the meridians of right ascension converging away from the tangent point. The tiers are anchored on high-Galactic-latitude fields, the NDWFS/HETDEX Bo\"otes field ($b\simeq+67^\circ$) in the north and the SXDS/UDS/XMM-LSS deep field ($b\simeq-59^\circ$) in the south, both far from the Milky Way. The neighbouring high-latitude legacy fields (ELAIS-N1, the Extended Groth Strip, the Subaru Deep Field, GOODS-S) are shown for context. The inset in each panel is a $\pm4^\circ$ zoom on the anchor that reveals two features invisible at the wide scale. First, each tier is a square region paved with an integer number of $30'\times30'$ tiles matching the large field of view, so its boundary is a clean rectangle rather than a circle, which simplifies the statistical boundary treatment of the two-point functions. Second, the tiers nest as a wedding cake, the wide tier ($\sim$150 deg$^2$, gold) enclosing the medium tier (30 deg$^2$, orange) enclosing the deep tier (1--3 deg$^2$, red). The insets also draw the legacy footprints in their true shape, the Bo\"otes field in the north and, in the south, the SXDS five-pointing Subaru cross with the UKIDSS/WFCAM UDS tile (dashed) overlaid, rather than as single rectangles. The remaining legacy fields of the caps are marked on the all-sky map of Figure~\ref{fig:skymap}.}
@@ -1235,7 +1235,7 @@ Finally, the deep and ultra-deep tiers of the wedding-cake strategy are naturall
 
 The two anchor fields that carry the wide, medium, and deep tiers were not chosen only for their high Galactic latitude. Each already holds one of the most complete panchromatic and spectroscopic data sets in its hemisphere, and the two data sets are complementary in exactly the way an emission-line redshift survey needs. Table~\ref{tab:anchorancillary} lists the principal holdings, and the discussion below explains how each feeds a specific calibration step of the flagship survey.
 
-\begin{table}[t]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{2.2cm}p{3.0cm}p{3.4cm}X@{}}
@@ -1297,7 +1297,7 @@ These correlations are empirical patches. The physically informative quantity th
 
 The cleanest demonstration comes from ``optical twins'', which are SN Ia pairs with nearly identical optical spectra ($3500$--$7500$\,\AA), $\Delta m_{15}$, and colors that nonetheless differ measurably in peak luminosity. The canonical case is SN\,2011fe versus SN\,2011by (Figure~\ref{fig:uvtwins}). The two have near-identical optical spectra, yet a $\sim0.3$\,mag peak offset and a pronounced flux divergence below $\sim3500$\,\AA. Foley \& Kirshner attributed the difference to progenitor metallicity inferred from the UV \cite{foleykirshner2013}, while Graham et~al.\ found near-identical nebular spectra, pointing to the radial iron-group distribution and metallicity rather than total $^{56}$Ni mass alone \cite{graham2015}.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.62\textwidth]{snia_uvtwins.png}
 \caption{Rest-frame UV--optical spectra of the optical twins SN\,2011fe (black) and SN\,2011by (blue). \emph{Top:} the two are nearly identical at optical wavelengths ($\lambda>3500$\,\AA) but diverge strongly in the near-ultraviolet. \emph{Bottom:} the flux ratio (11fe/11by, black) compared with synthetic predictions for different progenitor-metallicity ratios $\zeta_1/\zeta_2$ \cite{lentz2000}. The NUV amplitude tracks the metallicity contrast. The optical twin condition removes the light-curve-shape and color degrees of freedom, isolating an intrinsic-luminosity difference that is visible \emph{only} in the rest-frame NUV. Reproduced after Graham et~al.\ \cite{graham2015}.}
@@ -1310,7 +1310,7 @@ Physically, the rest-frame NUV ($\lambda\lesssim3500$\,\AA) is dominated by a de
 
 The iron-group diagnostic normally requires a dedicated space-ultraviolet facility, because the rest-frame NUV is inaccessible from the ground and lies blueward of this mission's $0.36\,\mu$m cutoff at $z=0$. Redshift removes the obstacle. It carries the iron-blanketing region \emph{into} the observed band. Figure~\ref{fig:nuvband} shows the mapping. The rest-frame $2500$\,\AA\ feature reaches the $0.36\,\mu$m blue edge already at $z\simeq0.44$, the $2500$--$3500$\,\AA\ core of the iron-blanketing region is in band by $z\simeq0.5$, and the full $2000$--$3500$\,\AA\ window enters by $z\simeq0.8$. The entire optical-twin baseline ($3500$--$7500$\,\AA) remains in band out to $z\simeq3$. The same diagnostic that demands a UV telescope at $z\approx0$ thus becomes accessible from this mission precisely in the $0.5\lesssim z\lesssim1.5$ regime where the time-domain tier already classifies SNe Ia.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \def\w{12.6}\def\h{6.2}
@@ -1406,14 +1406,14 @@ with $E(z)=\sqrt{\Omega_m(1+z)^3+(1-\Omega_m)(1+z)^{3(1+w)}}$ for a flat model o
 
 An independent first-principles check with the exposure-time calculator confirms this reach and quantifies the rest-ultraviolet access. Using the Nugent Type Ia template at peak normalised to $M_B=-19.3$, Figure~\ref{fig:sniamag} gives the observed magnitude in each band as a function of redshift, and Figure~\ref{fig:sniamuv} follows the rest-frame near-ultraviolet diagnostic near $2770$\,\AA, which the band captures for $z\gtrsim0.3$. The calculator reaches the rest-NUV of a peak Type Ia in minutes to $z\simeq2$, so the near-ultraviolet divergence that separates the optical twins is measurable across the redshift range that anchors the distance scale.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.72\textwidth]{snia_mag_vs_z.png}
 \caption{Type Ia SN at peak ($M_B=-19.3$, Nugent template) observed AB magnitude per band versus redshift for the $3.5$\,m concept, with the wide ($0.75$\,hr) and deep ($12$\,hr) $H$-band point-source depths marked. The redder bands hold the peak above the wide depth to $z\gtrsim2$.}
 \label{fig:sniamag}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.72\textwidth]{snia_nuv_depth.png}
 \caption{Rest-frame near-ultraviolet ($2770$\,\AA) of a peak Type Ia as it redshifts into the band. Left axis, observed AB magnitude. Right axis, exposure to a $5\sigma$ detection. The rest-NUV twin diagnostic is reached in minutes to $z\simeq2$.}
@@ -1424,7 +1424,7 @@ An independent first-principles check with the exposure-time calculator confirms
 
 The motivation for a physically refined standardization is the precision now demanded by the two leading cosmological questions, both of which the SN Ia Hubble diagram addresses (Figure~\ref{fig:sniacosmo}). The first is the Hubble tension, the $\sim5\sigma$ discrepancy between the local determination ($H_0=73.0\pm1.0$\,\kms\,Mpc$^{-1}$, SH0ES \cite{riess2022}) and the CMB-inferred value ($67.4\pm0.5$\,\kms\,Mpc$^{-1}$, Planck \cite{planck2018}), a split now reproduced across many independent methods (Figure~\ref{fig:h0tension}). A significant share of the local error budget originates in the SN Ia standardization step. If NUV-red/NUV-blue subclasses with different luminosities are mixed in unequal proportions between the calibrator and Hubble-flow samples, $H_0$ is biased. A subclass-homogeneous, $\theta_{\rm Fe}$-aware ladder built from rest-NUV spectroscopy quantifies and removes this term, providing a cleaner local distance scale.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.92\textwidth]{h0_tension.png}
 \caption{The Hubble tension shown as a compilation of $H_0$ determinations, with the measured value on the horizontal axis and one method per row. Early-Universe probes calibrated on the sound horizon (blue squares: Planck CMB \cite{planck2018}, ACT$+$WMAP, SPT-3G, and BAO$+$BBN) cluster near $67.4\pm0.5$\,\kms\,Mpc$^{-1}$, whereas late-Universe direct and distance-ladder probes (red circles: SH0ES Cepheids$+$SN\,Ia \cite{riess2022}, TRGB, JWST multi-method, surface-brightness fluctuations, megamasers, Miras, Tully--Fisher, and time-delay lensing) cluster near $73\pm1$\,\kms\,Mpc$^{-1}$. The shaded bands mark the Planck and SH0ES anchors, whose central values differ by $5.7$\,\kms\,Mpc$^{-1}$ ($\approx4.8\sigma$ for these two alone, and $\sim5\sigma$ for the full early-versus-late split). A subclass-homogeneous, iron-group-aware SN\,Ia ladder built from rest-NUV spectroscopy attacks the dominant astrophysical term in the late-Universe column.}
@@ -1433,7 +1433,7 @@ The motivation for a physically refined standardization is the precision now dem
 
 The second is the dark-energy equation of state. Unrecognized astrophysical systematics in the Hubble diagram can mimic or mask dynamic dark energy. As Figure~\ref{fig:sniacosmo} shows, distinguishing $\Lambda$CDM from a CPL model with $(w_0,w_a)$ deviations requires sub-$0.1$-mag control of the residuals. This is below the current per-SN scatter and only reached with the NUV-augmented calibration of Eq.~\eqref{eq:nuvstd}. Because this mission also delivers the flagship ELG BAO/RSD measurements, the SN Ia distances and the BAO standard ruler can be combined internally, together with external Planck/ACT CMB priors, into a joint constraint on $H_0$, $\Omega_m$, and $(w_0,w_a)$, with the SN systematic now physically controlled rather than marginalized.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.96\textwidth]{snia_hubble_cosmologies.png}
 \caption{SN Ia Hubble diagram and the precision required for dark-energy science. \emph{Upper:} distance modulus $\mu$ versus redshift for the real Pantheon$+$SH0ES sample (1580 Hubble-flow SNe Ia, Cepheid calibrators removed; Brout et~al.\ \cite{brout2022}) against four cosmologies, namely $\Lambda$CDM ($\Omega_m=0.33$, $\Omega_\Lambda=0.67$), open CDM, Einstein--de\,Sitter, and a CPL dynamic dark-energy model ($w_0=-0.857$, $w_a=-0.153$). The reference cosmology uses the Pantheon$+$ flat-$\Lambda$CDM best fit ($H_0=73.04$, $\Omega_m=0.334$). \emph{Lower:} residuals $\Delta\mu$ relative to $\Lambda$CDM. The shaded bands show the current per-SN scatter ($\sigma\approx0.12$\,mag) and the target after the NUV-augmented calibration of Eq.~\eqref{eq:nuvstd} ($\sigma\approx0.08$\,mag). Separating $\Lambda$CDM from dynamic dark energy requires sub-$0.1$-mag control, motivating the iron-group-aware standardization enabled by rest-frame NUV access.}
@@ -1459,7 +1459,7 @@ where $D_{s}$ and $D_{ds}$ are angular-diameter distances from observer and from
 
 DSPLs are rare and were historically found by accident, because identifying \emph{two} source redshifts behind one lens is hard from imaging alone. This is precisely where the mission's combination of capabilities is decisive. The stable imaging resolves the two concentric ring/arc systems and measures their radii, while the slitless spectroscopy delivers the two source redshifts and the lens redshift in the same observation, turning serendipitous discoveries into a systematically assembled DSPL cosmology sample. We adopt DSPL distance-ratio cosmography as the primary strong-lensing science goal because its dominant requirement, multiple secure source-plane redshifts, is exactly the measurement a wide-field spectroscopic survey makes naturally, and because the $\beta$ ratio sidesteps both the $H_0$ calibration and much of the MSD that complicate time-delay work.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \def\xo{0}\def\xl{4.2}\def\xa{8.0}\def\xb{11.6}
@@ -1521,7 +1521,7 @@ With $\sim$$10^5$ lenses expected from imaging surveys, both lens identification
 
 For \emph{modeling}, classical Markov-chain lens reconstruction costs days to weeks per system and cannot scale to $10^5$ lenses. Neural and simulation-based inference (SBI) removes this bottleneck. Convolutional estimators are $\sim$$10^7$ times faster than maximum-likelihood modeling \cite{hezaveh2017}, Bayesian networks return calibrated parameter posteriors \cite{perreaultlevasseur2017}, and population studies show that automated per-lens posteriors with $\sim$9\% precision combine to sub-percent $H_0$ over a few hundred lenses without detectable bias \cite{park2021}. We adopt simulation-based inference (neural posterior estimation) trained on mission-specific PSF and noise realizations to infer per-lens parameters ($\theta_E$, $\gamma'$, ellipticity, $\kappa$), followed by a \emph{hierarchical Bayesian} layer that jointly infers the cosmological parameters and the population-level nuisance distributions, namely density slope, anisotropy, and the mass-sheet, while marginalizing each lens \cite{wagnercarena2021,legin2023}. The spectroscopic redshifts and dispersions enter as informative priors that sharpen the per-lens posteriors and anchor the distance scale. The same hierarchical framework absorbs the DSPL $\beta$ measurements and the $\gamma'(z)$ population as internal constraints, so the strong-lensing cosmology is delivered as one self-consistent inference rather than a heterogeneous lens-by-lens collection.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize,
   img/.style={rounded corners,draw=blue,line width=0.9pt,fill=blue!8,inner sep=4pt,align=center,text width=2.5cm,minimum height=1.05cm},
@@ -1586,7 +1586,7 @@ where the $(1+z)$ factor of the observed-frame width and the rest-frame conversi
 
 Inverting the curve of growth at these thresholds gives the minimum detectable column density (Figure~\ref{fig:lyathreshold}, right; Table~\ref{tab:lyathresh}). At ${\rm S/N}=10$ the mission detects only $N_{\rm H\,I}\gtrsim10^{16}$\,cm$^{-2}$, and reaching the diffuse forest near $N_{\rm H\,I}\sim10^{14}$\,cm$^{-2}$ requires ${\rm S/N}\gtrsim30$. The column densities between $\sim10^{14.5}$ and $\sim10^{19}$\,cm$^{-2}$ sit on the flat, saturated part of the curve of growth, where the equivalent width grows only logarithmically with $N_{\rm H\,I}$ and is degenerate with $b$. In this regime an $R=1000$ spectrum detects the absorption but cannot recover the column density from the Ly$\alpha$ line alone.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.99\textwidth]{lya_NHI_threshold.png}
 \caption{What H\,\textsc{i} column density the $R=1000$ spectrograph can detect in the Ly$\alpha$ forest. \emph{Left:} the Ly$\alpha$ curve of growth, rest-frame equivalent width $W_\lambda$ versus $\log N_{\rm H\,I}$, computed from a Voigt profile for Doppler parameters $b=15,30,50$\,km\,s$^{-1}$. Dashed lines mark the $5\sigma$ detection limit of Eq.~\eqref{eq:wmin} for several continuum signal-to-noise values. The flat (saturated) plateau between the linear and damping branches is where the column density cannot be inferred from the line. \emph{Right:} the resulting minimum detectable $\log N_{\rm H\,I}$ as a function of continuum S/N per resolution element. The shaded band marks the saturated regime where $N_{\rm H\,I}$ is degenerate with $b$. Damped Ly$\alpha$ systems ($N_{\rm H\,I}\geq2\times10^{20}$\,cm$^{-2}$) lie on the damping branch and are measured accurately at $R=1000$.}
@@ -1738,7 +1738,7 @@ Compact dynamical tracers & [O\,\textsc{iii}] PNe, intracluster GCs & Ensemble v
 
 The exposure-time calculator sets the surface-brightness reach directly. Figure~\ref{fig:icl} gives the time to a $5\sigma$ detection of intracluster light binned over a $10\times10$\,arcsec$^2$ region as a function of cluster redshift, including the $(1+z)^4$ cosmological surface-brightness dimming that dominates the trend. A rest-frame $\mu\simeq26$\,AB\,arcsec$^{-2}$ envelope is reached in well under an hour to $z\simeq0.3$, and the fainter $\mu\simeq28$ outskirts within a few hours, so the diffuse light can be traced toward the cluster edge across the sample.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.7\textwidth]{icl_exptime_vs_z.png}
 \caption{Exposure to a $5\sigma$ detection of intracluster light over a $10\times10$\,arcsec$^2$ bin versus cluster redshift in the $H$ band, for four rest-frame surface brightnesses, including the $(1+z)^4$ dimming. The $1$\,hr level is marked.}
@@ -1747,7 +1747,7 @@ The exposure-time calculator sets the surface-brightness reach directly. Figure~
 
 A dedicated deep pointing on a single cluster turns this reach into a direct image. Figure~\ref{fig:iclimg} takes the deep HST Frontier Fields WFC3/IR F160W mosaic of Abell~2744 \cite{lotz2017} as the true scene and passes it through the same exposure-time calculator, adding the source, sky, dark, and read noise in quadrature to the noise already present in the truth so that each simulated frame carries exactly the ETC per-pixel noise. Four total integrations of a dedicated intracluster-light program are shown, one, four, sixteen, and sixty-four hours, reaching $5\sigma$ surface-brightness limits over a $10\times10$\,arcsec$^2$ bin of $\mu\simeq29.5$, $30.2$, $31.0$, and $31.8$\,AB\,arcsec$^{-2}$. Each panel is stretched between a fixed bright limit and its own per-pixel noise floor, so the background tone is common across the four and the eye reads directly how much fainter the diffuse light is traced as the exposure grows. The intracluster envelope that is buried in the noise at one hour is mapped smoothly between the cluster galaxies and out to the faint tidal features by sixteen to sixty-four hours. At the longest integrations the reach passes the depth of the space-based Frontier Fields imaging that itself defines the state of the art for cluster diffuse light, which is the concrete sense in which the platform advances intracluster-light science.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=\textwidth]{icl_exposure_demo.png}
 \caption{Simulated appearance of the Abell~2744 intracluster light to the 3.5\,m ST as a function of total exposure time, as a dedicated deep program rather than a wide-survey tier. The deep HST Frontier Fields WFC3/IR F160W mosaic \cite{lotz2017} is the true scene ($z=0.308$, rest-frame near-infrared, observed in the $H$ band). For each exposure the ETC source, sky, dark, and read noise are added in quadrature to the noise already present in the truth image, so the displayed per-pixel noise equals the ETC prediction, and the annotated signal-to-noise is the ETC value for a $\mu=27$\,AB\,arcsec$^{-2}$ patch measured over a $10\times10$\,arcsec$^2$ box. Each panel is stretched between a fixed bright limit and its own $1\sigma$ per-pixel noise floor, so the four backgrounds share a common tone and the growth of the traceable diffuse light with exposure is directly visible rather than being masked by an ever-darker background. Each panel carries its own surface-brightness colour bar and a $100$\,kpc scale bar.}
@@ -1917,7 +1917,7 @@ Continuum-selected imaging surveys, even deep ones, miss gas-rich star-poor syst
 
 The calculator turns the line-flux depth into an explicit star-formation-rate floor. Figure~\ref{fig:darkgal} gives the exposure to a $5\sigma$ H$\alpha$ detection as a function of star-formation rate for a galaxy in a nearby void at $z=0.05$, using the standard Kennicutt calibration. The survey reaches $\sim3\times10^{-3}\,M_\odot\,{\rm yr}^{-1}$ in about an hour and $\sim10^{-3}\,M_\odot\,{\rm yr}^{-1}$ in a deep pointing, so the actively star-forming part of the void-halo population is recovered well into the dwarf regime.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.68\textwidth]{darkgal_exptime_vs_sfr.png}
 \caption{Exposure to a $5\sigma$ H$\alpha$ detection versus star-formation rate for a void galaxy at $z=0.05$, from the Kennicutt SFR calibration. The $1$ and $12$\,hr levels are marked.}
