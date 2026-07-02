@@ -1747,7 +1747,7 @@ The exposure-time calculator sets the surface-brightness reach directly. Figure~
 
 A dedicated deep pointing on a single cluster turns this reach into a direct image. Figure~\ref{fig:iclimg} takes the deep HST Frontier Fields WFC3/IR F160W mosaic of Abell~2744 \cite{lotz2017} as the true scene and passes it through the same exposure-time calculator, adding the source, sky, dark, and read noise in quadrature to the noise already present in the truth so that each simulated frame carries exactly the ETC per-pixel noise. Four total integrations of a dedicated intracluster-light program are shown, one, four, sixteen, and sixty-four hours, reaching $5\sigma$ surface-brightness limits over a $10\times10$\,arcsec$^2$ bin of $\mu\simeq29.5$, $30.2$, $31.0$, and $31.8$\,AB\,arcsec$^{-2}$. Each panel is stretched between a fixed bright limit and its own per-pixel noise floor, so the background tone is common across the four and the eye reads directly how much fainter the diffuse light is traced as the exposure grows. The intracluster envelope that is buried in the noise at one hour is mapped smoothly between the cluster galaxies and out to the faint tidal features by sixteen to sixty-four hours. At the longest integrations the reach passes the depth of the space-based Frontier Fields imaging that itself defines the state of the art for cluster diffuse light, which is the concrete sense in which the platform advances intracluster-light science.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=\textwidth]{icl_exposure_demo.png}
 \caption{Simulated appearance of the Abell~2744 intracluster light to the 3.5\,m ST as a function of total exposure time, as a dedicated deep program rather than a wide-survey tier. The deep HST Frontier Fields WFC3/IR F160W mosaic \cite{lotz2017} is the true scene ($z=0.308$, rest-frame near-infrared, observed in the $H$ band). For each exposure the ETC source, sky, dark, and read noise are added in quadrature to the noise already present in the truth image, so the displayed per-pixel noise equals the ETC prediction, and the annotated signal-to-noise is the ETC value for a $\mu=27$\,AB\,arcsec$^{-2}$ patch measured over a $10\times10$\,arcsec$^2$ box. Each panel is stretched between a fixed bright limit and its own $1\sigma$ per-pixel noise floor, so the four backgrounds share a common tone and the growth of the traceable diffuse light with exposure is directly visible rather than being masked by an ever-darker background. Each panel carries its own surface-brightness colour bar and a $100$\,kpc scale bar.}
@@ -1917,7 +1917,7 @@ Continuum-selected imaging surveys, even deep ones, miss gas-rich star-poor syst
 
 The calculator turns the line-flux depth into an explicit star-formation-rate floor. Figure~\ref{fig:darkgal} gives the exposure to a $5\sigma$ H$\alpha$ detection as a function of star-formation rate for a galaxy in a nearby void at $z=0.05$, using the standard Kennicutt calibration. The survey reaches $\sim3\times10^{-3}\,M_\odot\,{\rm yr}^{-1}$ in about an hour and $\sim10^{-3}\,M_\odot\,{\rm yr}^{-1}$ in a deep pointing, so the actively star-forming part of the void-halo population is recovered well into the dwarf regime.
 
-\begin{figure}[t]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.68\textwidth]{darkgal_exptime_vs_sfr.png}
 \caption{Exposure to a $5\sigma$ H$\alpha$ detection versus star-formation rate for a void galaxy at $z=0.05$, from the Kennicutt SFR calibration. The $1$ and $12$\,hr levels are marked.}
