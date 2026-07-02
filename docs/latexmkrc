@@ -1,0 +1,2 @@
+# Force XeLaTeX on Overleaf (proposal uses xelatex features)
+$pdf_mode = 5;
