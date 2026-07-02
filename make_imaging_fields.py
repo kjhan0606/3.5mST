@@ -5,7 +5,7 @@ thermal-dust map, in the same gnomonic (TAN) WCS style as the ELG survey zoom.
 The two fields are the minima of the mean Planck 857 GHz intensity over a
 survey-footprint-sized aperture, searched over all |b| > 48 deg sky on the
 2000x1000 all-sky rendering (see make_skymap.py). Each panel is a TAN zoom
-with the RA/Dec graticule, the 12.5-deg wide-tier tiling paved with its
+with the RA/Dec graticule, the 1.5-deg ultra-deep field paved with its
 30'x30' tiles, and the measured mean intensity annotated. In the north the
 overlapping ELG wide tier on the Bootes anchor is outlined for context.
 """
@@ -27,9 +27,9 @@ import astropy.visualization.wcsaxes            # registers the WCS projection
 HIPS2FITS = "https://alasky.cds.unistra.fr/hips-image-services/hips2fits?"
 FIELDS = {"N": (210.0, 38.0), "S": (344.0, -48.0)}   # cirrus minima per cap
 ELG_N = (218.0, 34.0)                                # Bootes ELG anchor
-HALF = 6.25                                          # wide tier half-size [deg]
+HALF = 0.75                                          # 3x3-tile deep field half-size [deg]
 FOVTILE = 0.5                                        # 30' tile
-VIEW = 16.0                                          # half-size of the view [deg]
+VIEW = 8.0                                           # half-size of the view [deg]
 
 
 def fetch_hips(fname, **params):
@@ -53,7 +53,7 @@ def cap_wcs(ra0, dec0):
 
 
 def field_stats(ra0, dec0):
-    """Mean Planck 857 GHz intensity within 7 deg, and the all-sky median."""
+    """Mean Planck 857 GHz intensity within 1 deg (the field), and the all-sky median."""
     h = fits.open("hips_cache/planck857_allsky_car.fits")[0]
     d = h.data.astype(float)
     ny, nx = d.shape
@@ -63,7 +63,7 @@ def field_stats(ra0, dec0):
     c = SkyCoord(RA.ravel() * u.deg, DEC.ravel() * u.deg)
     sep = c.separation(SkyCoord(ra0 * u.deg, dec0 * u.deg)).deg.reshape(d.shape)
     w = np.cos(np.radians(DEC))
-    m = (sep < 7.0) & np.isfinite(d)
+    m = (sep < 1.0) & np.isfinite(d)
     return np.sum(d[m] * w[m]) / np.sum(w[m]), np.nanmedian(d)
 
 
@@ -96,16 +96,17 @@ for i, (cap, ra0, dec0, data, hdr) in enumerate(cuts):
                                    edgecolor="white", lw=0.1, alpha=0.22, zorder=2))
     ax.add_patch(Rectangle((-HALF, -HALF), 2 * HALF, 2 * HALF, fill=False,
                            edgecolor="#00e5ff", lw=2.2, zorder=3))
-    if cap == "N":                                 # overlapping ELG wide tier
+    if cap == "N":                                 # neighbouring ELG wide tier
         welg = cap_wcs(*ELG_N)
-        t = np.linspace(-HALF, HALF, 160)
-        per = ([(v, -HALF) for v in t] + [(HALF, v) for v in t]
-               + [(v, HALF) for v in t[::-1]] + [(-HALF, v) for v in t[::-1]])
+        EH = 6.25                                  # ELG wide-tier half-size
+        t = np.linspace(-EH, EH, 160)
+        per = ([(v, -EH) for v in t] + [(EH, v) for v in t]
+               + [(v, EH) for v in t[::-1]] + [(-EH, v) for v in t[::-1]])
         ra_o, dec_o = welg.pixel_to_world_values([q[0] for q in per],
                                                  [q[1] for q in per])
         px, py = w.world_to_pixel_values(np.asarray(ra_o), np.asarray(dec_o))
         ax.plot(px, py, color="#f5b041", lw=2.0, zorder=4)
-        ax.text(11.0, -9.0, "ELG wide tier\n(Boötes anchor)", color="#f5b041",
+        ax.text(4.2, -6.4, "ELG wide tier\n(Boötes anchor)", color="#f5b041",
                 fontsize=8.5, ha="center", zorder=5)
     mean, med = field_stats(ra0, dec0)
     gal = SkyCoord(ra0 * u.deg, dec0 * u.deg).galactic
@@ -117,7 +118,7 @@ for i, (cap, ra0, dec0, data, hdr) in enumerate(cuts):
     ax.coords.grid(color="0.8", alpha=0.55, ls=":")
     ax.coords[0].set_axislabel("R.A. (TAN)"); ax.coords[1].set_axislabel("Dec. (TAN)")
     ax.coords[0].set_major_formatter("d"); ax.coords[1].set_major_formatter("d")
-    ax.coords[0].set_ticks(spacing=5 * u.deg); ax.coords[1].set_ticks(spacing=5 * u.deg)
+    ax.coords[0].set_ticks(spacing=3 * u.deg); ax.coords[1].set_ticks(spacing=3 * u.deg)
     for cc, pos in ((0, "b"), (1, "l")):
         ax.coords[cc].set_ticks_position(pos)
         ax.coords[cc].set_ticklabel_position(pos)
@@ -130,7 +131,7 @@ fig.subplots_adjust(left=0.06, right=0.86, top=0.86, bottom=0.09, wspace=0.16)
 cax = fig.add_axes([0.885, 0.09, 0.02, 0.77])
 cb = fig.colorbar(im, cax=cax)
 cb.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=9)
-fig.suptitle("Dedicated low-cirrus imaging fields, the Planck 857 GHz minima of "
-             "the two caps, paved with the 30$'$ survey tiles", fontsize=11.5)
+fig.suptitle("Dedicated ultra-deep imaging fields (2.25 deg$^2$ each), the Planck 857 GHz "
+             "minima of the two caps, paved with the 30$'$ survey tiles", fontsize=11.5)
 fig.savefig("imaging_fields_zoom.png", bbox_inches="tight")
 print("wrote imaging_fields_zoom.png")
