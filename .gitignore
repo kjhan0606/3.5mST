@@ -40,3 +40,6 @@
 !/docs/*
 !/make_icl_image_demo.py
 !/icl_exposure_demo.png
+!/make_fdm_soliton.py
+!/fdm_soliton_relation.png
+!/nube_discovery.png
