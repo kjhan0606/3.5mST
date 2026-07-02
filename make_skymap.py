@@ -118,14 +118,17 @@ SXDS_POINTINGS = [(34.53, -5.02), (34.53, -4.52), (34.53, -5.52),
                   (35.05, -5.02), (34.01, -5.02)]     # C, N, S, E, W cross
 UDS_TILE = (34.40, -5.10, 0.877, 0.877)           # UKIDSS/WFCAM ~0.77 deg^2
 FOV = 0.5                                         # 30 arcmin = 0.5 deg square survey tile
-# wedding-cake tiers (area deg^2, tile fill colour, label). Each tier is paved
-# with 30'x30' tiles, so its boundary is a jagged staircase, not a smooth box.
+# wedding-cake tiers (area deg^2, tile fill colour, label). Each tier is a SQUARE
+# region paved with an integer number of 30'x30' tiles, so its boundary is a
+# clean rectangle (easier for the statistical/boundary treatment) rather than a
+# circle. L_* is the half-extent of the tile CENTRES [deg]; with a tile centred
+# on the anchor the tier is (2 L/FOV + 1) tiles per side.
 TIERS = [
-    (150.0, "#f7dc6f", "wide tier ($\\sim$150 deg$^2$)"),
-    (30.0,  "#e59866", "medium tier (30 deg$^2$)"),
-    (2.0,   "#cd6155", "deep tier (1--3 deg$^2$)"),
+    (156.0, "#f7dc6f", "wide tier ($\\sim$150 deg$^2$)"),     # 25x25 tiles, 12.5 deg side
+    (30.0,  "#e59866", "medium tier (30 deg$^2$)"),           # 11x11 tiles, 5.5 deg side
+    (2.2,   "#cd6155", "deep tier (1--3 deg$^2$)"),           # 3x3 tiles, 1.5 deg side
 ]
-R_WIDE, R_MED, R_DEEP = [np.sqrt(a / np.pi) for a, _, _ in TIERS]   # tier radii [deg]
+L_WIDE, L_MED, L_DEEP = 6.0, 2.5, 0.5             # square half-extent of tile centres [deg]
 
 
 def cap_wcs(ra0, dec0):
@@ -137,13 +140,15 @@ def cap_wcs(ra0, dec0):
     return w
 
 
-def tile_tier(dist):
-    """Tier index (0 wide, 1 medium, 2 deep) for a tile at radius dist [deg], else None."""
-    if dist <= R_DEEP:
+def tile_tier(cx, cy):
+    """Tier index (0 wide, 1 medium, 2 deep) for a tile centred at (cx, cy) [deg]
+    within nested square regions, else None."""
+    m = max(abs(cx), abs(cy))
+    if m <= L_DEEP + 1e-9:
         return 2
-    if dist <= R_MED:
+    if m <= L_MED + 1e-9:
         return 1
-    if dist <= R_WIDE:
+    if m <= L_WIDE + 1e-9:
         return 0
     return None
 
@@ -158,11 +163,11 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
     # pave the nested tiers with 30'x30' tiles on a 0.5 deg tangent-plane grid
     # (pixel = deg here); tiles whose centre is inside a tier radius are kept, so
     # each tier boundary comes out jagged rather than a clean rectangle.
-    ncell = int(np.ceil(R_WIDE / FOV)) + 1
+    ncell = int(np.ceil(L_WIDE / FOV)) + 1
     grid = np.arange(-ncell, ncell + 1) * FOV
     for cx in grid:
         for cy in grid:
-            k = tile_tier(np.hypot(cx, cy))
+            k = tile_tier(cx, cy)
             if k is None:
                 continue
             axx.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
@@ -210,7 +215,7 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
         for cy in grid:
             if abs(cx) > ih or abs(cy) > ih:
                 continue
-            k = tile_tier(np.hypot(cx, cy))
+            k = tile_tier(cx, cy)
             if k is not None:
                 axins.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
                                           facecolor=TIERS[k][1], edgecolor="white",
@@ -250,8 +255,8 @@ handles += [Rectangle((0, 0), 1, 1, facecolor="none", edgecolor=FCOL["wide"], lw
                       label="UDS (UKIDSS/WFCAM tile)")]
 fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=4,
             bbox_to_anchor=(0.5, -0.12))
-fig3.suptitle("Proposed ELG survey tiers paved with 30$'\\!\\times\\!$30$'$ tiles "
-              "(jagged boundaries) and the legacy deep fields they cover", y=0.995)
+fig3.suptitle("Proposed ELG survey tiers (nested square regions paved with "
+              "30$'\\!\\times\\!$30$'$ tiles) and the legacy deep fields they cover", y=0.995)
 fig3.tight_layout(rect=(0, 0.11, 1, 1))
 fig3.savefig("elg_deepfields_zoom.png", bbox_inches="tight")
 print("wrote elg_deepfields_zoom.png")
