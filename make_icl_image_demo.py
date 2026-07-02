@@ -34,7 +34,7 @@ MU_FID = 27.0                                # fiducial ICL surface brightness f
 BINAS = 10.0                                 # S/N and depth reference box [arcsec]
 BASE = ("/tmp/claude-10396/-home-kjhan-BACKUP-3-5ST/"
         "d2e05355-c544-4223-9f95-d63a9ca5c011/scratchpad")
-EXPOS = [1.0, 4.0, 16.0, 64.0]               # dedicated ICL deep-survey ladder [hr]
+EXPOS = [0.25, 4.0, 16.0, 64.0]              # dedicated ICL deep-survey ladder [hr]
 np.random.seed(42)
 
 
