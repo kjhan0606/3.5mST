@@ -70,21 +70,22 @@ FCOL = {"HST": "#e67e22", "Subaru": "#2980b9", "multi": "#27ae60", "wide": "#8e4
 fig = plt.figure(figsize=(9.2, 5.8), dpi=150)
 ax = fig.add_subplot(111, projection="mollweide")
 
-# real near-infrared all-sky background: COBE/DIRBE band 2 (2.2 um), MJy/sr
-nir, nhdr = fetch_hips("dirbe2_allsky_car1440.fits", hips="ov-gso/P/DIRBE/2",
-                       width=1440, height=720, fov=360, projection="CAR",
+# real all-sky background at high resolution: Planck 857 GHz thermal dust /
+# cirrus (~5' native), the dominant diffuse foreground; MJy/sr
+nir, nhdr = fetch_hips("planck857_allsky_car.fits", hips="CDS/P/PLANCK/R3/HFI857",
+                       width=2000, height=1000, fov=360, projection="CAR",
                        coordsys="icrs", ra=0, dec=0)
 ny, nx = nir.shape
 ra_e = nhdr["CRVAL1"] + nhdr["CDELT1"] * (np.arange(nx + 1) + 0.5 - nhdr["CRPIX1"])
 dec_e = nhdr["CRVAL2"] + nhdr["CDELT2"] * (np.arange(ny + 1) + 0.5 - nhdr["CRPIX2"])
 dec_e = np.clip(dec_e, -90.0, 90.0)
-lo, hi = np.nanpercentile(nir, [2.0, 99.95])
+lo, hi = np.nanpercentile(nir, [2.0, 99.5])
 pcm = ax.pcolormesh(np.radians(ra_e), np.radians(dec_e), nir,
                     norm=LogNorm(vmin=max(lo, 0.05), vmax=hi), cmap="gray",
                     rasterized=True, zorder=0)
 cb = fig.colorbar(pcm, ax=ax, orientation="horizontal", fraction=0.05,
                   pad=0.05, aspect=45)
-cb.set_label(r"COBE/DIRBE 2.2 $\mu$m intensity [MJy sr$^{-1}$]", fontsize=8)
+cb.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=8)
 cb.ax.tick_params(labelsize=7)
 ax.grid(alpha=0.4, color="0.75", lw=0.5)
 
