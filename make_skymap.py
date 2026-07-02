@@ -15,16 +15,25 @@ def wrap(ra_deg):
     return np.radians(r)
 
 
-# Legacy HST/Subaru deep fields (name, RA, Dec [deg], area [deg^2], facility, cap)
+# Legacy HST/Subaru deep fields. Footprint width x height [deg] are the real
+# survey dimensions (angular size on the sky), not derived from the area:
+#   COSMOS     1.4x1.4 deg  (Scoville+ 2007)
+#   GOODS-N/-S 16.4'x10.1'  (Giavalisco+ 2004)  -> 0.273 x 0.168 deg
+#   EGS/AEGIS  70.5'x10.1'  (Davis+ 2007, strip) -> 1.175 x 0.168 deg
+#   Subaru DF  34'x27'      (Kashikawa+ 2004)    -> 0.567 x 0.450 deg
+#   ELAIS-N1   HSC-Deep ~1 deg^2                 -> 1.0 x 1.0 deg
+#   UDS/SXDS   SXDS 1.22 deg^2 (Furusawa+ 2008)  -> 1.10 x 1.10 deg
+#   XMM-LSS    ~3.5 deg^2 deep tier              -> 1.87 x 1.87 deg
+# (name, RA, Dec [deg], w [deg], h [deg], facility, cap)
 DEEPFIELDS = [
-    ("COSMOS",    150.12,   2.21, 2.00, "multi",  "N"),
-    ("GOODS-N",   189.23,  62.24, 0.04, "HST",    "N"),
-    ("EGS/AEGIS", 214.80,  52.80, 0.06, "HST",    "N"),
-    ("Subaru DF", 201.20,  27.40, 0.25, "Subaru", "N"),
-    ("ELAIS-N1",  242.80,  54.00, 1.00, "Subaru", "N"),
-    ("GOODS-S",    53.12, -27.80, 0.04, "HST",    "S"),
-    ("UDS/SXDS",   34.40,  -5.20, 0.80, "multi",  "S"),
-    ("XMM-LSS",    35.70,  -4.75, 3.50, "Subaru", "S"),
+    ("COSMOS",    150.12,   2.21, 1.400, 1.400, "multi",  "N"),
+    ("GOODS-N",   189.23,  62.24, 0.273, 0.168, "HST",    "N"),
+    ("EGS/AEGIS", 214.80,  52.80, 1.175, 0.168, "HST",    "N"),
+    ("Subaru DF", 201.20,  27.40, 0.567, 0.450, "Subaru", "N"),
+    ("ELAIS-N1",  242.80,  54.00, 1.000, 1.000, "Subaru", "N"),
+    ("GOODS-S",    53.12, -27.80, 0.273, 0.168, "HST",    "S"),
+    ("UDS/SXDS",   34.40,  -5.20, 1.100, 1.100, "multi",  "S"),
+    ("XMM-LSS",    35.70,  -4.75, 1.870, 1.870, "Subaru", "S"),
 ]
 FCOL = {"HST": "#e67e22", "Subaru": "#2980b9", "multi": "#27ae60"}
 
@@ -68,7 +77,7 @@ ax.text(wrap(158), np.radians(33), "N cap:\nDESI NGC + Euclid N\n+ Rubin edge",
 ax.text(wrap(6), np.radians(-25), "S cap:\nDESI SGC + Euclid S\n+ Rubin/LSST + Roman",
         fontsize=6.5, ha="center", color="#154360")
 # legacy deep fields as gold stars within the caps
-for name, ra, dec, area, fac, cap in DEEPFIELDS:
+for name, ra, dec, w, h, fac, cap in DEEPFIELDS:
     ax.plot(wrap(ra), np.radians(dec), marker="*", ms=10, color="#f1c40f",
             mec="k", mew=0.5, zorder=6)
 ax.plot([], [], marker="*", ls="", color="#f1c40f", mec="k", label="HST/Subaru deep fields")
@@ -79,25 +88,32 @@ print(f"N-cap points: {ngc.sum()}, S-cap points: {sgc.sum()}, MW-avoid points: {
 
 
 # ---- zoom-in view of the legacy deep fields inside each cap ----
+# Each field is drawn as a rectangle at its true footprint size. On an RA-Dec
+# plane the RA extent of an angular width w is w/cos(dec), so the boxes stay
+# angularly correct at high declination.
 from matplotlib.lines import Line2D
+from matplotlib.patches import Rectangle
 fig3, axes = plt.subplots(1, 2, figsize=(11.0, 4.8), dpi=150)
 for axx, cap, title in [(axes[0], "N", "North Galactic cap"), (axes[1], "S", "South Galactic cap")]:
     off = {"GOODS-N": (8, -18), "UDS/SXDS": (8, -20), "XMM-LSS": (8, 8),
            "COSMOS": (-10, 10), "ELAIS-N1": (8, -18)}
-    for name, ra, dec, area, fac, c in DEEPFIELDS:
+    for name, ra, dec, w, h, fac, c in DEEPFIELDS:
         if c != cap:
             continue
-        axx.scatter(ra, dec, s=90*np.sqrt(area)+40, color=FCOL[fac], alpha=0.65,
-                    edgecolor="k", linewidth=0.5, zorder=3)
-        axx.annotate(f"{name}\n({area:g} deg$^2$)", (ra, dec), textcoords="offset points",
+        w_ra = w / np.cos(np.radians(dec))                 # true RA extent [deg]
+        axx.add_patch(Rectangle((ra - w_ra / 2, dec - h / 2), w_ra, h,
+                                facecolor=FCOL[fac], alpha=0.55, edgecolor="k",
+                                linewidth=0.8, zorder=3))
+        area = w * h
+        axx.annotate(f"{name}\n({area:.2g} deg$^2$)", (ra, dec), textcoords="offset points",
                      xytext=off.get(name, (8, 7)), fontsize=7.5)
     axx.set_xlabel("RA [deg]"); axx.set_ylabel("Dec [deg]"); axx.set_title(title, pad=12)
-    axx.grid(alpha=0.3); axx.invert_xaxis(); axx.margins(0.28)
-handles = [Line2D([0], [0], marker="o", ls="", markerfacecolor=FCOL[k], markeredgecolor="k",
-                  markersize=9, label=v) for k, v in
+    axx.grid(alpha=0.3); axx.autoscale(); axx.invert_xaxis(); axx.margins(0.35)
+handles = [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.55, label=v)
+           for k, v in
            [("HST", "HST (+JWST)"), ("Subaru", "Subaru/HSC"), ("multi", "HST+Subaru(+JWST)")]]
 axes[0].legend(handles=handles, fontsize=7.5, loc="best")
-fig3.suptitle("Legacy deep fields within the proposed ELG caps (marker size $\\propto\\sqrt{\\rm area}$)", y=1.02)
+fig3.suptitle("Legacy deep fields within the proposed ELG caps (boxes drawn at true footprint size)", y=1.02)
 fig3.tight_layout()
 fig3.savefig("elg_deepfields_zoom.png", bbox_inches="tight")
 print("wrote elg_deepfields_zoom.png")
