@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Low-cirrus imaging-survey fields: zoomed confirmation on the Planck 857 GHz
-thermal-dust map, in the same gnomonic (TAN) WCS style as the ELG survey zoom.
+thermal-dust map, oversampled with smooth interpolation (the map's native
+beam is 5 arcmin; the 15 arcsec WISE 12um WSSA atlas shows mostly
+instrumental residuals in fields this clean), in the same TAN WCS style
+as the ELG survey zoom.
 
 The two fields are the minima of the mean Planck 857 GHz intensity over a
 survey-footprint-sized aperture, searched over all |b| > 48 deg sky on the
@@ -70,8 +73,8 @@ def field_stats(ra0, dec0):
 # shared display normalisation across both fields
 cuts = []
 for cap, (ra0, dec0) in FIELDS.items():
-    data, hdr = fetch_hips(f"planck857_img{cap}.fits", hips="CDS/P/PLANCK/R3/HFI857",
-                           width=520, height=520, fov=40.0, projection="TAN",
+    data, hdr = fetch_hips(f"planck857_zoom{cap}.fits", hips="CDS/P/PLANCK/R3/HFI857",
+                           width=1100, height=1100, fov=20.0, projection="TAN",
                            coordsys="icrs", ra=ra0, dec=dec0)
     cuts.append((cap, ra0, dec0, data, hdr))
 allpix = np.concatenate([c[3].ravel() for c in cuts])
@@ -86,7 +89,7 @@ for i, (cap, ra0, dec0, data, hdr) in enumerate(cuts):
     n = data.shape[1]
     hw = abs(hdr["CDELT1"]) * n / 2.0
     im = ax.imshow(data, origin="lower", extent=(-hw, hw, -hw, hw),
-                   cmap="gray", norm=norm, interpolation="bilinear", zorder=0)
+                   cmap="gray", norm=norm, interpolation="bicubic", zorder=0)
     # pave the imaging footprint with its 30' tiles, semi-transparent
     grid = np.arange(-HALF + FOVTILE / 2, HALF, FOVTILE)
     for cx in grid:
@@ -96,6 +99,8 @@ for i, (cap, ra0, dec0, data, hdr) in enumerate(cuts):
                                    edgecolor="white", lw=0.1, alpha=0.22, zorder=2))
     ax.add_patch(Rectangle((-HALF, -HALF), 2 * HALF, 2 * HALF, fill=False,
                            edgecolor="#00e5ff", lw=2.2, zorder=3))
+    ax.text(0, -HALF - 0.55, "ultra-deep imaging field (2.25 deg$^2$)",
+            color="#00e5ff", fontsize=8.5, ha="center", va="top", zorder=5)
     if cap == "N":                                 # neighbouring ELG wide tier
         welg = cap_wcs(*ELG_N)
         EH = 6.25                                  # ELG wide-tier half-size
@@ -131,7 +136,7 @@ fig.subplots_adjust(left=0.06, right=0.86, top=0.86, bottom=0.09, wspace=0.16)
 cax = fig.add_axes([0.885, 0.09, 0.02, 0.77])
 cb = fig.colorbar(im, cax=cax)
 cb.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=9)
-fig.suptitle("Dedicated ultra-deep imaging fields (2.25 deg$^2$ each), the Planck 857 GHz "
-             "minima of the two caps, paved with the 30$'$ survey tiles", fontsize=11.5)
+fig.suptitle("Dedicated ultra-deep imaging fields (2.25 deg$^2$ each) at the Planck 857 GHz "
+             "minima of the two caps (map native beam 5')", fontsize=11.5)
 fig.savefig("imaging_fields_zoom.png", bbox_inches="tight")
 print("wrote imaging_fields_zoom.png")

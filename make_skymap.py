@@ -139,6 +139,12 @@ ax.plot([wrap(210.0)], [np.radians(38.0)], marker="s", ms=7, mfc="none",
         label="ultra-deep imaging fields (2.25 deg$^2$ each)")
 ax.plot([wrap(344.0)], [np.radians(-48.0)], marker="s", ms=7, mfc="none",
         mec="#00e5ff", mew=1.6, ls="")
+# imaging-only wide extension: 35x35-tile (17.5 deg, ~306 deg^2) fields at the
+# lowest-cirrus windows found with a matching 9.9-deg aperture (|b|>55); the
+# northern field sits beside the Lockman Hole
+survey_outline(162.0, 52.0, halfdeg=8.75, color="#ff5cf0", lw=1.8,
+               label="imaging-only extension ($\\sim$306 deg$^2$/cap, $g$+$H$)")
+survey_outline(3.4, -38.0, halfdeg=8.75, color="#ff5cf0", lw=1.8)
 
 # Galactic plane and |b|=20 boundaries as guide curves
 for bb, ls in [(0, "-"), (20, "--"), (-20, "--")]:
