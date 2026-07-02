@@ -90,20 +90,31 @@ print(f"N-cap points: {ngc.sum()}, S-cap points: {sgc.sum()}, MW-avoid points: {
 # ---- zoom-in view in a gnomonic (TAN) tangent-plane projection ----
 # TAN is the standard projection for imaging fields in astronomy; astropy's
 # WCSAxes draws the curved RA/Dec graticule automatically. Each cap is a
-# separate tangent plane. We overlay the proposed ELG survey rectangle (a
-# high-|b|, Milky-Way-avoiding region enclosing the legacy fields) and the
-# legacy deep fields at their true footprint size.
+# separate tangent plane. We overlay one proposed ELG survey block at its true
+# 100-300 deg^2 scale (goal is 300 deg^2 total, so ~150 deg^2 per cap), placed
+# on the premier legacy-field concentration; the other legacy fields lie
+# elsewhere in the same cap and anchor the deep and calibration tiers.
 from matplotlib.patches import Rectangle
 from astropy.wcs import WCS
 import astropy.visualization.wcsaxes            # registers the WCS projection
 from astropy.visualization.wcsaxes import Quadrangle
 
-# Proposed ELG survey rectangles (RA range, Dec range, tangent point). Both stay
-# at |b|>27 deg (Milky Way clear) and enclose that cap's legacy deep fields.
-ELG_BOXES = {
-    "N": dict(ra=(140.0, 250.0), dec=(-2.0, 64.0), cen=(196.0, 34.0)),
-    "S": dict(ra=(26.0, 62.0),  dec=(-32.0, 2.0),  cen=(44.0, -15.0)),
+# Anchor of the nested wedding-cake tiers per cap. North is anchored on COSMOS,
+# South on the XMM-LSS / SXDS / UDS complex; the projection is centred on the
+# anchor so the 30'x30' tiling is locally undistorted.
+ANCHOR = {
+    "N": dict(cen=(150.12, 2.21), where="wide survey on COSMOS"),
+    "S": dict(cen=(35.0, -5.0),   where="wide survey on XMM-LSS / SXDS / UDS"),
 }
+FOV = 0.5                                         # 30 arcmin = 0.5 deg square survey tile
+# wedding-cake tiers (area deg^2, tile fill colour, label). Each tier is paved
+# with 30'x30' tiles, so its boundary is a jagged staircase, not a smooth box.
+TIERS = [
+    (150.0, "#f7dc6f", "wide tier ($\\sim$150 deg$^2$)"),
+    (30.0,  "#e59866", "medium tier (30 deg$^2$)"),
+    (2.0,   "#cd6155", "deep tier (1--3 deg$^2$)"),
+]
+R_WIDE, R_MED, R_DEEP = [np.sqrt(a / np.pi) for a, _, _ in TIERS]   # tier radii [deg]
 
 
 def cap_wcs(ra0, dec0):
@@ -111,60 +122,78 @@ def cap_wcs(ra0, dec0):
     w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
     w.wcs.crval = [ra0, dec0]
     w.wcs.crpix = [1.0, 1.0]
-    w.wcs.cdelt = [-1.0, 1.0]                    # 1 deg per pixel
+    w.wcs.cdelt = [-1.0, 1.0]                    # 1 deg per pixel (pixel = tangent-plane deg)
     return w
 
 
-fig3 = plt.figure(figsize=(11.4, 5.2), dpi=150)
-for i, (cap, title) in enumerate([("N", "North Galactic cap"), ("S", "South Galactic cap")]):
-    box = ELG_BOXES[cap]
-    w = cap_wcs(*box["cen"])
+def tile_tier(dist):
+    """Tier index (0 wide, 1 medium, 2 deep) for a tile at radius dist [deg], else None."""
+    if dist <= R_DEEP:
+        return 2
+    if dist <= R_MED:
+        return 1
+    if dist <= R_WIDE:
+        return 0
+    return None
+
+
+fig3 = plt.figure(figsize=(11.6, 5.6), dpi=150)
+for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galactic cap")]):
+    a = ANCHOR[cap]
+    ra0, dec0 = a["cen"]
+    w = cap_wcs(ra0, dec0)                         # projection centred on the anchor
     axx = fig3.add_subplot(1, 2, i + 1, projection=w)
     tw = axx.get_transform("world")
-    # proposed ELG survey region
-    (r0, r1), (d0, d1) = box["ra"], box["dec"]
-    axx.add_patch(Quadrangle((r0 * u.deg, d0 * u.deg), (r1 - r0) * u.deg, (d1 - d0) * u.deg,
-                             transform=tw, facecolor="#f4d03f", alpha=0.15,
-                             edgecolor="#b7950b", lw=1.6, ls="--", zorder=1))
-    # legacy deep fields at true footprint size
-    off = {"GOODS-N": (10, 9), "EGS/AEGIS": (-34, -20), "COSMOS": (10, 8),
-           "ELAIS-N1": (11, 5), "Subaru DF": (9, -16),
-           "UDS/SXDS": (11, -16), "XMM-LSS": (10, 11), "GOODS-S": (6, -8)}
+    # pave the nested tiers with 30'x30' tiles on a 0.5 deg tangent-plane grid
+    # (pixel = deg here); tiles whose centre is inside a tier radius are kept, so
+    # each tier boundary comes out jagged rather than a clean rectangle.
+    ncell = int(np.ceil(R_WIDE / FOV)) + 1
+    grid = np.arange(-ncell, ncell + 1) * FOV
+    for cx in grid:
+        for cy in grid:
+            k = tile_tier(np.hypot(cx, cy))
+            if k is None:
+                continue
+            axx.add_patch(Rectangle((cx - FOV / 2, cy - FOV / 2), FOV, FOV,
+                                     facecolor=TIERS[k][1], edgecolor="white",
+                                     lw=0.15, alpha=0.9, zorder=1 + k))
+    # legacy deep fields inside this field of view, at true footprint size
+    off = {"COSMOS": (12, 9), "XMM-LSS": (10, 13), "UDS/SXDS": (12, -15)}
+    half = R_WIDE + 1.5
     for name, ra, dec, ww, hh, fac, c in DEEPFIELDS:
         if c != cap:
+            continue
+        px, py = w.world_to_pixel_values(ra, dec)
+        if abs(px) > half or abs(py) > half:      # outside this zoom
             continue
         w_ra = ww / np.cos(np.radians(dec))                # true RA extent [deg]
         axx.add_patch(Quadrangle(((ra - w_ra / 2) * u.deg, (dec - hh / 2) * u.deg),
                                  w_ra * u.deg, hh * u.deg, transform=tw,
-                                 facecolor=FCOL[fac], alpha=0.75, edgecolor="k",
-                                 lw=0.8, zorder=4))
-        axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)",
-                     w.world_to_pixel_values(ra, dec), textcoords="offset points",
-                     xytext=off.get(name, (9, 8)), fontsize=7.2, zorder=5)
-    # frame the plot on the ELG box with a little margin
-    cr = [r0, r1, r1, r0]; cd = [d0, d0, d1, d1]
-    px, py = w.world_to_pixel_values(cr, cd)
-    m = 6.0
-    axx.set_xlim(px.min() - m, px.max() + m); axx.set_ylim(py.min() - m, py.max() + m)
-    axx.coords.grid(color="0.6", alpha=0.5, ls=":")
+                                 facecolor=FCOL[fac], alpha=0.95, edgecolor="k",
+                                 lw=0.9, zorder=6))
+        axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)", (float(px), float(py)),
+                     textcoords="offset points", xytext=off.get(name, (9, 8)),
+                     fontsize=7.4, zorder=7)
+    axx.set_xlim(-half, half); axx.set_ylim(-half, half)
+    axx.coords.grid(color="0.5", alpha=0.5, ls=":")
     axx.coords[0].set_axislabel("R.A."); axx.coords[1].set_axislabel("Dec.")
     axx.coords[0].set_major_formatter("d"); axx.coords[1].set_major_formatter("d")
-    axx.coords[0].set_ticks(spacing=20 * u.deg); axx.coords[1].set_ticks(spacing=20 * u.deg)
-    for c, pos in ((0, "b"), (1, "l")):                    # RA on bottom, Dec on left
-        axx.coords[c].set_ticks_position(pos)
-        axx.coords[c].set_ticklabel_position(pos)
-        axx.coords[c].set_axislabel_position(pos)
-    axx.set_title(title, pad=10)
+    axx.coords[0].set_ticks(spacing=5 * u.deg); axx.coords[1].set_ticks(spacing=5 * u.deg)
+    for cc, pos in ((0, "b"), (1, "l")):                   # RA on bottom, Dec on left
+        axx.coords[cc].set_ticks_position(pos)
+        axx.coords[cc].set_ticklabel_position(pos)
+        axx.coords[cc].set_axislabel_position(pos)
+    axx.set_title(f"{ttl}\n{a['where']}", fontsize=9.5, pad=8)
 
-handles = [Rectangle((0, 0), 1, 1, facecolor="#f4d03f", edgecolor="#b7950b", ls="--",
-                     alpha=0.4, label="proposed ELG survey region")]
-handles += [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.75, label=v)
+handles = [Rectangle((0, 0), 1, 1, facecolor=fc, edgecolor="0.4", lw=0.4, alpha=0.9, label=lab)
+           for (area, fc, lab) in TIERS]
+handles += [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.95, label=v)
             for k, v in [("HST", "HST (+JWST)"), ("Subaru", "Subaru/HSC"),
                          ("multi", "HST+Subaru(+JWST)")]]
-fig3.legend(handles=handles, fontsize=7.8, loc="lower center", ncol=4,
-            bbox_to_anchor=(0.5, -0.02))
-fig3.suptitle("Proposed ELG survey regions and legacy deep fields "
-              "(gnomonic TAN projection, true footprint sizes)", y=0.99)
-fig3.tight_layout(rect=(0, 0.04, 1, 1))
+fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=3,
+            bbox_to_anchor=(0.5, -0.1))
+fig3.suptitle("Proposed ELG survey tiers paved with 30$'\\!\\times\\!$30$'$ tiles "
+              "(jagged boundaries) and the legacy deep fields they cover", y=0.995)
+fig3.tight_layout(rect=(0, 0.11, 1, 1))
 fig3.savefig("elg_deepfields_zoom.png", bbox_inches="tight")
 print("wrote elg_deepfields_zoom.png")
