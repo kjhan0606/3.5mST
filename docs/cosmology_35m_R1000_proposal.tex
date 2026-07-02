@@ -1702,7 +1702,14 @@ The low-surface-brightness (LSB) Universe is the part of the galaxy population t
 
 \subsubsection{The Low-Surface-Brightness Regime and Why It Demands Space}
 
-Surface brightness, unlike flux, is preserved under distance in a static universe but is strongly degraded by cosmological dimming, $\mu(z)=\mu_0+10\log_{10}(1+z)$ mag\,arcsec$^{-2}$, the $(1+z)^4$ law. An object with a central surface brightness of $\mu_0\simeq24$ mag\,arcsec$^{-2}$, typical of an ultra-diffuse galaxy, is dimmed by $1.1$ mag by $z=0.3$ and by $3$ mag by $z=1$, sinking far below the few-percent level of sky-background control that ground-based imaging can realistically achieve. The limiting factors on the ground are not photon statistics but systematics, namely the brightness and variability of the atmospheric airglow, scattered light in the optical path, and flat-fielding errors over the large angular scales that diffuse sources subtend. The faintest reliable ground-based surface-brightness limits reach $\mu\sim28$--$29$ mag\,arcsec$^{-2}$, and the purpose-built Dragonfly Telephoto Array, designed specifically to suppress scattered light, pushes to $\mu\sim30$--$31$ mag\,arcsec$^{-2}$ \cite{abraham2014dragonfly}. A space platform removes the airglow term entirely and stabilizes the point-spread function and the photometric response, so that the achievable depth is set by integration time and by the astrophysical foreground of Galactic cirrus rather than by a fluctuating sky. Long exposures over a wide, contiguous field are therefore the natural mode in which a space telescope outperforms larger ground-based apertures for diffuse science, and that combination is precisely what the mission's \fovlarge\ field delivers.
+Surface brightness, unlike flux, is preserved under distance in a static universe but is strongly degraded by cosmological dimming, $\mu(z)=\mu_0+10\log_{10}(1+z)$ mag\,arcsec$^{-2}$, the $(1+z)^4$ law. An object with a central surface brightness of $\mu_0\simeq24$ mag\,arcsec$^{-2}$, typical of an ultra-diffuse galaxy, is dimmed by $1.1$ mag by $z=0.3$ and by $3$ mag by $z=1$, sinking far below the few-percent level of sky-background control that ground-based imaging can realistically achieve. The limiting factors on the ground are not photon statistics but systematics, namely the brightness and variability of the atmospheric airglow, scattered light in the optical path, and flat-fielding errors over the large angular scales that diffuse sources subtend. The faintest reliable ground-based surface-brightness limits reach $\mu\sim28$--$29$ mag\,arcsec$^{-2}$, and the purpose-built Dragonfly Telephoto Array, designed specifically to suppress scattered light, pushes to $\mu\sim30$--$31$ mag\,arcsec$^{-2}$ \cite{abraham2014dragonfly}. A space platform removes the airglow term entirely and stabilizes the point-spread function and the photometric response, so that the achievable depth is set by integration time and by the astrophysical foreground of Galactic cirrus rather than by a fluctuating sky. Long exposures over a wide, contiguous field are therefore the natural mode in which a space telescope outperforms larger ground-based apertures for diffuse science, and that combination is precisely what the mission's \fovlarge\ field delivers. Figure~\ref{fig:lsbggallery} shows what this population actually looks like, twelve galaxies from the published DES low-surface-brightness catalog \cite{tanoglidis2021} spanning mean surface brightness $\bar\mu_g=25.0$--$27.2$ mag\,arcsec$^{-2}$, the faint end of which is already at the edge of visibility in some of the deepest wide-area ground imaging in existence.
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{des_lsbg_gallery.png}
+\caption{Twelve low-surface-brightness galaxies from the published DES DR1 LSBG catalog of 23{,}790 objects \cite{tanoglidis2021}, shown in DECam Legacy Surveys DR10 colour imaging \cite{dey2019}, which includes the DES data. The panels are ordered by mean $g$-band surface brightness across twelve equal bins spanning $\bar\mu_g=25.0$--$27.2$ mag\,arcsec$^{-2}$ (the requested $25$--$30$ window, of which the published catalog populates up to its $27.2$ limit), and within each bin the angularly largest object is shown, with its $\bar\mu_g$, effective radius, and a $10''$ scale bar. The sequence makes the observational problem of Section~\ref{sec:lsb} concrete. The brightest examples are obvious, the $\bar\mu_g\simeq26$ objects are already marginal, and the faintest catalog members nearly vanish in imaging that represents the state of the art for wide ground-based surveys, while the parameter space beyond $\bar\mu_g\simeq27$, where the fuzzy-dark-matter candidate Nube lies (Figure~\ref{fig:nube}), is essentially unexplored over wide areas and is exactly the regime the mission's $\mu\sim30$--$32$ mag\,arcsec$^{-2}$ reach opens.}
+\label{fig:lsbggallery}
+\end{figure}
 
 \subsubsection{Ultra-Diffuse Galaxies as a Cluster Population}
 
@@ -3191,6 +3198,18 @@ Planck Collaboration,
 ``Planck 2018 results. III. High Frequency Instrument data processing and frequency maps,''
 \emph{Astronomy \& Astrophysics}, 641, A3, 2020.
 \url{https://ui.adsabs.harvard.edu/abs/2020A\%26A...641A...3P/abstract}
+
+\bibitem{tanoglidis2021}
+D. Tanoglidis et al.,
+``Shadows in the Dark: Low-surface-brightness Galaxies Discovered in the Dark Energy Survey,''
+\emph{Astrophysical Journal Supplement Series}, 252, 18, 2021.
+\url{https://ui.adsabs.harvard.edu/abs/2021ApJS..252...18T/abstract}
+
+\bibitem{dey2019}
+A. Dey et al.,
+``Overview of the DESI Legacy Imaging Surveys,''
+\emph{Astronomical Journal}, 157, 168, 2019.
+\url{https://ui.adsabs.harvard.edu/abs/2019AJ....157..168D/abstract}
 
 \bibitem{ienaka2013}
 N. Ienaka et al.,
