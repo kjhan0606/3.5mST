@@ -129,8 +129,14 @@ def survey_outline(ra0, dec0, halfdeg=6.25, **kw):
     ax.plot(wrap(np.asarray(ra_o)), np.radians(np.asarray(dec_o)), **kw)
 
 survey_outline(218.0, 34.0, color="#f5b041", lw=1.8,
-               label="wide imaging tier ($\sim$150 deg$^2$/cap)")
+               label="ELG wide tier ($\sim$150 deg$^2$/cap)")
 survey_outline(34.7, -5.05, color="#f5b041", lw=1.8)
+# dedicated low-cirrus imaging fields: Planck 857 GHz minima of the two caps
+# (searched over |b|>48 deg with a footprint-sized aperture; see
+# make_imaging_fields.py)
+survey_outline(210.0, 38.0, color="#00e5ff", lw=1.8,
+               label="low-cirrus imaging fields")
+survey_outline(344.0, -48.0, color="#00e5ff", lw=1.8)
 
 # Galactic plane and |b|=20 boundaries as guide curves
 for bb, ls in [(0, "-"), (20, "--"), (-20, "--")]:

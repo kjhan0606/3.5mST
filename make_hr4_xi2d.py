@@ -28,17 +28,17 @@ for ax, (fname, title) in zip(axes, panels):
     xi = fits.open(f"{BASE}/{fname}")[0].data.astype(float)
     n = xi.shape[0]
     half = DX * n / 2.0
-    with np.errstate(invalid="ignore", divide="ignore"):
-        lg = np.log10(np.where(xi > 0, xi, np.nan))
-    cmap = plt.get_cmap("magma").copy()
-    cmap.set_bad("black")
+    # scaling follows the original kjhan.pro: log10|xi| with non-positive
+    # values floored (2e-9), displayed over [-4, 0]
+    lg = np.log10(np.abs(np.where(np.isfinite(xi) & (xi > 0), xi, 2e-9)))
+    cmap = plt.get_cmap("jet").copy()               # cgLoadCT 33 equivalent
+    cmap.set_bad(cmap(0.0))
     im = ax.imshow(lg, origin="lower", extent=(-half, half, -half, half),
-                   cmap=cmap, vmin=-4.0, vmax=1.0, interpolation="nearest",
+                   cmap=cmap, vmin=-4.0, vmax=0.0, interpolation="nearest",
                    rasterized=True)
-    ax.add_patch(Circle((0, 0), BAO, fill=False, color="#4ec9b0", lw=1.6,
-                        ls="--"))
-    ax.text(0, BAO + 6, f"BAO ridge $s\\simeq{BAO:.0f}\\,h^{{-1}}$ Mpc",
-            color="#4ec9b0", fontsize=9, ha="center")
+    ax.add_patch(Circle((0, 0), BAO, fill=False, color="red", lw=1.6))
+    ax.text(0, -BAO - 16, f"BAO ridge $s\\simeq{BAO:.0f}\\,h^{{-1}}$ Mpc",
+            color="white", fontsize=9, ha="center")
     ax.set_xlim(-half, half); ax.set_ylim(-half, half)
     ax.set_xlabel(r"$\sigma$ [$h^{-1}$ Mpc]")
     ax.set_ylabel(r"$\pi$ [$h^{-1}$ Mpc]")
