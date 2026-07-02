@@ -181,10 +181,14 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
         if abs(px) > half or abs(py) > half:      # outside this zoom
             continue
         w_ra = ww / np.cos(np.radians(dec))                # true RA extent [deg]
+        # the NDWFS field is drawn as an outline so the 30' survey tiling inside
+        # it stays visible; the compact legacy fields are filled.
+        outline = fac == "wide"
         axx.add_patch(Quadrangle(((ra - w_ra / 2) * u.deg, (dec - hh / 2) * u.deg),
                                  w_ra * u.deg, hh * u.deg, transform=tw,
-                                 facecolor=FCOL[fac], alpha=0.95, edgecolor="k",
-                                 lw=0.9, zorder=6))
+                                 facecolor="none" if outline else FCOL[fac],
+                                 alpha=0.95, edgecolor=FCOL[fac] if outline else "k",
+                                 lw=1.8 if outline else 0.9, zorder=6))
         if name != "NDWFS Bootes":                # anchor field is labelled in the inset
             axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)", (float(px), float(py)),
                          textcoords="offset points", xytext=off.get(name, (9, 8)),
@@ -213,8 +217,9 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
                                           lw=0.3, alpha=0.95))
     if cap == "N":
         bpx, bpy = w.world_to_pixel_values(218.0, 34.0)
+        # outline only, so the 30' tiles paving the NDWFS region remain visible
         axins.add_patch(Rectangle((float(bpx) - 3.5 / 2, float(bpy) - 2.65 / 2), 3.5, 2.65,
-                                  facecolor=FCOL["wide"], alpha=0.85, edgecolor="k", lw=0.8))
+                                  facecolor="none", edgecolor=FCOL["wide"], lw=2.0))
         axins.text(0, 3.0, "NDWFS Bootes (9.3 deg$^2$)", ha="center", fontsize=6.4)
     else:
         for pra, pdec in SXDS_POINTINGS:
@@ -238,8 +243,10 @@ handles = [Rectangle((0, 0), 1, 1, facecolor=fc, edgecolor="0.4", lw=0.4, alpha=
            for (area, fc, lab) in TIERS]
 handles += [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.95, label=v)
             for k, v in [("HST", "HST (+JWST)"), ("Subaru", "Subaru/HSC"),
-                         ("multi", "HST+Subaru(+JWST)"), ("wide", "NDWFS/HETDEX wide")]]
-handles += [Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#145a32", lw=1.6, ls="--",
+                         ("multi", "HST+Subaru(+JWST)")]]
+handles += [Rectangle((0, 0), 1, 1, facecolor="none", edgecolor=FCOL["wide"], lw=2.0,
+                      label="NDWFS/HETDEX (outline)"),
+            Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#145a32", lw=1.6, ls="--",
                       label="UDS (UKIDSS/WFCAM tile)")]
 fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=4,
             bbox_to_anchor=(0.5, -0.12))
