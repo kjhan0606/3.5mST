@@ -25,15 +25,15 @@ def sb_rate_per_pix(cfg, mu_ab, band):
     lam = np.linspace(lo, hi, 300)
     fnu = 3631.0e-23 * 10 ** (-0.4 * mu_ab)                 # erg/s/cm2/Hz/arcsec2
     flam = fnu * 2.99792458e18 / lam ** 2
-    surf = np.trapezoid(flam * etc._photon_factor(lam) * cfg.throughput(lam), lam)
+    surf = np.trapezoid(flam * etc._photon_factor(lam) * cfg.throughput_imaging(lam), lam)
     return surf * cfg.area_cm2 * cfg.omega_pix
 
 
 def sb_snr(cfg, mu_ab, band, t, bin_arcsec2):
     src = sb_rate_per_pix(cfg, mu_ab, band)
-    sky = etc.background_per_pixel(cfg, band)
+    sky = etc.background_per_pixel(cfg, band, imaging=True)
     n_bin = bin_arcsec2 / cfg.omega_pix
-    var_pix = (src + sky + cfg.dark_current) * t + cfg.n_exp * cfg.read_noise ** 2
+    var_pix = (src + sky + cfg.dark_current) * t + cfg.n_reads(t) * cfg.read_noise ** 2
     return src * t * np.sqrt(n_bin) / np.sqrt(var_pix)
 
 

@@ -501,9 +501,9 @@ Read noise $\sigma_{\rm read}$ & $10$ e$^-$ pix$^{-1}$ & per read, three reads\\
 \label{tab:etc}
 \end{table}
 
-The single-wavelength estimate above is deliberately simple. A companion numerical calculator\footnote{Open-source at \url{https://github.com/kjhan0606/3.5mST}.} carries the same photon budget wavelength by wavelength. It replaces the constant $\bar i_{\rm sky}$ and $\Delta\lambda_{\rm filt}$ of Eq.~\eqref{eq:etcbg} with the zodiacal spectrum integrated over the band, folds in the wavelength-dependent throughput and quantum efficiency, the optimal-extraction efficiency, and the telescope thermal self-emission, then solves the exact $5\sigma$ condition with the source shot noise retained. The zodiacal light is built from the observed solar reference spectrum scattered by interplanetary dust and reddened by the $\sim0.3$ mag in $(V-K)$ that the dust imposes relative to the Sun, with the dust thermal term added \cite{leinert1998}. With component-level throughput and quantum-efficiency curves the calculator returns $F_{5\sigma}\simeq1.6\times10^{-17}\,{\rm erg\,s^{-1}\,cm^{-2}}$ for an H$\alpha$ line at $1.6\,\mu$m in $0.75$\,hr (Figure~\ref{fig:etc}), consistent with the closed form. Run instead on the Roman and Euclid instrument parameters, the same calculator reproduces the published Roman HLSS depth to about $5\%$ and the Euclid Wide depth to a factor of two, the residual reflecting the coarser Euclid sampling and its wide-survey self-contamination \cite{wang2021,euclid2011}. These cross-checks confirm that the $1\times10^{-16}$ planning anchor of Eq.~\eqref{eq:f5sigma} is conservative by roughly a factor of five. The same calculator is driven by a graphical interface that carries telescope presets and imaging or slitless-spectroscopy modes, shown in Figure~\ref{fig:etcgui}.
+The single-wavelength estimate above is deliberately simple. A companion numerical calculator\footnote{Open-source at \url{https://github.com/kjhan0606/3.5mST}.} carries the same photon budget wavelength by wavelength. It replaces the constant $\bar i_{\rm sky}$ and $\Delta\lambda_{\rm filt}$ of Eq.~\eqref{eq:etcbg} with the zodiacal spectrum integrated over the band, folds in the wavelength-dependent throughput and quantum efficiency, the optimal-extraction efficiency, and the telescope thermal self-emission, then solves the exact $5\sigma$ condition with the source shot noise retained. The zodiacal light is built from the observed solar reference spectrum scattered by interplanetary dust and reddened by the $\sim0.3$ mag in $(V-K)$ that the dust imposes relative to the Sun, with the dust thermal term added \cite{leinert1998}. With component-level throughput and quantum-efficiency curves the calculator returns $F_{5\sigma}\simeq1.6\times10^{-17}\,{\rm erg\,s^{-1}\,cm^{-2}}$ for an H$\alpha$ line at $1.6\,\mu$m in $0.75$\,hr (Figure~\ref{fig:etc}), consistent with the closed form. Run instead on the Roman and Euclid instrument parameters, the same calculator sits moderately deeper than the realised survey limits, by a factor of about $1.4$ for the Roman HLSS and about $2.3$ for Euclid Wide, which is the expected optimistic offset of an idealised photon calculator relative to survey depths that fold in pipeline extraction losses and wide-survey self-contamination, largest for the coarse $0.3''$ Euclid sampling \cite{wang2021,euclid2011}. These cross-checks confirm that the $1\times10^{-16}$ planning anchor of Eq.~\eqref{eq:f5sigma} is conservative by roughly a factor of five. The same calculator is driven by a graphical interface that carries telescope presets and imaging or slitless-spectroscopy modes, shown in Figure~\ref{fig:etcgui}.
 
-The same cross-check extends to JWST across both modes. Table~\ref{tab:jwstval} runs the calculator on the documented JWST NIRCam imaging and NIRSpec spectroscopic reference cases and recovers the quoted signal-to-noise to within about ten to thirty percent.
+The same cross-check extends to JWST across both modes. Table~\ref{tab:jwstval} runs the calculator on the documented JWST NIRCam imaging and NIRSpec spectroscopic reference cases and recovers the quoted signal-to-noise to within about ten to forty percent.
 
 \begin{table}[h]
 \centering
@@ -512,12 +512,12 @@ The same cross-check extends to JWST across both modes. Table~\ref{tab:jwstval} 
 \toprule
 \textbf{JWST case} & \textbf{source} & \textbf{exposure} & \textbf{JWST S/N} & \textbf{this ETC}\\
 \midrule
-NIRCam F200W (imaging) & AB\,29.0 point & 10\,ks & 10 & 11.0\\
-NIRCam F444W (imaging) & AB\,27.9 point & 10\,ks & 10 & 12.8\\
-NIRSpec R=1000 (line) & $5.7\times10^{-19}$ @\,2\,$\mu$m & 100\,ks & 10 & 8.4\\
+NIRCam F200W (imaging) & AB\,29.0 point & 10\,ks & 10 & 11.1\\
+NIRCam F444W (imaging) & AB\,27.9 point & 10\,ks & 10 & 13.8\\
+NIRSpec R=1000 (line) & $5.7\times10^{-19}$ @\,2\,$\mu$m & 100\,ks & 10 & 7.7\\
 \bottomrule
 \end{tabularx}
-\caption{ETC cross-check against documented JWST sensitivities (STScI JDox) in imaging (NIRCam) and spectroscopy (NIRSpec). The reference column is the JWST-quoted signal-to-noise for the listed source, exposure, and configuration, and the last column is this calculator run on the same $6.5$\,m aperture, detector parameters, and target. Agreement is $\sim10$--$30\%$ in both modes.}
+\caption{ETC cross-check against documented JWST sensitivities (STScI JDox) in imaging (NIRCam) and spectroscopy (NIRSpec). The reference column is the JWST-quoted signal-to-noise for the listed source, exposure, and configuration, and the last column is this calculator run on the same $6.5$\,m aperture, detector parameters, and target. Agreement is $\sim10$--$40\%$ in both modes.}
 \label{tab:jwstval}
 \end{table}
 
@@ -553,12 +553,12 @@ Because the same calculator runs on any instrument, it places the concept direct
 \toprule
 \textbf{$\lambda$ [$\mu$m]} & \textbf{3.5\,m ST} & \textbf{Roman} & \textbf{Euclid} & \textbf{JWST}\\
 \midrule
-0.6 & 28.48 & 27.94 & -- & --\\
-1.0 & 27.79 & 27.43 & 25.36 & 29.63\\
-1.5 & 27.79 & 27.31 & 25.25 & 29.24\\
-2.0 & 26.65 & 25.85 & -- & 28.96\\
-2.5 & 23.94 & -- & -- & 28.77\\
-3.5 & -- & -- & -- & 28.42\\
+0.6 & 28.67 & 27.94 & -- & --\\
+1.0 & 27.99 & 27.40 & 25.32 & 29.67\\
+1.5 & 27.99 & 27.24 & 25.18 & 29.29\\
+2.0 & 26.86 & 26.01 & -- & 29.00\\
+2.5 & 24.33 & -- & -- & 28.75\\
+3.5 & -- & -- & -- & 28.43\\
 \bottomrule
 \end{tabularx}
 \caption{Imaging $5\sigma$ point-source limiting AB magnitude in a $1$\,hr exposure through a $0.3\,\mu$m band, for the four telescopes evaluated with the same calculator from their real apertures and detector parameters. Dashes mark wavelengths outside a mission's band. JWST is deepest (largest, cold aperture), followed by the $3.5$\,m concept, Roman, and Euclid. The $3.5$\,m entry at $2.5\,\mu$m is depressed by warm-optics thermal background, which cooling removes.}
@@ -1749,14 +1749,14 @@ ICL fraction & 10--20\% of the total cluster light in stacked photometry \cite{z
 ICL as mass tracer & ICL isocontours follow the lensing mass to $\sim$140 kpc in the Frontier Fields \cite{montes2019icl} & The same test repeated cluster by cluster against internally calibrated weak lensing\\
 SIDM cross section & $\sigma/m\lesssim0.5$ cm$^2$\,g$^{-1}$ from stellar--lensing offsets in merging clusters \cite{harvey2015} & Deep ICL centroids and halo ellipticities for much larger merger samples\\
 Halo edge & Splashback radius detected statistically in stacked satellite profiles \cite{more2016} & Diffuse light and satellites traced to the boundary of individual clusters\\
-Depth ceiling & Ground limits $\mu\sim28$--$29$, Dragonfly $\mu\sim30$--$31$ mag\,arcsec$^{-2}$ \cite{abraham2014dragonfly} & ETC reach $\mu_{5\sigma}(10'')=29.5$--$31.8$ for $1$--$64$ hr (Figure~\ref{fig:iclimg})\\
+Depth ceiling & Ground limits $\mu\sim28$--$29$, Dragonfly $\mu\sim30$--$31$ mag\,arcsec$^{-2}$ \cite{abraham2014dragonfly} & ETC reach $\mu_{5\sigma}(10'')=29.7$--$31.9$ for $1$--$64$ hr (Figure~\ref{fig:iclimg})\\
 \bottomrule
 \end{tabularx}
 \caption{Published measurements that anchor the cluster low-surface-brightness program, placed next to the step the mission adds to each. Every quantitative claim of the program traces back to one of these anchors.}
 \label{tab:lsbanchors}
 \end{table}
 
-The exposure-time calculator sets the surface-brightness reach directly. Figure~\ref{fig:icl} gives the time to a $5\sigma$ detection of intracluster light binned over a $10\times10$\,arcsec$^2$ region as a function of cluster redshift, including the $(1+z)^4$ cosmological surface-brightness dimming that dominates the trend. A rest-frame $\mu\simeq26$\,AB\,arcsec$^{-2}$ envelope is reached in well under an hour to $z\simeq0.3$, and the fainter $\mu\simeq28$ outskirts within a few hours, so the diffuse light can be traced toward the cluster edge across the sample.
+The exposure-time calculator sets the surface-brightness reach directly. Figure~\ref{fig:icl} gives the time to a $5\sigma$ detection of intracluster light binned over a $10\times10$\,arcsec$^2$ region as a function of cluster redshift, including the $(1+z)^4$ cosmological surface-brightness dimming that dominates the trend. A rest-frame $\mu\simeq26$\,AB\,arcsec$^{-2}$ envelope is reached in about a minute to $z\simeq0.3$, and the fainter $\mu\simeq28$ outskirts in about an hour, so the diffuse light can be traced toward the cluster edge across the sample.
 
 \begin{figure}[tp]
 \centering
@@ -1765,7 +1765,7 @@ The exposure-time calculator sets the surface-brightness reach directly. Figure~
 \label{fig:icl}
 \end{figure}
 
-A dedicated deep pointing on a single cluster turns this reach into a direct image. Figure~\ref{fig:iclimg} takes the deep HST Frontier Fields WFC3/IR F160W mosaic of Abell~2744 \cite{lotz2017} as the true scene and passes it through the same exposure-time calculator, adding the source, sky, dark, and read noise in quadrature to the noise already present in the truth so that each simulated frame carries exactly the ETC per-pixel noise. Four total integrations of a dedicated intracluster-light program are shown, one, four, sixteen, and sixty-four hours, reaching $5\sigma$ surface-brightness limits over a $10\times10$\,arcsec$^2$ bin of $\mu\simeq29.5$, $30.2$, $31.0$, and $31.8$\,AB\,arcsec$^{-2}$. Each panel is stretched between a fixed bright limit and its own per-pixel noise floor, so the background tone is common across the four and the eye reads directly how much fainter the diffuse light is traced as the exposure grows. The intracluster envelope that is buried in the noise at one hour is mapped smoothly between the cluster galaxies and out to the faint tidal features by sixteen to sixty-four hours. At the longest integrations the reach passes the depth of the space-based Frontier Fields imaging that itself defines the state of the art for cluster diffuse light, which is the concrete sense in which the platform advances intracluster-light science.
+A dedicated deep pointing on a single cluster turns this reach into a direct image. Figure~\ref{fig:iclimg} takes the deep HST Frontier Fields WFC3/IR F160W mosaic of Abell~2744 \cite{lotz2017} as the true scene and passes it through the same exposure-time calculator, adding the source, sky, dark, and read noise in quadrature to the noise already present in the truth so that each simulated frame carries exactly the ETC per-pixel noise. Four total integrations of a dedicated intracluster-light program are shown, one, four, sixteen, and sixty-four hours, reaching $5\sigma$ surface-brightness limits over a $10\times10$\,arcsec$^2$ bin of $\mu\simeq29.7$, $30.4$, $31.2$, and $31.9$\,AB\,arcsec$^{-2}$. Each panel is stretched between a fixed bright limit and its own per-pixel noise floor, so the background tone is common across the four and the eye reads directly how much fainter the diffuse light is traced as the exposure grows. The intracluster envelope that is buried in the noise at one hour is mapped smoothly between the cluster galaxies and out to the faint tidal features by sixteen to sixty-four hours. At the longest integrations the reach passes the depth of the space-based Frontier Fields imaging that itself defines the state of the art for cluster diffuse light, which is the concrete sense in which the platform advances intracluster-light science.
 
 \begin{figure}[tp]
 \centering

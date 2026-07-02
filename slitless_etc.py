@@ -55,16 +55,19 @@ def zodi_flambda(lam_A, mu_ref=22.5, lam_ref=5000.0, T_scat=5772.0,
                  tau_ipd=1.0e-7, T_ipd=265.0):
     """Zodiacal light surface brightness spectrum [erg s^-1 cm^-2 A^-1 arcsec^-2].
 
-    Scattered-solar continuum is the reddening-free solar blackbody (T_scat)
-    normalised to mu_ref (AB mag/arcsec^2) at lam_ref; this reproduces the
-    Leinert-1998 zodiacal colour to ~15% across 0.4-2.5 um (solar-analog dust).
-    The interplanetary-dust thermal term is tau_ipd * B_lambda(T_ipd) and is
-    negligible below ~3 um, dominating only in the thermal IR.
+    Scattered-solar continuum is a solar blackbody (T_scat) normalised to
+    mu_ref (AB mag/arcsec^2) at lam_ref, reddened by the ~0.3 mag in (V-K) that
+    the interplanetary dust imposes relative to the Sun (Leinert et al. 1998),
+    applied linearly in wavelength redward of V as in make_etc_data.py so the
+    analytic and tabulated backgrounds agree.  The interplanetary-dust thermal
+    term is tau_ipd * B_lambda(T_ipd) and is negligible below ~3 um.
     Typical mu_ref(0.5um): ~22.1 (ecliptic) to ~23.3 (pole)  [Leinert et al. 1998].
     """
     lam_A = np.asarray(lam_A, float)
     I_ref = ab_to_flambda(mu_ref, lam_ref)
     scat = I_ref * planck_lambda(lam_A, T_scat) / planck_lambda(lam_ref, T_scat)
+    dmag = 0.30 * np.clip((lam_A / 1e4 - 0.55) / (2.2 - 0.55), 0.0, None)
+    scat = scat * 10.0 ** (dmag / 2.5)
     therm = tau_ipd * planck_lambda(lam_A, T_ipd) * SR_PER_ARCSEC2
     return scat + therm
 
@@ -101,8 +104,11 @@ class InstrumentConfig:
     full_well: float = 100000.0         # detector full well [e-] (saturation)
     flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
     psf_floor: float = 0.04             # delivered image-quality floor [arcsec] (jitter+optics+charge diffusion)
+    t_single: float = 1800.0            # single-exposure length [s]; read noise scales with
+                                        # n_reads = max(n_exp, t/t_single) for long integrations
     # --- optional data files (lambda_A, value) override the analytic models ---
     throughput_csv: str = ""
+    throughput_imaging_csv: str = ""    # direct-imaging path (no disperser in the beam)
     zodi_csv: str = ""
 
     @property
@@ -123,10 +129,12 @@ class InstrumentConfig:
         return self.resolution_element_A(lam_A) / self.res_element_pix
 
     def psf_fwhm(self, lam_A):
-        """Delivered PSF FWHM [arcsec]: diffraction 1.22 lambda/D added in
-        quadrature with the image-quality floor (jitter, optics, charge diffusion)."""
+        """Delivered PSF FWHM [arcsec]: diffraction-limited Airy FWHM
+        (1.028 lambda/D; 1.22 lambda/D is the first-dark-ring *radius*, not the
+        FWHM) added in quadrature with the image-quality floor (jitter, optics,
+        charge diffusion)."""
         lam_cm = np.asarray(lam_A, float) * 1e-8
-        diff = 1.22 * lam_cm / self.diameter_cm * 206265.0
+        diff = 1.028 * lam_cm / self.diameter_cm * 206265.0
         return np.hypot(diff, self.psf_floor)
 
     # ---- throughput(lambda) ----
@@ -144,6 +152,21 @@ class InstrumentConfig:
         eta[right] *= 0.5 * (1 - np.cos(np.pi * np.clip((hi-lam_A[right])/w, 0, 1)))
         eta[(lam_A < lo) | (lam_A > hi)] = 0.0
         return eta
+
+    def throughput_imaging(self, lam_A):
+        """End-to-end throughput of the direct-imaging path (no grism in the
+        beam).  Falls back to the spectroscopic curve when no imaging file is
+        given (conservative)."""
+        if self.throughput_imaging_csv:
+            t = np.loadtxt(self.throughput_imaging_csv, delimiter=",")
+            lam_A = np.asarray(lam_A, float)
+            return np.interp(lam_A, t[:, 0], t[:, 1], left=0.0, right=0.0)
+        return self.throughput(lam_A)
+
+    def n_reads(self, t_s):
+        """Number of detector reads contributing read noise: at least the n_exp
+        rolls, growing as the integration is split into t_single exposures."""
+        return max(float(self.n_exp), np.ceil(t_s / self.t_single))
 
     # ---- background radiance spectrum (per arcsec^2) ----
     def sky_flambda(self, lam_A):
@@ -163,16 +186,18 @@ def _photon_factor(lam_A):
     return np.asarray(lam_A, float) * 1e-8 / (H * C)
 
 
-def background_per_pixel(cfg: InstrumentConfig, band_A):
+def background_per_pixel(cfg: InstrumentConfig, band_A, imaging=False):
     """Slitless diffuse background collected per pixel per second [e-/s/pix].
 
     Uniform sky disperses onto every pixel across the whole band-limiting filter,
     so integrate radiance * throughput * (lambda/hc) over the transmitted band.
+    With imaging=True the direct-imaging throughput (no grism) is used.
     """
     lo, hi = band_A
     lam = np.linspace(lo, hi, 400)
     I = cfg.sky_flambda(lam)                     # erg/s/cm^2/A/arcsec^2
-    integrand = I * _photon_factor(lam) * cfg.throughput(lam)   # e-/s/cm^2/A/arcsec^2
+    eta = cfg.throughput_imaging(lam) if imaging else cfg.throughput(lam)
+    integrand = I * _photon_factor(lam) * eta    # e-/s/cm^2/A/arcsec^2
     surf = np.trapezoid(integrand, lam)              # e-/s/cm^2/arcsec^2
     return surf * cfg.area_cm2 * cfg.omega_pix   # e-/s/pixel
 
@@ -200,10 +225,13 @@ def continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm=0.3):
         return 0.0
     flam = ab_to_flambda(cont_mag_AB, lam_A)               # erg/s/cm^2/A (point source)
     theta = np.hypot(source_fwhm, cfg.psf_fwhm(lam_A))
-    spatial = max(1.0, theta / cfg.pix_scale)
-    dlam = cfg.resolution_element_A(lam_A)                 # lambda / R
+    # continuum under the line footprint spans the *spectral* extent of the
+    # footprint (resolution element broadened by the source size), independent
+    # of how many spatial pixels the flux is spread over (flux conservation)
+    spectral_pix = np.hypot(cfg.res_element_pix, theta / cfg.pix_scale)
+    dlam_eff = spectral_pix * cfg.dispersion_A_per_pix(lam_A)
     return (flam * cfg.area_cm2 * cfg.throughput(lam_A)
-            * _photon_factor(lam_A) * dlam * spatial * cfg.extraction_eff)
+            * _photon_factor(lam_A) * dlam_eff * cfg.extraction_eff)
 
 
 def line_sn(cfg: InstrumentConfig, F_line, lam_A, t_s, source_fwhm=0.3,
@@ -219,7 +247,7 @@ def line_sn(cfg: InstrumentConfig, F_line, lam_A, t_s, source_fwhm=0.3,
     var = (S
            + (Bpix + cfg.dark_current) * npix * t_s
            + Ccont * t_s
-           + npix * cfg.n_exp * cfg.read_noise**2
+           + npix * cfg.n_reads(t_s) * cfg.read_noise**2
            + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
@@ -228,7 +256,8 @@ def f_limit(cfg: InstrumentConfig, lam_A, t_s, snr=5.0, source_fwhm=0.3,
             filter_width_A=4000.0, cont_mag_AB=None):
     """Line flux [erg/s/cm^2] detected at S/N = snr in t_s seconds.
 
-    Solves snr = S/sqrt(S + B_tot) exactly (quadratic in F, source shot noise in).
+    Solves snr = S/sqrt(S + B_tot + (flat*S)^2) exactly (quadratic in F, source
+    shot noise and the flat-field floor included, consistent with line_sn).
     """
     band = (max(cfg.band_min_A, lam_A - filter_width_A/2),
             min(cfg.band_max_A, lam_A + filter_width_A/2))
@@ -236,10 +265,13 @@ def f_limit(cfg: InstrumentConfig, lam_A, t_s, snr=5.0, source_fwhm=0.3,
     npix = line_footprint_pixels(cfg, source_fwhm, lam_A)
     Ccont = continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm)
     Btot = ((Bpix + cfg.dark_current) * npix * t_s + Ccont * t_s
-            + npix * cfg.n_exp * cfg.read_noise**2)
+            + npix * cfg.n_reads(t_s) * cfg.read_noise**2)
     k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
          * t_s * cfg.extraction_eff)   # e- per unit flux
-    S = 0.5 * (snr**2 + np.sqrt(snr**4 + 4.0 * snr**2 * Btot))               # required e-
+    a = 1.0 - (snr * cfg.flat_error) ** 2          # =1 when flat_error=0
+    if a <= 0:
+        return float("inf")                        # flat floor caps S/N below snr
+    S = (snr**2 + np.sqrt(snr**4 + 4.0 * a * snr**2 * Btot)) / (2.0 * a)     # required e-
     return float(S / k)
 
 
@@ -253,12 +285,12 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
     over the imaging filter bandwidth.
     """
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
-    Bpix = background_per_pixel(cfg, band)
+    Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)          # aperture radius [arcsec]
     npix = np.pi * (r_ap / cfg.pix_scale)**2
-    Btot = (Bpix + cfg.dark_current) * npix * t_s + npix * cfg.n_exp * cfg.read_noise**2
+    Btot = (Bpix + cfg.dark_current) * npix * t_s + npix * cfg.n_reads(t_s) * cfg.read_noise**2
     # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture
-    k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+    k = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
          * t_s * filter_width_A * cfg.extraction_eff)
     S = 0.5 * (snr**2 + np.sqrt(snr**4 + 4.0 * snr**2 * Btot))   # required e-
     F_lambda = S / k                                     # erg/s/cm^2/A
@@ -312,14 +344,14 @@ INSTRUMENT_ELEMENTS = {
 def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
     """Broadband imaging S/N for a point source of AB magnitude mag_ab."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
-    Bpix = background_per_pixel(cfg, band)
+    Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
-    S = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+    S = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
          * t_s * filter_width_A * Flam * cfg.extraction_eff)
     var = (S + (Bpix + cfg.dark_current) * npix * t_s
-           + npix * cfg.n_exp * cfg.read_noise**2 + (cfg.flat_error * S)**2)
+           + npix * cfg.n_reads(t_s) * cfg.read_noise**2 + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
 
@@ -335,21 +367,26 @@ def exposure_for_snr(snr_func, target_snr, tlo=1.0, thi=1.0e7):
 
 
 def peak_fraction(cfg, lam_A):
-    """Fraction of a point source's flux landing in the central pixel (Gaussian PSF)."""
+    """Fraction of a point source's flux landing in the central pixel: exact
+    integral of a centred Gaussian PSF over the pixel, erf(p/(2 sqrt2 sigma))^2
+    (the peak-intensity-times-area approximation overestimates this by ~40%
+    when the pixel is comparable to the PSF, as here)."""
+    from math import erf
     sigma = cfg.psf_fwhm(lam_A) / 2.35482
-    return float(min(0.95, cfg.pix_scale**2 / (2 * np.pi * sigma**2)))
+    a = cfg.pix_scale / (2.0 * np.sqrt(2.0) * sigma)
+    return float(erf(a) ** 2)
 
 
 def saturation_maglimit(cfg, lam_A, filter_width_A, t_single):
     """Brightest imaging AB magnitude before the central pixel saturates in one
     exposure of t_single seconds (full-well limit)."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
-    Bpix = background_per_pixel(cfg, band)
+    Bpix = background_per_pixel(cfg, band, imaging=True)
     avail = cfg.full_well / t_single - Bpix - cfg.dark_current      # e-/s left for source peak
     if avail <= 0:
         return np.nan
     Srate = avail / peak_fraction(cfg, lam_A)                       # total source e-/s
-    Flam = Srate / (cfg.area_cm2 * cfg.throughput(lam_A)
+    Flam = Srate / (cfg.area_cm2 * cfg.throughput_imaging(lam_A)
                     * _photon_factor(lam_A) * filter_width_A)
     return float(-2.5 * np.log10(Flam * lam_A**2 / C_A) - 48.60)
 
@@ -357,11 +394,11 @@ def saturation_maglimit(cfg, lam_A, filter_width_A, t_single):
 def count_rates(cfg, mag_ab, lam_A, filter_width_A, aper_fwhm_mult=1.0):
     """Source and background electron rates for an imaging point source [e-/s]."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
-    Bpix = background_per_pixel(cfg, band)
+    Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
-    Srate = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+    Srate = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
              * filter_width_A * Flam * cfg.extraction_eff)
     return {"source_e_s": Srate, "sky_e_s_pix": Bpix, "n_pix": npix,
             "dark_e_s_pix": cfg.dark_current, "peak_e_s": Srate*peak_fraction(cfg, lam_A)}
@@ -377,7 +414,7 @@ def noise_breakdown(cfg, lam_A, t_s, source_fwhm=0.3, filter_width_A=4000.0):
         "n_pix": npix,
         "sky_e": Bpix * npix * t_s,
         "dark_e": cfg.dark_current * npix * t_s,
-        "read_e2": npix * cfg.n_exp * cfg.read_noise**2,
+        "read_e2": npix * cfg.n_reads(t_s) * cfg.read_noise**2,
     }
 
 
@@ -390,10 +427,12 @@ def noise_breakdown(cfg, lam_A, t_s, source_fwhm=0.3, filter_width_A=4000.0):
 #                2.0e-16 erg/s/cm^2 at 3.5 sigma for a 0.5" source; red grism
 #                1.25-1.85 um, R~450, 1.2 m, 0.3"/pix; Wide = 4 x 560 s.
 def roman_cfg(lam_A):
+    # detector values match the "Roman WFI" entry of TELESCOPE_PRESETS
+    # (H4RG-10: effective read ~6 e-, dark ~0.02 e-/s; Roman WFI technical page)
     return InstrumentConfig(
         diameter_cm=240.0, obstruction=0.31, pix_scale=0.11,
         R=461.0 * (lam_A / 1e4), res_element_pix=2.0,
-        read_noise=16.0, dark_current=0.005, n_exp=4,
+        read_noise=6.0, dark_current=0.020, n_exp=4,
         eta_peak=0.32, band_min_A=10000.0, band_max_A=19300.0, edge_roll_A=800.0,
         zodi_mu_ref=22.1, extraction_eff=1.0)   # eta is already an effective throughput
 
@@ -448,9 +487,11 @@ def compare_missions():
     print("    published depth        : 2.0e-16 erg/s/cm^2 @ 3.5 sigma, 0.5\" src  (Euclid prep.XXX)")
     print(f"    ETC depth  @ {tE:.0f}s     : {fE:.2e}   (ratio ETC/pub = {fE/2e-16:.2f})")
     print("=" * 72)
-    print("Roman matches to ~5% (similar architecture); Euclid sits ~2.4x deeper,")
-    print("the gap set by its coarse 0.3\" sampling and strong wide-survey self-")
-    print("contamination, which the realised Euclid limit folds in but a photon ETC does not.")
+    print("The idealised photon ETC sits deeper than both realised survey limits,")
+    print("~1.4x for Roman and ~2.3x for Euclid, the expected optimistic offset from")
+    print("pipeline extraction losses and wide-survey self-contamination that the")
+    print("published limits fold in but a photon ETC does not (larger for Euclid's")
+    print("coarse 0.3\" sampling).")
 
 
 def realistic_cfg(**kw):
@@ -459,6 +500,8 @@ def realistic_cfg(**kw):
     import os
     base = dict(extraction_eff=0.70,
                 throughput_csv="etc_throughput.csv" if os.path.exists("etc_throughput.csv") else "",
+                throughput_imaging_csv=("etc_throughput_imaging.csv"
+                                        if os.path.exists("etc_throughput_imaging.csv") else ""),
                 zodi_csv="etc_zodi.csv" if os.path.exists("etc_zodi.csv") else "")
     base.update(kw)
     return InstrumentConfig(**base)

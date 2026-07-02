@@ -103,6 +103,13 @@ def build_throughput(qe):
                header="lambda_A, throughput  (3xAg mirror x optics x grism x QE)")
     print(f"etc_throughput.csv  : peak {total.max():.2f} at "
           f"{LAM[np.argmax(total)]/1e4:.2f} um")
+    # direct-imaging path: same optics and QE, no disperser in the beam
+    imaging = optics * qe
+    np.savetxt("etc_throughput_imaging.csv", np.column_stack([LAM, imaging]),
+               delimiter=",",
+               header="lambda_A, throughput  (3xAg mirror x optics x QE, no grism)")
+    print(f"etc_throughput_imaging.csv : peak {imaging.max():.2f} at "
+          f"{LAM[np.argmax(imaging)]/1e4:.2f} um")
 
 
 if __name__ == "__main__":

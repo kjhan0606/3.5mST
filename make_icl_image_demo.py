@@ -44,15 +44,16 @@ def sb_rate_per_pix(cfg, mu_ab, band):
     lam = np.linspace(lo, hi, 300)
     fnu = 3631.0e-23 * 10 ** (-0.4 * mu_ab)
     flam = fnu * 2.99792458e18 / lam ** 2
-    surf = np.trapezoid(flam * etc._photon_factor(lam) * cfg.throughput(lam), lam)
+    surf = np.trapezoid(flam * etc._photon_factor(lam) * cfg.throughput_imaging(lam), lam)
     return surf * cfg.area_cm2 * cfg.omega_pix
 
 
 cfg = etc.realistic_cfg(diameter_cm=350.0, obstruction=0.15, pix_scale=PIX, R=1000.0,
                         band_min_A=3600.0, band_max_A=30000.0)
 R0 = sb_rate_per_pix(cfg, 0.0, BAND_H)          # e-/s/pix for f=10^(-0.4 mu)=1
-SKY = etc.background_per_pixel(cfg, BAND_H)     # e-/s/pix
-DARK, READ, NEXP = cfg.dark_current, cfg.read_noise, cfg.n_exp
+SKY = etc.background_per_pixel(cfg, BAND_H, imaging=True)   # e-/s/pix
+DARK, READ = cfg.dark_current, cfg.read_noise
+NRD = cfg.n_reads                                # reads vs total integration
 NBOX = (BINAS / PIX) ** 2                        # pixels in the reference box
 
 
@@ -60,20 +61,20 @@ def etc_snr(mu, t_hr, npix=NBOX):
     """ETC S/N of a uniform source of surface brightness mu over npix, exposure t."""
     t = t_hr * HR
     s = R0 * 10 ** (-0.4 * mu)
-    return s * t * np.sqrt(npix) / np.sqrt((s + SKY + DARK) * t + NEXP * READ ** 2)
+    return s * t * np.sqrt(npix) / np.sqrt((s + SKY + DARK) * t + NRD(t) * READ ** 2)
 
 
 def mu_limit(t_hr, npix=NBOX):
     """5-sigma surface-brightness limit [AB/arcsec^2] over npix at exposure t."""
     t = t_hr * HR
-    src_lim = 5.0 * np.sqrt((SKY + DARK) * t + NEXP * READ ** 2) / (t * np.sqrt(npix))
+    src_lim = 5.0 * np.sqrt((SKY + DARK) * t + NRD(t) * READ ** 2) / (t * np.sqrt(npix))
     return -2.5 * np.log10(src_lim / R0)
 
 
 def mu_noise_pix(t_hr):
     """1-sigma per-pixel background-noise surface brightness [AB/arcsec^2]."""
     t = t_hr * HR
-    sig = np.sqrt((SKY + DARK) * t + NEXP * READ ** 2) / t
+    sig = np.sqrt((SKY + DARK) * t + NRD(t) * READ ** 2) / t
     return -2.5 * np.log10(sig / R0)
 
 
@@ -99,14 +100,14 @@ fwhm = cfg.psf_fwhm(16000.0)
 src = gaussian_filter(src, (fwhm / 2.355) / PIX)
 kpc_per_arcsec = 4.53                            # z=0.308, flat LCDM H0=70
 mu_hst_depth = -2.5 * np.log10(5.0 * np.nanmedian(sig_exist) / np.sqrt(NBOX) / R0)
-print(f"R0={R0:.3e} sky={SKY:.3f} dark={DARK} read={READ} nexp={NEXP}")
+print(f"R0={R0:.3e} sky={SKY:.3f} dark={DARK} read={READ}")
 print(f"HST truth median existing noise -> mu_5sigma(10'')~{mu_hst_depth:.2f}; scene {src.shape}")
 
 
 def observe(t_hr):
     """Mock 3.5 m sky-subtracted count-rate map; noise added in quadrature."""
     t = t_hr * HR
-    var_etc = ((src + SKY + DARK) * t + NEXP * READ ** 2) / t ** 2      # ETC noise, rate^2
+    var_etc = ((src + SKY + DARK) * t + NRD(t) * READ ** 2) / t ** 2    # ETC noise, rate^2
     var_add = np.clip(var_etc - sig_exist ** 2, 0.0, None)             # quadrature top-up
     return src + np.random.normal(0.0, np.sqrt(var_add))
 
