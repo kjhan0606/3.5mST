@@ -1744,6 +1744,15 @@ The exposure-time calculator sets the surface-brightness reach directly. Figure~
 \label{fig:icl}
 \end{figure}
 
+A dedicated deep pointing on a single cluster turns this reach into a direct image. Figure~\ref{fig:iclimg} takes the deep HST Frontier Fields WFC3/IR F160W mosaic of Abell~2744 \cite{lotz2017} as the true scene and passes it through the same exposure-time calculator, adding the source, sky, dark, and read noise in quadrature to the noise already present in the truth so that each simulated frame carries exactly the ETC per-pixel noise. Four total integrations of a dedicated intracluster-light program are shown, one, four, sixteen, and sixty-four hours, reaching $5\sigma$ surface-brightness limits over a $10\times10$\,arcsec$^2$ bin of $\mu\simeq29.5$, $30.2$, $31.0$, and $31.8$\,AB\,arcsec$^{-2}$. Each panel is stretched between a fixed bright limit and its own per-pixel noise floor, so the background tone is common across the four and the eye reads directly how much fainter the diffuse light is traced as the exposure grows. The intracluster envelope that is buried in the noise at one hour is mapped smoothly between the cluster galaxies and out to the faint tidal features by sixteen to sixty-four hours. At the longest integrations the reach passes the depth of the space-based Frontier Fields imaging that itself defines the state of the art for cluster diffuse light, which is the concrete sense in which the platform advances intracluster-light science.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{icl_exposure_demo.png}
+\caption{Simulated appearance of the Abell~2744 intracluster light to the 3.5\,m ST as a function of total exposure time, as a dedicated deep program rather than a wide-survey tier. The deep HST Frontier Fields WFC3/IR F160W mosaic \cite{lotz2017} is the true scene ($z=0.308$, rest-frame near-infrared, observed in the $H$ band). For each exposure the ETC source, sky, dark, and read noise are added in quadrature to the noise already present in the truth image, so the displayed per-pixel noise equals the ETC prediction, and the annotated signal-to-noise is the ETC value for a $\mu=27$\,AB\,arcsec$^{-2}$ patch measured over a $10\times10$\,arcsec$^2$ box. Each panel is stretched between a fixed bright limit and its own $1\sigma$ per-pixel noise floor, so the four backgrounds share a common tone and the growth of the traceable diffuse light with exposure is directly visible rather than being masked by an ever-darker background. Each panel carries its own surface-brightness colour bar and a $100$\,kpc scale bar.}
+\label{fig:iclimg}
+\end{figure}
+
 \subsubsection{Program Scope and Synergy}
 
 The program is scoped as a cluster-dark-matter mapping and LSB-census effort. The deliverables are a uniform UDG catalog with structural parameters and stellar-population estimates across the target clusters, deep ICL maps that serve as luminous dark-matter proxies for cross-comparison with weak- and strong-lensing mass reconstructions, and a sample of intracluster compact emission-line tracers for ensemble dynamics. The natural synergies are with Euclid and Rubin/LSST, which provide the wide but shallower imaging that selects target clusters and feeds weak-lensing mass maps, and with the strong-lens program of Section~4.2, whose mass models supply the ground truth against which the ICL-as-tracer hypothesis is tested. High-resolution spectroscopy from large ground-based telescopes remains the source of individual UDG velocity dispersions. The mission's role is the deep, wide, space-stable diffuse-light measurement that no ground-based facility can match. Taken together, the inner ICL shape compared against lensing, the merger offsets of the collisionless stellar component, the globular-cluster and planetary-nebula dynamics, and the outer profile to the splashback radius constitute a dark-matter map of each target cluster spanning from the core to the accretion boundary, with the self-interaction cross section constrained at cluster velocities to complement the dwarf-scale measurement. The concrete deliverables are the following.
@@ -3157,6 +3166,12 @@ M. Takada et al.,
 ``Extragalactic science, cosmology, and Galactic archaeology with the Subaru Prime Focus Spectrograph (PFS),''
 \emph{Publications of the Astronomical Society of Japan}, 66, R1, 2014.
 \url{https://arxiv.org/abs/1206.0737}
+
+\bibitem{lotz2017}
+J. M. Lotz et al.,
+``The Frontier Fields: Survey Design and Initial Results,''
+\emph{Astrophysical Journal}, 837, 97, 2017.
+\url{https://arxiv.org/abs/1605.06567}
 
 \end{thebibliography}
 

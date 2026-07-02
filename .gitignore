@@ -38,3 +38,5 @@
 # proposal source, synced to Overleaf via GitHub integration
 !/docs
 !/docs/*
+!/make_icl_image_demo.py
+!/icl_exposure_demo.png
