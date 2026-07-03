@@ -1,0 +1,11 @@
+# FSPS galaxy templates, Hubble-sequence order
+Elliptical	old passive, delayed-tau
+S0	lenticular, mostly old
+Sa	early spiral
+Sb	spiral
+Sc	late spiral
+Sd	very late spiral, const SFR
+Irregular	blue dwarf/irregular
+Starburst	young starburst, emission lines
+Dusty_starburst	reddened starburst (Av~1.6)
+Quiescent	red-and-dead SSP
