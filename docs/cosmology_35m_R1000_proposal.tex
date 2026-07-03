@@ -294,58 +294,10 @@ The machine-learning literature on deblending spans several families, and it is 
 
 The two wide-field space missions closest to this concept have made deliberately different choices, and both inform the baseline. Euclid performs its photometric source separation by model fitting, fitting Sersic and disk-plus-Sersic profiles to every object simultaneously with the SourceXtractor++ package, an approach that scored highest in the Euclid Morphology Challenge for the recovery of structural parameters across billions of galaxies \cite{sourcext2020,euclidmorph2023}. Its near-infrared slitless spectroscopy is then extracted by a forward model that carries the direct-image morphology of each source as a prior, the same logic adopted here. Roman extracts its grism spectra with pyLINEAR, the sparse linear inversion that assembles every transformation between direct-image sources and dispersed pixels into one large system \cite{linear2018,wang2021}, and its supernova program has already demonstrated the multi-roll extension, reconstructing a three-dimensional scene from slitless spectra taken at all available roll angles so that host-galaxy light can be separated from the supernova \cite{roman3d2026}. Forward-model emulators such as ESpRESSO now generate realistic Roman slitless scenes for training and validating these pipelines \cite{espresso2024}. Rubin, whose data are imaging rather than slitless, deblends with the constrained SCARLET factorization \cite{scarlet2018}. The present proposal sits closest to the Roman lineage, because its science is slitless and its defining asset is multi-orientation coverage, so it adopts the Roman and HST forward model of Eq.~\eqref{eq:scene} as the baseline and uses the Euclid model-fitting priors and the Rubin and generative machine-learning methods as the constrained support layer.
 
-\begin{figure}[H]
+\begin{figure}[tp]
 \centering
-\begin{tikzpicture}[font=\sffamily\footnotesize]
-  \fill[paper] (-0.35,-0.35) rectangle (16.0,6.55);
-  \node[anchor=west,font=\bfseries\large,color=ink] at (0,6.18) {Crowded-field slitless spectroscopy is solved as a multi-angle scene model};
-
-  \foreach \x/\ang/\lab in {0.15/0/{0$^\circ$},4.25/45/{45$^\circ$},8.35/90/{90$^\circ$}} {
-    \begin{scope}[xshift=\x cm,yshift=2.35cm]
-      \fill[white,draw=line,rounded corners=2pt] (0,0) rectangle (3.45,2.85);
-      \clip (0,0) rectangle (3.45,2.85);
-      \node[anchor=west,color=muted] at (0.18,2.58) {orientation \lab};
-
-      \foreach \px/\py/\col/\len in {
-        0.48/2.05/teal/1.62,
-        0.72/1.45/gold/1.75,
-        1.45/1.45/blue/1.72,
-        1.08/0.82/green/1.55,
-        2.02/1.02/rose/1.48} {
-        \begin{scope}[rotate around={\ang:(\px,\py)}]
-          \draw[\col!35,line width=5.2pt,opacity=0.70,line cap=round] (\px+0.14,\py) -- ++(\len,0);
-          \draw[\col,line width=1.05pt,opacity=0.95] (\px+0.14,\py) -- ++(\len,0);
-          \draw[white,line width=0.75pt,opacity=0.75] (\px+0.54,\py-0.11) -- ++(0,0.22);
-          \draw[white,line width=0.75pt,opacity=0.75] (\px+0.98,\py-0.11) -- ++(0,0.22);
-          \draw[white,line width=0.75pt,opacity=0.75] (\px+1.32,\py-0.11) -- ++(0,0.22);
-        \end{scope}
-        \fill[\col,draw=white,line width=0.25pt] (\px,\py) circle (2.4pt);
-      }
-
-      \begin{scope}[rotate around={\ang:(1.45,1.45)}]
-        \fill[rose!78,opacity=0.34,rounded corners=0.5pt] (1.58,1.29) rectangle (2.48,1.61);
-        \draw[rose,line width=0.75pt,dashed] (1.58,1.29) rectangle (2.48,1.61);
-        \node[anchor=south,color=rose,font=\scriptsize] at (2.03,1.64) {overlap};
-      \end{scope}
-
-      \draw[-{Stealth[length=2.0mm]},color=muted] (0.28,0.28) -- ++({cos(\ang)*0.78},{sin(\ang)*0.78});
-      \node[anchor=west,color=muted] at (1.1,0.27) {dispersion};
-    \end{scope}
-  }
-
-  \draw[-{Stealth[length=2.8mm]},line width=0.9pt,color=muted] (11.95,3.75) -- (12.85,3.75);
-  \begin{scope}[xshift=13.0cm,yshift=2.35cm]
-    \fill[white,draw=teal,rounded corners=2pt,line width=0.75pt] (0,0) rectangle (2.65,2.85);
-    \node[anchor=west,font=\bfseries,color=teal] at (0.18,2.50) {joint solver};
-    \node[anchor=west,text width=2.15cm,color=softink] at (0.22,1.86) {forward model all objects, all rolls, all wavelengths};
-    \draw[blue,line width=1.1pt] (0.35,0.62) -- (0.85,1.05) -- (1.35,0.78) -- (1.85,1.35) -- (2.28,1.08);
-    \draw[gold,line width=1.1pt,dashed] (0.35,0.40) -- (0.85,0.72) -- (1.35,0.54) -- (1.85,0.95) -- (2.28,0.82);
-  \end{scope}
-
-  \node[anchor=west,text width=14.8cm,color=muted] at (0.15,0.72)
-  {In slitless data, each source is dispersed into a one-sided trace on the detector. The red boxes mark detector pixels where two elongated spectra overlap, not a circular sky region. Rotating by $45^\circ$ and $90^\circ$ changes the trace geometry, allowing the extraction pipeline to assign flux probabilistically and flag irreducible blends before cosmological analysis.};
-\end{tikzpicture}
-\caption{Self-generated crowded-field slitless observing schematic, following the basic geometry of wide-field slitless spectroscopy. Object images become dispersed traces, and contamination occurs where traces from different galaxies overlap on the detector. The proposal assumes multi-angle observations and a joint scene-reconstruction algorithm to correct spectral overlap.}
+\includegraphics[width=0.94\textwidth]{slitless_scene_sim.png}
+\caption{Simulated crowded-field slitless exposures at the survey baseline, $0.11''$ pixels and the $1.0$--$1.75\,\mu$m band-limited setting with $R=1000$ at the setting centre, which gives constant dispersion and $1091$-pixel first-order traces. Sources follow deep near-infrared counts, $40$ per arcmin$^2$ over $18.5<m_{\rm AB}<24.5$, with FSPS galaxy template spectra at $0.4<z<2.2$. \emph{Top left}: the direct image of the displayed $88''\times88''$ field. \emph{Other panels}: the same field dispersed at the three survey roll angles, with traces from sources outside the crop entering it as on a real detector. Every source becomes a long one-sided trace, emission lines appear as compact knots on the traces, and neighbouring spectra overlap heavily at any single orientation, while rotating the dispersion by $45^\circ$ and $90^\circ$ changes which pairs overlap. That redundancy is what the joint scene reconstruction of Eq.~\eqref{eq:scene} exploits to assign flux and flag irreducible blends before cosmological analysis.}
 \label{fig:crowded}
 \end{figure}
 
@@ -428,7 +380,7 @@ For a 100 \degti survey, the threshold field requires roughly 3600 pointings bef
 
     \node[anchor=west,color=ink,text width=3.8cm] at (10.95,\y+0.25) {\smallp\ pointings $\rightarrow$ \smallv\ roll-visits};
     \node[anchor=west,color=ink] at (4.15,\y-0.35) {\largep\ pointings $\rightarrow$ \largev\ roll-visits};
-    \node[anchor=west,font=\bfseries,color=gold!65!black] at (7.65,\y-0.35) {$9\times$ fewer pointings};
+    \node[anchor=west,font=\bfseries,color=gold!65!black] at (9.55,\y-0.35) {$9\times$ fewer pointings};
 
     \draw[-{Stealth[length=2mm]},color=muted,line width=0.75pt] (7.2,\y+0.03) -- (4.0,\y-0.13);
   }
@@ -521,7 +473,7 @@ NIRCam F444W (imaging) & AB\,27.9 point & 10\,ks & 10 & 11.0\\
 NIRSpec R=1000 (line) & $5.7\times10^{-19}$ @\,2\,$\mu$m & 100\,ks & 10 & 7.8\\
 \bottomrule
 \end{tabularx}
-\caption{ETC cross-check against documented JWST sensitivities (STScI JDox) in imaging (NIRCam) and spectroscopy (NIRSpec). The reference column is the JWST-quoted signal-to-noise for the listed source, exposure, and configuration, and the last column is this calculator run on the same $6.5$\,m aperture, detector parameters, and target. Agreement is $\sim10$--$25\%$ in both modes.}
+\caption{ETC cross-check against documented JWST sensitivities in imaging (NIRCam) and spectroscopy (NIRSpec). The reference column is the JWST-quoted signal-to-noise for the listed source, exposure, and configuration, taken from the STScI JDox sensitivity pages, the NIRCam point-source depths of AB $29.0$ (F200W) and $24.5$\,nJy (F444W) at ${\rm S/N}=10$ in $10$\,ks \cite{jdoxnircamsens} and the NIRSpec $R=1000$ line-flux limit of $5.72\times10^{-19}$\,erg\,s$^{-1}$\,cm$^{-2}$ at $2\,\mu$m at ${\rm S/N}=10$ in $100$\,ks \cite{jdoxnirspecsens}. The last column is this calculator run on the same $6.5$\,m aperture, detector parameters, and target. Agreement is $\sim10$--$25\%$ in both modes.}
 \label{tab:jwstval}
 \end{table}
 
@@ -2297,7 +2249,7 @@ The revised mission statement is:
 \end{leadbox}
 
 \section*{Figures and Sources}
-Most schematic figures in this document are generated directly in \LaTeX\ using TikZ. Figure~\ref{fig:elgspectrum} uses an observed bright SDSS DR17 low-redshift emission-line galaxy spectrum converted to a local plotting table, and Figure~\ref{fig:elgobswavez} stacks actual SDSS/BOSS and DESI DR1 spectra retrieved through SPARCL together with HST WFC3/G141 3D-HST COSMOS grism spectra (v4.1.5 1D extractions) and JWST/NIRSpec PRISM star-forming galaxy spectra (msaexp 1D extractions from the DAWN JWST Archive) on an approximately uniform display grid in redshift, spanning the full $0.36$--$3.0\,\mu$m proposed range. Figures~\ref{fig:elgmagdepth} and \ref{fig:desiMlf} use the DESI DR1 LSS ELG catalog with an observed-frame absolute-magnitude proxy computed locally from the downloaded FITS table. In Figure~\ref{fig:desiMlf} the binned proxy LF is additionally fit with a Schechter function on the bright side of each redshift bin and shown as smooth curves. Figure~\ref{fig:phillips} plots the real Carnegie Supernova Project\,I sample of 139 SNe Ia (Burns et~al.\ \cite{burns2018csp}, VizieR catalog J/ApJ/869/56), computing the host-extinction-corrected peak absolute magnitude $M_V=V_{\max}-\mu_{\rm CV}-R_V\,E(B\!-\!V)$ from the tabulated distance modulus and reddening, plotting it against the tabulated $\Delta m_{15}(B)$, and overlaying a quadratic Phillips relation fitted locally to those points; the figure layout follows Figure 11 of Zeng et~al.\ \cite{zeng2025sn2023ehl}. Figure~\ref{fig:uvtwins} plots the observed flux-calibrated Swift/UVOT UV-grism spectra of SN\,2011fe and SN\,2011by near maximum, retrieved from the Open Supernova Catalog archive \cite{guillochon2017}, deredshifted and scaled over the optical. Figure~\ref{fig:sniacosmo} (the multi-cosmology SN Ia Hubble diagram with current and target Hubble-residual scatter) is generated locally with \texttt{astropy} distance moduli for the four cosmologies against the real Pantheon$+$SH0ES sample \cite{brout2022}, retaining the 1580 Hubble-flow SNe Ia ($z>0.01$, Cepheid calibrators removed). Figure~\ref{fig:nuvband} is generated in TikZ and shows the redshifting of fixed rest-frame wavelengths into the proposed observed band. Figure~\ref{fig:lyathreshold} is computed locally, integrating a Voigt profile to obtain the Ly$\alpha$ curve of growth and inverting it against the $R=1000$ detection limit of Eq.~\eqref{eq:wmin} to give the minimum detectable H\,\textsc{i} column density. Figure~\ref{fig:lya3dexternal} is an external CLAMATO 3D Ly$\alpha$ forest tomography rendering from the arXiv source package. Figure~\ref{fig:hr4xi} is rendered locally from the author's Horizon Run 4 pair-count measurement, the raw $\xi(\sigma,\pi)$ grids in real and redshift space, rather than from any published figure. Figures~\ref{fig:sidmsigmav} and \ref{fig:fdmslice} are the original figures from the arXiv source packages of Kaplinghat, Tulin \& Yu \cite{kaplinghat2016} and Schive et~al.\ \cite{schive2014}, reproduced as published and marked courtesy in their captions, because the underlying per-system cross-section fits and wave-simulation data are not public. Figure~\ref{fig:sparcdiv} is drawn locally from the public SPARC mass-model files \cite{lelli2016}, and Figure~\ref{fig:fdmconstraints} is drawn locally from the published bounds quoted in its caption. Figures~\ref{fig:cirrusfil} and \ref{fig:cirruscolors} are the original figures from the arXiv source package of Rom\'an, Trujillo \& Montes \cite{roman2020}, reproduced as published and marked courtesy in their captions, because the processed deep mosaics and per-field cirrus colour measurements behind them are not public. Literature and documentation sources are listed below.
+Most schematic figures in this document are generated directly in \LaTeX\ using TikZ. Figure~\ref{fig:crowded} is a slitless scene simulation generated locally at the baseline instrument parameters with the tracked script \texttt{make\_slitless\_scene\_sim.py}, using the repository's FSPS galaxy templates as source spectra. Figure~\ref{fig:elgspectrum} uses an observed bright SDSS DR17 low-redshift emission-line galaxy spectrum converted to a local plotting table, and Figure~\ref{fig:elgobswavez} stacks actual SDSS/BOSS and DESI DR1 spectra retrieved through SPARCL together with HST WFC3/G141 3D-HST COSMOS grism spectra (v4.1.5 1D extractions) and JWST/NIRSpec PRISM star-forming galaxy spectra (msaexp 1D extractions from the DAWN JWST Archive) on an approximately uniform display grid in redshift, spanning the full $0.36$--$3.0\,\mu$m proposed range. Figures~\ref{fig:elgmagdepth} and \ref{fig:desiMlf} use the DESI DR1 LSS ELG catalog with an observed-frame absolute-magnitude proxy computed locally from the downloaded FITS table. In Figure~\ref{fig:desiMlf} the binned proxy LF is additionally fit with a Schechter function on the bright side of each redshift bin and shown as smooth curves. Figure~\ref{fig:phillips} plots the real Carnegie Supernova Project\,I sample of 139 SNe Ia (Burns et~al.\ \cite{burns2018csp}, VizieR catalog J/ApJ/869/56), computing the host-extinction-corrected peak absolute magnitude $M_V=V_{\max}-\mu_{\rm CV}-R_V\,E(B\!-\!V)$ from the tabulated distance modulus and reddening, plotting it against the tabulated $\Delta m_{15}(B)$, and overlaying a quadratic Phillips relation fitted locally to those points; the figure layout follows Figure 11 of Zeng et~al.\ \cite{zeng2025sn2023ehl}. Figure~\ref{fig:uvtwins} plots the observed flux-calibrated Swift/UVOT UV-grism spectra of SN\,2011fe and SN\,2011by near maximum, retrieved from the Open Supernova Catalog archive \cite{guillochon2017}, deredshifted and scaled over the optical. Figure~\ref{fig:sniacosmo} (the multi-cosmology SN Ia Hubble diagram with current and target Hubble-residual scatter) is generated locally with \texttt{astropy} distance moduli for the four cosmologies against the real Pantheon$+$SH0ES sample \cite{brout2022}, retaining the 1580 Hubble-flow SNe Ia ($z>0.01$, Cepheid calibrators removed). Figure~\ref{fig:nuvband} is generated in TikZ and shows the redshifting of fixed rest-frame wavelengths into the proposed observed band. Figure~\ref{fig:lyathreshold} is computed locally, integrating a Voigt profile to obtain the Ly$\alpha$ curve of growth and inverting it against the $R=1000$ detection limit of Eq.~\eqref{eq:wmin} to give the minimum detectable H\,\textsc{i} column density. Figure~\ref{fig:lya3dexternal} is an external CLAMATO 3D Ly$\alpha$ forest tomography rendering from the arXiv source package. Figure~\ref{fig:hr4xi} is rendered locally from the author's Horizon Run 4 pair-count measurement, the raw $\xi(\sigma,\pi)$ grids in real and redshift space, rather than from any published figure. Figures~\ref{fig:sidmsigmav} and \ref{fig:fdmslice} are the original figures from the arXiv source packages of Kaplinghat, Tulin \& Yu \cite{kaplinghat2016} and Schive et~al.\ \cite{schive2014}, reproduced as published and marked courtesy in their captions, because the underlying per-system cross-section fits and wave-simulation data are not public. Figure~\ref{fig:sparcdiv} is drawn locally from the public SPARC mass-model files \cite{lelli2016}, and Figure~\ref{fig:fdmconstraints} is drawn locally from the published bounds quoted in its caption. Figures~\ref{fig:cirrusfil} and \ref{fig:cirruscolors} are the original figures from the arXiv source package of Rom\'an, Trujillo \& Montes \cite{roman2020}, reproduced as published and marked courtesy in their captions, because the processed deep mosaics and per-field cirrus colour measurements behind them are not public. Literature and documentation sources are listed below.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -2311,6 +2263,16 @@ X. Wang et al.,
 Space Telescope Science Institute,
 ``NIRCam Grisms -- JWST User Documentation.''
 \url{https://jwst-docs.stsci.edu/jwst-near-infrared-camera/nircam-instrumentation/nircam-grisms}
+
+\bibitem{jdoxnircamsens}
+Space Telescope Science Institute,
+``NIRCam Imaging Sensitivity -- JWST User Documentation.''
+\url{https://jwst-docs.stsci.edu/jwst-near-infrared-camera/nircam-performance/nircam-sensitivity}
+
+\bibitem{jdoxnirspecsens}
+Space Telescope Science Institute,
+``NIRSpec Sensitivity -- JWST User Documentation.''
+\url{https://jwst-docs.stsci.edu/jwst-near-infrared-spectrograph/nirspec-performance/nirspec-sensitivity}
 
 \bibitem{wang2021}
 Y. Wang et al.,
