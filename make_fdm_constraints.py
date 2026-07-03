@@ -18,7 +18,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-XMIN, XMAX = 2e-23, 2e-18
+XMIN, XMAX = 2e-23, 2e-17
 
 PREFERRED = [
     ("dSph stellar kinematics\n(Schive et al. 2014)", 6.4e-23, 9.7e-23),
@@ -34,7 +34,7 @@ EXCLUDED = [
 rows = PREFERRED + EXCLUDED
 ny = len(rows)
 
-fig, ax = plt.subplots(figsize=(8.6, 4.6), dpi=180)
+fig, ax = plt.subplots(figsize=(10.0, 4.6), dpi=180)
 
 # kinematically preferred region carried down the whole chart
 ax.axvspan(6.4e-23, 5.6e-22, color="#2f9e44", alpha=0.10, zorder=0)
