@@ -201,7 +201,7 @@ The spectrograph is a slitless two-arm system. A dichroic beam splitter sends 0.
 
 Two properties of grism dispersion shape the filter plan. The same band-limiting choice handles both. First, a grism disperses at nearly constant $\Delta\lambda$ per pixel rather than constant $R=\lambda/\Delta\lambda$. Therefore, the resolving power rises linearly across any one setting. The quoted $R=1000$ refers to the centre of each setting. Second, the diffraction orders of a grating overlap, since second-order light of wavelength $\lambda$ lands at the first-order position of $2\lambda$. Hence, the range that one setting can record free of cross-order contamination spans at most one octave, $\lambda_{\max}\leq2\lambda_{\min}$. The survey therefore observes each arm through two band-limiting filters that each respect the octave limit, $0.36$--$0.70$ and $0.50$--$1.0\,\mu$m on the optical arm and $1.0$--$1.75$ and $1.6$--$3.0\,\mu$m on the near-infrared arm, the same order-sorting practice used by the HST, JWST, Euclid, and Roman slitless instruments. These are the two settings per wavelength channel carried by every survey time estimate in this document. Within each setting the resolving power stays between $R\simeq670$ and $1330$ around the central $R=1000$, a first-order trace occupies about $1090$--$1330$ pixels at two pixels per resolution element. No transmitted wavelength has a second order inside the band of its own setting.
 
-The choice of $R=1000$ is also robust against the natural suggestion of dispersing at higher resolution and binning the data down. In a slit spectrograph the sky disperses together with the source. Therefore, higher resolution lowers the sky per pixel and later binning is nearly lossless. In slitless mode every pixel collects the sky of the \emph{entire} band-limiting filter regardless of the dispersion. Hence, a grism of five times the resolution spreads the same source counts over five times more sky-collecting pixels. Binning after detection cannot remove background photons that have already been recorded. The signal-to-noise of any binned quantity therefore degrades as the square root of the resolution ratio in the background-limited regime, a factor of $\sqrt{5}\simeq2.2$ for $R=5000$ binned back to $R=1000$, equivalent to five times the exposure. The exposure-time calculator of Section~\ref{sec:etc} confirms the scaling directly, with the binned synthetic-band S/N of a peak $z=1$ supernova falling from $12.2$ to $5.4$ in the same two-hour exposure when the dispersion is raised from $R=1000$ to $5000$, while the emission-line depth for an extended source is identical at the two resolutions because the effective resolution is already set by the source size (Section~\ref{sec:effres}). The five-fold growth of the trace-overlap rate in crowded fields and of the detector pixel count per setting also remains, since binning can undo neither. Higher resolution is therefore pure cost for the survey programs. The narrow-line science that would genuinely profit from it, the Ly$\alpha$ forest toward bright quasars, is better served by a small targeted mode than by raising the survey dispersion.
+The choice of $R=1000$ is also robust against the natural suggestion of dispersing at higher resolution and binning the data down. In a slit spectrograph the sky disperses together with the source. Therefore, higher resolution lowers the sky per pixel and later binning is nearly lossless. In slitless mode every pixel collects the sky of the \emph{entire} band-limiting filter regardless of the dispersion. Hence, a grism of five times the resolution spreads the same source counts over five times more sky-collecting pixels. Binning after detection cannot remove background photons that have already been recorded. The signal-to-noise of any binned quantity therefore degrades as the square root of the resolution ratio in the background-limited regime, a factor of $5^{1/2}\simeq2.2$ for $R=5000$ binned back to $R=1000$, equivalent to five times the exposure. The exposure-time calculator of Section~\ref{sec:etc} confirms the scaling directly, with the binned synthetic-band S/N of a peak $z=1$ supernova falling from $12.2$ to $5.4$ in the same two-hour exposure when the dispersion is raised from $R=1000$ to $5000$, while the emission-line depth for an extended source is identical at the two resolutions because the effective resolution is already set by the source size (Section~\ref{sec:effres}). The five-fold growth of the trace-overlap rate in crowded fields and of the detector pixel count per setting also remains, since binning can undo neither. Higher resolution is therefore pure cost for the survey programs. The narrow-line science that would genuinely profit from it, the Ly$\alpha$ forest toward bright quasars, is better served by a small targeted mode than by raising the survey dispersion.
 
 \begin{figure}[tp]
 \centering
@@ -306,7 +306,7 @@ The two wide-field space missions closest to this concept have made deliberately
 The resolving power seen by an extended galaxy is reduced by morphology along the dispersion axis:
 \begin{equation}
   R_{\rm eff}\simeq R_{\rm point}
-  \frac{\theta_{\rm PSF}}{\sqrt{\theta_{\rm PSF}^2+\theta_{\rm src,\parallel}^2}} .
+  \frac{\theta_{\rm PSF}}{(\theta_{\rm PSF}^2+\theta_{\rm src,\parallel}^2)^{1/2}} .
   \label{eq:reff1000}
 \end{equation}
 At 1\,$\mu$m, a 3.5 m diffraction-limited telescope has a PSF FWHM of order $0.06''$. With $R_{\rm point}=1000$, Eq.~(\ref{eq:reff1000}) gives $R_{\rm eff}\simeq510$ for a $0.10''$ emitting region and $R_{\rm eff}\simeq290$ for a $0.20''$ emitting region. This is acceptable for ELG redshift surveys, but it means that precision internal kinematics of extended galaxies are not part of the flagship requirement.
@@ -415,18 +415,18 @@ where $\bar i_{\rm sky}$ is the mean sky surface brightness per unit wavelength,
   N^2=S+B_{\rm pix}\,n_{\rm pix}\,t+D\,n_{\rm pix}\,t+n_{\rm read}\,n_{\rm pix}\,\sigma_{\rm read}^2,
   \label{eq:etcnoise}
 \end{equation}
-and the $5\sigma$ line-flux limit is the flux for which $S=5N$. For the space near-infrared background the sky term of Eq.~\eqref{eq:etcnoise} dominates the other three. Therefore, the noise reduces to $N\simeq\sqrt{B_{\rm pix}\,n_{\rm pix}\,t}$. Setting $S=5N$ with $F_{\rm line}=F_{5\sigma}$ and inserting the signal of Eq.~\eqref{eq:etcsig} gives
+and the $5\sigma$ line-flux limit is the flux for which $S=5N$. For the space near-infrared background the sky term of Eq.~\eqref{eq:etcnoise} dominates the other three. Therefore, the noise reduces to $N\simeq(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}$. Setting $S=5N$ with $F_{\rm line}=F_{5\sigma}$ and inserting the signal of Eq.~\eqref{eq:etcsig} gives
 \[
-  F_{5\sigma}\,A_{\rm tel}\,\eta\,t\,\frac{\lambda}{hc}=5\,\sqrt{B_{\rm pix}\,n_{\rm pix}\,t}\,,
+  F_{5\sigma}\,A_{\rm tel}\,\eta\,t\,\frac{\lambda}{hc}=5\,(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2},
 \]
 and solving for the flux gives
 \[
-  F_{5\sigma}=\frac{5\,\sqrt{B_{\rm pix}\,n_{\rm pix}\,t}}{A_{\rm tel}\,\eta\,t\,(\lambda/hc)}
-  =\frac{5}{A_{\rm tel}\,\eta\,(\lambda/hc)}\,\sqrt{\frac{B_{\rm pix}\,n_{\rm pix}}{t}}\,,
+  F_{5\sigma}=\frac{5\,(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}}{A_{\rm tel}\,\eta\,t\,(\lambda/hc)}
+  =\frac{5}{A_{\rm tel}\,\eta\,(\lambda/hc)}\,\left(\frac{B_{\rm pix}\,n_{\rm pix}}{t}\right)^{1/2},
 \]
-where the explicit factor of $t$ in the denominator combines with the $\sqrt{t}$ in the numerator to leave the $t^{-1/2}$ dependence. Substituting the slitless background $B_{\rm pix}$ from Eq.~\eqref{eq:etcbg} and cancelling the common factor $A_{\rm tel}\,\eta\,(\lambda/hc)$, which then appears both inside and outside the square root, yields the closed form
+where the explicit factor of $t$ in the denominator combines with the $t^{1/2}$ in the numerator to leave the $t^{-1/2}$ dependence. Substituting the slitless background $B_{\rm pix}$ from Eq.~\eqref{eq:etcbg} and cancelling the common factor $A_{\rm tel}\,\eta\,(\lambda/hc)$, which then appears both inside and outside the square root, yields the closed form
 \begin{equation}
-  F_{5\sigma}\simeq 5\sqrt{\frac{\bar i_{\rm sky}\,\Omega_{\rm pix}\,\Delta\lambda_{\rm filt}\,n_{\rm pix}}{A_{\rm tel}\,\eta\,(\lambda/hc)\,t}},
+  F_{5\sigma}\simeq 5\left(\frac{\bar i_{\rm sky}\,\Omega_{\rm pix}\,\Delta\lambda_{\rm filt}\,n_{\rm pix}}{A_{\rm tel}\,\eta\,(\lambda/hc)\,t}\right)^{1/2},
   \label{eq:etc}
 \end{equation}
 which makes the background-limited $t^{-1/2}$ scaling of Eq.~\eqref{eq:f5sigma} explicit and shows that the depth improves as the square root of collecting area and throughput.
@@ -907,7 +907,7 @@ The first redshift-dependent number-count estimate is derived directly from the 
 and select secure [O\,II] galaxies with \texttt{ZWARN=0}, finite positive redshift, positive \texttt{OII\_FLUX}, and
 \begin{equation}
   {\rm S/N}_{\rm [O\,II]}=
-  {\tt OII\_FLUX}\sqrt{{\tt OII\_FLUX\_IVAR}}>5 .
+  {\tt OII\_FLUX}\,({\tt OII\_FLUX\_IVAR})^{1/2}>5 .
 \end{equation}
 The line luminosity is computed as
 \begin{equation}
@@ -1118,7 +1118,7 @@ The growth measurement comes from the redshift-space galaxy power spectrum,
 \end{equation}
 with $\sigma_r=c\,\sigma_z/H(z)$ the radial redshift-smearing scale. The principal growth observable is $\fsig(z)$. For compact reporting we also quote a growth-amplitude summary,
 \begin{equation}
-  S_8^{\rm grow}\equiv \sigma_8\sqrt{\Omega_m/0.3},
+  S_8^{\rm grow}\equiv \sigma_8(\Omega_m/0.3)^{1/2},
 \end{equation}
 after marginalizing over galaxy bias in the ELG clustering model. The statistical power scales approximately as
 \begin{equation}
@@ -1154,7 +1154,7 @@ The percentage precisions in Table~\ref{tab:baoforecast} are planning scalings, 
   \sigma_{\rm stat,thr}
   \left(\frac{V_{\rm eff,thr}}{V_{\rm eff,goal}}\right)^{1/2},
 \end{equation}
-where $V_{\rm eff}$ is the quantity defined above. If the usable area and secure-redshift count both increase from 100 deg$^2$ and $\sim10^6$ to 300 deg$^2$ and $\sim3\times10^6$, the ideal statistical improvement is close to $\sqrt{3}$. Hence, a 1.5--2.5\% threshold BAO-bin precision becomes about 0.9--1.5\% and a 4--6\% threshold $\fsig$ precision becomes about 2.5--4\%. The combined-distance entries are slightly tighter because they represent the multi-bin distance-scale constraint after combining transverse and radial BAO information, while retaining a floor for redshift failures, line confusion, and survey-window calibration. The quoted $H_0$ values are not direct late-time measurements of $H_0$ alone. They are obtained by adding the combined BAO distance precision and an assumed external sound-horizon calibration in quadrature,
+where $V_{\rm eff}$ is the quantity defined above. If the usable area and secure-redshift count both increase from 100 deg$^2$ and $\sim10^6$ to 300 deg$^2$ and $\sim3\times10^6$, the ideal statistical improvement is close to $3^{1/2}$. Hence, a 1.5--2.5\% threshold BAO-bin precision becomes about 0.9--1.5\% and a 4--6\% threshold $\fsig$ precision becomes about 2.5--4\%. The combined-distance entries are slightly tighter because they represent the multi-bin distance-scale constraint after combining transverse and radial BAO information, while retaining a floor for redshift failures, line confusion, and survey-window calibration. The quoted $H_0$ values are not direct late-time measurements of $H_0$ alone. They are obtained by adding the combined BAO distance precision and an assumed external sound-horizon calibration in quadrature,
 \begin{equation}
   \left(\frac{\sigma_{H_0}}{H_0}\right)^2
   \simeq
