@@ -203,7 +203,7 @@ Two properties of grism dispersion shape the filter plan. The same band-limiting
 
 The choice of $R=1000$ is also robust against the natural suggestion of dispersing at higher resolution and binning the data down. In a slit spectrograph the sky disperses together with the source. Therefore, higher resolution lowers the sky per pixel and later binning is nearly lossless. In slitless mode every pixel collects the sky of the \emph{entire} band-limiting filter regardless of the dispersion. Hence, a grism of five times the resolution spreads the same source counts over five times more sky-collecting pixels. Binning after detection cannot remove background photons that have already been recorded. The signal-to-noise of any binned quantity therefore degrades as the square root of the resolution ratio in the background-limited regime, a factor of $\sqrt{5}\simeq2.2$ for $R=5000$ binned back to $R=1000$, equivalent to five times the exposure. The exposure-time calculator of Section~\ref{sec:etc} confirms the scaling directly, with the binned synthetic-band S/N of a peak $z=1$ supernova falling from $12.2$ to $5.4$ in the same two-hour exposure when the dispersion is raised from $R=1000$ to $5000$, while the emission-line depth for an extended source is identical at the two resolutions because the effective resolution is already set by the source size (Section~\ref{sec:effres}). The five-fold growth of the trace-overlap rate in crowded fields and of the detector pixel count per setting also remains, since binning can undo neither. Higher resolution is therefore pure cost for the survey programs. The narrow-line science that would genuinely profit from it, the Ly$\alpha$ forest toward bright quasars, is better served by a small targeted mode than by raising the survey dispersion.
 
-\begin{figure}[H]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize,scale=0.98, every node/.style={transform shape}]
   \fill[paper] (-0.4,-0.45) rectangle (15.8,6.35);
@@ -271,7 +271,7 @@ where $\mathbf{d}_{r}$ is the detector image at roll/orientation $r$, $\mathbf{s
 
 The most cost-effective wide-survey choice is three roll orientations. Two nearly orthogonal orientations are the minimum useful configuration, but they leave a non-negligible class of pair geometries, detector defects, and extended-source self-blends with ambiguous solutions. A third roll, separated by roughly $45^\circ$ from the orthogonal pair, changes the overlap graph without multiplying the program into a deep-field campaign. Additional rolls are scientifically useful only for truth fields, ultra-deep calibration fields, or unusually crowded targets, because their survey-area cost is linear while the deblending gain becomes incremental.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}c p{3.2cm} Y Y@{}}
@@ -322,7 +322,7 @@ Extended galaxies also create a second, internal deblending problem. Different p
 \end{equation}
 where $g$ labels the galaxy and $c$ labels internal components such as disk, bulge, or star-forming knots. Equation~\eqref{eq:scenecomp} is not a second, independent model but the scene model of Eq.~\eqref{eq:scene} carried one level deeper. The single per-object spectrum $\mathbf{s}$ that galaxy $g$ contributes to Eq.~\eqref{eq:scene} is resolved here into a sum over its internal components $\mathbf{s}_{g,c}$, each with its own projection operator $\mathbf{A}_{r,g,c}$. The between-object and within-object terms are solved together in one linear system rather than in two separate passes. This nesting is the extended-source analogue of the LINEAR sparse forward model and the aXe morphology-based extraction geometry \cite{axe2009,linear2018}. The CSST slitless emulator similarly treats galaxy size, Sersic index, position angle, and axis ratio as drivers of slitless self-broadening \cite{cess2024}. The science catalog therefore reports $R_{\rm eff}$, line-flux covariance, morphology flags, and a self-blending quality flag. Objects whose redshift or line flux changes significantly when the morphology prior, component number, or held-out roll angle is varied are retained for ancillary science but excluded from the cosmology-grade BAO/RSD sample.
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \def\w{13.5}
@@ -361,7 +361,7 @@ The field of view changes the mission from a deep-field spectroscopic facility i
 \end{align}
 For a 100 \degti survey, the threshold field requires roughly 3600 pointings before the required three orientations and dithers, while the maximum field requires 400. For 300 \degti, those numbers become 10,800 and 1200. Including the three slitless orientations, the raw spectroscopic visit count is multiplied by three. The \fovsmall\ mode is useful for deep calibration fields and time-domain fields. The \fovlarge\ mode should be treated as the cosmology survey requirement.
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \fill[paper] (-0.35,-0.45) rectangle (15.0,6.0);
@@ -435,7 +435,7 @@ Table~\ref{tab:etc} lists the adopted baseline parameters. The mean zodiacal sky
 
 This first-principles value is about five times deeper than the $1.0\times10^{-16}$ normalization adopted in Eq.~\eqref{eq:f5sigma}. The two agree in functional form and in order of magnitude. The offset is the expected planning margin. The empirical anchor is deliberately conservative, because it folds in throughput losses below the assumed $\eta$, larger emitting-region sizes that raise $n_{\rm pix}$, the wider filter bandwidths used in the most crowded fields, and the flux lost to deblending through the factor $C_{\rm blend}$ of the survey signal-to-noise relation of Section~\ref{sec:elgdepth}. Spanning the realistic ranges of these parameters, namely $\eta$ from $0.2$ to $0.4$, $n_{\rm pix}$ from $8$ to $40$, and $\Delta\lambda_{\rm filt}$ up to the full channel width, the calculator brackets $F_{5\sigma}$ from roughly $1\times10^{-17}$ to about $1\times10^{-16}$ at $0.75$\,hr, with the upper edge reached only for the most extended sources and the widest filters. The adopted depth therefore sits on the conservative side of the photon-limited range. Hence, Eq.~\eqref{eq:f5sigma} is a safe planning floor rather than an optimistic limit.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}l p{3.1cm} X@{}}
@@ -461,7 +461,7 @@ The single-wavelength estimate above is deliberately simple. A companion numeric
 
 The same cross-check extends to JWST across both modes. Table~\ref{tab:jwstval} runs the calculator on the documented JWST NIRCam imaging and NIRSpec spectroscopic reference cases and recovers the quoted signal-to-noise to within about ten to twenty-five percent.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}l l c c c@{}}
@@ -502,7 +502,7 @@ The same calculation exposes a hard wavelength limit set by the telescope temper
 
 Because the same calculator runs on any instrument, it places the concept directly against existing missions. Table~\ref{tab:compareimg} gives the imaging $5\sigma$ point-source depth at common wavelengths for the $3.5$\,m concept, Roman, Euclid, and JWST. Figure~\ref{fig:compareimg} overlays the depth in each mission's own filters. Figure~\ref{fig:comparespec} compares the slitless line-flux depth against Roman. The $3.5$\,m sits between Roman and JWST in imaging and reaches several times deeper than Roman in slitless spectroscopy, where its band-limiting $0.4\,\mu$m filters further cut the dispersed sky that the Roman grism integrates over its full $1.0$--$1.93\,\mu$m band. Beyond $\sim2\,\mu$m the $3.5$\,m entries assume warm ($270$\,K) optics and are thermal-limited, a penalty that cooling to $\lesssim200$\,K removes (Figure~\ref{fig:etccool}).
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}c Y Y Y Y@{}}
@@ -614,7 +614,7 @@ The target population is a star-forming ELG with blue continuum, nebular recombi
 
 Tables~\ref{tab:lines} and \ref{tab:lineobs} translate this line set into the proposed two-arm wavelength coverage. Table~\ref{tab:lines} gives the redshift interval over which each diagnostic line falls in the optical and near-IR arms, while Table~\ref{tab:lineobs} gives the observed wavelengths at representative BAO redshifts. Their purpose is to show that the redshift solution is normally overconstrained by more than one line across $1<z<3$, rather than depending on a single ambiguous feature.
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \fill[paper] (-0.35,-0.35) rectangle (15.7,6.12);
@@ -653,7 +653,7 @@ Tables~\ref{tab:lines} and \ref{tab:lineobs} translate this line set into the pr
 \label{fig:elgspectrum}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{2.8cm}p{2.1cm}p{2.8cm}p{2.8cm}Y@{}}
@@ -671,7 +671,7 @@ H$\alpha$ & 0.6563 $\mu$m & $0<z<0.52$ & $0.52<z<3.57$ & Primary low-to-mid-$z$ 
 \label{tab:lines}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}c c c c c@{}}
@@ -690,7 +690,7 @@ H$\alpha$ & 0.6563 $\mu$m & $0<z<0.52$ & $0.52<z<3.57$ & Primary low-to-mid-$z$ 
 \label{tab:lineobs}
 \end{table}
 
-\begin{figure}[p]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.98\textwidth,height=0.50\textheight,keepaspectratio]{elg_desi_uniform_actual_2df_style.png}
 \caption{Actual ELG / star-forming galaxy spectral stack in observed wavelength and redshift, rendered in the compact ``spectral barcode'' style of the 2dF QSO spectral atlas and spanning the full proposed wavelength range. The horizontal axis runs from $0.36$ to $3.0\,\mu$m, the same $0.3$--$3.0\,\mu$m baseline covered by the proposed two-arm spectrograph (the dashed line near $1.04\,\mu$m marks the optical/near-IR arm split), while the vertical axis covers $0<z<5$. Four real datasets are stacked, each row placed at its catalog redshift. First, 110 SDSS/BOSS star-forming/starburst galaxies at $z\lesssim0.6$ and 293 secure DESI DR1 ELGs over $0.6<z<1.65$ (both retrieved through SPARCL) populate the optical arm. Next, 57 HST WFC3/G141 3D-HST COSMOS grism spectra over $1.5<z<2.75$ fill the near-IR. Finally, 635 spectra in total are anchored at high redshift by 175 JWST/NIRSpec PRISM star-forming galaxies over $1.7<z<5.0$ from the DAWN JWST Archive, whose single $0.6$--$5.3\,\mu$m setting traces the near/mid-IR portion of the band. Each row is continuum-subtracted and independently scaled to emphasize narrow emission-line residuals. The horizontal colour scale follows observed wavelength. The continuous diagonal emission-line tracks ([O\,II], H$\beta$+[O\,III], H$\alpha$) run unbroken from the optical DESI/SDSS block through the JWST high-redshift band, directly demonstrating that the line set the survey relies on remains observable and the redshift solution overconstrained across the whole $1\lesssim z\lesssim3$ BAO range and beyond. No spectra are synthetic or artificially redshifted. Hence, blank regions mean that no actual spectrum is displayed there. To guide the eye across those gaps, the dashed labelled lines (Ly$\alpha$, [O\,II], H$\beta$, [O\,III], H$\alpha$) trace the predicted observed-frame position $\lambda_{\rm obs}=\lambda_{\rm rest}(1+z)$ of each diagnostic line as a function of redshift. They are drawn \emph{only} in the empty no-data regions and are suppressed wherever a real spectrum is present. Hence, they never overplot measured data \cite{raichoor2022,desidr1,sparcl2024,brammer2012,momcheva2016,degraaff2024,heintz2023}.}
@@ -710,7 +710,7 @@ where $K(z)$ is the bandpass-dependent $K$-correction. For emission-line selecti
 \end{equation}
 Representative star-forming ELGs at $1<z<3$ occupy roughly $M_{\rm AB}\simeq-19$ to $-22.5$, with the highest-yield BAO sample concentrated near $M_{\rm AB}\simeq-20.5$ to $-21.5$ and line luminosities $L_{\rm H\alpha}$ or $L_{\rm [O\,III]}\sim10^{42}$--$10^{43}$ erg s$^{-1}$. Table~\ref{tab:elgdepth} gives planning values before detailed luminosity-function integration and ETC validation. It is meant to connect absolute magnitude, observed continuum magnitude, and emission-line flux on the same redshift grid.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}c c c c c c@{}}
@@ -746,7 +746,7 @@ For an isolated line, the planning signal-to-noise ratio is
 \end{equation}
 where $C_{\rm blend}\simeq0.7$--1 represents loss from morphology, background, and residual overlap after the three-orientation deblending fit. Table~\ref{tab:snrelg} gives the pre-blending S/N, i.e. the values for $C_{\rm blend}=1$. Object-level S/N values should be reduced by the fitted $C_{\rm blend}$ and by the catalog covariance model.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{2.3cm}p{3.3cm}c c c c@{}}
@@ -773,7 +773,7 @@ Table~\ref{tab:llumlim} reports the same depth model in luminosity rather than f
 \end{equation}
 Thus a source equal to a Table~\ref{tab:llumlim} entry has S/N$\simeq5$ for $C_{\rm blend}=1$ and S/N$\simeq3.5$--5 for the nominal $C_{\rm blend}=0.7$--1 range. A source twice as luminous has twice those S/N values.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}c c c c@{}}
@@ -834,9 +834,9 @@ with separate coefficients for H$\alpha$, [O\,III], H$\beta$, and [O\,II]. Eq.~\
   \frac{d^2N_i}{dz\,d\Omega}(>F_{\rm lim}) =
   \frac{dV_c}{dz\,d\Omega}
   \int_{4\pi D_L^2(z)F_{\rm lim}}^\infty
-  \Phi_i(L,z)\,C_i(L,z)\,dL .
+  \Phi_i(L,z)\,C_i(L,z)\,dL ,
 \end{equation}
-so that the ideal line-selected surface density in a redshift bin is the standard luminosity-function projection over comoving volume \cite{schechter1976,saito2020,mehta2015},
+where $C_i(L,z)$ is the completeness function of line $i$, the probability between zero and one that a galaxy of line luminosity $L$ at redshift $z$ yields a secure detection of that line in the survey data. In the ideal case $C_i=1$ the line-selected surface density in a redshift bin reduces to the standard luminosity-function projection over comoving volume \cite{schechter1976,saito2020,mehta2015},
 \begin{equation}
   \Sigma_i(z_1,z_2;F_{\rm lim}) =
   \int_{z_1}^{z_2}
@@ -851,7 +851,7 @@ $L^\star(z)=L^\star_{*,0}(1+z)^\beta$ and
 $\Phi^\star(z)=\Phi^\star_{*,0}(1+z)^\gamma$ below $z_{\rm pivot}$, with
 $\Phi^\star(z)=\Phi^\star_{*,0}(1+z_{\rm pivot})^{\gamma+\epsilon}(1+z)^{-\epsilon}$ above $z_{\rm pivot}$ \cite{saito2020}. H$\beta$ is not assigned an independent LF in this planning table. It is propagated as a secondary confirmation line through the line-ratio model, e.g. H$\alpha$/H$\beta=2.9$ and [O\,III]/H$\beta=4.1$ in the Saito et al. nebular-line prescription \cite{saito2020}.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\scriptsize
 \begin{tabularx}{\textwidth}{@{}p{1.7cm}p{1.9cm}c c c c c c Y@{}}
@@ -939,7 +939,7 @@ with $A_{\rm FOV}=0.25$ deg$^2$ for one \fovlarge\ frame. This is the explicit s
 \end{equation}
 with $L_{\rm lim}=4\pi D_L^2(z_{\rm mid})F_{\rm lim}$. A single \fovlarge\ frame has area 0.25 deg$^2$ and, therefore, $N_{\rm frame}=0.25\Sigma$. Table~\ref{tab:desiLFcounts} summarizes this DESI-derived anchor. It uses DESI [O\,II] only. Therefore, it is a conservative anchor for the proposed all-line slitless survey, not the full H$\alpha$+[O\,III]+[O\,II] yield. For $z>1.6$, DESI no longer provides the same direct [O\,II] calibration. Hence, the high-redshift extension must be tied to external [O\,II]/H$\alpha$ luminosity-function and number-count measurements \cite{comparat2015,saito2020,mehta2015}.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\scriptsize
 \begin{tabularx}{\textwidth}{@{}c c c c c c c@{}}
@@ -961,7 +961,7 @@ with $L_{\rm lim}=4\pi D_L^2(z_{\rm mid})F_{\rm lim}$. A single \fovlarge\ frame
 
 Summing the observed-LF redshift bins in Table~\ref{tab:desiLFcounts} gives the expected [O\,II]-only count per \fovlarge\ pointing shown in Table~\ref{tab:desiFOVsum}. These values are not the final all-line ELG yield. They are a conservative empirical floor showing how the measured DESI [O\,II] LF maps into one 0.25 deg$^2$ field for the adopted flux thresholds.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}c c c c c@{}}
@@ -996,7 +996,7 @@ Figure~\ref{fig:elgmagdepth} places these continuum limits on an observed ELG ca
 \end{equation}
 without applying a $K$-correction. The black curve marks the effective eBOSS $r$-band limit, $r\simeq22.44$, retained only as a historical comparison line. The purple curve marks the DESI DR1 99th-percentile depth of the plotted secure ELG sample, $r\simeq24.08$. The DESI target selection is not a pure $r$-band cut. It uses a $g$-band magnitude cut and a $(g-r)$ versus $(r-z)$ color box. Therefore, the plotted depth curves should be read as observed-frame proxies for catalog truncation rather than formal single-band selection boundaries \cite{raichoor2022}. The plotted catalog points are clipped at the adopted wide-tier continuum limit, $m_r\le24.3$. Hence, galaxies fainter than the nominal target limit are not shown. DESI occupies the key $0.6<z<1.6$ range and reaches nearly the proposed wide-tier continuum depth. The proposed space survey extends this selection logic to $1\lesssim z\lesssim3$ using deeper medium/deep tiers and near-infrared emission lines.
 
-\begin{figure}[H]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.96\textwidth]{elg_absmag_depth_catalog.png}
 \caption{Observed ELG absolute-magnitude proxy from the DESI DR1 LSS ELG catalog, shown against redshift. Points are secure DESI ELGs with [O\,II] detections and $m_r\le24.3$. Fainter objects are not plotted. The black curve shows the effective eBOSS depth for comparison, while the purple curve shows the DESI DR1 99th-percentile $r$-band depth of the plotted sample. The green, blue, and orange curves show the faintest $M_r-5\log_{10}h$ reachable at the proposed wide, medium, and deep continuum limits. This is a planning comparison in observed $r$ band and omits $K$-corrections \cite{raichoor2022}.}
@@ -1011,7 +1011,7 @@ To convert Figure~\ref{fig:elgmagdepth} into a redshift-dependent count estimate
 \end{equation}
 with the same $\Omega_{\rm eff}$ and cosmology used for the [O\,II] LF anchor above. Figure~\ref{fig:desiMlf} shows the resulting evolution over $0.6<z<1.6$. The turnover at faint $M_r$ is not the galaxy LF turnover. It is the DESI target-selection and redshift-success boundary. This is why the figure is useful for planning depth, but not sufficient by itself for extrapolating medium/deep-tier yields.
 
-\begin{figure}[H]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.96\textwidth]{desi_elg_lf_proxy_evolution.png}
 \caption{Observed-frame DESI ELG absolute-magnitude proxy LF in redshift bins, computed from the same secure \texttt{ELG\_LOPnotqso} sample as Figure~\ref{fig:elgmagdepth}. Faint points are the binned proxy LF. The solid curves are Schechter-function fits ($\Phi^\star,M^\star,\alpha$) to the well-sampled bright side of each redshift bin with the fitted $M^\star$ and $\alpha$ given in the legend. The fits are restricted to magnitudes brighter than the faint-end turnover, which is set by DESI target selection and redshift success rather than by the galaxy population. Therefore, the smooth curves should be read as the bright-side proxy LF and not extrapolated through the incompleteness edge. Vertical markers show the proposed continuum limits at representative redshifts. These remain DESI-observed proxy LFs, not $K$-corrected rest-frame LFs \cite{raichoor2022}.}
@@ -1020,7 +1020,7 @@ with the same $\Omega_{\rm eff}$ and cosmology used for the [O\,II] LF anchor ab
 
 The corresponding DESI-observed count integral is listed in Table~\ref{tab:desiMcounts}. It answers a narrower question than the line-flux table. For a source already represented in the DESI ELG selection, how many objects per \fovlarge\ frame lie above the proposed continuum proxy depth? The nearly identical wide, medium, and deep counts are a diagnostic, not a claim that depth is unimportant. They show that the DESI parent catalog itself is already truncated near the wide-tier proxy depth. Hence, DESI alone cannot measure the incremental population expected at $m_{\rm AB}\simeq25.1$--26.6.
 
-\begin{table}[H]
+\begin{table}[tp]
 \centering
 \sffamily\scriptsize
 \begin{tabularx}{\textwidth}{@{}c c c c c c c@{}}
@@ -1050,7 +1050,7 @@ The required external calibration is therefore not optional. DESI gives the wide
 
 The BAO/RSD program is organized as a wedding-cake survey. It has a very wide tier for cosmological volume, a medium tier for redshift-success calibration and fainter ELGs, and a deep pencil-beam tier for luminosity-function tails, completeness calibration, and deblending stress tests.
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \fill[paper] (-0.4,-0.35) rectangle (15.8,6.0);
@@ -1081,7 +1081,7 @@ The BAO/RSD program is organized as a wedding-cake survey. It has a very wide ti
 
 Table~\ref{tab:wedding} turns the wedding-cake strategy in Figure~\ref{fig:weddingcake} into exposure and depth requirements. The wide tier supplies the BAO/RSD volume, while the medium, deep, and ultra-deep tiers are included to measure redshift failures, overlap losses, and luminosity-function tails that cannot be calibrated from the wide survey alone.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{2.5cm}p{2.4cm}p{2.8cm}p{3.1cm}Y@{}}
@@ -1139,7 +1139,7 @@ where $\sigma$ is the transverse separation and $\pi$ is the line-of-sight separ
 \end{equation}
 while the quadrupole-to-monopole structure of $\xi(\sigma,\pi)$ constrains $\fsig(z)$. The ELG survey is therefore designed to recover the full two-dimensional correlation function, not only a spherically averaged BAO peak.
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.96\textwidth]{gal_corr_hr4.png}
 \caption{Two-dimensional galaxy correlation function $\xi(\sigma,\pi)$ of the Horizon Run 4 mock galaxy catalog \cite{hr4}, rendered directly from the author's pair-count measurement in real space (left) and redshift space (right). The dashed circle marks the BAO scale at $s\simeq107\,h^{-1}$\,Mpc. The nearly circular real-space BAO ring provides the standard ruler, while its anisotropic appearance in redshift space, the small-scale fingers of god and the large-scale Kaiser squashing, carries the radial BAO scale and the RSD growth information.}
@@ -1163,7 +1163,7 @@ where $V_{\rm eff}$ is the quantity defined above. If the usable area and secure
 \end{equation}
 with $\sigma_{r_d}/r_d$ taken to be of order 1--2\% for the proposal-level estimate. The final row keeps the same wide-area statistical BAO scale but lowers the systematic allowance after applying the medium/deep calibration tiers. This is why it improves the $H_0$ and growth floors without claiming a larger wide-survey volume.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{3.0cm}p{2.2cm}p{2.4cm}p{2.8cm}Y@{}}
@@ -1355,14 +1355,14 @@ d_L(z)=\frac{c\,(1+z)}{H_0}\int_0^z\frac{dz'}{E(z')},
 \end{equation}
 with $E(z)=\sqrt{\Omega_m(1+z)^3+(1-\Omega_m)(1+z)^{3(1+w)}}$ for a flat model of dark-energy equation of state $w$, reducing to $E(z)=\sqrt{\Omega_m(1+z)^3+\Omega_\Lambda}$ for $\Lambda$CDM. Because $d_L\propto H_0^{-1}$, the distance modulus carries an additive $-5\log_{10}H_0$ term. Therefore, raising $H_0$ shifts the entire Hubble diagram brighter (toward smaller $\mu$) by $5\log_{10}(H_0/H_0')$\,mag, a pure vertical offset. The \emph{shape} of $\mu(z)$ with redshift, by contrast, is fixed by $\Omega_m$ and the dark-energy parameters and is independent of $H_0$. At low redshift this expands to the Hubble law $\mu\simeq25+5\log_{10}\!\big(cz/H_0\,[\mathrm{Mpc}]\big)+1.086\,(1-q_0)\,z+\dots$, with $q_0=\tfrac12\Omega_m(1+3w)+\dots$ the deceleration parameter. A binned slitless spectrum reaching $m_{\rm AB}\simeq24.5$ in 2 hr can classify normal SN Ia to $z\simeq0.9$ near peak. In 10 hr it reaches $m_{\rm AB}\simeq25.4$ and $z\simeq1.25$. In 30 hr it reaches $m_{\rm AB}\simeq26.0$ and $z\simeq1.5$ for favorable events (Figure~\ref{fig:snreach}). These are planning values for spectra binned to $R\simeq300$--500 after combining three orientations. The rest-NUV diagnostic of Eq.~\eqref{eq:nuvstd} is signal-limited at the blue end. Hence, the iron-group color is most robustly measured for the brighter, lower-redshift half of each tier, while classification and host-redshift control extend across the full reach.
 
-\begin{figure}[p]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.86\textwidth]{phillips_relation.png}
 \caption{The Phillips width--luminosity relation that underpins SN Ia standardization, built from the real Carnegie Supernova Project\,I sample (139 SNe Ia; Burns et al.\ \cite{burns2018csp}) and presented in the style of Figure 11 of Zeng et al.\ \cite{zeng2025sn2023ehl}. The peak absolute $V$ magnitude $M_{\max}(V)$, corrected for host-galaxy extinction with the per-SN reddening and $R_V$ tabulated by the survey, is plotted against the post-maximum decline rate $\Delta m_{15}(B)$, so that brighter supernovae decline more slowly. The solid curve is a quadratic fit to these data, passing through $M_V=-19.31$ at $\Delta m_{15}=1.1$ with a residual scatter of $0.07$\,mag, shown as the shaded band. Points are coloured by decline-rate regime, the physical axis along which the recognized subtypes separate, namely the slow-declining over-luminous 1991T/1999aa-like events, normal SNe Ia, and the fast-declining sub-luminous 1991bg-like events. A single light-curve-shape parameter captures most, but not all, of the luminosity diversity, and the residual structure is the systematic that rest-frame NUV spectroscopy is designed to diagnose. The CSP absolute scale adopts $H_0=72$\,\kms\,Mpc$^{-1}$, which fixes only the zero-point, not the shape, of the relation.}
 \label{fig:phillips}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
   \def\w{13.5}
@@ -1596,7 +1596,7 @@ Inverting the curve of growth at these thresholds gives the minimum detectable c
 \label{fig:lyathreshold}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabular}{@{}ccccc@{}}
@@ -1620,7 +1620,7 @@ Two regimes therefore remain robust at $R=1000$. The diffuse forest is measured 
 
 The statistical forest is well suited to tomographic mapping, which needs many adjacent sightlines at moderate signal-to-noise rather than high resolution on a few. The achievable map resolution is set by the transverse sightline separation, which in turn depends on the surface density of usable background sources. At $z\simeq2.3$ the density of background galaxies and quasars usable as Ly$\alpha$ backlights rises steeply with depth from $\sim$360 to $\sim$3300\,deg$^{-2}$ between $g=24.0$ and $g=25.0$, giving mean transverse separations of $\sim3.6$ down to $\sim1.2\,h^{-1}$\,Mpc \cite{lee2014tomo}. CLAMATO realized this at $2.05<z<2.55$ with 240 sources over 0.157\,deg$^2$, a mean separation of $2.37\,h^{-1}$\,Mpc, and a map resolution of $2.5\,h^{-1}$\,Mpc (Figure~\ref{fig:lya3dexternal}) \cite{lee2018clamato}. LATIS extended this to 1.7\,deg$^2$ with about 3800 galaxy spectra at comparable resolution \cite{newman2020latis}.
 
-\begin{figure}[H]
+\begin{figure}[tp]
 \centering
 \includegraphics[width=0.96\textwidth]{lya_clamato_3d_external.png}
 \caption{External 3D Ly$\alpha$ forest tomography visualization from the CLAMATO DR1 map. The blue isodensity surfaces show reconstructed IGM absorption structures, while points mark coeval galaxies. This illustrates how multiple Ly$\alpha$ forest sightlines can be combined into a three-dimensional gas-density map. Image source: Lee et al. 2018, CLAMATO DR1, arXiv source figure \texttt{x3d\_screenshot\_v0.pdf} \cite{lee2018clamato}.}
@@ -1788,7 +1788,7 @@ Reaching this regime requires diffuse-light photometry to $\mu\sim30$ mag\,arcse
 
 The LSB cluster program is a deep, targeted use of the wide field rather than a blind survey. The adopted plan targets a sample of $\sim20$--$40$ nearby clusters at $0.02\lesssim z\lesssim0.10$, where UDGs are spatially resolved and the ICL fills a large fraction of the field, with long multi-orientation integrations per cluster to reach a $1\sigma$ surface-brightness limit of $\mu\sim29$--$30$ mag\,arcsec$^{-2}$ in the stacked image. Table~\ref{tab:lsbreach} summarizes the planning reach. The same exposures yield the slitless spectra of compact emission-line tracers (intracluster planetary nebulae, background emission-line galaxies for weak-lensing shape calibration) and of any star-forming LSB dwarfs. Table~\ref{tab:lsbanchors} places the published measurements that anchor each scientific claim of the program next to the capability the mission adds to it.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{3.6cm}p{3.2cm}X@{}}
@@ -1967,7 +1967,7 @@ This is where a uniform, wide-field dwarf census contributes even though it does
 
 A slitless survey at $R=1000$ cannot resolve the few-km\,s$^{-1}$ internal velocity dispersions of dwarfs, which lie a factor of thirty below its resolution element and remain the province of high-resolution multi-object spectroscopy. The mission's contribution is the discovery and characterization that gate the small-scale dark-matter tests. A deep wide-field imaging and grism survey detects LSB dwarfs and ultra-diffuse galaxies to faint magnitudes over large contiguous areas. It confirms systemic redshifts and group or host membership from emission lines in the gas-rich systems and from strong stellar absorption features in the brighter ones. It measures integrated stellar populations, metallicities, and star-formation histories that separate the formation channels relevant to the dark-matter interpretation. Crucially, it delivers a \emph{uniform, well-understood selection function} over a wide area, removing the single greatest systematic limitation of present dwarf samples, their heterogeneous assembly from many surveys with incompatible depths and criteria. The resulting catalogs, with structural parameters and stellar-population diagnostics, feed both the high-resolution kinematic follow-up that measures central densities and the gravitational-lensing substructure analyses that count low-mass halos independently of their starlight. Table~\ref{tab:dwarfreach} summarizes the program.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{3.5cm}p{3.3cm}X@{}}
@@ -2084,7 +2084,7 @@ The calculator turns the line-flux depth into an explicit star-formation-rate fl
 \label{fig:darkgal}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{3.6cm}p{3.2cm}X@{}}
@@ -2119,7 +2119,7 @@ The program is also a long-lived legacy resource. The optically dark and almost-
 
 Table~\ref{tab:triage} collects the program-level scope implied by the preceding sections. It separates the core ELG BAO/RSD survey from companion programs whose requirements are compatible with the same survey architecture, spectroscopic or imaging, but should not drive the flagship performance claims.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{2.8cm}p{2.4cm}p{3.7cm}p{3.6cm}Y@{}}
@@ -2146,7 +2146,7 @@ LBG topology & Ancillary & 100--200 bright systems in overdensities & $3\times5$
 \clearpage
 \section{Observing Architecture}
 
-\begin{figure}[h]
+\begin{figure}[tp]
 \centering
 \begin{tikzpicture}[font=\sffamily]
   \fill[paper] (-0.35,-0.25) rectangle (16.0,5.7);
@@ -2179,7 +2179,7 @@ The wide survey uses the \fovlarge\ field, two band-limited grism settings per w
 
 Table~\ref{tab:timeline} gives the resulting observing-program envelope. The year ranges are not a fixed schedule but an existence proof, showing that commissioning, the truth fields, the wide ELG map, the calibration tiers, and the companion programs fit together within a multi-year robotic survey.
 
-\begin{table}[h]
+\begin{table}[tp]
 \centering
 \sffamily\small
 \begin{tabularx}{\textwidth}{@{}p{3.0cm}p{3.0cm}p{3.2cm}Y@{}}
