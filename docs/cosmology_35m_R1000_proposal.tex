@@ -303,6 +303,15 @@ The two wide-field space missions closest to this concept have made deliberately
 \label{fig:crowded}
 \end{figure}
 
+The three-roll strategy above accepts whole-field overlap and resolves it statistically after the fact. An image slicer is a complementary option for the fields where crowding is worst. It cuts the two-dimensional focal-plane image into narrow slices, reformats the slices end to end into one pseudo-slit, and disperses that pseudo-slit as a single spectrum. Sources in different slices can never overlap. Only sources sharing, or adjacent to, the same slice can still blend in wavelength. This is a substantially smaller overlap graph than the whole-field blending of Figure~\ref{fig:crowded}. Image slicers already fly on integral-field spectrographs, including the JWST NIRSpec IFU mode \cite{boker2022}. The concept itself is therefore flight-proven. Adding one across the full wide-tier field of view is a substantial optical and mechanical addition that this proposal does not design or cost here. The more direct application is the medium, deep, and ultra-deep tiers, where the source density is highest and the completeness calibration is most sensitive to blending. For those fields, an image-slicer front end is a design direction worth carrying into a future trade study, not a baseline commitment of this proposal.
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{hsc_slicer_demo.png}
+\caption{An image-slicer alternative to whole-field slitless dispersion, tested on a simulated scene built from real measurements rather than the synthetic random population of Figure~\ref{fig:crowded}. Every source's position, brightness, size, ellipticity, and position angle is measured directly from the Subaru HSC-SSP deep image of the SXDS/UDS/XMM-LSS deep-tier anchor \cite{aihara2018}, then rendered through this concept's own $0.11''$ pixels and diffraction-limited PSF rather than shown as the raw HSC pixels. Each row disperses the same reconstructed scene at one of the three survey roll angles, $0^\circ$, $45^\circ$, and $90^\circ$. \emph{Left}: the reconstructed direct image, cut into five horizontal slices. \emph{Right}: those slices reformatted end to end into one pseudo-slit (bottom, true pixel scale, not magnified) and dispersed together into a single spectrum (top, wavelength increasing upward), with the same instrument model and display contrast as Figure~\ref{fig:crowded} ($0.11''$ pixels, $1.0$--$1.75\,\mu$m, $R=1000$). Dashed lines mark each slice's own segment of the combined frame. Blending is confined to neighbours sharing, or adjacent to, the same slice. Sources in different slices never overlap at any roll angle. The slice count (five) and the projection of each source's elliptical profile onto the slit's spatial axis are simplifications for a clear illustration, not an optical design of a real image slicer.}
+\label{fig:slicer}
+\end{figure}
+
 \subsection{Effective Resolution for Galaxies}\label{sec:effres}
 
 The resolving power seen by an extended galaxy is reduced by morphology along the dispersion axis:
@@ -2495,6 +2504,12 @@ R. E. Ryan Jr., S. Casertano, and N. Pirzkal,
 \emph{Publications of the Astronomical Society of the Pacific}, 130, 034501, 2018.
 \url{https://arxiv.org/abs/1801.03936}
 \doi{10.1088/1538-3873/aaa53e}
+
+\bibitem{boker2022}
+T. B\"oker, P. Ferruit, S. Birkmann, et al.,
+``The Near-Infrared Spectrograph (NIRSpec) on the James Webb Space Telescope. IV. Capabilities and predicted performance for the NIRSpec IFU mode,''
+\emph{Astronomy \& Astrophysics}, 661, A82, 2022.
+\url{https://arxiv.org/abs/2202.03434}
 
 \bibitem{burke2019}
 C. J. Burke et al.,
