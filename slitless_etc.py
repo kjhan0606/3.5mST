@@ -208,6 +208,14 @@ class InstrumentConfig:
     extraction_eff: float = 0.70        # optimal-extraction aperture + contamination loss
     full_well: float = 100000.0         # detector full well [e-] (saturation)
     flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
+    read_noise_corr: float = 0.0        # equicorrelated read-noise coefficient rho, 0 (independent
+                                        # pixels, the default) to 1 (fully correlated); Pandeia's
+                                        # pixel-covariance treatment (Pontoppidan et al. 2016,
+                                        # arXiv:1707.02202, Sec. 6.2) collapsed to a single equal
+                                        # pairwise correlation rather than a measured per-detector
+                                        # covariance matrix, since no such matrix exists yet for this
+                                        # concept's detectors; leave at 0 unless a real measured value
+                                        # is supplied for the adopted detector
     psf_floor: float = 0.04             # delivered image-quality floor [arcsec] (jitter+optics+charge diffusion)
     t_single: float = 1800.0            # single-exposure length [s]; read noise scales with
                                         # n_reads = max(n_exp, t/t_single) for long integrations
@@ -291,6 +299,19 @@ class InstrumentConfig:
         n = max(2, int(self.n_groups))
         sigma_frame = read / np.sqrt(2.0)
         return sigma_frame * np.sqrt(12.0 * (n - 1) / (n * (n + 1.0)))
+
+    def read_noise_variance_total(self, lam_A, t_s, npix):
+        """Total read-noise variance [e-^2] summed over npix aperture pixels.
+
+        sigma^2(sum) = npix * sigma_pix^2 * (1 + (npix-1)*rho) for an
+        equicorrelated pixel-to-pixel read-noise model (Pandeia's pixel
+        covariance sum, Pontoppidan et al. 2016, Sec. 6.2, Eq. 13-14,
+        collapsed from a full covariance matrix to one pairwise correlation
+        rho = read_noise_corr). rho=0 (default) recovers the independent-pixel
+        sum used elsewhere in this module."""
+        var_pix = self.n_reads(t_s) * self.read_noise_eff(lam_A) ** 2
+        rho = self.read_noise_corr
+        return npix * var_pix * (1.0 + (npix - 1.0) * rho)
 
     def cr_exposure_efficiency(self):
         """Mean fraction of the accumulated signal that survives cosmic-ray
@@ -445,7 +466,7 @@ def line_sn(cfg: InstrumentConfig, F_line, lam_A, t_s, source_fwhm=0.3,
     var = (S
            + (Bpix + dark) * npix * teff
            + Ccont * teff
-           + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2
+           + cfg.read_noise_variance_total(lam_A, t_s, npix)
            + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
@@ -465,7 +486,7 @@ def f_limit(cfg: InstrumentConfig, lam_A, t_s, snr=5.0, source_fwhm=0.3,
     Ccont = continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm)
     _, dark = cfg.detector_at(lam_A)
     Btot = ((Bpix + dark) * npix * teff + Ccont * teff
-            + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2)
+            + cfg.read_noise_variance_total(lam_A, t_s, npix))
     k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
          * teff * cfg.extraction_eff)   # e- per unit flux
     a = 1.0 - (snr * cfg.flat_error) ** 2          # =1 when flat_error=0
@@ -490,7 +511,7 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)          # aperture radius [arcsec]
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     _, dark = cfg.detector_at(lam_A)
-    Btot = (Bpix + dark) * npix * teff + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2
+    Btot = (Bpix + dark) * npix * teff + cfg.read_noise_variance_total(lam_A, t_s, npix)
     # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture;
     # the aperture loss is the physical encircled energy of the delivered PSF
     k = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
@@ -556,7 +577,7 @@ def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
          * teff * filter_width_A * Flam * aperture_ee(cfg, lam_A, r_ap))
     _, dark = cfg.detector_at(lam_A)
     var = (S + (Bpix + dark) * npix * teff
-           + npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2 + (cfg.flat_error * S)**2)
+           + cfg.read_noise_variance_total(lam_A, t_s, npix) + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
 
@@ -621,7 +642,7 @@ def noise_breakdown(cfg, lam_A, t_s, source_fwhm=0.3, filter_width_A=4000.0):
         "n_pix": npix,
         "sky_e": Bpix * npix * t_s,
         "dark_e": dark * npix * t_s,
-        "read_e2": npix * cfg.n_reads(t_s) * cfg.read_noise_eff(lam_A)**2,
+        "read_e2": cfg.read_noise_variance_total(lam_A, t_s, npix),
     }
 
 
@@ -814,16 +835,20 @@ def compare_missions():
 
     cE = euclid_cfg(); bandE = cE.band_max_A - cE.band_min_A
     tE = 4 * 560.0
+    F_PUB_EUCLID = 3.5e-16     # NISP slitless-grism Halpha limit, Euclid Red Book (Laureijs+ 2011)
     fE = f_limit(cE, lam, tE, snr=3.5, source_fwhm=0.5, filter_width_A=bandE)
     print("Euclid Wide (1.2 m, 0.3\", R~450, red grism 1.25-1.85um):")
-    print("    published depth        : 2.0e-16 erg/s/cm^2 @ 3.5 sigma, 0.5\" src  (Euclid prep.XXX)")
-    print(f"    ETC depth  @ {tE:.0f}s     : {fE:.2e}   (ratio ETC/pub = {fE/2e-16:.2f})")
+    print(f"    published depth        : {F_PUB_EUCLID:.1e} erg/s/cm^2 @ 3.5 sigma, 0.5\" src  (Laureijs+2011)")
+    print(f"    ETC depth  @ {tE:.0f}s     : {fE:.2e}   (ratio ETC/pub = {fE/F_PUB_EUCLID:.2f})")
     print("=" * 72)
-    print("The idealised photon ETC sits deeper than both realised survey limits,")
-    print("~1.4x for Roman and ~2.3x for Euclid, the expected optimistic offset from")
+    print(f"The idealised photon ETC sits deeper than both realised survey limits,")
+    print(f"~{1/(fR/1e-16):.1f}x for Roman and ~{1/(fE/F_PUB_EUCLID):.1f}x for Euclid, the expected optimistic offset from")
     print("pipeline extraction losses and wide-survey self-contamination that the")
-    print("published limits fold in but a photon ETC does not (larger for Euclid's")
-    print("coarse 0.3\" sampling).")
+    print("published limits fold in but a photon ETC does not. Most of the gap between")
+    print("the two ratios traces to the significance level and source size each")
+    print("mission's own reference case adopts (Roman 6.5sig/0.3\", Euclid 3.5sig/0.5\"),")
+    print("not to Euclid's coarser 0.3\" pixel scale, which shifts the depth only a")
+    print("few percent when tested in isolation.")
 
 
 def realistic_cfg(**kw):
@@ -839,9 +864,11 @@ def realistic_cfg(**kw):
     return InstrumentConfig(**base)
 
 
-def cooling_tradeoff(temps=(150, 180, 210, 240, 270, 290), t_s=3*3600.0):
+def cooling_tradeoff(temps=(150, 180, 210, 240, 270, 290), t_s=3*3600.0, ax=None):
     """Near-IR depth vs telescope temperature: where does thermal self-emission
-    overtake the zodiacal background and build a 'thermal wall'?"""
+    overtake the zodiacal background and build a 'thermal wall'?
+    If `ax` is given, plot onto it and skip creating/saving a standalone figure
+    (used to place this panel inside a combined figure)."""
     cfg0 = realistic_cfg()
     lam = np.linspace(10000., 30000., 220)
     zodi = replace(cfg0, include_thermal=False).sky_flambda(lam)   # zodiacal only
@@ -852,7 +879,9 @@ def cooling_tradeoff(temps=(150, 180, 210, 240, 270, 290), t_s=3*3600.0):
     print(f"{'T_tel[K]':>8}{'thermal>zodi from':>19}{'F5s 1.6um':>11}"
           f"{'F5s 2.2um':>11}{'F5s 2.7um':>11}")
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
-    fig, ax = plt.subplots(figsize=(7.2, 5.0), dpi=150)
+    standalone = ax is None
+    if standalone:
+        fig, ax = plt.subplots(figsize=(7.2, 5.0), dpi=150)
     colors = plt.cm.viridis(np.linspace(0, 0.9, len(temps)))
     for T, c in zip(temps, colors):
         cfg = replace(cfg0, tel_temp=T)
@@ -867,9 +896,9 @@ def cooling_tradeoff(temps=(150, 180, 210, 240, 270, 290), t_s=3*3600.0):
         print(f"{T:>8}{cs:>19}{g(1.6):>11.1e}{g(2.2):>11.1e}{g(2.7):>11.1e}")
     ax.set_yscale("log"); ax.set_xlabel(r"observed wavelength [$\mu$m]")
     ax.set_ylabel(r"$F_{5\sigma}$ [erg s$^{-1}$ cm$^{-2}$]  (3 hr, 0.3\")")
-    ax.set_title("Telescope-temperature tradeoff: the near-IR thermal wall")
     ax.legend(title="optics T", fontsize=8, ncol=2); ax.grid(alpha=0.2, which="both")
-    fig.savefig("etc_cooling.png", bbox_inches="tight"); print("wrote etc_cooling.png")
+    if standalone:
+        fig.savefig("etc_cooling.png", bbox_inches="tight"); print("wrote etc_cooling.png")
     print("=" * 66)
 
 
@@ -950,14 +979,17 @@ def main(cfg=None):
           f"dark {nb['dark_e']:.0f} e-  read^2 {nb['read_e2']:.0f} e-^2  "
           f"(sky fraction {nb['sky_e']/tot*100:.0f}%)  n_pix={nb['n_pix']:.0f}")
 
-    # ---- figure: F_5sigma(lambda) and the zodiacal spectrum ----
+    # ---- figure: F_5sigma(lambda), the zodiacal spectrum, and the cooling tradeoff ----
     try:
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
+        fig = plt.figure(figsize=(13.0, 7.4), dpi=150)
+        gs = fig.add_gridspec(2, 2, width_ratios=(1.0, 1.0), hspace=0.08, wspace=0.28)
+        a1 = fig.add_subplot(gs[0, 0])
+        a2 = fig.add_subplot(gs[1, 0], sharex=a1)
+        a3 = fig.add_subplot(gs[:, 1])
         lam = np.linspace(4000, 25000, 300)
-        fig, (a1, a2) = plt.subplots(2, 1, figsize=(7.2, 7.4), dpi=150,
-                                     sharex=True, gridspec_kw={"hspace": 0.08})
         # zodi spectrum (AB/arcsec^2)
         sky = cfg.sky_flambda(lam)
         fnu = sky * lam**2 / C_A
@@ -967,8 +999,7 @@ def main(cfg=None):
                 color="#333", lw=1, ls="--", label="zodiacal only")
         a1.set_ylabel(r"sky $\mu$  [AB arcsec$^{-2}$]"); a1.invert_yaxis()
         a1.legend(fontsize=8, loc="lower left"); a1.grid(alpha=0.2)
-        a1.set_title("Slitless ETC: zodiacal background and 5$\\sigma$ line-flux depth",
-                     fontsize=11)
+        a1.tick_params(labelbottom=False)
         for tt, c in [(0.75*hr, "#3898ec"), (3*hr, "#4ec9b0"), (12*hr, "#d97757")]:
             f = [f_limit(cfg, l, tt) for l in lam]
             a2.plot(lam/1e4, f, color=c, lw=2, label=f"{tt/hr:.2f} hr")
@@ -976,8 +1007,9 @@ def main(cfg=None):
         a2.set_yscale("log"); a2.set_xlabel(r"observed wavelength [$\mu$m]")
         a2.set_ylabel(r"$F_{5\sigma}$ [erg s$^{-1}$ cm$^{-2}$]")
         a2.legend(fontsize=8, ncol=2); a2.grid(alpha=0.2, which="both")
+        cooling_tradeoff(ax=a3)
         fig.savefig("etc_f5sigma.png", bbox_inches="tight")
-        print("\nwrote etc_f5sigma.png")
+        print("\nwrote etc_f5sigma.png (combined with cooling tradeoff)")
     except Exception as e:
         print("plot skipped:", e)
 
@@ -1007,11 +1039,17 @@ def _cli():
                    help="power-law index of the scattered-light PSF wing")
     p.add_argument("--stray-star-norm", type=float, default=1e-6,
                    help="scattered flux fraction per arcsec^2 at 60'' separation")
+    p.add_argument("--read-noise-corr", type=float, default=0.0,
+                   help="equicorrelated pixel-to-pixel read-noise coefficient rho, "
+                        "0 (independent, default) to 1 (fully correlated); Pandeia-style "
+                        "(Pontoppidan et al. 2016, arXiv:1707.02202) pixel covariance sum, "
+                        "supply a real measured value for the adopted detector, do not guess")
     a = p.parse_args()
     kw = dict(diameter_cm=a.diam, R=a.R, pix_scale=a.pix, eta_peak=a.eta,
               read_noise=a.read, dark_current=a.dark, n_exp=a.nexp, zodi_mu_ref=a.zodi,
               stray_star_mag=a.stray_star_mag, stray_star_sep_arcsec=a.stray_star_sep,
-              stray_star_wing_index=a.stray_star_index, stray_star_wing_norm_60as=a.stray_star_norm)
+              stray_star_wing_index=a.stray_star_index, stray_star_wing_norm_60as=a.stray_star_norm,
+              read_noise_corr=a.read_noise_corr)
     cfg = realistic_cfg(**kw) if a.realistic else InstrumentConfig(**kw)
     main(cfg)
     if not a.no_compare:
