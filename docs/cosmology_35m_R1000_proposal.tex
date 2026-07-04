@@ -1127,10 +1127,11 @@ after marginalizing over galaxy bias in the ELG clustering model. The statistica
 \end{equation}
 so the wide tier sets the cosmological precision while the medium and deep tiers reduce redshift-failure and line-identification systematics.
 
-In configuration space the same information is measured from the two-dimensional galaxy correlation function,
+In configuration space the same information is measured from the two-dimensional galaxy correlation function, using the minimum-variance Landy--Szalay estimator \cite{landyszalay1993},
 \begin{equation}
   \xi(\sigma,\pi)=\frac{DD(\sigma,\pi)-2DR(\sigma,\pi)+RR(\sigma,\pi)}
   {RR(\sigma,\pi)},
+  \label{eq:xiestimator}
 \end{equation}
 where $\sigma$ is the transverse separation and $\pi$ is the line-of-sight separation. The BAO feature appears as an annular excess at $r_{\rm BAO}\simeq100$--$110\,h^{-1}$ Mpc. In real space this ring is nearly circular. In redshift space, peculiar velocities and coherent infall distort the contours, producing the anisotropy that is modeled jointly with the BAO scale. The transverse and radial BAO positions give
 \begin{equation}
@@ -1181,6 +1182,55 @@ Goal plus calibrated wedding-cake tiers & $\sim3\times10^6$ wide plus fainter ca
 \end{table}
 
 The science requirement is therefore not simply to detect many emission lines. It is to recover the BAO scale and the anisotropic RSD signal without imprinting a roll-angle, morphology, or overlap-dependent selection function. The baseline requirement is redshift purity $>98\%$ for the cosmology sample, catastrophic line-confusion rate $<1\%$, and a redshift-success model whose spatial variation is known well enough that the induced BAO-scale distance bias remains below $0.3\%$. These requirements will be verified by blinded image-level simulations and by repeated reductions of the same fields using only two of the three orientations with the third orientation held out as a validation data set.
+
+\subsection{Parameter-Estimation Pipeline: Redshifts to Cosmological Constraints}
+
+The redshift catalog and the clustering statistics defined above are not yet a cosmological measurement. Four further stages connect them to a posterior on $H_0r_d$, $\Omega_m$, $w_0$, $w_a$, and $S_8^{\rm grow}$. First, each deblended spectrum is converted into a redshift and a quality flag. Second, the redshift catalog is compressed into two-point clustering statistics in configuration and Fourier space. Third, a covariance matrix is built for those statistics. Fourth, a likelihood is constructed and sampled. This subsection defines each stage explicitly, extending the forecast of Table~\ref{tab:baoforecast} into an analysis plan. The End-to-End Validation exercise below runs this same plan on image-level mocks before it is applied to real survey data.
+
+\subsubsection{Redshift and Quality Classification}
+
+Each deblended one-dimensional spectrum from the scene-reconstruction pipeline (Section~\ref{sec:effres}) is redshifted by $\chi^2$ template fitting against a library of ELG templates spanning the H$\alpha$/[O\,III]/[O\,II] flux-ratio sequence, following the same template classification-and-redshift approach as the BOSS/eBOSS spectroscopic pipeline \cite{bolton2012}. A supervised deep-learning classifier runs in parallel, trained on labeled DESI and SDSS spectra together with the injected slitless simulations of the End-to-End validation suite below, in the spirit of QuasarNET, the convolutional network that locates line positions and classifies quasar spectra \cite{quasarnet2018}. The template fit supplies the redshift and its formal uncertainty. The classifier flags the catastrophic degeneracy that a $\chi^2$ grid search cannot resolve on its own, a single bright line mistaken for a different transition at a different redshift. It draws on the joint multi-line pattern, the morphology prior, and the redundancy across the three observed position angles already carried by the scene model of Eq.~\eqref{eq:scene}. The two outputs are combined into the redshift quality flag already defined in the science catalog (Section~\ref{sec:effres}), which sets the $>98\%$-purity cosmology sample required above.
+
+\subsubsection{Two-Point Clustering Estimators in Configuration and Fourier Space}
+
+The correlation function of Eq.~\eqref{eq:xiestimator} is measured with random catalogs that carry the survey mask, the overlap losses between the three position angles, and the redshift-dependent selection function. The same information is measured independently in Fourier space. The FKP-weighted density field
+\begin{equation}
+  F(\mathbf{r}) = w(\mathbf{r})\big[n_g(\mathbf{r})-\alpha_{\rm rand}\,n_s(\mathbf{r})\big],
+  \qquad
+  w(\mathbf{r}) = \frac{1}{1+n(\mathbf{r})P_0},
+  \label{eq:fkp}
+\end{equation}
+sets $n_g$ and $n_s$ as the galaxy and synthetic random densities and $\alpha_{\rm rand}$ as their relative normalization \cite{fkp1994}. It yields minimum-variance power-spectrum multipoles $P_0(k)$, $P_2(k)$, and $P_4(k)$ through the Yamamoto line-of-sight estimator implemented with fast Fourier transforms \cite{yamamoto2006,hand2017nbodykit}. The power-spectrum multipoles and the correlation-function wedges are fit for the same $(\alpha_\perp,\alpha_\parallel,\fsig)$ parameters. Therefore, agreement between the configuration-space and Fourier-space results is a direct internal test for residual systematics, including window-function mismodeling, redshift-failure gradients, and position-angle-dependent selection effects.
+
+\subsubsection{Covariance Matrices}\label{sec:covariance}
+
+The likelihood requires a covariance matrix for the compressed BAO/RSD parameters in each redshift bin. The baseline covariance is built from an ensemble of mock galaxy catalogs constructed on N-body simulations at the resolution and volume of Horizon Run 4 \cite{hr4}, populated with an ELG halo-occupation model tuned to the luminosity functions of Section~\ref{sec:elgdepth}, and passed through the same selection function, masks, and redshift-quality cuts as the real survey. A faster ensemble of approximate mocks, calibrated against the smaller set of full N-body realizations, supplies the larger number of realizations needed to invert a well-conditioned covariance matrix. Internal jackknife resampling of the survey footprint provides an independent, mock-free covariance estimate used to validate the mock-based one before it enters the likelihood.
+
+\subsubsection{Likelihood, MCMC, and Simulation-Based Inference}
+
+The baseline likelihood is Gaussian in the compressed parameters,
+\begin{equation}
+  -2\ln\mathcal{L} =
+  \big[\mathbf{p}_{\rm obs}-\mathbf{p}_{\rm model}(\theta)\big]^{T}
+  \mathbf{C}^{-1}
+  \big[\mathbf{p}_{\rm obs}-\mathbf{p}_{\rm model}(\theta)\big],
+  \label{eq:gausslike}
+\end{equation}
+with $\mathbf{p}=(\alpha_\perp,\alpha_\parallel,\fsig)$ per redshift bin, $\mathbf{C}$ the covariance of Section~\ref{sec:covariance}, and $\theta$ the cosmological and nuisance parameters. For the ELG-only fit the posterior is sampled with an affine-invariant ensemble MCMC sampler \cite{emcee2013}. For the joint fit that adds Planck/ACT CMB priors and the internal SN\,Ia and DSPL strong-lensing likelihoods of the companion programs above, the same posterior is sampled with the CosmoMC and Cobaya cosmological-parameter-estimation codes \cite{lewisbridle2002,torradolewis2021},
+\begin{equation}
+  \mathcal{P}(\theta\mid D) \;\propto\;
+  \mathcal{L}_{\rm ELG}(D_{\rm ELG}\mid\theta)\,
+  \mathcal{L}_{\rm SN}(D_{\rm SN}\mid\theta)\,
+  \mathcal{L}_{\rm lens}(D_{\rm lens}\mid\theta)\,
+  \mathcal{L}_{\rm CMB}(D_{\rm CMB}\mid\theta)\,
+  \Pi(\theta),
+  \label{eq:jointpost}
+\end{equation}
+recovering the joint constraint on $H_0$, $\Omega_m$, and $(w_0,w_a)$ already anticipated in the supernova program above. Where a Bayesian model comparison between flat $\Lambda$CDM and dynamic dark energy is required, the same likelihood is instead sampled with nested sampling \cite{polychord2015}, which returns the evidence directly rather than only the posterior. A joint, multi-probe nested-sampling run can require $10^6$--$10^7$ likelihood evaluations. Therefore, the nonlinear matter power spectrum entering Eq.~\eqref{eq:gausslike} is evaluated with a neural emulator trained on outputs from Boltzmann and perturbation-theory codes \cite{cosmopower2022,euclidemulator2021} rather than recomputed from scratch at every step, reducing each theory evaluation from a full nonlinear-power-spectrum calculation to a millisecond-scale forward pass.
+
+A second, likelihood-free channel cross-checks the Gaussian result. The same simulation-based inference machinery proposed for the strong-lensing hierarchical layer above trains a neural density estimator directly on the full mock $P(k,\mu)$ or $\xi(\sigma,\pi)$ realizations from the covariance ensemble \cite{cranmer2020}, learning the mapping from cosmological parameters to the clustering statistics without assuming a Gaussian likelihood or a hand-derived covariance. This channel is not required to reach the planning precision of Table~\ref{tab:baoforecast}. That forecast is scoped on the standard Gaussian pipeline above. The simulation-based channel instead lets the analysis use non-Gaussian small-scale information, for example the mildly nonlinear fingers-of-god signal, as an independent growth-rate cross-check rather than a term the Gaussian covariance must marginalize away.
+
+Before unblinding, a fixed but undisclosed offset is applied to $(\alpha_\perp,\alpha_\parallel,\fsig)$ in the catalog, following the blind-analysis practice of BOSS, eBOSS, and DESI. The offset is removed only after the pipeline, the covariance, and the likelihood have been frozen, extending the held-out-orientation validation of the observing strategy above into the cosmological analysis itself.
 
 \subsection{End-to-End Validation}
 
@@ -1264,7 +1314,7 @@ Taken together the two anchors give the program three things that a single field
 
 \subsection{Type Ia Supernovae}
 
-Type Ia supernovae (SNe Ia) are the most mature distance indicator in cosmology and the only one of the companion programs that interacts directly with the same dark-energy science driving the flagship ELG survey. $R=1000$ slitless spectroscopy is well matched to the broad spectral features of SNe Ia. The analysis can bin to $R\simeq300$--500 for classification, phase determination, dust and color estimation, and population diagnostics while retaining ample signal. The time-domain program should use repeated fields, not isolated single-object follow-up. The \fovsmall\ field is acceptable for a deep cadence field. The \fovlarge\ field enables multiple active supernovae per pointing and improves host-galaxy template efficiency. Beyond classification and host-redshift control, this section argues that the mission has a distinctive and underexploited capability. At the redshifts where it operates, its $0.36$--$3.0\,\mu$m band captures the \emph{rest-frame near-ultraviolet} of SNe Ia, where the dominant intrinsic-luminosity systematic of the distance ladder is encoded.
+Type Ia supernovae (SNe Ia) are the most mature distance indicator in cosmology and the only one of the companion programs that interacts directly with the same dark-energy science driving the flagship ELG survey. $R=1000$ slitless spectroscopy is well matched to the broad spectral features of SNe Ia. The analysis can bin to $R\simeq300$--500 for classification, phase determination, dust and color estimation, and population diagnostics while retaining ample signal. The time-domain program should use repeated fields, not isolated single-object follow-up. The \fovsmall\ field is acceptable for a deep cadence field. The \fovlarge\ field enables multiple active supernovae per pointing and improves host-galaxy template efficiency. Beyond classification and host-redshift control, the mission has an additional capability. At the redshifts where it operates, its $0.36$--$3.0\,\mu$m band captures the \emph{rest-frame near-ultraviolet} of SNe Ia, where the dominant intrinsic-luminosity systematic of the distance ladder is encoded.
 
 \subsubsection{Standardizable Candles and the Systematic Floor}
 
@@ -1290,7 +1340,7 @@ The cleanest demonstration comes from ``optical twins'', which are SN Ia pairs w
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.62\textwidth]{snia_uvtwins.png}
-\caption{Observed rest-frame UV--optical spectra of the optical twins SN\,2011fe (black) and SN\,2011by (blue) from the flux-calibrated Swift/UVOT UV-grism observations taken within half a day of $B$ maximum for each event, retrieved from the Open Supernova Catalog archive \cite{guillochon2017}, deredshifted and scaled to match over $4000$--$4500$\,\AA. The same instrument at the same phase compares the two directly. The optical region is nearly identical while the flux diverges strongly below $\sim3000$\,\AA, the near-ultraviolet metallicity signature of Foley \& Kirshner \cite{foleykirshner2013} predicted by the synthetic spectra of Lentz et~al.\ \cite{lentz2000}. The optical twin condition removes the light-curve-shape and color degrees of freedom, isolating an intrinsic-luminosity difference that is visible \emph{only} in the rest-frame NUV \cite{graham2015}.}
+\caption{Observed rest-frame UV--optical spectra of the optical twins SN\,2011fe (black) and SN\,2011by (blue) from the flux-calibrated Swift/UVOT UV-grism observations taken within half a day of $B$ maximum for each event, retrieved from the Open Supernova Catalog archive \cite{guillochon2017}, deredshifted and scaled to match over $4000$--$4500$\,\AA. The same instrument at the same phase compares the two directly. The shaded band marks the proposed rest-frame NUV filter ($2500$--$3040$\,\AA\ around the $2770$\,\AA\ diagnostic wavelength of Figure~\ref{fig:snuvlimit}). The optical region is nearly identical while the flux diverges strongly across that band, the near-ultraviolet metallicity signature of Foley \& Kirshner \cite{foleykirshner2013} predicted by the synthetic spectra of Lentz et~al.\ \cite{lentz2000}. The optical twin condition removes the light-curve-shape and color degrees of freedom, isolating an intrinsic-luminosity difference that is visible \emph{only} in the rest-frame NUV \cite{graham2015}.}
 \label{fig:uvtwins}
 \end{figure}
 
@@ -1335,12 +1385,12 @@ The iron-group diagnostic normally requires a dedicated space-ultraviolet facili
 \label{fig:nuvband}
 \end{figure}
 
-This diagnostic is comfortably within reach of the baseline spectrograph and is in fact \emph{not} resolution-limited. SN Ia features are intrinsically broad. Photospheric-phase P\,Cygni lines have velocity widths of $\sim$$10^4$\,\kms, equivalent to an effective resolution of only $R\sim c/v\sim30$. The rest-frame NUV iron-group signature is a still broader pseudo-continuum suppression rather than a set of narrow lines. The native $R=1000$ therefore over-resolves the relevant structure by more than an order of magnitude. The analysis can bin down to $R\simeq100$--300 to accumulate signal-to-noise without erasing any diagnostic information. The limiting factor for $\Delta\mathrm{NUV}$ and $\theta_{\rm Fe}$ is blue-end signal-to-noise at the redshifted iron-blanketing wavelengths, not spectral resolution. The measurement is therefore feasible with the as-designed instrument and is governed by the same exposure-time reach shown in Figure~\ref{fig:snreach}. A single multi-roll slitless spectrum binned to $R\simeq300$--500 therefore records both the optical light-curve parameters and the rest-frame NUV iron-group color in one observation, enabling a subclass-aware standardization,
+This diagnostic is within reach of the baseline spectrograph and is \emph{not} resolution-limited. SN Ia features are intrinsically broad. Photospheric-phase P\,Cygni lines have velocity widths of $\sim$$10^4$\,\kms, equivalent to an effective resolution of only $R\sim c/v\sim30$. The rest-frame NUV iron-group signature is a still broader pseudo-continuum suppression rather than a set of narrow lines. The native $R=1000$ therefore over-resolves the relevant structure by more than an order of magnitude. The analysis can bin down to $R\simeq100$--300 to accumulate signal-to-noise without erasing any diagnostic information. The limiting factor for $\Delta\mathrm{NUV}$ and $\theta_{\rm Fe}$ is blue-end signal-to-noise at the redshifted iron-blanketing wavelengths, not spectral resolution. The measurement is therefore feasible with the as-designed instrument and is governed by the same exposure-time reach shown in Figure~\ref{fig:snreach}. A single multi-roll slitless spectrum binned to $R\simeq300$--500 therefore records both the optical light-curve parameters and the rest-frame NUV iron-group color in one observation, enabling a subclass-aware standardization,
 \begin{equation}
 M_B = M_0 + \alpha\,(\Delta m_{15}-1.1) + \beta\,(B-V) + \gamma\,\Delta\mathrm{NUV} + \delta\,\theta_{\rm Fe},
 \label{eq:nuvstd}
 \end{equation}
-where $\Delta\mathrm{NUV}$ is the rest-frame NUV color excess and $\theta_{\rm Fe}$ parameterizes the iron-group blanketing inferred from the spectrum. Adding these terms targets a reduction of the Hubble residual scatter from $\sigma\simeq0.12$\,mag toward $\sigma\lesssim0.08$\,mag, an $\sim30\%$ gain in per-object distance precision. More importantly, it lets the program test directly whether progenitor-metallicity evolution imprints a redshift-dependent standardization bias. Because the same explosion physics that drives the NUV divergence also sets the host-mass step, the spectroscopic $\theta_{\rm Fe}$ offers a physical replacement for the purely empirical host corrections used today.
+where $\Delta\mathrm{NUV}$ is the rest-frame NUV color excess and $\theta_{\rm Fe}$ parameterizes the iron-group blanketing inferred from the spectrum. Adding these terms targets a reduction of the Hubble residual scatter from $\sigma\simeq0.12$\,mag toward $\sigma\lesssim0.08$\,mag, an $\sim30\%$ gain in per-object distance precision. It also lets the program test directly whether progenitor-metallicity evolution imprints a redshift-dependent standardization bias. Because the same explosion physics that drives the NUV divergence also sets the host-mass step, the spectroscopic $\theta_{\rm Fe}$ offers a physical replacement for the purely empirical host corrections used today.
 
 \subsubsection{Observing Strategy and Survey Reach}
 
@@ -1443,13 +1493,13 @@ The second is the dark-energy equation of state. Unrecognized astrophysical syst
 \label{fig:sniacosmo}
 \end{figure}
 
-In summary, the SN Ia program is more than a classification-and-redshift service. By reaching the rest-frame NUV of $0.5\lesssim z\lesssim1.5$ supernovae it can diagnose the iron-group physics that sets the dominant intrinsic-luminosity systematic, convert the empirical host-mass step into a physical correction, and feed a subclass-homogeneous high-redshift distance set into the same dark-energy analysis as the flagship BAO/RSD survey.
+The SN Ia program therefore extends beyond classification and redshift service. By reaching the rest-frame NUV of $0.5\lesssim z\lesssim1.5$ supernovae it can diagnose the iron-group physics that sets the dominant intrinsic-luminosity systematic, convert the empirical host-mass step into a physical correction, and feed a subclass-homogeneous high-redshift distance set into the same dark-energy analysis as the flagship BAO/RSD survey.
 
 \subsection{Strong-Lens Cosmography}
 
-Strong gravitational lensing is a purely geometric cosmological probe. The deflection of light by a foreground mass depends on ratios of angular-diameter distances to the lens and the source. Hence, a measured lens configuration constrains the expansion history independently of, and with different systematics from, the BAO and supernova programs above. This makes it an attractive cross-check on $H_0$ and the dark-energy equation of state. The challenge is that the cosmological signal is entangled with the lens mass distribution through three well-known systematics. First, the \emph{mass-sheet degeneracy} (MSD), under which a rescaling of the convergence plus a uniform sheet leaves all observables except the absolute time delay unchanged. Second, the \emph{mass--anisotropy degeneracy} in the stellar dynamics used to break the MSD. Third, the \emph{external convergence} $\kappa_{\rm ext}$ from mass along the line of sight. A credible program is therefore defined by how well it controls these three terms, not by how many lenses it collects.
+Strong gravitational lensing is a purely geometric cosmological probe. The deflection of light by a foreground mass depends on ratios of angular-diameter distances to the lens and the source. Hence, a measured lens configuration constrains the expansion history independently of, and with different systematics from, the BAO and supernova programs above. It therefore provides an independent check on $H_0$ and the dark-energy equation of state. The cosmological signal is entangled with the lens mass distribution through three well-known systematics. First, the \emph{mass-sheet degeneracy} (MSD), under which a rescaling of the convergence plus a uniform sheet leaves all observables except the absolute time delay unchanged. Second, the \emph{mass--anisotropy degeneracy} in the stellar dynamics used to break the MSD. Third, the \emph{external convergence} $\kappa_{\rm ext}$ from mass along the line of sight. A credible program is therefore defined by how well it controls these three terms, not by how many lenses it collects.
 
-This mission is well suited to that task. Importantly, it does not rely primarily on its spectrograph. The slitless design carries diffraction-limited, photometrically stable direct imaging ($\sim$0.1\,arcsec at optical wavelengths) that is the natural data product for lens finding and for reconstructing Einstein rings and arcs. Spectroscopy is a powerful \emph{complement}. It supplies lens and source redshifts, deflector velocity dispersions, and line-of-sight galaxy redshifts, but it is not a prerequisite for the imaging-based core of the program. The strategy below therefore treats imaging $+$ machine learning as the engine with spectroscopy and (where useful) weak-lensing shapes as degeneracy-breaking add-ons. The science is timely because the next-generation imaging surveys will deliver lenses in unprecedented numbers. These include of order $1.7\times10^5$ discoverable galaxy--galaxy lenses in \textit{Euclid} and $1.2\times10^5$ in Rubin/LSST \cite{collett2015}, $\sim$$1.7\times10^4$ in the \textit{Roman} High-Latitude Survey \cite{weiner2020}, with \textit{Euclid} already publishing hundreds of space-based candidates over its first 63\,\degti\ and projecting $>10^5$ for the full survey \cite{walmsley2025}. Meanwhile, redshift confirmation and per-lens mass modeling remain the rate-limiting steps \cite{shu2025}.
+This mission does not rely primarily on its spectrograph for that task. The slitless design carries diffraction-limited, photometrically stable direct imaging ($\sim$0.1\,arcsec at optical wavelengths) that is the natural data product for lens finding and for reconstructing Einstein rings and arcs. Spectroscopy is a \emph{complement}. It supplies lens and source redshifts, deflector velocity dispersions, and line-of-sight galaxy redshifts, but it is not a prerequisite for the imaging-based core of the program. The strategy below therefore treats imaging $+$ machine learning as the engine with spectroscopy and (where useful) weak-lensing shapes as degeneracy-breaking add-ons. The next-generation imaging surveys will soon deliver lenses in large numbers. These include of order $1.7\times10^5$ discoverable galaxy--galaxy lenses in \textit{Euclid} and $1.2\times10^5$ in Rubin/LSST \cite{collett2015}, $\sim$$1.7\times10^4$ in the \textit{Roman} High-Latitude Survey \cite{weiner2020}, with \textit{Euclid} already publishing hundreds of space-based candidates over its first 63\,\degti\ and projecting $>10^5$ for the full survey \cite{walmsley2025}. Meanwhile, redshift confirmation and per-lens mass modeling remain the rate-limiting steps \cite{shu2025}.
 
 \subsubsection{Primary Probe: Double-Source-Plane Lenses for \texorpdfstring{$w$}{w} and \texorpdfstring{$\Omega_m$}{Omega_m}}
 
@@ -1460,7 +1510,7 @@ The cleanest strong-lensing cosmology available to a spectroscopic-imaging missi
 \end{equation}
 where $D_{s}$ and $D_{ds}$ are angular-diameter distances from observer and from deflector to each source. Because $\beta$ is a ratio of distances at a common lens, it is essentially \emph{independent of $H_0$} and of the absolute mass normalization and depends only on $\Omega_m$ and the dark-energy parameters. The archetype, the ``Jackpot'' lens SDSS\,J0946$+$1006, yields $\beta^{-1}=1.404\pm0.016$ and, combined with CMB priors in a flat $w$CDM model, $w=-1.17\pm0.20$, a $\sim$30\% improvement over the CMB alone \cite{collettauger2014}. Forecasts show that a handful of well-modeled DSPLs reach $\sigma(w)\approx0.15$ \cite{collett2012}. Recent AGEL-survey systems have begun to realize this, improving the $w$ precision by $\sim$30--40\% over CMB-only when combined \cite{sahu2025,bowden2025}.
 
-DSPLs are rare and were historically found by accident, because identifying \emph{two} source redshifts behind one lens is hard from imaging alone. This is precisely where the mission's combination of capabilities is decisive. The stable imaging resolves the two concentric ring/arc systems and measures their radii, while the slitless spectroscopy delivers the two source redshifts and the lens redshift in the same observation, turning serendipitous discoveries into a systematically assembled DSPL cosmology sample. We adopt DSPL distance-ratio cosmography as the primary strong-lensing science goal because its dominant requirement, multiple secure source-plane redshifts, is exactly the measurement a wide-field spectroscopic survey makes naturally and because the $\beta$ ratio sidesteps both the $H_0$ calibration and much of the MSD that complicate time-delay work.
+DSPLs are rare and were historically found by accident, because identifying \emph{two} source redshifts behind one lens is hard from imaging alone. This is where the mission's combination of imaging and spectroscopy matters. The stable imaging resolves the two concentric ring/arc systems and measures their radii, while the slitless spectroscopy delivers the two source redshifts and the lens redshift in the same observation, turning serendipitous discoveries into a systematically assembled DSPL cosmology sample. We adopt DSPL distance-ratio cosmography as the primary strong-lensing science goal because its dominant requirement, multiple secure source-plane redshifts, is exactly the measurement a wide-field spectroscopic survey makes naturally and because the $\beta$ ratio sidesteps both the $H_0$ calibration and much of the MSD that complicate time-delay work.
 
 \begin{figure}[tp]
 \centering
@@ -1508,15 +1558,15 @@ DSPLs are rare and were historically found by accident, because identifying \emp
 
 \subsubsection{Mass-Density Profiles and the Degeneracy-Breaking Program}
 
-The total mass-density profile of massive early-type lens galaxies is remarkably close to isothermal, $\rho\propto r^{-\gamma'}$ with $\gamma'\simeq2$. Measurements give $\langle\gamma'\rangle=2.085^{+0.025}_{-0.018}$ from SLACS dynamics \cite{koopmans2009}, $2.078\pm0.027$ with intrinsic scatter $0.16$ from the SLACS lensing$+$dynamics sample \cite{auger2010}, and $2.075^{+0.023}_{-0.024}$ from extended-source modeling \cite{etherington2023}. The slope evolves. At fixed mass and size, $\partial\gamma'/\partial z=-0.31\pm0.10$ \cite{sonnenfeld2013}. Measuring $\gamma'(z,M_\ast)$ over a large, homogeneously selected sample is valuable in two ways. As astrophysics it traces the assembly history of the most massive galaxies through the competition between dissipative growth and dry merging. As cosmology it supplies the very priors, the density slope and the stellar orbital anisotropy, that time-delay cosmography needs to break the MSD. The recent shift in that field toward hierarchical inference of the density profile across the lens population is exactly a demand for the measurement this mission can mass-produce \cite{birrer2020}.
+The total mass-density profile of massive early-type lens galaxies is close to isothermal, $\rho\propto r^{-\gamma'}$ with $\gamma'\simeq2$. Measurements give $\langle\gamma'\rangle=2.085^{+0.025}_{-0.018}$ from SLACS dynamics \cite{koopmans2009}, $2.078\pm0.027$ with intrinsic scatter $0.16$ from the SLACS lensing$+$dynamics sample \cite{auger2010}, and $2.075^{+0.023}_{-0.024}$ from extended-source modeling \cite{etherington2023}. The slope evolves. At fixed mass and size, $\partial\gamma'/\partial z=-0.31\pm0.10$ \cite{sonnenfeld2013}. Measuring $\gamma'(z,M_\ast)$ over a large, homogeneously selected sample is valuable in two ways. As astrophysics it traces the assembly history of the most massive galaxies through the competition between dissipative growth and dry merging. As cosmology it supplies the very priors, the density slope and the stellar orbital anisotropy, that time-delay cosmography needs to break the MSD. The recent shift in that field toward hierarchical inference of the density profile across the lens population is exactly a demand for the measurement this mission can mass-produce \cite{birrer2020}.
 
 The method combines two mission data products. The diffraction-limited imaging constrains the Einstein radius $\theta_E$ (hence the projected mass inside it) and, through full extended-source reconstruction of the ring, the radial slope $\gamma'$. The slitless spectroscopy adds the deflector stellar velocity dispersion $\sigma$. Here the native $R=1000$ ($\sim$300 \kms) resolution is a genuine limitation for low-dispersion systems, but lens-selected deflectors are massive ellipticals with $\sigma\gtrsim250$ \kms, for which an \emph{aperture-integrated} dispersion is recoverable from the slitless spectrum with careful template fitting and morphology deconvolution across the three roll angles. We therefore scope the dynamical measurement as integrated (not spatially resolved) $\sigma$, used statistically over the population rather than for per-lens $H_0$. Spatially resolved kinematics, where required for individual flagship systems, are deferred to external IFU facilities \cite{tdcosmo2025}.
 
 \subsubsection{Supporting Role in Time-Delay Cosmography}
 
-Time-delay cosmography measures $H_0$ directly from the relative arrival times of multiply imaged variable sources. The H0LiCOW program reached $H_0=73.3^{+1.7}_{-1.8}$ \kms\,Mpc$^{-1}$ (2.4\%) from six lensed quasars under power-law/composite mass models \cite{wong2020}. Relaxing the mass model to admit full mass-sheet freedom inflates the uncertainty to $\sim$8\% \cite{birrer2020}. The most recent TDCOSMO analysis, incorporating integrated and spatially resolved stellar kinematics, gives $H_0=71.6^{+3.9}_{-3.3}$ \kms\,Mpc$^{-1}$ \cite{birrer2025}. This mission will not build its own competitive time-delay $H_0$ measurement, which requires dedicated monitoring cadence and resolved kinematics, but it is a powerful \emph{force multiplier} for the lensed quasars and supernovae that Rubin and \textit{Roman} will discover.
+Time-delay cosmography measures $H_0$ directly from the relative arrival times of multiply imaged variable sources. The H0LiCOW program reached $H_0=73.3^{+1.7}_{-1.8}$ \kms\,Mpc$^{-1}$ (2.4\%) from six lensed quasars under power-law/composite mass models \cite{wong2020}. Relaxing the mass model to admit full mass-sheet freedom inflates the uncertainty to $\sim$8\% \cite{birrer2020}. The most recent TDCOSMO analysis, incorporating integrated and spatially resolved stellar kinematics, gives $H_0=71.6^{+3.9}_{-3.3}$ \kms\,Mpc$^{-1}$ \cite{birrer2025}. This mission will not build its own competitive time-delay $H_0$ measurement, which requires dedicated monitoring cadence and resolved kinematics, but it is a \emph{force multiplier} for the lensed quasars and supernovae that Rubin and \textit{Roman} will discover.
 
-Two contributions are decisive. First, spectroscopy delivers the lens and source redshifts and the deflector dispersion that every time-delay analysis requires. Second, and less appreciated, the wide field captures the redshifts of the faint galaxies along each sight line, which set the external convergence $\kappa_{\rm ext}$. Since $H_0\propto(1-\kappa_{\rm ext})$, this term is a leading systematic. It reached $\kappa_{\rm ext}=0.10^{+0.08}_{-0.05}$ and dominated the error budget for B1608$+$656 \cite{suyu2010} and is typically a few percent with a $\sim$2.5\% uncertainty controlled by weighted galaxy counts and spectroscopy of the field \cite{rusu2017,wells2023}. Dense, spatially complete redshifts of line-of-sight galaxies, a natural by-product of the flagship slitless survey overlapping time-delay fields, directly tighten $\kappa_{\rm ext}$ and therefore $H_0$ \cite{greene2013}.
+Two contributions matter most. First, spectroscopy delivers the lens and source redshifts and the deflector dispersion that every time-delay analysis requires. Second, and less appreciated, the wide field captures the redshifts of the faint galaxies along each sight line, which set the external convergence $\kappa_{\rm ext}$. Since $H_0\propto(1-\kappa_{\rm ext})$, this term is a leading systematic. It reached $\kappa_{\rm ext}=0.10^{+0.08}_{-0.05}$ and dominated the error budget for B1608$+$656 \cite{suyu2010} and is typically a few percent with a $\sim$2.5\% uncertainty controlled by weighted galaxy counts and spectroscopy of the field \cite{rusu2017,wells2023}. Dense, spatially complete redshifts of line-of-sight galaxies, a natural by-product of the flagship slitless survey overlapping time-delay fields, directly tighten $\kappa_{\rm ext}$ and therefore $H_0$ \cite{greene2013}.
 
 \subsubsection{An AI Pipeline for Finding and Modeling at Scale}
 
@@ -1566,9 +1616,9 @@ Cosmic-shear weak lensing is not a primary product of this mission, because comp
 
 In scope, the strong-lensing program is a Years~2--5 effort that rides on the flagship survey's imaging and on fields shared with external time-delay campaigns, supplemented by targeted spectroscopy ($3\times2$--$3\times4$ hr in three roll angles) of the highest-value deflectors and all DSPL candidates. The deliverables are a spectroscopically confirmed lens and DSPL catalog with machine-learning mass models, a population measurement of $\gamma'(z,M_\ast)$, $\kappa_{\rm ext}$ and redshift support for external time-delay $H_0$ work, and a DSPL-based constraint on $(\Omega_m,w)$ that is independent of the mission's BAO and supernova results. This is a substantive, systematics-aware cosmology program built on the mission's real strengths, namely stable imaging, wide-field multiplexed spectroscopy, and automated inference, rather than a single-object $H_0$ claim.
 
-\subsection{Lyman-\texorpdfstring{$\alpha$}{alpha} Forest}
+\subsection{Lyman-\texorpdfstring{$\alpha$}{alpha} Forest and Absorption Systems}
 
-The Lyman-$\alpha$ forest is the dense set of H\,\textsc{i} absorption lines imprinted on the spectrum of a background source by neutral hydrogen in the intergalactic medium (IGM) along the line of sight. Each absorber records the density, temperature, and peculiar velocity of diffuse gas at the redshift where Ly$\alpha$ ($\lambda_0=1215.67$\,\AA) comes into resonance. The forest is therefore a continuous tracer of large-scale structure across $2\lesssim z\lesssim4$, where few other tracers exist, and it underpins several distinct cosmological measurements. This section first sets out what the forest delivers in principle. It then computes quantitatively what the proposed $R=1000$ slitless spectrograph can actually measure and finally defines a program matched to that capability.
+The Lyman-$\alpha$ forest is the dense set of H\,\textsc{i} absorption lines imprinted on the spectrum of a background source by neutral hydrogen in the intergalactic medium (IGM) along the line of sight. Each absorber records the density, temperature, and peculiar velocity of diffuse gas at the redshift where Ly$\alpha$ ($\lambda_0=1215.67$\,\AA) comes into resonance. The forest is therefore a continuous tracer of large-scale structure across $2\lesssim z\lesssim4$, where few other tracers exist, and it underpins several distinct cosmological measurements. At higher column density the same absorbers steepen into Lyman-limit systems and damped Ly$\alpha$ absorbers, discrete tracers of circumgalactic and interstellar gas that this section surveys alongside the diffuse forest. We first set out what the forest delivers in principle, then quantify what the proposed $R=1000$ slitless spectrograph can measure, and define a program matched to that capability.
 
 \subsubsection{The Forest as a Cosmological Probe}
 
@@ -1578,7 +1628,7 @@ The second measurement is the thermal history of the IGM, encoded in the tempera
 
 \subsubsection{Spectral Resolution and Detectable H\,I Columns}
 
-The interpretation of the forest depends critically on spectral resolution. A slitless mission must be honest about its limits here. Individual forest absorbers have Doppler parameters of order $b\simeq20$--$30$\,km\,s$^{-1}$, set by the IGM temperature and turbulence \cite{rudie2012,rudie2013}. Resolving such a line requires a velocity resolution well below its width, in practice $R\gtrsim30{,}000$--$40{,}000$ as delivered by echelle spectrographs. The proposed instrument has $R=1000$, a resolution element of $c/R=300$\,km\,s$^{-1}$, roughly ten times broader than a single absorber. At the line density of the $z\simeq2.5$ forest every resolution element contains many blended lines. Hence, the spectrograph cannot decompose the forest into individual Voigt components.
+The interpretation of the forest depends critically on spectral resolution. A slitless mission has clear limits here. Individual forest absorbers have Doppler parameters of order $b\simeq20$--$30$\,km\,s$^{-1}$, set by the IGM temperature and turbulence \cite{rudie2012,rudie2013}. Resolving such a line requires a velocity resolution well below its width, in practice $R\gtrsim30{,}000$--$40{,}000$ as delivered by echelle spectrographs. The proposed instrument has $R=1000$, a resolution element of $c/R=300$\,km\,s$^{-1}$, roughly ten times broader than a single absorber. At the line density of the $z\simeq2.5$ forest every resolution element contains many blended lines. Hence, the spectrograph cannot decompose the forest into individual Voigt components.
 
 What it can do is detect absorption above a flux-decrement threshold. We quantify this with the Ly$\alpha$ curve of growth, computed by integrating a Voigt profile to obtain the rest-frame equivalent width $W_\lambda$ as a function of the H\,\textsc{i} column density $N_{\rm H\,I}$ (Figure~\ref{fig:lyathreshold}, left). For an unresolved line, the minimum equivalent width detectable at significance $N_\sigma$ in a spectrum of resolution $R$ and continuum signal-to-noise ${\rm S/N}$ per resolution element is
 \begin{equation}
@@ -1618,7 +1668,7 @@ Two regimes therefore remain robust at $R=1000$. The diffuse forest is measured 
 
 \subsubsection{Tomographic Mapping with the Wide Survey}
 
-The statistical forest is well suited to tomographic mapping, which needs many adjacent sightlines at moderate signal-to-noise rather than high resolution on a few. The achievable map resolution is set by the transverse sightline separation, which in turn depends on the surface density of usable background sources. At $z\simeq2.3$ the density of background galaxies and quasars usable as Ly$\alpha$ backlights rises steeply with depth from $\sim$360 to $\sim$3300\,deg$^{-2}$ between $g=24.0$ and $g=25.0$, giving mean transverse separations of $\sim3.6$ down to $\sim1.2\,h^{-1}$\,Mpc \cite{lee2014tomo}. CLAMATO realized this at $2.05<z<2.55$ with 240 sources over 0.157\,deg$^2$, a mean separation of $2.37\,h^{-1}$\,Mpc, and a map resolution of $2.5\,h^{-1}$\,Mpc (Figure~\ref{fig:lya3dexternal}) \cite{lee2018clamato}. LATIS extended this to 1.7\,deg$^2$ with about 3800 galaxy spectra at comparable resolution \cite{newman2020latis}.
+The statistical forest matches the requirements of tomographic mapping, which needs many adjacent sightlines at moderate signal-to-noise rather than high resolution on a few. The achievable map resolution is set by the transverse sightline separation, which in turn depends on the surface density of usable background sources. At $z\simeq2.3$ the density of background galaxies and quasars usable as Ly$\alpha$ backlights rises steeply with depth from $\sim$360 to $\sim$3300\,deg$^{-2}$ between $g=24.0$ and $g=25.0$, giving mean transverse separations of $\sim3.6$ down to $\sim1.2\,h^{-1}$\,Mpc \cite{lee2014tomo}. CLAMATO realized this at $2.05<z<2.55$ with 240 sources over 0.157\,deg$^2$, a mean separation of $2.37\,h^{-1}$\,Mpc, and a map resolution of $2.5\,h^{-1}$\,Mpc (Figure~\ref{fig:lya3dexternal}) \cite{lee2018clamato}. LATIS extended this to 1.7\,deg$^2$ with about 3800 galaxy spectra at comparable resolution \cite{newman2020latis}.
 
 \begin{figure}[tp]
 \centering
@@ -2302,6 +2352,83 @@ J. Kim, C. Park, B. L'Huillier, and S. E. Hong,
 ``Horizon Run 4 Simulation: Coupled Evolution of Galaxies and Large-scale Structures of the Universe,''
 \emph{Journal of Korean Astronomical Society}, 48, 213, 2015.
 \url{https://arxiv.org/abs/1508.05107}
+
+\bibitem{landyszalay1993}
+S. D. Landy and A. S. Szalay,
+``Bias and variance of angular correlation functions,''
+\emph{The Astrophysical Journal}, 412, 64, 1993.
+
+\bibitem{fkp1994}
+H. A. Feldman, N. Kaiser, and J. A. Peacock,
+``Power-spectrum analysis of three-dimensional redshift surveys,''
+\emph{The Astrophysical Journal}, 426, 23, 1994.
+\url{https://arxiv.org/abs/astro-ph/9304022}
+
+\bibitem{yamamoto2006}
+K. Yamamoto, M. Nakamichi, A. Kamino, B. A. Bassett, and H. Nishioka,
+``A Measurement of the Quadrupole Power Spectrum in the Clustering of the 2dF QSO Survey,''
+\emph{Publications of the Astronomical Society of Japan}, 58, 93, 2006.
+\url{https://arxiv.org/abs/astro-ph/0505115}
+
+\bibitem{hand2017nbodykit}
+N. Hand, Y. Feng, Y. Li, U. Seljak, Z. Slepian, and F. Beutler,
+``nbodykit: an open-source, massively parallel toolkit for large-scale structure,''
+\emph{The Astronomical Journal}, 156, 160, 2018.
+\url{https://arxiv.org/abs/1712.05834}
+
+\bibitem{bolton2012}
+A. S. Bolton et al.,
+``Spectral Classification and Redshift Measurement for the SDSS-III Baryon Oscillation Spectroscopic Survey,''
+\emph{The Astronomical Journal}, 144, 144, 2012.
+\url{https://arxiv.org/abs/1207.7326}
+
+\bibitem{quasarnet2018}
+N. Busca and C. Balland,
+``QuasarNET: Human-level spectral classification and redshifting with Deep Neural Networks,''
+\emph{arXiv:1808.09955}, 2018.
+\url{https://arxiv.org/abs/1808.09955}
+
+\bibitem{emcee2013}
+D. Foreman-Mackey, D. W. Hogg, D. Lang, and J. Goodman,
+``emcee: The MCMC Hammer,''
+\emph{Publications of the Astronomical Society of the Pacific}, 125, 306, 2013.
+\url{https://arxiv.org/abs/1202.3665}
+
+\bibitem{lewisbridle2002}
+A. Lewis and S. Bridle,
+``Cosmological parameter estimation using Monte Carlo Markov chains,''
+\emph{Physical Review D}, 66, 103511, 2002.
+\url{https://arxiv.org/abs/astro-ph/0205436}
+
+\bibitem{torradolewis2021}
+J. Torrado and A. Lewis,
+``Cobaya: Bayesian analysis in cosmology,''
+\emph{Journal of Cosmology and Astroparticle Physics}, 2021, 057, 2021.
+\url{https://arxiv.org/abs/2005.05290}
+
+\bibitem{polychord2015}
+W. J. Handley, M. P. Hobson, and A. N. Lasenby,
+``POLYCHORD: next-generation nested sampling,''
+\emph{Monthly Notices of the Royal Astronomical Society}, 453, 4384, 2015.
+\url{https://arxiv.org/abs/1506.00171}
+
+\bibitem{cosmopower2022}
+A. Spurio Mancini, D. Piras, J. Alsing, B. Joachimi, and M. P. Hobson,
+``CosmoPower: emulating cosmological power spectra for accelerated Bayesian inference from next-generation surveys,''
+\emph{Monthly Notices of the Royal Astronomical Society}, 511, 1771, 2022.
+\url{https://arxiv.org/abs/2106.03846}
+
+\bibitem{euclidemulator2021}
+M. Knabenhans et al.,
+``Euclid preparation: IX. EuclidEmulator2 -- power spectrum emulation with massive neutrinos and self-consistent dark energy perturbations,''
+\emph{Monthly Notices of the Royal Astronomical Society}, 505, 2840, 2021.
+\url{https://arxiv.org/abs/2010.11288}
+
+\bibitem{cranmer2020}
+K. Cranmer, J. Brehmer, and G. Louppe,
+``The frontier of simulation-based inference,''
+\emph{Proceedings of the National Academy of Sciences}, 117, 30055, 2020.
+\url{https://arxiv.org/abs/1911.01429}
 
 \bibitem{raichoor2020}
 A. Raichoor et al.,
