@@ -85,6 +85,11 @@ class ETCGui:
                        command=lambda _=None: self._sync_zodi()).pack(side="left")
         field(bg, "  or μ(0.5µm) [AB]", "zodi", "22.1")
         field(bg, "optics T [K]", "ttel", "270")
+        self.stray_on = tk.BooleanVar(value=False)
+        ttk.Checkbutton(bg, text="bright field star stray light",
+                        variable=self.stray_on, command=self.compute).pack(anchor="w")
+        field(bg, "  star mag [AB]", "straymag", "10")
+        field(bg, "  separation [″]", "straysep", "300")
 
         obs = ttk.LabelFrame(panel, text="observation / source", padding=4); obs.pack(fill="x", pady=2)
         field(obs, "λ [µm]", "lam", "1.6")
@@ -196,7 +201,9 @@ class ETCGui:
                   dark_current=self._f("dark"), n_exp=int(self._f("nexp")),
                   full_well=self._f("fw"), zodi_mu_ref=self._f("zodi"), tel_temp=self._f("ttel"),
                   dichroic_split_A=etc.TELESCOPE_PRESETS.get(self.telescope.get(), {}).get("split", 0.0),
-                  band_min_A=self._band[0]*1e4, band_max_A=self._band[1]*1e4)
+                  band_min_A=self._band[0]*1e4, band_max_A=self._band[1]*1e4,
+                  stray_star_mag=self._f("straymag") if self.stray_on.get() else None,
+                  stray_star_sep_arcsec=self._f("straysep"))
         return etc.realistic_cfg(**kw) if self.realistic.get() else etc.InstrumentConfig(**kw)
 
     # ---- main compute -------------------------------------------------------

@@ -97,6 +97,26 @@ def cirrus_flambda(lam_A, I100_MJysr):
     return fnu * C_A / lam_A ** 2
 
 
+def stray_star_flambda(lam_A, star_mag_ab, sep_arcsec, wing_index=2.5, norm_60as=1e-6):
+    """Scattered-light surface brightness [erg s^-1 cm^-2 A^-1 arcsec^-2] added
+    at the science position by a single bright field star at angular
+    separation sep_arcsec, modelled as a power-law PSF wing of the form used in
+    scattered-light analyses of wide-field imagers (e.g. Slater, Harding &
+    Mihos 2009; Sandin 2014, A&A 567, A97):
+
+        SB(r) = F_star * norm_60as * (r / 60'')^-wing_index
+
+    F_star is the star's point-source flux, from the same AB relation as
+    ab_to_flambda but read as a total flux rather than a surface brightness.
+    norm_60as (the scattered fraction per arcsec^2 at 60'' separation) and
+    wing_index are telescope-specific -- lower for an unobstructed off-axis
+    design with no spider diffraction -- and should be calibrated against a
+    measured or simulated PSF wing rather than used as literature defaults."""
+    F_star = ab_to_flambda(star_mag_ab, lam_A)                  # erg/s/cm^2/A, point source
+    r = max(float(sep_arcsec), 1.0)
+    return F_star * norm_60as * (r / 60.0) ** (-wing_index)
+
+
 def cirrus_I100_from_lat(gal_lat_deg, I100_pole=0.8):
     """100 um cirrus intensity [MJy/sr] from a plane-parallel cosecant law,
     normalised to the darkest high-latitude sky (~0.8 MJy/sr, Lockman Hole;
@@ -176,6 +196,15 @@ class InstrumentConfig:
     gal_lat_deg: float = 60.0           # survey caps sit at |b| >~ 60 deg
     cirrus_I100_MJysr: float | None = None   # measured IRAS/SFD 100um value; None ->
                                              # cosecant law from gal_lat_deg
+    # --- scattered light from a bright field star (optional; off by default) ---
+    stray_star_mag: float | None = None      # AB mag of a nearby bright star; None disables it
+    stray_star_sep_arcsec: float = 300.0     # angular separation from the science position
+    stray_star_wing_index: float = 2.5       # power-law index of the scattered-light PSF wing
+    stray_star_wing_norm_60as: float = 1e-6  # scattered flux fraction per arcsec^2 at 60'' sep;
+                                             # telescope-specific (lower for an unobstructed
+                                             # off-axis design with no spider diffraction) --
+                                             # calibrate against a measured/simulated PSF wing
+                                             # rather than treating the default as literature
     extraction_eff: float = 0.70        # optimal-extraction aperture + contamination loss
     full_well: float = 100000.0         # detector full well [e-] (saturation)
     flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
@@ -291,6 +320,9 @@ class InstrumentConfig:
             sky = sky + cirrus_flambda(lam_A, I100)
         if self.include_thermal:
             sky = sky + telescope_flambda(lam_A, self.tel_temp, self.tel_emissivity)
+        if self.stray_star_mag is not None:
+            sky = sky + stray_star_flambda(lam_A, self.stray_star_mag, self.stray_star_sep_arcsec,
+                                           self.stray_star_wing_index, self.stray_star_wing_norm_60as)
         return sky
 
 
@@ -885,6 +917,15 @@ def main(cfg=None):
         print(f"Galactic cirrus           : |b|={cfg.gal_lat_deg:.0f} deg -> "
               f"I100={I100:.2f} MJy/sr, mu_V(DGL)={mu_cir:.1f} AB/arcsec^2 "
               f"(Ienaka+13 scaling)")
+    if cfg.stray_star_mag is not None:
+        sb_star = stray_star_flambda(5500., cfg.stray_star_mag, cfg.stray_star_sep_arcsec,
+                                     cfg.stray_star_wing_index, cfg.stray_star_wing_norm_60as)
+        mu_star = -2.5 * np.log10(sb_star * 5500.0 ** 2 / C_A) - 48.6
+        print(f"Bright-star stray light   : mag_AB={cfg.stray_star_mag:.1f} at "
+              f"{cfg.stray_star_sep_arcsec:.0f}\" -> mu_V(scattered)={mu_star:.1f} "
+              f"AB/arcsec^2 (wing index {cfg.stray_star_wing_index:.1f}; "
+              f"norm {cfg.stray_star_wing_norm_60as:.1e}/arcsec^2 at 60\", "
+              f"calibrate against a measured/simulated PSF wing)")
     print(f"Cosmic rays               : efficiency {cfg.cr_exposure_efficiency():.3f} "
           f"per {cfg.t_single:.0f} s exposure (JWST-ETC rate; "
           f"{'folded in' if cfg.include_cr else 'reported only'})")
@@ -958,9 +999,19 @@ def _cli():
     p.add_argument("--no-compare", action="store_true", help="skip Roman/Euclid validation")
     p.add_argument("--realistic", action="store_true", help="use CALSPEC zodi + component throughput CSVs")
     p.add_argument("--cooling", action="store_true", help="run the telescope-cooling tradeoff")
+    p.add_argument("--stray-star-mag", type=float, default=None,
+                   help="AB mag of a nearby bright field star; omit to disable stray light")
+    p.add_argument("--stray-star-sep", type=float, default=300.0,
+                   help="angular separation of that star [arcsec]")
+    p.add_argument("--stray-star-index", type=float, default=2.5,
+                   help="power-law index of the scattered-light PSF wing")
+    p.add_argument("--stray-star-norm", type=float, default=1e-6,
+                   help="scattered flux fraction per arcsec^2 at 60'' separation")
     a = p.parse_args()
     kw = dict(diameter_cm=a.diam, R=a.R, pix_scale=a.pix, eta_peak=a.eta,
-              read_noise=a.read, dark_current=a.dark, n_exp=a.nexp, zodi_mu_ref=a.zodi)
+              read_noise=a.read, dark_current=a.dark, n_exp=a.nexp, zodi_mu_ref=a.zodi,
+              stray_star_mag=a.stray_star_mag, stray_star_sep_arcsec=a.stray_star_sep,
+              stray_star_wing_index=a.stray_star_index, stray_star_wing_norm_60as=a.stray_star_norm)
     cfg = realistic_cfg(**kw) if a.realistic else InstrumentConfig(**kw)
     main(cfg)
     if not a.no_compare:
