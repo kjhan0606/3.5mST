@@ -1987,6 +1987,15 @@ Cross-matching these emission-line detections against H\,\textsc{i} maps from cu
 
 The void search is built around a set of nearby voids selected from catalogs constructed from the SDSS and DESI redshift surveys \cite{sutter2012}, restricted to $z\lesssim0.05$ to keep the diagnostic nebular lines within the most sensitive part of the band and to spatially resolve even very low-mass dwarfs. Tiling the interiors of a sample of large voids to the wide- and medium-tier depths yields a volume-complete emission-line census whose faint end measures the void galaxy luminosity and star-formation-rate functions with a uniform, space-based selection that heterogeneous, atmosphere-limited ground-based void surveys cannot match. Because the search exploits the same emission-line sensitivity, multi-roll depth, and wide field that the flagship survey already delivers, the void, field, group, and cluster volumes are all covered at marginal additional cost. Table~\ref{tab:dwarfvoidreach} summarizes the resulting reach.
 
+Figure~\ref{fig:voidwedge} makes this target selection concrete with real data rather than an assumed catalog. It shows the actual SDSS-I/II Main Galaxy Sample spectroscopy in the same declination range as the imaging-only wide-extension field beside the Lockman Hole (Section~\ref{sec:lsb}), projected as a comoving-distance wedge. Five voids from the independent Bayesian catalog of Malandrino et al.\ \cite{malandrino2026} fall inside this one field, each with a published position, redshift, and radius rather than an estimate made for this proposal. The same cross-match against published void catalogs, repeated across the wide, medium, and deep spectroscopic tiers, is what selects the void interiors that this section's search tiles.
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{void_wedge_demo.png}
+\caption{Cosmic-web wedge diagram spanning the same declination range, $43^\circ$--$61^\circ$, as the Lockman Hole imaging-only wide-extension field (Section~\ref{sec:lsb}), split into four equal Dec bands shown side by side. Grey points are real SDSS-I/II Main Galaxy Sample spectroscopic redshifts (\texttt{survey='sdss'}, excluding BOSS/eBOSS), queried live from SkyServer DR17 over $0<z<0.3$. Orange circles mark the five voids of the independent Bayesian catalog of Malandrino et al.\ \cite{malandrino2026} that fall inside this field, plotted at their own cataloged position and radius. Red lines mark the field's RA boundary, $147.4^\circ$--$176.6^\circ$, with the field center dashed. This is a target-selection demonstration on one real field, not a claim that this particular imaging-only field itself carries the spectroscopy; the void search of this section runs on the wide, medium, and deep spectroscopic tiers.}
+\label{fig:voidwedge}
+\end{figure}
+
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.55\textwidth]{darkgal_exptime_vs_sfr.png}
@@ -3419,6 +3428,12 @@ P. M. Sutter, G. Lavaux, B. D. Wandelt, and D. H. Weinberg,
 \emph{Astrophysical Journal}, 761, 44, 2012.
 \url{https://arxiv.org/abs/1207.2524}
 \doi{10.1088/0004-637X/761/1/44}
+
+\bibitem{malandrino2026}
+R. Malandrino, G. Lavaux, B. D. Wandelt, S. McAlpine, and J. Jasche,
+``A Bayesian Catalog of 100 High-Significance Voids in the Local Universe,''
+\emph{Astronomy \& Astrophysics}, 705, A160, 2026.
+\url{https://arxiv.org/abs/2507.06866}
 
 \bibitem{more2015}
 S. More, B. Diemer, and A. V. Kravtsov,
