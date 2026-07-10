@@ -1,6 +1,9 @@
 # This repository tracks only the slitless emission-line ETC package.
 # Ignore everything at top level, then un-ignore the ETC files explicitly.
 /*
+# hst_cache/ (downloaded HST Frontier Fields FITS mosaics, ~260MB) is covered
+# by the blanket rule above and deliberately not un-ignored: too large to
+# track, and make_icl_image_demo.py re-downloads it from MAST if missing.
 !/.gitignore
 !/README.md
 !/Makefile
@@ -8,8 +11,7 @@
 !/etc_gui.py
 !/make_etc_data.py
 !/make_compare_roman.py
-!/etc_compare_spec.png
-!/etc_compare_imaging.png
+!/etc_compare_combined.png
 !/etc_qe.csv
 !/etc_throughput.csv
 !/etc_throughput_imaging.csv
@@ -31,8 +33,7 @@
 !/make_skymap.py
 !/sn_templates
 !/sn_templates/*
-!/snia_mag_vs_z.png
-!/snia_nuv_depth.png
+!/snia_demo_combined.png
 !/icl_exptime_vs_z.png
 !/darkgal_exptime_vs_sfr.png
 !/elg_skymap.png
@@ -66,4 +67,15 @@
 !/snia_uvnuv_zlimit.png
 !/make_slitless_scene_sim.py
 !/slitless_scene_sim.png
+!/make_hsc_slicer_demo.py
+!/hsc_slicer_demo.png
+!/make_void_wedge_demo.py
+!/void_wedge_demo.png
 !/hr5_gsmf_sblimit.png
+# physical-optics (POPPY) segmented-mirror PSF, optional ETC aperture_ee() override
+!/segmented_psf.py
+!/make_segmented_psf_demo.py
+!/make_segmented_psf_wide.py
+!/segmented_ee_table.csv
+!/segmented_psf_demo.png
+!/segmented_psf_wide.png

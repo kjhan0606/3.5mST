@@ -55,7 +55,8 @@ def slitless_band_snr(mag_ab, lam1, lam2, t_s):
     lamc = 0.5 * (lam1 + lam2)
     band = (max(CFG.band_min_A, lamc - FILT_W / 2),
             min(CFG.band_max_A, lamc + FILT_W / 2))
-    teff = t_s * (CFG.cr_exposure_efficiency() if CFG.include_cr else 1.0)
+    teff = t_s   # CFG.include_cr is False here; CR losses (when enabled) now enter
+                 # through InstrumentConfig.read_noise_eff()/ramp_shot_noise_factor()
     flam = etc.ab_to_flambda(mag_ab, lamc)
     S = (flam * CFG.area_cm2 * CFG.throughput(lamc) * etc._photon_factor(lamc)
          * (lam2 - lam1) * teff * CFG.extraction_eff)
@@ -110,8 +111,6 @@ for ax, (label, l1, l2, col) in zip(axes, BANDS):
     ax.text(zmin_inband(l1) + 0.03, 0.025, "band fully\nabove 0.36$\\mu$m",
             fontsize=8, color="0.4", va="bottom")
 axes[0].set_ylabel("exposure for a peak SN Ia [hr]", fontsize=12)
-fig.suptitle("S/N-limited reach of the rest-frame $U$ and NUV twin photometry "
-             "(binned multi-roll slitless spectra, $M_B=-19.3$)", fontsize=12)
 fig.tight_layout(rect=(0, 0, 1, 0.95))
 fig.savefig("snia_uvnuv_zlimit.png", bbox_inches="tight")
 print("wrote snia_uvnuv_zlimit.png\n")

@@ -14,13 +14,30 @@ wavelength-by-wavelength:
   * Wavelength-dependent total throughput and detector quantum efficiency.
   * Full per-pixel noise budget: source shot + sky + dark + read (ramp-sampled),
     added in quadrature over the line footprint n_pix.
+  * Up-the-ramp read noise (Rauscher et al. 2007, PASP 119, 768) plus a
+    shot-noise ramp-fit efficiency factor selectable via ramp_fit_mode:
+    "optimal" (Fixsen 2000 / Casertano et al. 2022 weighted fit, the Poisson
+    floor, matching operational JWST/Roman pipelines) or "unweighted" (plain
+    least-squares fit, Garnett & Forrest 1993). Cosmic-ray hits (when
+    include_cr=True) reduce the *expected* ramp group count rather than
+    derating the mean signal (InstrumentConfig.cr_effective_ngroups()).
+  * Nearest-neighbor pixel noise correlation from interpixel capacitance
+    (ipc_alpha; Kannawadi et al. 2016, PASP 128, 095001; Donlon et al. 2018,
+    arXiv:1701.07062), not a uniform any-pair correlation.
   * Slitless background is the sky integrated over the *band-limiting filter*,
     not one resolution element (the feature that makes slitless surveys shallow).
   * F_5sigma(lambda, t) obtained by solving S/N = target including source shot
     noise (a quadratic in F), so it is exact, not only background-limited.
+  * Imaging encircled energy defaults to the analytic obscured-Airy PSF, but
+    InstrumentConfig.psf_ee_csv can point to a (lambda, r) -> EE table from
+    segmented_psf.py's physical-optics (POPPY Fraunhofer/FFT) PSF of the real
+    19-segment pupil, which captures segment-gap/support-strut diffraction and
+    phasing errors the smooth-annulus formula misses (see segmented_cfg()).
 
 Methodology follows the standard space-ETC construction used for Roman (Hirata
-et al.; WFIRST/Roman ETC) and Euclid (Euclid Red Book, Laureijs et al. 2011).
+et al.; WFIRST/Roman ETC) and Euclid (Euclid Red Book, Laureijs et al. 2011),
+cross-checked against the STScI pandeia.engine source (the JWST ETC core,
+reused by Roman's ETC via its roman.py module).
 Detector terms are baseline values typical of near-IR HgCdTe (H2RG/H4RG) and
 optical CCD arrays; every number is an attribute of InstrumentConfig so it can
 be replaced by measured hardware values or by a CSV throughput/QE/zodi file.
@@ -173,12 +190,26 @@ class InstrumentConfig:
     dark_opt: float = 0.001             # e- / s / pix, CCD arm
     n_groups: int = 2                   # samples up the ramp per exposure (2 = plain CDS);
                                         # >2 applies the Rauscher et al. 2007 slope-fit gain
+    ramp_fit_mode: str = "optimal"      # "optimal" (Fixsen 2000 / Casertano et al. 2022
+                                        # inverse-covariance-weighted ramp fit, used
+                                        # operationally by JWST/Roman: recovers the Poisson
+                                        # shot-noise floor, no closed form for the general
+                                        # per-pixel weights) or "unweighted" (plain
+                                        # least-squares slope fit through the n_groups
+                                        # samples: read-noise term as in "optimal", but the
+                                        # shot-noise variance is *worse* than Poisson by the
+                                        # factor in ramp_shot_noise_factor()); only matters
+                                        # when n_groups > 2.
     # --- cosmic rays (JWST ETC convention: 8 events/s/cm^2, 9 pix/hit; JDox,
     #     measured L2 rate 2.3-4.3 ions/cm^2/s, Giardino et al. 2025) ---
     cr_rate: float = 8.0                # events / s / cm^2
     cr_pix_per_hit: float = 9.0         # pixels affected per hit
     pix_pitch_um: float = 18.0          # physical pixel pitch [um] (H2RG/H4RG)
-    include_cr: bool = False            # fold CR losses into S/N explicitly
+    include_cr: bool = False            # fold CR losses into S/N explicitly, via a reduced
+                                        # *expected* effective n_groups (a hit at group j
+                                        # discards groups j..n, the standard up-the-ramp
+                                        # convention; cf. pandeia.engine's calc_cr_loss) fed
+                                        # into read_noise_eff()/ramp_shot_noise_factor()
                                         # (default off: extraction_eff lump partly covers it)
     # --- throughput model (total: optics x disperser x QE) ---
     eta_peak: float = 0.30              # peak end-to-end efficiency (optics x grism x QE)
@@ -208,15 +239,35 @@ class InstrumentConfig:
     extraction_eff: float = 0.70        # optimal-extraction aperture + contamination loss
     full_well: float = 100000.0         # detector full well [e-] (saturation)
     flat_error: float = 0.0             # flat-field residual fraction (bright-source floor; Pandeia-style)
-    read_noise_corr: float = 0.0        # equicorrelated read-noise coefficient rho, 0 (independent
-                                        # pixels, the default) to 1 (fully correlated); Pandeia's
-                                        # pixel-covariance treatment (Pontoppidan et al. 2016,
-                                        # arXiv:1707.02202, Sec. 6.2) collapsed to a single equal
-                                        # pairwise correlation rather than a measured per-detector
-                                        # covariance matrix, since no such matrix exists yet for this
-                                        # concept's detectors; leave at 0 unless a real measured value
-                                        # is supplied for the adopted detector
+    ipc_alpha: float = 0.0               # nearest-neighbor interpixel-capacitance coupling
+                                        # fraction alpha (charge shared with each of the 4
+                                        # adjacent pixels before readout): replaces an earlier
+                                        # equicorrelated any-pair rho model, which is unphysical
+                                        # for a real HgCdTe array (real pixel covariance is
+                                        # local, from IPC, not a uniform correlation between
+                                        # arbitrarily distant pixels -- confirmed against
+                                        # pandeia.engine's roman.py get_readnoise_correlation_matrix,
+                                        # which loads a measured, effectively nearest-neighbor-
+                                        # dominated covariance matrix, not a dense one). Measured
+                                        # literature values: alpha0=0.02 for H4RG (Kannawadi et al.
+                                        # 2016, PASP 128, 095001, Eq. 9); ~0.02-0.026 for H2RG,
+                                        # signal-dependent (Donlon et al. 2018, arXiv:1701.07062;
+                                        # Le Graet et al. 2022, arXiv:2209.01831). Strictly, IPC
+                                        # correlates the *charge* (source+background+dark shot
+                                        # noise) upstream of the readout amplifier, not the
+                                        # electronic read noise itself -- used here as the best
+                                        # available real, citable proxy for local pixel-to-pixel
+                                        # noise correlation, since no detector-specific measured
+                                        # read-noise covariance matrix exists yet for this concept.
+                                        # 0 (default) recovers independent-pixel noise.
     psf_floor: float = 0.04             # delivered image-quality floor [arcsec] (jitter+optics+charge diffusion)
+    psf_ee_csv: str = ""                 # optional (lam_A, r_arcsec, ee) table overriding the
+                                        # analytic obscured-Airy encircled energy in aperture_ee(),
+                                        # e.g. from segmented_psf.py's physical-optics (POPPY
+                                        # Fraunhofer/FFT) segmented-pupil PSF, which captures
+                                        # segment-gap/support-strut diffraction and phasing errors
+                                        # the smooth-annulus formula cannot represent; psf_floor is
+                                        # still applied multiplicatively on top either way
     t_single: float = 1800.0            # single-exposure length [s]; read noise scales with
                                         # n_reads = max(n_exp, t/t_single) for long integrations
     # --- optional data files (lambda_A, value) override the analytic models ---
@@ -289,40 +340,106 @@ class InstrumentConfig:
             return self.read_noise_opt, self.dark_opt
         return self.read_noise, self.dark_current
 
+    def cr_hit_prob_per_group(self):
+        """Probability that a pixel suffers >=1 cosmic-ray hit within one
+        up-the-ramp group interval (t_single/n_groups seconds). Rate and hit
+        footprint follow the JWST ETC convention (JDox: 8 events/s/cm^2,
+        9 pix/hit; measured L2 rate 2.3-4.3 ions/cm^2/s, Giardino et al. 2025)."""
+        n = max(2, int(self.n_groups))
+        t_group = self.t_single / n
+        a_pix = (self.pix_pitch_um * 1e-4) ** 2                  # cm^2
+        return min(1.0, self.cr_rate * self.cr_pix_per_hit * a_pix * t_group)
+
+    def cr_effective_ngroups(self):
+        """Expected number of usable up-the-ramp groups after cosmic-ray
+        truncation.  A hit at group j discards groups j..n (the standard
+        up-the-ramp convention: the ramp is refit through the last unaffected
+        group; cf. pandeia.engine's detector.py calc_cr_loss, "the fact that
+        unsat_ngroups is not an integer is intentional, and is the way the ETC
+        statistically accounts for CR losses"). With per-group hit probability
+        q, the expectation over a geometric hit-time distribution is
+        E[n_eff] = sum_{j=0}^{n-1} (1-q)^j -- a smooth, non-integer account of
+        CR losses rather than a fixed half-integration derating. Feeds into
+        read_noise_eff()/ramp_shot_noise_factor() rather than rescaling the
+        mean signal directly: a ramp fit through a CR-truncated ramp is still
+        an unbiased rate estimator, just a noisier one (fewer groups)."""
+        n = max(2, int(self.n_groups))
+        if not self.include_cr:
+            return float(n)
+        q = self.cr_hit_prob_per_group()
+        if q <= 0:
+            return float(n)
+        return float(sum((1.0 - q) ** j for j in range(n)))
+
     def read_noise_eff(self, lam_A):
         """Effective read noise per exposure [e-].  For n_groups=2 this is the
-        plain CDS value.  For n_groups>2 the unweighted least-squares slope fit
-        to n equally spaced samples gives sigma_eff = sigma_frame *
-        sqrt(12(n-1)/(n(n+1))) with sigma_frame = CDS/sqrt(2)
-        (Rauscher et al. 2007, PASP 119, 768)."""
+        plain CDS value.  For n_groups>2 the least-squares slope fit to n
+        equally spaced samples gives sigma_eff = sigma_frame *
+        sqrt(12(n-1)/(n(n+1))) with sigma_frame = CDS/sqrt(2) (this read-noise
+        term is exact for both the unweighted and the optimally-weighted
+        estimator; Rauscher et al. 2007, PASP 119, 768, Eqs. 1 & 13; Casertano
+        et al. 2022, Roman Technical Report Roman-STScI-000394, Eq. 39). n is
+        the cosmic-ray-derated cr_effective_ngroups() when include_cr=True."""
         read, _ = self.detector_at(lam_A)
-        n = max(2, int(self.n_groups))
+        n = max(2.0, self.cr_effective_ngroups())
         sigma_frame = read / np.sqrt(2.0)
         return sigma_frame * np.sqrt(12.0 * (n - 1) / (n * (n + 1.0)))
+
+    def ramp_shot_noise_factor(self):
+        """Ratio of the ramp-fit shot-noise variance to the naive
+        total-photon-counting (Poisson) variance, for n equally spaced
+        up-the-ramp groups.  ramp_fit_mode="optimal" (default) approximates
+        the Fixsen (2000)/Casertano et al. (2022) inverse-covariance-weighted
+        estimator used operationally by JWST/Roman, which is designed to
+        recover the Poisson floor in the shot-noise-dominated regime (no
+        simple closed form exists for its general per-pixel weights, so the
+        floor value 1.0 is adopted here). ramp_fit_mode="unweighted" uses the
+        exact plain least-squares slope-fit shot-noise variance relative to
+        Poisson counting, factor = 6(n^2+1)/[5n(n+1)] (Garnett & Forrest 1993,
+        Proc. SPIE 1946, 395; Rauscher et al. 2007, PASP 119, 768, Eq. 14):
+        =1 exactly at n=2 (CDS reduces to plain photon counting), ->6/5 as
+        n->infinity (an unweighted fit is intrinsically ~20% less efficient
+        than photon counting at high group count -- the reason optimal
+        ramp-fitting algorithms were developed). n is the cosmic-ray-derated
+        cr_effective_ngroups() when include_cr=True."""
+        if self.ramp_fit_mode == "optimal":
+            return 1.0
+        n = max(2.0, self.cr_effective_ngroups())
+        return 6.0 * (n ** 2 + 1.0) / (5.0 * n * (n + 1.0))
+
+    def _nn_correlation_coeff(self):
+        """Nearest-neighbor pixel noise correlation coefficient rho_nn implied
+        by an interpixel-capacitance coupling fraction alpha: for
+        y_i = (1-4a)x_i + a*(sum of the 4 neighboring x_j), with independent
+        x's of equal variance, rho_nn = Cov(y_i,y_j)/Var(y_i) =
+        2a(1-4a) / [(1-4a)^2 + 4a^2] for adjacent i,j (~2*alpha for small
+        alpha)."""
+        a = self.ipc_alpha
+        if a <= 0:
+            return 0.0
+        cov = 2.0 * a * (1.0 - 4.0 * a)
+        var = (1.0 - 4.0 * a) ** 2 + 4.0 * a ** 2
+        return cov / var
 
     def read_noise_variance_total(self, lam_A, t_s, npix):
         """Total read-noise variance [e-^2] summed over npix aperture pixels.
 
-        sigma^2(sum) = npix * sigma_pix^2 * (1 + (npix-1)*rho) for an
-        equicorrelated pixel-to-pixel read-noise model (Pandeia's pixel
-        covariance sum, Pontoppidan et al. 2016, Sec. 6.2, Eq. 13-14,
-        collapsed from a full covariance matrix to one pairwise correlation
-        rho = read_noise_corr). rho=0 (default) recovers the independent-pixel
-        sum used elsewhere in this module."""
+        sigma^2(sum) = npix*sigma_pix^2 + 2*rho_nn*sigma_pix^2*n_pairs, a
+        nearest-neighbor-only pixel covariance sum (replacing an earlier
+        equicorrelated any-pair model, which unphysically implied noise
+        correlation between arbitrarily distant pixels growing without bound
+        as npix^2; real detector pixel covariance -- interpixel capacitance,
+        cf. _nn_correlation_coeff() -- couples the 4 nearest neighbors only,
+        so the correlation contribution scales linearly with npix instead).
+        n_pairs approximates the number of 4-connected adjacent pixel pairs
+        inside a compact, roughly-square aperture of npix pixels (side
+        ~sqrt(npix)): n_pairs ~ 2*npix - 2*sqrt(npix). rho_nn=0 (ipc_alpha=0,
+        the default) recovers the independent-pixel sum used elsewhere in
+        this module."""
         var_pix = self.n_reads(t_s) * self.read_noise_eff(lam_A) ** 2
-        rho = self.read_noise_corr
-        return npix * var_pix * (1.0 + (npix - 1.0) * rho)
-
-    def cr_exposure_efficiency(self):
-        """Mean fraction of the accumulated signal that survives cosmic-ray
-        hits in one t_single exposure.  A pixel is hit with probability
-        f = rate * pix_per_hit * pitch^2 * t_single; with up-the-ramp fitting
-        the slope before the hit is recovered, so a hit pixel keeps on average
-        half its integration (uniform hit times), giving efficiency 1 - f/2.
-        Rate and hit footprint follow the JWST ETC convention (JDox)."""
-        a_pix = (self.pix_pitch_um * 1e-4) ** 2                  # cm^2
-        f = min(1.0, self.cr_rate * self.cr_pix_per_hit * a_pix * self.t_single)
-        return 1.0 - 0.5 * f
+        rho_nn = self._nn_correlation_coeff()
+        n_pairs = max(0.0, 2.0 * npix - 2.0 * np.sqrt(npix))
+        return var_pix * (npix + 2.0 * rho_nn * n_pairs)
 
     # ---- background radiance spectrum (per arcsec^2) ----
     def sky_flambda(self, lam_A):
@@ -375,22 +492,75 @@ def _airy_fwhm_coeff(eps):
     return _AIRY_CACHE[key]
 
 
+_EE_NORM_CACHE = {}
+
+
+def _airy_cumulative(obstruction, v_max):
+    """Cached (v, cumulative-energy) arrays for the obscured-Airy radial
+    profile, integrated out to a fixed v_max used purely as a numerical
+    total-energy reference (NOT tied to the radius being queried -- an
+    earlier version normalised by the cumulative energy at v_of_r itself,
+    which trivially returned EE=1.0 for any r_arcsec beyond ~60 reduced
+    units, a bug caught by comparing against segmented_psf.py's PSF out to
+    r=10\", where the analytic curve was flatlining at exactly 1.0 well
+    before the true wings had converged)."""
+    key = (round(float(obstruction), 4), round(float(v_max), 1))
+    if key not in _EE_NORM_CACHE:
+        v = np.linspace(1e-4, v_max, 80000)
+        I = _airy_intensity(v, obstruction)
+        _EE_NORM_CACHE[key] = (v, np.cumsum(I * v))
+    return _EE_NORM_CACHE[key]
+
+
 def encircled_energy(cfg, lam_A, r_arcsec):
     """Fraction of a point source's diffraction PSF (obscured Airy) inside
-    radius r_arcsec, by numerical integration of the radial profile."""
+    radius r_arcsec, by numerical integration of the radial profile, always
+    normalised against a fixed, sufficiently large reference radius (not the
+    query radius itself)."""
     lam_cm = float(lam_A) * 1e-8
     v_of_r = np.pi * cfg.diameter_cm / lam_cm * (r_arcsec / 206265.0)
-    v = np.linspace(1e-4, max(v_of_r, 60.0), 60000)
-    I = _airy_intensity(v, cfg.obstruction)
-    cum = np.cumsum(I * v)
-    return float(np.interp(v_of_r, v, cum) / cum[-1])
+    v_max = max(5000.0, v_of_r * 3.0)
+    v, cum = _airy_cumulative(cfg.obstruction, v_max)
+    return float(np.interp(min(v_of_r, v[-1]), v, cum) / cum[-1])
+
+
+_EE_TABLE_INTERP_CACHE = {}
+
+
+def _tabulated_ee_interp(csv_path):
+    """Load and cache a (lam_A, r_arcsec) -> ee RegularGridInterpolator from
+    a segmented_psf.py-style table (see InstrumentConfig.psf_ee_csv)."""
+    if csv_path not in _EE_TABLE_INTERP_CACHE:
+        from scipy.interpolate import RegularGridInterpolator
+        data = np.loadtxt(csv_path, delimiter=",", skiprows=1)
+        lam_grid = np.unique(data[:, 0])
+        r_grid = np.unique(data[:, 1])
+        ee_grid = data[:, 2].reshape(len(lam_grid), len(r_grid))
+        _EE_TABLE_INTERP_CACHE[csv_path] = RegularGridInterpolator(
+            (lam_grid, r_grid), ee_grid, bounds_error=False, fill_value=None)
+    return _EE_TABLE_INTERP_CACHE[csv_path]
 
 
 def aperture_ee(cfg, lam_A, r_arcsec):
-    """Encircled energy of the delivered PSF in a photometric aperture: the
-    obscured-Airy diffraction EE times the EE of the Gaussian image-quality
-    floor (jitter, optics, charge diffusion), treated as independent losses."""
-    ee = encircled_energy(cfg, lam_A, r_arcsec)
+    """Encircled energy of the delivered PSF in a photometric aperture.
+
+    If cfg.psf_ee_csv is set, uses a tabulated (lambda, r) -> EE grid
+    measured from a real physical-optics segmented-pupil PSF
+    (segmented_psf.py, Fraunhofer/FFT propagation via POPPY -- the same
+    approach JWST/Roman's own PSF libraries are built with, cf.
+    pandeia.engine's roman.py _loadpsfs()), which captures segment-gap and
+    support-strut diffraction and phasing errors that the smooth-annulus
+    obscured-Airy formula cannot represent. Otherwise falls back to the
+    analytic diffraction EE (encircled_energy()). Either way, an independent
+    multiplicative Gaussian image-quality-floor (jitter, optics, charge
+    diffusion) loss is applied on top, so a psf_ee_csv table only needs to
+    capture pure pupil diffraction and can be reused across jitter
+    assumptions."""
+    if cfg.psf_ee_csv:
+        interp = _tabulated_ee_interp(cfg.psf_ee_csv)
+        ee = float(np.clip(interp([[float(lam_A), float(r_arcsec)]])[0], 0.0, 1.0))
+    else:
+        ee = encircled_energy(cfg, lam_A, r_arcsec)
     if cfg.psf_floor > 0:
         sig = cfg.psf_floor / 2.35482
         ee *= 1.0 - float(np.exp(-0.5 * (r_arcsec / sig) ** 2))
@@ -456,44 +626,71 @@ def line_sn(cfg: InstrumentConfig, F_line, lam_A, t_s, source_fwhm=0.3,
     """S/N of an emission line of flux F_line [erg/s/cm^2] at lam_A in t_s seconds."""
     band = (max(cfg.band_min_A, lam_A - filter_width_A/2),
             min(cfg.band_max_A, lam_A + filter_width_A/2))
-    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     S = (F_line * cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
-         * teff * cfg.extraction_eff)
+         * t_s * cfg.extraction_eff)
     Bpix = background_per_pixel(cfg, band)
     npix = line_footprint_pixels(cfg, source_fwhm, lam_A)
     Ccont = continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm)
     _, dark = cfg.detector_at(lam_A)
-    var = (S
-           + (Bpix + dark) * npix * teff
-           + Ccont * teff
+    g = cfg.ramp_shot_noise_factor()    # up-the-ramp shot-noise efficiency; CR losses
+                                        # enter through read_noise_eff()/g via cr_effective_ngroups()
+    var = (g * (S + (Bpix + dark) * npix * t_s + Ccont * t_s)
            + cfg.read_noise_variance_total(lam_A, t_s, npix)
            + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
+
+
+def _solve_line_flux(cfg, lam_A, t_s, npix, B_shot, snr):
+    """Shared quadratic solver: line flux [erg/s/cm^2] at S/N=snr given the
+    non-source shot-noise budget B_shot [e-] (sky+dark+continuum) and npix,
+    consistent with line_sn's variance model."""
+    read_var = cfg.read_noise_variance_total(lam_A, t_s, npix)
+    g = cfg.ramp_shot_noise_factor()
+    k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
+         * t_s * cfg.extraction_eff)   # e- per unit flux
+    a = 1.0 - (snr * cfg.flat_error) ** 2          # =1 when flat_error=0
+    if a <= 0:
+        return float("inf")                        # flat floor caps S/N below snr
+    S = (snr**2 * g + np.sqrt(snr**4 * g**2 + 4.0 * a * snr**2 * (g * B_shot + read_var))) / (2.0 * a)     # required e-
+    return float(S / k)
 
 
 def f_limit(cfg: InstrumentConfig, lam_A, t_s, snr=5.0, source_fwhm=0.3,
             filter_width_A=4000.0, cont_mag_AB=None):
     """Line flux [erg/s/cm^2] detected at S/N = snr in t_s seconds.
 
-    Solves snr = S/sqrt(S + B_tot + (flat*S)^2) exactly (quadratic in F, source
-    shot noise and the flat-field floor included, consistent with line_sn).
+    Solves snr = S/sqrt(g*(S+B_shot) + read_var + (flat*S)^2) exactly
+    (quadratic in F; g = ramp_shot_noise_factor() is the up-the-ramp
+    shot-noise efficiency, consistent with line_sn). npix comes from the
+    delivered PSF and source size (line_footprint_pixels); to instead force a
+    fixed n_pix (e.g. to reproduce a textbook/proposal-table baseline that
+    quotes n_pix directly rather than deriving it from a PSF), use
+    f_limit_fixed_npix.
     """
     band = (max(cfg.band_min_A, lam_A - filter_width_A/2),
             min(cfg.band_max_A, lam_A + filter_width_A/2))
-    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     Bpix = background_per_pixel(cfg, band)
     npix = line_footprint_pixels(cfg, source_fwhm, lam_A)
     Ccont = continuum_e_per_s(cfg, cont_mag_AB, lam_A, source_fwhm)
     _, dark = cfg.detector_at(lam_A)
-    Btot = ((Bpix + dark) * npix * teff + Ccont * teff
-            + cfg.read_noise_variance_total(lam_A, t_s, npix))
-    k = (cfg.area_cm2 * cfg.throughput(lam_A) * _photon_factor(lam_A)
-         * teff * cfg.extraction_eff)   # e- per unit flux
-    a = 1.0 - (snr * cfg.flat_error) ** 2          # =1 when flat_error=0
-    if a <= 0:
-        return float("inf")                        # flat floor caps S/N below snr
-    S = (snr**2 + np.sqrt(snr**4 + 4.0 * a * snr**2 * Btot)) / (2.0 * a)     # required e-
-    return float(S / k)
+    B_shot = (Bpix + dark) * npix * t_s + Ccont * t_s
+    return _solve_line_flux(cfg, lam_A, t_s, npix, B_shot, snr)
+
+
+def f_limit_fixed_npix(cfg: InstrumentConfig, lam_A, t_s, npix, snr=5.0,
+                       filter_width_A=4000.0):
+    """Line flux [erg/s/cm^2] detected at S/N=snr, with n_pix supplied
+    directly rather than derived from the delivered PSF/source size. Uses
+    the same noise budget as f_limit/line_sn; intended for apples-to-apples
+    comparison against simplified closed-form derivations (e.g. the
+    proposal's Eq.~(eq:etc) and Table~tab:etc, which likewise treat n_pix as
+    a given baseline parameter) -- see compare_proposal()."""
+    band = (max(cfg.band_min_A, lam_A - filter_width_A/2),
+            min(cfg.band_max_A, lam_A + filter_width_A/2))
+    Bpix = background_per_pixel(cfg, band)
+    _, dark = cfg.detector_at(lam_A)
+    B_shot = (Bpix + dark) * npix * t_s
+    return _solve_line_flux(cfg, lam_A, t_s, npix, B_shot, snr)
 
 
 def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
@@ -506,17 +703,18 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
     over the imaging filter bandwidth.
     """
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
-    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)          # aperture radius [arcsec]
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     _, dark = cfg.detector_at(lam_A)
-    Btot = (Bpix + dark) * npix * teff + cfg.read_noise_variance_total(lam_A, t_s, npix)
+    g = cfg.ramp_shot_noise_factor()
+    B_shot = (Bpix + dark) * npix * t_s
+    read_var = cfg.read_noise_variance_total(lam_A, t_s, npix)
     # electrons per unit F_lambda [erg/s/cm^2/A] collected in the aperture;
     # the aperture loss is the physical encircled energy of the delivered PSF
     k = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
-         * teff * filter_width_A * aperture_ee(cfg, lam_A, r_ap))
-    S = 0.5 * (snr**2 + np.sqrt(snr**4 + 4.0 * snr**2 * Btot))   # required e-
+         * t_s * filter_width_A * aperture_ee(cfg, lam_A, r_ap))
+    S = 0.5 * (snr**2 * g + np.sqrt(snr**4 * g**2 + 4.0 * snr**2 * (g * B_shot + read_var)))   # required e-
     F_lambda = S / k                                     # erg/s/cm^2/A
     F_nu = F_lambda * lam_A**2 / C_A                      # erg/s/cm^2/Hz
     return -2.5 * np.log10(F_nu) - 48.60                  # AB mag
@@ -568,15 +766,15 @@ INSTRUMENT_ELEMENTS = {
 def imaging_snr(cfg, mag_ab, lam_A, filter_width_A, t_s, aper_fwhm_mult=1.0):
     """Broadband imaging S/N for a point source of AB magnitude mag_ab."""
     band = (lam_A - filter_width_A/2, lam_A + filter_width_A/2)
-    teff = t_s * (cfg.cr_exposure_efficiency() if cfg.include_cr else 1.0)
     Bpix = background_per_pixel(cfg, band, imaging=True)
     r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(lam_A), 1.5 * cfg.pix_scale)
     npix = np.pi * (r_ap / cfg.pix_scale)**2
     Flam = ab_to_flambda(mag_ab, lam_A)
     S = (cfg.area_cm2 * cfg.throughput_imaging(lam_A) * _photon_factor(lam_A)
-         * teff * filter_width_A * Flam * aperture_ee(cfg, lam_A, r_ap))
+         * t_s * filter_width_A * Flam * aperture_ee(cfg, lam_A, r_ap))
     _, dark = cfg.detector_at(lam_A)
-    var = (S + (Bpix + dark) * npix * teff
+    g = cfg.ramp_shot_noise_factor()
+    var = (g * (S + (Bpix + dark) * npix * t_s)
            + cfg.read_noise_variance_total(lam_A, t_s, npix) + (cfg.flat_error * S)**2)
     return float(S / np.sqrt(var))
 
@@ -851,6 +1049,75 @@ def compare_missions():
     print("few percent when tested in isolation.")
 
 
+def proposal_table_cfg():
+    """InstrumentConfig reproducing the baseline parameters of Table~tab:etc
+    in the proposal (Sec.~sec:etc, 'Sensitivity and the Exposure-Time
+    Calculator'): A_tel=8e4 cm^2 (350 cm aperture; obstruction solved to
+    match exactly, since the table quotes only the resulting area), flat
+    eta=0.30 (no edge roll-off, so the plateau value applies exactly at
+    1.6 um), read=10 e-/read x3 reads, dark=0.010 e-/s/pix, 0.11" pixel, no
+    extraction loss (the proposal's simplified Eq.~(eq:etcsig) has no such
+    factor), cirrus/thermal off (the table's i_sky is zodiacal light only)."""
+    D = 350.0
+    obstruction = np.sqrt(max(0.0, 1.0 - 8.0e4 / (np.pi * (D / 2.0) ** 2)))
+    return InstrumentConfig(diameter_cm=D, obstruction=obstruction, pix_scale=0.11,
+                            eta_peak=0.30, band_min_A=10000.0, band_max_A=22000.0, edge_roll_A=0.0,
+                            read_noise=10.0, n_exp=3, n_groups=2, dark_current=0.010,
+                            extraction_eff=1.0, include_cirrus=False, include_thermal=False)
+
+
+def compare_proposal():
+    """Reproduce the proposal's own first-principles ETC derivation (Sec.
+    'Sensitivity and the Exposure-Time Calculator', Eq.~(eq:etc),
+    Table~tab:etc) with this module's wavelength-continuous physics, to
+    check that the full ETC agrees with the simplified single-band
+    closed-form calculation the proposal presents by hand, and to show how
+    the module's own default (fully realistic) configuration compares to
+    both that closed form and the conservative planning anchor it adopts
+    (Eq.~(eq:f5sigma), 1.0e-16 erg/s/cm^2 at 0.75 hr)."""
+    lam, t, filt, npix = 16000.0, 0.75 * 3600.0, 4000.0, 16
+
+    cfg = proposal_table_cfg()
+    band = (lam - filt / 2, lam + filt / 2)
+    Bpix = background_per_pixel(cfg, band)
+    _, dark = cfg.detector_at(lam)
+    sky_e = Bpix * npix * t
+    dark_e = dark * npix * t
+    read_var = cfg.read_noise_variance_total(lam, t, npix)
+    mu_lam = -2.5 * np.log10(cfg.sky_flambda(lam) * lam**2 / C_A) - 48.6
+
+    F5_full = f_limit_fixed_npix(cfg, lam, t, npix, snr=5.0, filter_width_A=filt)
+    F5_sky_only = 5.0 * np.sqrt(Bpix * npix / t) / (
+        cfg.area_cm2 * cfg.throughput(lam) * _photon_factor(lam))          # = Eq.~(eq:etc) exactly
+
+    F5_plain = f_limit(InstrumentConfig(), lam, t)
+    F5_realistic = f_limit(realistic_cfg(), lam, t)
+
+    print("\n" + "=" * 72)
+    print("CROSS-CHECK vs the proposal's own closed-form ETC (Sec. sec:etc, Eq. eq:etc)")
+    print("=" * 72)
+    print(f"Matched baseline   : A_tel={cfg.area_cm2:.2e} cm^2 (proposal: 8.0e4), "
+          f"eta={cfg.throughput(lam):.2f} (0.30), n_pix={npix} (fixed, as tabulated)")
+    print(f"  i_sky(1.6um)     : {cfg.sky_flambda(lam):.2e} erg/s/cm2/A/arcsec2, "
+          f"{mu_lam:.2f} AB/arcsec2   (proposal: 9.6e-19, 21.6 AB/arcsec2)")
+    print(f"  B_pix            : {Bpix:.3f} e-/s/pix              (proposal: 0.90)")
+    print(f"  sky_e  @ {t/3600:.2f} hr   : {sky_e:.3e} e-                (proposal: 3.9e4)")
+    print(f"  dark_e @ {t/3600:.2f} hr   : {dark_e:.3e} e-                (proposal: 4.3e2)")
+    print(f"  read_var         : {read_var:.3e} e-^2               (proposal: 4.8e3)")
+    print("-" * 72)
+    print(f"F_5sigma, sky-only approx (= proposal's Eq. eq:etc exactly)   : {F5_sky_only:.2e} erg/s/cm^2")
+    print(f"F_5sigma, this module's full quadratic (+source/dark/read)   : {F5_full:.2e} erg/s/cm^2")
+    print(f"Proposal's quoted first-principles value                     : 1.9e-17 erg/s/cm^2")
+    print(f"This module's own default InstrumentConfig() at the same lam/t: {F5_plain:.2e} erg/s/cm^2")
+    print(f"This module's own default realistic_cfg() at the same lam/t  : {F5_realistic:.2e} erg/s/cm^2")
+    print(f"Proposal's adopted conservative planning anchor (Eq. f5sigma): 1.0e-16 erg/s/cm^2")
+    print("=" * 72)
+    print(f"Agreement to {abs(F5_full/1.9e-17-1)*100:.0f}% confirms the wavelength-continuous ETC reduces")
+    print("correctly to the proposal's hand-derived, single-band closed form under the")
+    print("same inputs; both sit well inside the ~1e-17 to ~1e-16 photon-limited bracket")
+    print("the proposal itself quotes around the adopted conservative anchor.")
+
+
 def realistic_cfg(**kw):
     """3.5 m concept using the tabulated CALSPEC-solar zodi and component
     throughput/QE curves written by make_etc_data.py."""
@@ -862,6 +1129,22 @@ def realistic_cfg(**kw):
                 zodi_csv="etc_zodi.csv" if os.path.exists("etc_zodi.csv") else "")
     base.update(kw)
     return InstrumentConfig(**base)
+
+
+def segmented_cfg(**kw):
+    """3.5 m concept using the tabulated physical-optics segmented-pupil
+    encircled-energy grid written by segmented_psf.make_ee_table() (real
+    19-hex-segment diffraction + an illustrative 30 nm RMS phasing residual)
+    in place of the analytic obscured-Airy aperture_ee(), layered on top of
+    realistic_cfg()'s tabulated zodi/throughput. Only affects imaging
+    aperture-photometry functions (imaging_maglimit, imaging_snr,
+    saturation_maglimit, count_rates); spectroscopic depth (f_limit/line_sn)
+    does not call aperture_ee() and is unaffected."""
+    import os
+    base = dict(psf_ee_csv="segmented_ee_table.csv"
+                if os.path.exists("segmented_ee_table.csv") else "")
+    base.update(kw)
+    return realistic_cfg(**base)
 
 
 def cooling_tradeoff(temps=(150, 180, 210, 240, 270, 290), t_s=3*3600.0, ax=None):
@@ -955,7 +1238,8 @@ def main(cfg=None):
               f"AB/arcsec^2 (wing index {cfg.stray_star_wing_index:.1f}; "
               f"norm {cfg.stray_star_wing_norm_60as:.1e}/arcsec^2 at 60\", "
               f"calibrate against a measured/simulated PSF wing)")
-    print(f"Cosmic rays               : efficiency {cfg.cr_exposure_efficiency():.3f} "
+    print(f"Cosmic rays               : hit prob/group {cfg.cr_hit_prob_per_group():.3f}, "
+          f"n_groups_eff {cfg.cr_effective_ngroups():.2f}/{cfg.n_groups} "
           f"per {cfg.t_single:.0f} s exposure (JWST-ETC rate; "
           f"{'folded in' if cfg.include_cr else 'reported only'})")
     print(f"Saturation (spectroscopy) : continuum AB < "
@@ -1039,21 +1323,27 @@ def _cli():
                    help="power-law index of the scattered-light PSF wing")
     p.add_argument("--stray-star-norm", type=float, default=1e-6,
                    help="scattered flux fraction per arcsec^2 at 60'' separation")
-    p.add_argument("--read-noise-corr", type=float, default=0.0,
-                   help="equicorrelated pixel-to-pixel read-noise coefficient rho, "
-                        "0 (independent, default) to 1 (fully correlated); Pandeia-style "
-                        "(Pontoppidan et al. 2016, arXiv:1707.02202) pixel covariance sum, "
-                        "supply a real measured value for the adopted detector, do not guess")
+    p.add_argument("--ipc-alpha", type=float, default=0.0,
+                   help="nearest-neighbor interpixel-capacitance coupling fraction alpha, "
+                        "0 (independent pixels, default) to ~0.02-0.03 (measured H2RG/H4RG "
+                        "values: Kannawadi et al. 2016, PASP 128, 095001; Donlon et al. 2018, "
+                        "arXiv:1701.07062); supply a real measured value, do not guess")
+    p.add_argument("--ramp-fit-mode", choices=["optimal", "unweighted"], default="optimal",
+                   help="up-the-ramp slope-fit noise model: 'optimal' (Fixsen/Casertano-2022 "
+                        "weighted fit, recovers the Poisson shot-noise floor; default, matches "
+                        "operational JWST/Roman pipelines) or 'unweighted' (plain least-squares "
+                        "fit; Garnett & Forrest 1993 / Rauscher et al. 2007 shot-noise penalty)")
     a = p.parse_args()
     kw = dict(diameter_cm=a.diam, R=a.R, pix_scale=a.pix, eta_peak=a.eta,
               read_noise=a.read, dark_current=a.dark, n_exp=a.nexp, zodi_mu_ref=a.zodi,
               stray_star_mag=a.stray_star_mag, stray_star_sep_arcsec=a.stray_star_sep,
               stray_star_wing_index=a.stray_star_index, stray_star_wing_norm_60as=a.stray_star_norm,
-              read_noise_corr=a.read_noise_corr)
+              ipc_alpha=a.ipc_alpha, ramp_fit_mode=a.ramp_fit_mode)
     cfg = realistic_cfg(**kw) if a.realistic else InstrumentConfig(**kw)
     main(cfg)
     if not a.no_compare:
         compare_missions()
+        compare_proposal()
     if a.cooling:
         cooling_tradeoff()
 

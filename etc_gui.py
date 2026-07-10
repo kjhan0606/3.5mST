@@ -73,7 +73,7 @@ class ETCGui:
         field(tel, "dark [e-/s/pix]", "dark", "0.010")
         field(tel, "N exposures", "nexp", "3")
         field(tel, "full well [e-]", "fw", "100000")
-        field(tel, "read-noise corr. ρ", "readcorr", "0.0")
+        field(tel, "IPC coupling α", "ipc", "0.0")
         self.realistic = tk.BooleanVar(value=True)
         ttk.Checkbutton(tel, text="CALSPEC zodi + component throughput",
                         variable=self.realistic, command=self.compute).pack(anchor="w")
@@ -205,7 +205,7 @@ class ETCGui:
                   band_min_A=self._band[0]*1e4, band_max_A=self._band[1]*1e4,
                   stray_star_mag=self._f("straymag") if self.stray_on.get() else None,
                   stray_star_sep_arcsec=self._f("straysep"),
-                  read_noise_corr=self._f("readcorr"))
+                  ipc_alpha=self._f("ipc"))
         return etc.realistic_cfg(**kw) if self.realistic.get() else etc.InstrumentConfig(**kw)
 
     # ---- main compute -------------------------------------------------------
