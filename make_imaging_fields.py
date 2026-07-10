@@ -10,6 +10,10 @@ aperture over |b| > 55 deg; the northern extension sits beside the Lockman
 Hole and the southern near the south Galactic pole. Each panel annotates the
 footprint-mean intensity. The map's native beam is 5 arcmin, so the deeper
 zooms of the top row appear smoother.
+
+The SN Ia time-domain cadence fields are shown instead in the spectroscopic
+wide-tier zoom, make_skymap.py's elg_deepfields_zoom.png, since they are
+placed beside that footprint rather than at a separate low-cirrus minimum.
 """
 import os
 import urllib.parse
@@ -129,8 +133,5 @@ fig.subplots_adjust(left=0.07, right=0.86, top=0.93, bottom=0.05,
 cax = fig.add_axes([0.885, 0.05, 0.02, 0.88])
 cb = fig.colorbar(im, cax=cax)
 cb.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=9)
-fig.suptitle("Dedicated imaging fields at the Planck 857 GHz minima: ultra-deep "
-             "(top, 2.25 deg$^2$) and imaging-only wide extension (bottom, "
-             "$\\sim$306 deg$^2$), paved with 30$'$ tiles", fontsize=11.5)
 fig.savefig("imaging_fields_zoom.png", bbox_inches="tight")
 print("wrote imaging_fields_zoom.png")

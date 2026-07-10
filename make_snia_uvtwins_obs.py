@@ -42,7 +42,13 @@ def get_spectrum(snname, time_str):
     raise KeyError(f"{snname} spectrum at {time_str} not found")
 
 
+NUV_LO, NUV_HI = 2500.0, 3040.0  # proposed rest-frame NUV filter (Sec. 4.1, Fig. snuvlimit)
+
 fig, ax = plt.subplots(figsize=(7.6, 4.9), dpi=150)
+ax.axvspan(NUV_LO, NUV_HI, color="#e8873a", alpha=0.22, zorder=0, lw=0)
+ax.text(0.5 * (NUV_LO + NUV_HI), 0.92, "NUV filter\n2500–3040Å",
+        transform=ax.get_xaxis_transform(), ha="center", va="top",
+        fontsize=8.5, color="#a8541a", zorder=3)
 ref = None
 for sn, (t, col, lab) in PICK.items():
     w, f, z = get_spectrum(sn, t)
@@ -55,16 +61,16 @@ for sn, (t, col, lab) in PICK.items():
     else:
         scale = ref / np.mean(f[opt])             # match 11by to 11fe over 4000-4500 A
     ax.plot(w, np.log10(np.clip(f * scale / ref, 1e-4, None)), color=col,
-            lw=1.1, label=lab)
+            lw=2.2, zorder=2, label=lab)
     print(f"{sn}: z={z}, {len(w)} points, scale={scale:.3g}")
 ax.set_xlim(2250, 5000)
 ax.set_ylim(-1.9, 0.55)
 ax.set_xlabel(r"Rest wavelength [$\AA$]")
 ax.set_ylabel(r"Relative $\log f_\lambda$")
-ax.legend(fontsize=10, loc="lower right", frameon=False)
-ax.text(0.03, 0.95, "Swift/UVOT UV grism, near $B$ maximum\n"
+ax.legend(fontsize=10, loc="upper right", frameon=False)
+ax.text(0.97, 0.03, "Swift/UVOT UV grism, near $B$ maximum\n"
         "scaled to match over 4000–4500 $\\AA$",
-        transform=ax.transAxes, fontsize=8.5, va="top", color="0.25")
+        transform=ax.transAxes, fontsize=8.5, ha="right", va="bottom", color="0.25")
 ax.grid(alpha=0.2)
 fig.tight_layout()
 fig.savefig("snia_uvtwins.png", bbox_inches="tight")

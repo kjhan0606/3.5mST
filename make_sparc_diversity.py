@@ -63,8 +63,6 @@ ax.set_ylabel(r"observed rotation velocity $V_{\rm obs}$ [km s$^{-1}$]",
               fontsize=12)
 ax.legend(fontsize=10, loc="lower right", framealpha=0.92)
 ax.grid(alpha=0.2)
-ax.set_title("Two dwarfs of nearly equal halo mass with opposite inner structure\n"
-             "(SPARC observed rotation curves)", fontsize=11)
 fig.tight_layout()
 fig.savefig("sparc_diversity.png", bbox_inches="tight")
 print("wrote sparc_diversity.png")

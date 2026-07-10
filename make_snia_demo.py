@@ -21,7 +21,7 @@ lamH, wH = FILT["H~1.6"]
 dep_wide = etc.imaging_maglimit(cfg, lamH*1e4, wH*1e4, 0.75*HR)
 dep_deep = etc.imaging_maglimit(cfg, lamH*1e4, wH*1e4, 12*HR)
 
-fig, ax = plt.subplots(figsize=(7.6, 5.2), dpi=150)
+fig, (ax, axm) = plt.subplots(1, 2, figsize=(14.4, 5.2), dpi=150)
 for (fn, (lu, wu)), col in zip(FILT.items(), plt.cm.viridis(np.linspace(0, 0.85, len(FILT)))):
     m = [g.app_mag(snia, z, lu*1e4, wu*1e4, M_abs=MB, ref_lam=4400.0, ref_width=1000.0) for z in zz]
     ax.plot(zz, m, color=col, lw=2, label=fn)
@@ -30,10 +30,7 @@ ax.axhline(dep_deep, ls=":", color="0.4", lw=1)
 ax.text(0.12, dep_wide-0.15, f"wide 0.75 hr ({dep_wide:.1f})", fontsize=7, color="0.3")
 ax.text(0.12, dep_deep-0.15, f"deep 12 hr ({dep_deep:.1f})", fontsize=7, color="0.3")
 ax.invert_yaxis(); ax.set_xlabel("redshift z"); ax.set_ylabel("observed peak AB mag")
-ax.set_title("Type Ia SN at peak ($M_B=-19.3$): observed magnitude vs z, 3.5 m ST")
 ax.legend(fontsize=8, title="filter"); ax.grid(alpha=0.2)
-fig.tight_layout(); fig.savefig("snia_mag_vs_z.png", bbox_inches="tight")
-print("wrote snia_mag_vs_z.png")
 
 # ---- rest-frame NUV access: observed mag of the rest-NUV band + exposure to 5sigma ----
 # The optical-twin / NUV-divergence diagnostic sits near rest 2770 A (Mg II / NUV).
@@ -46,7 +43,6 @@ for z in znuv:
     m = g.app_mag(snia, z, lo, WOBS, M_abs=MB, ref_lam=4400.0, ref_width=1000.0)
     mnuv.append(m)
     tnuv.append(g.exptime_to_snr(cfg, m, lo, WOBS, snr=5.0) / HR)
-fig2, axm = plt.subplots(figsize=(7.6, 5.2), dpi=150)
 axm.plot(znuv, mnuv, color="#7d3c98", lw=2.2, label="rest-NUV (2770 Å) observed AB")
 axm.invert_yaxis(); axm.set_xlabel("redshift z"); axm.set_ylabel("observed AB mag", color="#7d3c98")
 axm.tick_params(axis="y", labelcolor="#7d3c98")
@@ -54,10 +50,9 @@ axt = axm.twinx()
 axt.plot(znuv, tnuv, color="#d97757", lw=2.2, ls="--", label="exposure to 5σ")
 axt.set_yscale("log"); axt.set_ylabel("exposure to 5σ [hr]", color="#d97757")
 axt.tick_params(axis="y", labelcolor="#d97757"); axt.axhline(1.0, ls=":", color="0.6", lw=1)
-axm.set_title("SN Ia rest-frame NUV (peak): observed magnitude and depth vs z, 3.5 m ST")
 axm.grid(alpha=0.2)
-fig2.tight_layout(); fig2.savefig("snia_nuv_depth.png", bbox_inches="tight")
-print("wrote snia_nuv_depth.png")
+fig.tight_layout(); fig.savefig("snia_demo_combined.png", bbox_inches="tight")
+print("wrote snia_demo_combined.png")
 print("\nSN Ia rest-NUV (2770A) observed AB and hr-to-5sigma:")
 for z in (0.5, 1.0, 1.5, 2.0):
     lo = LAM_NUV*(1+z); m = g.app_mag(snia, z, lo, WOBS, M_abs=MB, ref_lam=4400., ref_width=1000.)

@@ -68,7 +68,6 @@ ax.plot(zz, mu_eds, "-.", color=C_EDS, lw=1.8, zorder=6,
 ax.plot(zz, mu_dde, ":", color=C_DDE, lw=2.4, zorder=6,
         label=r"Dynamic DE ($w_0=-0.857,\ w_a=-0.153$)")
 ax.set_ylabel(r"Distance Modulus $\mu$ (mag)", fontsize=11)
-ax.set_title("Type Ia Supernova Hubble Diagram", fontsize=13, weight="bold")
 ax.set_ylim(32, 47)
 ax.legend(fontsize=8.2, loc="lower right", framealpha=0.92)
 ax.tick_params(labelbottom=False)

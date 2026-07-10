@@ -11,7 +11,7 @@ so the displayed map has exactly the ETC per-pixel noise. The S/N annotated on
 each panel is the ETC value (source + sky + dark + read), and the background
 noise of the simulation is set to match it.
 """
-import numpy as np, warnings
+import os, urllib.request, numpy as np, warnings
 warnings.filterwarnings("ignore")
 import matplotlib
 matplotlib.use("Agg")
@@ -25,6 +25,19 @@ import astropy.units as u
 from scipy.ndimage import gaussian_filter
 import slitless_etc as etc
 
+HFF_BASE_URL = ("https://archive.stsci.edu/pub/hlsp/frontier/abell2744/"
+                "images/hst/v1.0/hlsp_frontier_hst_wfc3-60mas_abell2744_"
+                "f160w_v1.0_{suffix}.fits")
+
+
+def fetch_hff(cache_dir, fname, suffix):
+    os.makedirs(cache_dir, exist_ok=True)
+    path = os.path.join(cache_dir, fname)
+    if not os.path.exists(path):
+        print(f"downloading {fname} from MAST (~125 MB)...")
+        urllib.request.urlretrieve(HFF_BASE_URL.format(suffix=suffix), path)
+    return path
+
 HR = 3600.0
 BAND_H = (14000.0, 18000.0)                 # 1.4-1.8 um imaging band
 HPIX = 0.06                                 # HST WFC3/IR 60mas mosaic [arcsec/pix]
@@ -32,8 +45,7 @@ F = 2                                        # block-reduce factor -> 0.12" 3.5m
 PIX = HPIX * F                               # 0.12" ~ 3.5m design 0.11"
 MU_FID = 27.0                                # fiducial ICL surface brightness for S/N
 BINAS = 10.0                                 # S/N and depth reference box [arcsec]
-BASE = ("/tmp/claude-10396/-home-kjhan-BACKUP-3-5ST/"
-        "d2e05355-c544-4223-9f95-d63a9ca5c011/scratchpad")
+BASE = "hst_cache"
 EXPOS = [0.25, 4.0, 16.0, 64.0]              # dedicated ICL deep-survey ladder [hr]
 np.random.seed(42)
 
@@ -79,8 +91,8 @@ def mu_noise_pix(t_hr):
 
 
 # ---- HST F160W truth (signal + its own RMS) -> 3.5 m grid, in source-rate units ----
-img = fits.open(f"{BASE}/a2744_f160w.fits")[0]
-rms = fits.open(f"{BASE}/a2744_f160w_rms.fits")[0].data.astype("f8")
+img = fits.open(fetch_hff(BASE, "a2744_f160w.fits", "drz"))[0]
+rms = fits.open(fetch_hff(BASE, "a2744_f160w_rms.fits", "rms"))[0].data.astype("f8")
 hdr = img.header; d = img.data.astype("f8"); w = WCS(hdr)
 ZP = -2.5 * np.log10(hdr["PHOTFLAM"]) - 5 * np.log10(hdr["PHOTPLAM"]) - 2.408
 px, py = [int(v) for v in w.world_to_pixel(SkyCoord(3.5877 * u.deg, -30.4003 * u.deg))]
@@ -113,7 +125,7 @@ def observe(t_hr):
 
 
 VMIN = 20.0                                     # fixed bright end [AB/arcsec^2]
-fig, axes = plt.subplots(2, 2, figsize=(9.8, 9.8), dpi=150, constrained_layout=True)
+fig, axes = plt.subplots(1, 4, figsize=(19.4, 5.3), dpi=150, constrained_layout=True)
 extent = [0, src.shape[1] * PIX, 0, src.shape[0] * PIX]
 bar = 100.0 / kpc_per_arcsec                     # 100 kpc in arcsec
 for ax, t_hr in zip(axes.ravel(), EXPOS):
@@ -129,10 +141,6 @@ for ax, t_hr in zip(axes.ravel(), EXPOS):
     cb = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.02)
     cb.set_label("$\\mu$ [AB mag arcsec$^{-2}$]", fontsize=7.5)
     cb.ax.tick_params(labelsize=7); cb.ax.invert_yaxis()
-fig.suptitle("Dedicated ICL deep survey: Abell 2744 seen by the 3.5 m ST vs exposure time\n"
-             "(HST Frontier Fields F160W truth; ETC S/N, quadrature noise; each panel "
-             "stretched to its own 1$\\sigma$/pixel noise floor; $H$ band, $z=0.308$)",
-             fontsize=10.3)
 fig.savefig("icl_exposure_demo.png", bbox_inches="tight")
 print("wrote icl_exposure_demo.png")
 for t_hr in EXPOS:

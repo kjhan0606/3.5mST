@@ -76,9 +76,6 @@ for ax, row in zip(axes.ravel(), sel):
             transform=ax.transAxes)
     ax.text(0.70 + bar / 2, 0.09, "10$''$", color="white", fontsize=6.5,
             ha="center", transform=ax.transAxes)
-fig.suptitle("Low-surface-brightness galaxies from the DES DR1 LSBG catalog "
-             "(Tanoglidis et al. 2021), DECam Legacy Surveys DR10 imaging",
-             fontsize=11, y=0.98)
 fig.savefig("des_lsbg_gallery.png", bbox_inches="tight")
 print("wrote des_lsbg_gallery.png")
 for r in sel:

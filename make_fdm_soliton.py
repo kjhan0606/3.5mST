@@ -43,8 +43,6 @@ ax.set_xlim(1e8, 1e12)
 ax.set_ylim(0.05, 20)
 ax.grid(alpha=0.25, which="both", lw=0.4)
 ax.legend(fontsize=8.8, loc="upper right", framealpha=0.9)
-ax.set_title("Fuzzy-dark-matter core–halo relation (Schive et al. 2014, $z=0$)",
-             fontsize=11)
 fig.tight_layout()
 fig.savefig("fdm_soliton_relation.png", bbox_inches="tight")
 print("wrote fdm_soliton_relation.png")

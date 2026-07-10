@@ -38,7 +38,11 @@ def fetch_hips(fname, **params):
 
 
 def wrap(ra_deg):
-    r = np.remainder(ra_deg + 180.0, 360.0) - 180.0
+    # negate first so RA increases to the LEFT, the customary view-from-inside
+    # sky convention (matching the mirrored manual Mollweide projection of
+    # make_void_wedge_demo.py / Figure~fig:voidwedge), not the geographic
+    # longitude-increases-right convention matplotlib's mollweide defaults to
+    r = np.remainder(-ra_deg + 180.0, 360.0) - 180.0
     return np.radians(r)
 
 
@@ -80,7 +84,7 @@ ra_e = nhdr["CRVAL1"] + nhdr["CDELT1"] * (np.arange(nx + 1) + 0.5 - nhdr["CRPIX1
 dec_e = nhdr["CRVAL2"] + nhdr["CDELT2"] * (np.arange(ny + 1) + 0.5 - nhdr["CRPIX2"])
 dec_e = np.clip(dec_e, -90.0, 90.0)
 lo, hi = np.nanpercentile(nir, [2.0, 99.5])
-pcm = ax.pcolormesh(np.radians(ra_e), np.radians(dec_e), nir,
+pcm = ax.pcolormesh(np.radians(-ra_e), np.radians(dec_e), nir,
                     norm=LogNorm(vmin=max(lo, 0.05), vmax=hi), cmap="gray",
                     rasterized=True, zorder=0)
 cb = fig.colorbar(pcm, ax=ax, orientation="horizontal", fraction=0.05,
@@ -88,6 +92,14 @@ cb = fig.colorbar(pcm, ax=ax, orientation="horizontal", fraction=0.05,
 cb.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=8)
 cb.ax.tick_params(labelsize=7)
 ax.grid(alpha=0.4, color="0.75", lw=0.5)
+ax.tick_params(axis="x", colors="white")
+# the x tick POSITIONS are matplotlib's default mollweide grid (unchanged),
+# but wrap()/the background now mirror RA left-right, so the default tick
+# LABELS (still just their own position value) no longer read as the true RA
+# at that screen position; relabel each tick with its negated value, the true
+# RA now displayed there, without moving any tick or any plotted data
+_xt_deg = np.round(np.degrees(ax.get_xticks())).astype(int)
+ax.set_xticklabels([f"{-t}\N{DEGREE SIGN}" for t in _xt_deg])
 
 # sky grid, split by Galactic latitude and ecliptic latitude
 ra = np.linspace(-179.9, 179.9, 360)
@@ -139,6 +151,15 @@ ax.plot([wrap(210.0)], [np.radians(38.0)], marker="s", ms=7, mfc="none",
         label="ultra-deep imaging fields (2.25 deg$^2$ each)")
 ax.plot([wrap(344.0)], [np.radians(-48.0)], marker="s", ms=7, mfc="none",
         mec="#00e5ff", mew=1.6, ls="")
+# SN Ia time-domain cadence field: a sub-region inside each ELG wide-tier
+# footprint, in the corner opposite the ultra-deep/wide-extension fields so it
+# sits away from their cirrus structure, while its SN hosts still fall inside
+# the same spectroscopic footprint; see elg_deepfields_zoom.png for the zoom.
+ax.plot([wrap(214.5)], [np.radians(30.5)], marker="D", ms=7, mfc="none",
+        mec="#e74c3c", mew=1.6, ls="",
+        label="SN Ia cadence field ($\\sim$5--10 deg$^2$, inside wide tier)")
+ax.plot([wrap(30.5)], [np.radians(-5.05)], marker="D", ms=7, mfc="none",
+        mec="#e74c3c", mew=1.6, ls="")
 # imaging-only wide extension: 35x35-tile (17.5 deg, ~306 deg^2) fields at the
 # lowest-cirrus windows found with a matching 9.9-deg aperture (|b|>55); the
 # northern field sits beside the Lockman Hole
@@ -150,12 +171,10 @@ survey_outline(3.4, -38.0, halfdeg=8.75, color="#ff5cf0", lw=1.8)
 for bb, ls in [(0, "-"), (20, "--"), (-20, "--")]:
     gal_curve(bb, color="#ff8a80", lw=1.2 if bb == 0 else 0.8, ls=ls, alpha=0.75)
 
-ax.set_title("Proposed ELG survey fields: high-latitude caps away from the Milky Way", pad=14)
-ax.legend(loc="lower right", fontsize=8, framealpha=0.9)
 ax.text(wrap(-110), np.radians(42), "Milky Way\n|b|<20° (avoid)", color="#ff8a80",
         fontsize=7, ha="center")
 # synergy annotations placed on their caps
-ax.text(wrap(158), np.radians(33), "N cap:\nDESI NGC + Euclid N\n+ Rubin edge",
+ax.text(wrap(193), np.radians(20), "N cap:\nDESI NGC + Euclid N\n+ Rubin edge",
         fontsize=6.5, ha="center", color="#a9dfbf")
 ax.text(wrap(6), np.radians(-25), "S cap:\nDESI SGC + Euclid S\n+ Rubin/LSST + Roman",
         fontsize=6.5, ha="center", color="#aed6f1")
@@ -164,8 +183,21 @@ for name, ra, dec, w, h, fac, cap in DEEPFIELDS:
     ax.plot(wrap(ra), np.radians(dec), marker="*", ms=10, color="#f1c40f",
             mec="k", mew=0.5, zorder=6)
 ax.plot([], [], marker="*", ls="", color="#f1c40f", mec="k", label="HST/Subaru deep fields")
+
+# split the legend in two and place both entirely above the axes (outside
+# the Mollweide oval), so neither half overlaps the sky data
+_h, _l = ax.get_legend_handles_labels()
+_leg1 = ax.legend(_h[:4], _l[:4], loc="lower left", bbox_to_anchor=(0.0, 1.01),
+                  fontsize=8, framealpha=0.9)
+ax.add_artist(_leg1)
+_leg2 = ax.legend(_h[4:], _l[4:], loc="lower right", bbox_to_anchor=(1.0, 1.01),
+                  fontsize=8, framealpha=0.9)
+
 fig.tight_layout()
-fig.savefig("elg_skymap.png", bbox_inches="tight")
+# bbox_extra_artists tells bbox_inches="tight" to include these legends (they
+# sit above the axes via bbox_to_anchor) when computing the saved canvas size,
+# otherwise their top edge is silently clipped
+fig.savefig("elg_skymap.png", bbox_inches="tight", bbox_extra_artists=(_leg1, _leg2))
 print("wrote elg_skymap.png")
 print(f"N-cap points: {ngc.sum()}, S-cap points: {sgc.sum()}, MW-avoid points: {mw.sum()}")
 
@@ -190,6 +222,12 @@ ANCHOR = {
     "N": dict(cen=(218.0, 34.0), where="wide survey on Bootes/HETDEX ($b\\!=\\!+67^\\circ$)"),
     "S": dict(cen=(34.7, -5.05), where="wide survey on SXDS/UDS/XMM-LSS ($b\\!=\\!-59^\\circ$)"),
 }
+# SN Ia time-domain cadence field (ra, dec, side [deg]; area = side^2 ~ 7.5 deg^2),
+# a sub-region inside the wide tier itself (in the corner opposite the
+# ultra-deep/wide-extension fields, away from their cirrus structure) rather
+# than an exclusive external field, so SN hosts fall inside the same ELG
+# spectroscopic footprint and get real slitless redshifts and environment.
+SNIA_FIELD = {"N": (214.5, 30.5, 2.74), "S": (30.5, -5.05, 2.74)}
 # Real footprints of the SXDS/UDS/XMM-LSS deep field for the South zoom. SXDS is
 # five Subaru Suprime-Cam pointings (34'x27' each) in a cross (Furusawa+ 2008);
 # UDS is one UKIDSS/WFCAM tile (~0.77 deg^2, roughly square). These are drawn
@@ -309,6 +347,19 @@ for i, (cap, ttl) in enumerate([("N", "North Galactic cap"), ("S", "South Galact
             axx.annotate(f"{name}\n({ww * hh:.2g} deg$^2$)", (float(px), float(py)),
                          textcoords="offset points", xytext=off.get(name, (9, 8)),
                          fontsize=7.4, color="white", zorder=7)
+    # SN Ia time-domain cadence field: a sub-region inside the wide tier, in
+    # the corner opposite the ultra-deep/wide-extension fields so it sits away
+    # from their cirrus structure, while its SN hosts still get real redshifts
+    # and environment from the wide tier's own spectroscopy.
+    snia_ra, snia_dec, snia_side = SNIA_FIELD[cap]
+    snia_w = snia_side / np.cos(np.radians(snia_dec))
+    axx.add_patch(Quadrangle(((snia_ra - snia_w / 2) * u.deg, (snia_dec - snia_side / 2) * u.deg),
+                             snia_w * u.deg, snia_side * u.deg, transform=tw,
+                             facecolor="none", edgecolor="#e74c3c", lw=2.0, zorder=6))
+    spx, spy = w.world_to_pixel_values(snia_ra, snia_dec)
+    axx.annotate(f"SN Ia cadence field\n({snia_side**2:.2g} deg$^2$)", (float(spx), float(spy)),
+                 textcoords="offset points", xytext=(0, -34), ha="center",
+                 fontsize=7.4, color="#e74c3c", zorder=7)
     axx.set_xlim(-half, half); axx.set_ylim(-half, half)
     axx.coords.grid(color="0.8", alpha=0.55, ls=":")
     axx.coords[0].set_axislabel("R.A. (TAN)"); axx.coords[1].set_axislabel("Dec. (TAN)")
@@ -364,12 +415,11 @@ handles += [Rectangle((0, 0), 1, 1, facecolor=FCOL[k], edgecolor="k", alpha=0.95
 handles += [Rectangle((0, 0), 1, 1, facecolor="none", edgecolor=FCOL["wide"], lw=2.0,
                       label="NDWFS/HETDEX (outline)"),
             Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#58d68d", lw=1.6, ls="--",
-                      label="UDS (UKIDSS/WFCAM tile)")]
+                      label="UDS (UKIDSS/WFCAM tile)"),
+            Rectangle((0, 0), 1, 1, facecolor="none", edgecolor="#e74c3c", lw=2.0,
+                      label="SN Ia cadence field ($\\sim$7.5 deg$^2$, nested in wide tier)")]
 fig3.legend(handles=handles, fontsize=7.4, loc="lower center", ncol=4,
             bbox_to_anchor=(0.5, -0.12))
-fig3.suptitle("Proposed ELG survey tiers (nested square regions paved with "
-              "30$'\\!\\times\\!$30$'$ tiles) and the legacy deep fields they cover,\n"
-              "on the Planck 857 GHz thermal-dust (cirrus) map", y=1.00)
 fig3.tight_layout(rect=(0, 0.11, 1, 0.97))
 cb3 = fig3.colorbar(im_pl, ax=main_axes, fraction=0.03, pad=0.015)
 cb3.set_label(r"Planck 857 GHz intensity [MJy sr$^{-1}$]", fontsize=8)

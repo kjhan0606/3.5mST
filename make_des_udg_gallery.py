@@ -82,9 +82,6 @@ for ax, row in zip(axes.ravel(), sel):
             ha="center", transform=ax.transAxes)
 for ax in axes.ravel()[len(sel):]:
     ax.axis("off")
-fig.suptitle("Ultra-diffuse-galaxy candidates over the DES southern sky from "
-             "SMUDGes (Zaritsky et al. 2023), DECam Legacy Surveys DR10 imaging",
-             fontsize=11, y=0.98)
 fig.savefig("des_udg_gallery.png", bbox_inches="tight")
 print("wrote des_udg_gallery.png")
 for r in sel:

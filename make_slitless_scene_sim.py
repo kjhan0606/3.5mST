@@ -144,7 +144,7 @@ for ang, ttl in [(None, "direct image"), (0, r"grism, roll $0^\circ$"),
     panels.append(img)
     titles.append(ttl)
 
-fig, axes = plt.subplots(2, 2, figsize=(10.4, 10.7), dpi=170)
+fig, axes = plt.subplots(1, 4, figsize=(19.6, 5.35), dpi=170)
 for ax, img, ttl in zip(axes.ravel(), panels, titles):
     v = img - np.median(img)
     stretch = np.arcsinh(v / (1.6 * np.std(v[v < np.percentile(v, 90)])))
@@ -157,11 +157,8 @@ for ax, ang in zip(axes.ravel()[1:], (0, 45, 90)):
     ax.annotate("", xy=(60 + 90 * c, 60 + 90 * s), xytext=(60, 60),
                 arrowprops=dict(arrowstyle="-|>", color="#c0392b", lw=1.8))
     ax.text(46, 24, "dispersion", color="#c0392b", fontsize=9)
-axes[0, 0].plot([CROP - 91 - 20, CROP - 20], [30, 30], color="k", lw=2)
-axes[0, 0].text(CROP - 65 - 20, 42, r"$10''$", fontsize=10, ha="center")
-fig.suptitle("Simulated crowded-field slitless exposures, "
-             "$R=1000$ setting 1.0–1.75 $\\mu$m, $0.11''$ pixels",
-             fontsize=13)
+axes[0].plot([CROP - 91 - 20, CROP - 20], [30, 30], color="k", lw=2)
+axes[0].text(CROP - 65 - 20, 42, r"$10''$", fontsize=10, ha="center")
 fig.tight_layout(rect=(0, 0, 1, 0.965))
 fig.savefig("slitless_scene_sim.png", bbox_inches="tight")
 print(f"wrote slitless_scene_sim.png  ({NSRC} sources over "
