@@ -160,7 +160,7 @@ The two wide-field space missions closest to this concept have made deliberately
 \label{fig:crowded}
 \end{figure}
 
-The three-roll strategy above allows whole-field overlap and resolves it statistically after all. An image slicer is a complementary option for the fields where crowding is worst. It cuts the two-dimensional focal-plane image into narrow slices, reformats the slices end to end into one pseudo-slit, and disperses that pseudo-slit as a single spectrum. Sources in different slices do not overlap. Only sources sharing or adjacent to the same slice can still blend in wavelength. This is a substantially smaller overlap graph than the whole-field blending of Figure~\ref{fig:crowded}. Image slicers already fly on integral-field spectrographs including the JWST NIRSpec IFU mode \cite{boker2022}. The concept itself is therefore flight-proven. Adding one across the full wide-tier field of view is a substantial optical and mechanical addition that this proposal does not design or cost here. The more direct application is the medium, deep, and ultra-deep tiers, where the source density is highest and the completeness calibration is most sensitive to blending. For those fields, an image-slicer front end is a design direction worth taking into a future trade study, not a baseline commitment of this proposal.
+The three-roll strategy above allows whole-field overlap and resolves it statistically. An image slicer is a complementary option for the fields where crowding is worst. It cuts the two-dimensional focal-plane image into narrow slices, reformats the slices end to end into one pseudo-slit, and disperses that pseudo-slit as a single spectrum. Sources in different slices do not overlap. Only sources sharing or adjacent to the same slice can still blend in wavelength. This is a substantially smaller overlap graph than the whole-field blending of Figure~\ref{fig:crowded}. Image slicers already fly on integral-field spectrographs including the JWST NIRSpec IFU mode \cite{boker2022}. The concept itself is therefore flight-proven. Adding one across the full wide-tier field of view is a substantial optical and mechanical addition that this proposal does not design or cost here. The more direct application is the medium, deep, and ultra-deep tiers, where the source density is highest and the completeness calibration is most sensitive to blending. For those fields, an image-slicer front end is a design direction worth taking into a future trade study, not a baseline commitment of this proposal.
 
 \begin{figure}[htbp]
 \centering
@@ -269,7 +269,7 @@ For a 100 \degti\ survey, the threshold field requires roughly 3,600 pointings b
 
 \subsection{Sensitivity and the Exposure-Time Calculator}\label{sec:etc}
 
-The sensitivity of the two-arm slitless spectrograph and the corresponding survey planning depth adopted in Section~\ref{sec:elgdepth} (Eq.~\eqref{eq:f5sigma}), follows from a detector-level photon budget. It is worth deriving that depth from first principles and confirming both its value and its background-limited time scaling. For an emission line of flux $F_{\rm line}$ observed at wavelength $\lambda$, the number of detected photo-electrons accumulated over a total exposure $t$ is formulated as,
+The sensitivity of the two-arm slitless spectrograph and the corresponding survey planning depth adopted in Section~\ref{sec:elgdepth} (Eq.~\eqref{eq:f5sigma}) follow from a detector-level photon budget. It is worth deriving that depth from first principles and confirming both its value and its background-limited time scaling. For an emission line of flux $F_{\rm line}$ observed at wavelength $\lambda$, the number of detected photo-electrons accumulated over a total exposure $t$ is formulated as,
 \begin{equation}
   S=F_{\rm line}\,A_{\rm tel}\,\eta\,t\,\frac{\lambda}{hc},
   \label{eq:etcsig}
@@ -284,7 +284,7 @@ where $\bar i_{\rm sky}$ is the mean sky surface brightness per unit wavelength,
   N^2=S+B_{\rm pix}\,n_{\rm pix}\,t+D\,n_{\rm pix}\,t+n_{\rm read}\,n_{\rm pix}\,\sigma_{\rm read}^2,
   \label{eq:etcnoise}
 \end{equation}
-and the $5\sigma$ line-flux limit is the flux for which $S=5N$. For the space near-infrared background the sky term of Eq.~\eqref{eq:etcnoise} dominates the other three. The noise therefore reduces to $N\simeq(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}$. Setting $S=5N$ with $F_{\rm line}=F_{5\sigma}$ and inserting the signal of Eq.~\eqref{eq:etcsig} lead to
+and the $5\sigma$ line-flux limit is the flux for which $S=5N$. For the space near-infrared background the sky term of Eq.~\eqref{eq:etcnoise} dominates the other three. The noise therefore reduces to $N\simeq(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}$. Setting $S=5N$ with $F_{\rm line}=F_{5\sigma}$ and inserting the signal of Eq.~\eqref{eq:etcsig} leads to
 \[
   F_{5\sigma}\,A_{\rm tel}\,\eta\,t\,\frac{\lambda}{hc}=5\,(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2},
 \]
