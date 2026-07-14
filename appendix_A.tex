@@ -2,7 +2,7 @@
 
 \begin{leadbox}[title=Executive Summary]{teal}
 \textbf{The \facility\ is proposed as a robotic wide-field cosmology mission that combines native $R=1000$ slitless spectroscopy with deep wide-field imaging.}
-The central science case is a dense emission-line galaxy redshift survey for BAO and redshift-space distortions, supported by supernova and quasar programs that exploit the stability, multiplexing, and repeatability of space operations. The supernova tier in particular measures the rest-frame $U$ and near-ultraviolet magnitudes that separate the optical twins at subgroup precision ($\sigma_m=0.10$\,mag) to $z\simeq0.9$--$1.1$ in its standard visits and to $z\simeq1.3$--$1.5$ in ten-hour stacks. Crowded-field slitless operation is assumed from the start. Every science tile is observed in three orientations, approximately $0^\circ$, $45^\circ$, and $90^\circ$, so that spectral overlap can be solved by a joint scene-reconstruction algorithm. The flagship survey covers 100--300 \degti, requires the \fovlarge\ field for efficiency, and is complemented by a deep pencil-beam tier and a supernova time-domain tier. The same imaging runs as a blind low-surface-brightness census (UDGs, LSBGs, void dark galaxies) over the survey tiers and as targeted deep integrations on nearby clusters for intracluster light. Over the spectroscopic tiers the census uses emission-line redshifts to recover the low-surface-brightness population that is missing from the observed galaxy stellar mass function, turning its faint end into a selection-controlled test of stellar feedback. The same selection function, followed from field dwarfs through cluster and void environments, also supports a dark-matter microphysics program, testing cold, self-interacting, and fuzzy dark matter against dwarf-galaxy inner density structure and the abundance of low-mass halos.
+The central science case is a dense emission-line galaxy redshift survey for BAO and redshift-space distortions, supported by supernova and quasar programs that exploit the stability, multiplexing, and repeatability of space operations. The supernova tier in particular measures the rest-frame $U$ and near-ultraviolet magnitudes that separate the optical twins at subgroup precision ($\sigma_m=0.10$\,mag) to $z\simeq0.9$--$1.1$ in its standard visits and to $z\simeq1.3$--$1.5$ in ten-hour stacks. Crowded-field slitless operation is assumed from the start. Every science tile is observed in three orientations, approximately $0^\circ$, $45^\circ$, and $90^\circ$, so that spectral overlap can be solved by a joint scene-reconstruction algorithm. The flagship survey covers 100--300 \degti, requires the \fovlarge\ field for efficiency, and is complemented by a deep pencil-beam tier and a supernova time-domain tier. The same imaging runs as a blind low-surface-brightness census (UDGs, LSBGs, void dark galaxies) over the survey tiers and as targeted deep integrations on nearby clusters for intracluster light. Over the spectroscopic tiers the census uses emission-line redshifts to recover the low-surface-brightness population that is missing from the observed galaxy stellar mass function, turning its faint end into a selection-controlled test of stellar feedback. The same selection function followed from field dwarfs through cluster and void environments also supports a dark-matter microphysics program testing cold, self-interacting, and fuzzy dark matter against dwarf-galaxy inner density structure and the abundance of low-mass halos.
 \end{leadbox}
 
 \vspace{2mm}
@@ -11,7 +11,7 @@ The central science case is a dense emission-line galaxy redshift survey for BAO
 \begin{tikzpicture}[font=\sffamily]
   \foreach \x/\title/\val/\col/\vfont in {
     0/{Native resolving power}/{$R=1000$}/teal/\large,
-    4.4/{Velocity element}/{300 \kms}/blue/\large,
+    4.4/{Velocity resolution}/{300 \kms}/blue/\large,
     8.8/{Field of view}/{10'--30' square}/gold/\normalsize,
     13.2/{Flagship sample}/{$10^6$--$3\times10^6$ ELGs}/green/\small} {
     \fill[\col!10,draw=\col,rounded corners=2pt] (\x,0) rectangle ++(4.1,1.35);
@@ -23,7 +23,7 @@ The central science case is a dense emission-line galaxy redshift survey for BAO
 
 \section{Instrument Baseline}
 
-The mission is designed around native $R=1000$ slitless spectroscopy because the leading cosmological measurements are controlled by survey volume, line identification, source confusion, and selection-function calibration. The highest-leverage observing mode is a repeatedly calibrated, wide-field map of emission-line galaxies, not precision internal kinematics for individual extended sources.
+The mission design is centered on native $R=1000$ slitless spectroscopy because the leading cosmological measurements are controlled by survey volume, line identification, source confusion, and selection-function calibration. The highest-leverage observing mode is a repeatedly-calibrated wide-field map of emission-line galaxies, not targeting precision internal kinematics for individual extended sources.
 
 For a point source,
 \begin{equation}
