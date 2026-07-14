@@ -126,18 +126,7 @@ For each survey tile, the telescope obtains direct imaging plus slitless exposur
   \qquad r\in\{0^\circ,45^\circ,90^\circ\},
   \label{eq:scene}
 \end{equation} 
-where $\mathbf{d}_{r}$ is the detector image at roll/orientation $r$, $\mathbf{s}$ is the set of object spectra, and $\mathbf{A}_{r}$ is the orientation-dependent projection operator built from the direct-image catalog, morphology model, trace solution, PSF, and wavelength calibration.
-
-In practice the two-dimensional detector frame is flattened into a data vector $\mathbf{d}_r$ of length $N_{\rm pix}$, while the scene $\mathbf{s}$ is the concatenation of every source spectrum on its own wavelength grid, of length $N_s\simeq N_{\rm src}N_\lambda$. The data and the scene live in different index spaces. The vectors $\mathbf{d}_r$ and $\mathbf{n}_r$ run over detector pixels, whereas $\mathbf{s}$ runs over source and wavelength, and the $N_{\rm pix}\times N_s$ matrix $\mathbf{A}_r$ maps the scene onto the detector at roll $r$. Because each source disperses along a two-dimensional trace, $\mathbf{A}_r$ mixes both detector axes rather than acting along one. The same scene $\mathbf{s}$ produces all three roll frames. The three equations therefore stack into
-\begin{equation}
-  \begin{bmatrix}\mathbf{d}_{0^\circ}\\ \mathbf{d}_{45^\circ}\\ \mathbf{d}_{90^\circ}\end{bmatrix}
-  =\begin{bmatrix}\mathbf{A}_{0^\circ}\\ \mathbf{A}_{45^\circ}\\ \mathbf{A}_{90^\circ}\end{bmatrix}\mathbf{s}
-  +\begin{bmatrix}\mathbf{n}_{0^\circ}\\ \mathbf{n}_{45^\circ}\\ \mathbf{n}_{90^\circ}\end{bmatrix},
-  \label{eq:scenestack}
-\end{equation}
-an over-determined system of $3N_{\rm pix}$ equations for the single $N_s$-vector $\mathbf{s}$. Recovering that one shared scene from three distinct projections $\mathbf{A}_r$ is what makes the crowded field separable.
-
-The final spectra are recovered by a regularized joint fit over all orientations with covariance and contamination flags propagated into the redshift catalog. Objects that remain degenerate after the three-angle fit are not forced into the cosmology sample. They are flagged as low-confidence redshifts or excluded by the survey mask.
+where $\mathbf{d}_{r}$ is the detector image at roll/orientation $r$, $\mathbf{s}$ is the set of object spectra, and $\mathbf{A}_{r}$ is the orientation-dependent projection operator built from the direct-image catalog, morphology model, trace solution, PSF, and wavelength calibration. The spectra are recovered by a regularized least-squares inversion of this over-determined system, solved with sparse iterative methods rather than an explicit matrix inverse. Smoothness, non-negativity, and machine-learning priors, together with the direct-image morphology, stabilize the fully blended directions, and the solution covariance and contamination flags are propagated into the redshift catalog. Objects that remain degenerate after the three-angle fit are not forced into the cosmology sample. They are flagged as low-confidence redshifts or excluded by the survey mask.
 
 The most cost-effective wide-survey choice is triple-roll orientations. Two nearly orthogonal orientations are the minimum useful configuration, but they leave a non-negligible class of pair geometries, detector defects, and extended-source self-blends with ambiguous solutions. A third roll separated by roughly $45^\circ$ from the orthogonal pair changes the blending pattern without multiplying the program into a deep-field campaign. Additional rolls are scientifically useful only for reference fields, ultra-deep calibration fields, or unusually crowded targets because their survey-area cost is linear while the deblending gain becomes incremental.
 
