@@ -160,7 +160,7 @@ The two wide-field space missions closest to this concept have made deliberately
 \label{fig:crowded}
 \end{figure}
 
-The three-roll strategy above accepts whole-field overlap and resolves it statistically after the fact. An image slicer is a complementary option for the fields where crowding is worst. It cuts the two-dimensional focal-plane image into narrow slices, reformats the slices end to end into one pseudo-slit, and disperses that pseudo-slit as a single spectrum. Sources in different slices do not overlap. Only sources sharing, or adjacent to, the same slice can still blend in wavelength. This is a substantially smaller overlap graph than the whole-field blending of Figure~\ref{fig:crowded}. Image slicers already fly on integral-field spectrographs, including the JWST NIRSpec IFU mode \cite{boker2022}. The concept itself is therefore flight-proven. Adding one across the full wide-tier field of view is a substantial optical and mechanical addition that this proposal does not design or cost here. The more direct application is the medium, deep, and ultra-deep tiers, where the source density is highest and the completeness calibration is most sensitive to blending. For those fields, an image-slicer front end is a design direction worth taking into a future trade study, not a baseline commitment of this proposal.
+The three-roll strategy above allows whole-field overlap and resolves it statistically after all. An image slicer is a complementary option for the fields where crowding is worst. It cuts the two-dimensional focal-plane image into narrow slices, reformats the slices end to end into one pseudo-slit, and disperses that pseudo-slit as a single spectrum. Sources in different slices do not overlap. Only sources sharing or adjacent to the same slice can still blend in wavelength. This is a substantially smaller overlap graph than the whole-field blending of Figure~\ref{fig:crowded}. Image slicers already fly on integral-field spectrographs including the JWST NIRSpec IFU mode \cite{boker2022}. The concept itself is therefore flight-proven. Adding one across the full wide-tier field of view is a substantial optical and mechanical addition that this proposal does not design or cost here. The more direct application is the medium, deep, and ultra-deep tiers, where the source density is highest and the completeness calibration is most sensitive to blending. For those fields, an image-slicer front end is a design direction worth taking into a future trade study, not a baseline commitment of this proposal.
 
 \begin{figure}[htbp]
 \centering
@@ -222,12 +222,12 @@ where $g$ labels the galaxy and $c$ labels internal components such as disk, bul
 
 \subsection{Field of View as a Science Requirement}
 
-The field of view changes the mission from a deep-field spectroscopic facility into a cosmological surveyor. The two allowed field sizes differ by a factor of nine in area:
+The field of view changes the mission from a deep-field spectroscopic facility into a cosmological surveyor. The two allowed field sizes differ by a factor of nine in area as
 \begin{align}
   A(10'\times10') &= 100\ {\rm arcmin^2}=0.0278\ {\rm deg^2},\\
   A(30'\times30') &= 900\ {\rm arcmin^2}=0.2500\ {\rm deg^2}.
 \end{align}
-For a 100 \degti survey, the threshold field requires roughly 3600 pointings before the required three orientations and dithers while the maximum field requires 400. For 300 \degti, those numbers become 10,800 and 1200. Including the three slitless orientations, the raw spectroscopic visit count is multiplied by three. The \fovsmall\ mode is useful for deep calibration fields and time-domain fields. The \fovlarge\ mode should be treated as the cosmology survey requirement.
+For a 100 \degti\ survey, the threshold field requires roughly 3,600 pointings before the required three orientations, and dithers while the maximum field requires 400. For 300 \degti, those numbers become 10,800 and 1,200. Including the three slitless orientations, the raw spectroscopic visit count is multiplied by three. The \fovsmall\ mode is useful for deep calibration fields and time-domain fields. The \fovlarge\ mode should be treated as the cosmology survey requirement.
 
 \begin{figure}[htbp]
 \centering
@@ -269,22 +269,22 @@ For a 100 \degti survey, the threshold field requires roughly 3600 pointings bef
 
 \subsection{Sensitivity and the Exposure-Time Calculator}\label{sec:etc}
 
-The sensitivity of the two-arm slitless spectrograph, and with it the survey planning depth adopted in Section~\ref{sec:elgdepth} (Eq.~\eqref{eq:f5sigma}), follows from a detector-level photon budget. It is worth deriving that depth from first principles and confirming both its value and its background-limited time scaling. For an emission line of flux $F_{\rm line}$ observed at wavelength $\lambda$, the number of detected photo-electrons accumulated over a total exposure $t$ is
+The sensitivity of the two-arm slitless spectrograph and the corresponding survey planning depth adopted in Section~\ref{sec:elgdepth} (Eq.~\eqref{eq:f5sigma}), follows from a detector-level photon budget. It is worth deriving that depth from first principles and confirming both its value and its background-limited time scaling. For an emission line of flux $F_{\rm line}$ observed at wavelength $\lambda$, the number of detected photo-electrons accumulated over a total exposure $t$ is formulated as,
 \begin{equation}
   S=F_{\rm line}\,A_{\rm tel}\,\eta\,t\,\frac{\lambda}{hc},
   \label{eq:etcsig}
 \end{equation}
-where $A_{\rm tel}$ is the effective collecting area, $\eta$ is the end-to-end throughput including optics, disperser, and detector quantum efficiency, and $\lambda/hc$ converts line energy to photon number. In a slitless spectrograph a uniform sky disperses onto every detector pixel across the full band-limiting filter. The diffuse background collected per pixel per second is
+where $A_{\rm tel}$ is the effective collecting area, and $\eta$ is the end-to-end throughput including optics, disperser, and detector quantum efficiency. Also $\lambda/hc$ converts line energy to photon number. In a slitless spectrograph a uniform sky disperses onto every detector pixel across the full band-limiting filter. The diffuse background collected per pixel per second is
 \begin{equation}
   B_{\rm pix}=\bar i_{\rm sky}\,A_{\rm tel}\,\eta\,\Omega_{\rm pix}\,\Delta\lambda_{\rm filt}\,\frac{\lambda}{hc},
   \label{eq:etcbg}
 \end{equation}
-where $\bar i_{\rm sky}$ is the mean sky surface brightness per unit wavelength, $\Omega_{\rm pix}$ is the pixel solid angle, and $\Delta\lambda_{\rm filt}$ is the filter bandwidth that the proposal imposes to keep slitless traces short. The line falls on $n_{\rm pix}$ pixels, set by the source size along the cross-dispersion direction times the resolution-element width. Adding source shot noise, sky, dark current $D$, and read noise $\sigma_{\rm read}$ over $n_{\rm read}$ reads in quadrature gives the total variance
+where $\bar i_{\rm sky}$ is the mean sky surface brightness per unit wavelength, $\Omega_{\rm pix}$ is the pixel solid angle, and $\Delta\lambda_{\rm filt}$ is the filter bandwidth that the proposal imposes to keep slitless traces (dispersed spectra) short. The line falls on $n_{\rm pix}$ pixels set by the source size along the cross-dispersion direction times the resolution-element width. Adding source shot noise, sky, dark current $D$, and read noise $\sigma_{\rm read}$ over $n_{\rm read}$ read-outs in quadrature gives the total variance
 \begin{equation}
   N^2=S+B_{\rm pix}\,n_{\rm pix}\,t+D\,n_{\rm pix}\,t+n_{\rm read}\,n_{\rm pix}\,\sigma_{\rm read}^2,
   \label{eq:etcnoise}
 \end{equation}
-and the $5\sigma$ line-flux limit is the flux for which $S=5N$. For the space near-infrared background the sky term of Eq.~\eqref{eq:etcnoise} dominates the other three. The noise therefore reduces to $N\simeq(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}$. Setting $S=5N$ with $F_{\rm line}=F_{5\sigma}$ and inserting the signal of Eq.~\eqref{eq:etcsig} gives
+and the $5\sigma$ line-flux limit is the flux for which $S=5N$. For the space near-infrared background the sky term of Eq.~\eqref{eq:etcnoise} dominates the other three. The noise therefore reduces to $N\simeq(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}$. Setting $S=5N$ with $F_{\rm line}=F_{5\sigma}$ and inserting the signal of Eq.~\eqref{eq:etcsig} lead to
 \[
   F_{5\sigma}\,A_{\rm tel}\,\eta\,t\,\frac{\lambda}{hc}=5\,(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2},
 \]
@@ -293,14 +293,14 @@ and solving for the flux gives
   F_{5\sigma}=\frac{5\,(B_{\rm pix}\,n_{\rm pix}\,t)^{1/2}}{A_{\rm tel}\,\eta\,t\,(\lambda/hc)}
   =\frac{5}{A_{\rm tel}\,\eta\,(\lambda/hc)}\,\left(\frac{B_{\rm pix}\,n_{\rm pix}}{t}\right)^{1/2},
 \]
-where the explicit factor of $t$ in the denominator combines with the $t^{1/2}$ in the numerator to leave the $t^{-1/2}$ dependence. Substituting the slitless background $B_{\rm pix}$ from Eq.~\eqref{eq:etcbg} and cancelling the common factor $A_{\rm tel}\,\eta\,(\lambda/hc)$ (present both inside and outside the square root) yields the closed form
+where the explicit factor of $t$ in the denominator combines with the $t^{1/2}$ in the numerator to leave the $t^{-1/2}$ dependence. Substituting the slitless background $B_{\rm pix}$ from Eq.~\eqref{eq:etcbg} and cancelling the common factor $A_{\rm tel}\,\eta\,(\lambda/hc)$ (present both inside and outside the square root) yields the closed form as,
 \begin{equation}
   F_{5\sigma}\simeq 5\left(\frac{\bar i_{\rm sky}\,\Omega_{\rm pix}\,\Delta\lambda_{\rm filt}\,n_{\rm pix}}{A_{\rm tel}\,\eta\,(\lambda/hc)\,t}\right)^{1/2},
   \label{eq:etc}
 \end{equation}
-which makes the background-limited $t^{-1/2}$ scaling of Eq.~\eqref{eq:f5sigma} explicit, showing that the depth improves as the square root of collecting area and throughput.
+which makes the background-limited $t^{-1/2}$ scaling of Eq.~\eqref{eq:f5sigma} explicit showing that the depth improves as the square root of collecting area and throughput.
 
-Table~\ref{tab:etc} lists the adopted baseline parameters. The mean zodiacal sky brightness near $1.6\,\mu$m is taken from the standard reference model \cite{leinert1998}, the collecting area follows from the $3.5$\,m aperture, and the detector terms are baseline values typical of near-infrared HgCdTe arrays. With these values the sky background is $B_{\rm pix}\simeq0.90$ e$^-$\,s$^{-1}$ per pixel. Over $t=0.75$\,hr the accumulated sky is $3.9\times10^{4}$ e$^-$ across the $n_{\rm pix}=16$ line footprint while the dark and read contributions are only $4.3\times10^{2}$ and $4.8\times10^{3}$ e$^-$. This confirms that the measurement is background-limited. Equation~\eqref{eq:etc} then returns $F_{5\sigma}\simeq1.9\times10^{-17}\,{\rm erg\,s^{-1}\,cm^{-2}}$ at $0.75$\,hr.
+Table~\ref{tab:etc} lists the adopted baseline parameters. The mean zodiacal sky brightness near $1.6\,\mu$m is taken from the standard reference model \cite{leinert1998}. The collecting area follows from the $3.5$\,m aperture, and the detector terms are baseline values typical of near-infrared HgCdTe arrays. With these values the sky background is $B_{\rm pix}\simeq0.90$ e$^-$\,s$^{-1}$ per pixel. Over $t=0.75$\,hr exposure, the accumulated sky is $3.9\times10^{4}$ e$^-$ across the $n_{\rm pix}=16$ line footprint while the dark and readout contributions are only $4.3\times10^{2}$ and $4.8\times10^{3}$ e$^-$. This confirms that the measurement is background-limited. Equation~\eqref{eq:etc} then returns $F_{5\sigma}\simeq1.9\times10^{-17}\,{\rm erg\,s^{-1}\,cm^{-2}}$ at $0.75$\,hr.
 
 This first-principles value is about five times deeper than the $1.0\times10^{-16}$ normalization adopted in Eq.~\eqref{eq:f5sigma}. The two agree in functional form and in order of magnitude. The offset is the expected planning margin. The empirical anchor is deliberately conservative because it folds in throughput losses below the assumed $\eta$, larger emitting-region sizes which raise $n_{\rm pix}$, the wider filter bandwidths used in the most crowded fields, and the flux lost to deblending through the factor $C_{\rm blend}$ of the survey signal-to-noise relation of Section~\ref{sec:elgdepth}. Across the realistic ranges of these parameters, namely $\eta$ from $0.2$ to $0.4$, $n_{\rm pix}$ from $8$ to $40$, and $\Delta\lambda_{\rm filt}$ up to the full channel width, the calculator brackets $F_{5\sigma}$ from roughly $1\times10^{-17}$ to about $1\times10^{-16}$ at $0.75$\,hr, with the upper edge reached only for the most extended sources and the widest filters. The adopted depth therefore sits on the conservative side of the photon-limited range. Eq.~\eqref{eq:f5sigma} is a safe planning floor rather than an optimistic limit.
 
