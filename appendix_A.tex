@@ -374,7 +374,7 @@ The same calculation exposes a hard wavelength limit set by the telescope temper
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.72\textwidth]{etc_gui_capture.png}
-\caption{The open-source exposure-time calculator with its Tk interface (\url{https://github.com/kjhan0606/3.5mST}). A telescope preset (JWST, Roman, Euclid, or this $3.5$\,m concept) and an imaging or slitless-spectroscopy mode set the aperture and the real detector parameters. A filter or disperser sets the wavelength, bandwidth, and resolution. The panel shown is the $3.5$\,m concept in slitless mode, with the $5\sigma$ line-flux depth as a function of wavelength for three exposures.}
+\caption{The open-source exposure-time calculator and its graphical output (\url{https://github.com/kjhan0606/3.5mST}). A telescope preset and an observing mode set the aperture and detector parameters. The imaging panel shows the $5\sigma$ point-source depth for Johnson--Cousins $UBVRI$, SDSS $ugriz$, and 2MASS $JHK_{\rm s}$ photometry at three exposure times. Each passband is represented by its pivot wavelength and rectangular-equivalent width. The representation captures broad-band depth differences but does not replace integration over a measured total-system response curve. The lower panel gives the slitless line-flux depth across the full wavelength range. The spectroscopic selector includes $R=1000$ and $R=5000$ modes.}
 \label{fig:etcgui}
 \end{figure}
 
@@ -880,8 +880,8 @@ The BAO/RSD program is organized as a wedding-cake survey. It has a very wide ti
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[font=\sffamily\footnotesize]
-  \fill[paper] (-0.4,-0.35) rectangle (15.8,6.4);
-  \node[anchor=west,font=\bfseries\large,color=ink] at (0,5.92) {ELG BAO/RSD wedding-cake survey};
+  \fill[paper] (-0.4,-0.35) rectangle (15.8,6.0);
+  \node[anchor=west,font=\bfseries\large,color=ink] at (0,5.62) {ELG BAO/RSD wedding-cake survey};
   \draw[->,color=muted] (0.6,0.75) -- (14.8,0.75);
   \draw[->,color=muted] (0.6,0.75) -- (0.6,5.0);
   \node[anchor=north,color=muted] at (7.7,0.32) {survey area};
