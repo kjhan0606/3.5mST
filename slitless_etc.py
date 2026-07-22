@@ -44,7 +44,10 @@ be replaced by measured hardware values or by a CSV throughput/QE/zodi file.
 """
 from __future__ import annotations
 from dataclasses import dataclass, field, replace
+from pathlib import Path
 import numpy as np
+
+_MODULE_DIR = Path(__file__).resolve().parent
 
 # ---------------------------------------------------------------- constants (CGS)
 H  = 6.62607015e-27          # erg s
@@ -742,13 +745,36 @@ TELESCOPE_PRESETS = {
                            read=6., dark=0.034, nexp=4, fw=80000.,  ttel=45.,  R=1600., band=(2.40, 5.00), lam=3.5, split=0., realistic=False),
 }
 
+# Standard imaging passbands represented by pivot wavelength and rectangular-
+# equivalent bandwidth in microns. The values are suitable for broadband ETC
+# calculations. They do not replace a measured total-system response curve.
+STANDARD_FILTERS = {
+    "Johnson U": (0.365, 0.066),
+    "Johnson B": (0.445, 0.094),
+    "Johnson V": (0.551, 0.088),
+    "Cousins R": (0.658, 0.138),
+    "Cousins I": (0.806, 0.149),
+    "SDSS u": (0.3551, 0.0558),
+    "SDSS g": (0.4686, 0.1158),
+    "SDSS r": (0.6166, 0.1111),
+    "SDSS i": (0.7480, 0.1045),
+    "SDSS z": (0.8932, 0.1124),
+    "2MASS J": (1.235, 0.162),
+    "2MASS H": (1.662, 0.251),
+    "2MASS Ks": (2.159, 0.262),
+}
+
 # Filters (imaging) and dispersers (spectroscopy) per telescope.
-# Imaging element -> (central lambda [um], width [um]); spectral -> (lam, width, R).
+# Imaging element -> (pivot lambda [um], rectangular-equivalent width [um]).
+# Spectral element -> (representative lambda [um], band width [um], R).
 INSTRUMENT_ELEMENTS = {
-    "3.5mST": {"Imaging": {"g~0.5": (0.50, 0.15), "z~0.9": (0.90, 0.20), "J~1.2": (1.25, 0.30),
-                           "H~1.6": (1.60, 0.40), "K~2.2": (2.20, 0.50)},
-               "Spectroscopy": {"R1000 opt": (0.70, 0.40, 1000), "R1000 NIR": (1.60, 0.40, 1000),
-                                "R1000 K": (2.50, 0.50, 1000)}},
+    "3.5mST": {"Imaging": dict(STANDARD_FILTERS),
+               "Spectroscopy": {"R1000 opt": (0.70, 0.40, 1000),
+                                "R1000 NIR": (1.60, 0.40, 1000),
+                                "R1000 K": (2.50, 0.50, 1000),
+                                "R5000 opt": (0.70, 0.40, 5000),
+                                "R5000 NIR": (1.60, 0.40, 5000),
+                                "R5000 K": (2.50, 0.50, 5000)}},
     "Roman WFI": {"Imaging": {"F062": (0.62, 0.28), "F087": (0.87, 0.22), "F106": (1.06, 0.27),
                               "F129": (1.29, 0.31), "F158": (1.58, 0.40), "F184": (1.84, 0.32),
                               "F213": (2.13, 0.35), "F146 (wide)": (1.46, 1.03)},
@@ -1121,12 +1147,14 @@ def compare_proposal():
 def realistic_cfg(**kw):
     """3.5 m concept using the tabulated CALSPEC-solar zodi and component
     throughput/QE curves written by make_etc_data.py."""
-    import os
+    throughput = _MODULE_DIR / "etc_throughput.csv"
+    throughput_imaging = _MODULE_DIR / "etc_throughput_imaging.csv"
+    zodi = _MODULE_DIR / "etc_zodi.csv"
     base = dict(extraction_eff=0.70,
-                throughput_csv="etc_throughput.csv" if os.path.exists("etc_throughput.csv") else "",
-                throughput_imaging_csv=("etc_throughput_imaging.csv"
-                                        if os.path.exists("etc_throughput_imaging.csv") else ""),
-                zodi_csv="etc_zodi.csv" if os.path.exists("etc_zodi.csv") else "")
+                throughput_csv=str(throughput) if throughput.exists() else "",
+                throughput_imaging_csv=(str(throughput_imaging)
+                                        if throughput_imaging.exists() else ""),
+                zodi_csv=str(zodi) if zodi.exists() else "")
     base.update(kw)
     return InstrumentConfig(**base)
 
@@ -1140,9 +1168,8 @@ def segmented_cfg(**kw):
     aperture-photometry functions (imaging_maglimit, imaging_snr,
     saturation_maglimit, count_rates); spectroscopic depth (f_limit/line_sn)
     does not call aperture_ee() and is unaffected."""
-    import os
-    base = dict(psf_ee_csv="segmented_ee_table.csv"
-                if os.path.exists("segmented_ee_table.csv") else "")
+    table = _MODULE_DIR / "segmented_ee_table.csv"
+    base = dict(psf_ee_csv=str(table) if table.exists() else "")
     base.update(kw)
     return realistic_cfg(**base)
 
@@ -1282,7 +1309,7 @@ def main(cfg=None):
         a1.plot(lam/1e4, -2.5*np.log10(zodi_flambda(lam)*lam**2/C_A)-48.6,
                 color="#333", lw=1, ls="--", label="zodiacal only")
         a1.set_ylabel(r"sky $\mu$  [AB arcsec$^{-2}$]"); a1.invert_yaxis()
-        a1.legend(fontsize=8, loc="lower left"); a1.grid(alpha=0.2)
+        a1.legend(fontsize=8, loc="upper left"); a1.grid(alpha=0.2)
         a1.tick_params(labelbottom=False)
         for tt, c in [(0.75*hr, "#3898ec"), (3*hr, "#4ec9b0"), (12*hr, "#d97757")]:
             f = [f_limit(cfg, l, tt) for l in lam]

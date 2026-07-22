@@ -93,8 +93,15 @@ class ETCGui:
         field(bg, "  separation [″]", "straysep", "300")
 
         obs = ttk.LabelFrame(panel, text="observation / source", padding=4); obs.pack(fill="x", pady=2)
-        field(obs, "λ [µm]", "lam", "1.6")
-        field(obs, "filter width [µm]", "fw_um", "0.40")
+        frow = ttk.Frame(obs); frow.pack(fill="x", pady=0)
+        ttk.Label(frow, text="imaging filter", width=20, anchor="w").pack(side="left")
+        self.imaging_filter = tk.StringVar(value="SDSS g")
+        self.filter_cb = ttk.Combobox(frow, textvariable=self.imaging_filter,
+                                      state="readonly", width=17)
+        self.filter_cb.pack(side="left")
+        self.filter_cb.bind("<<ComboboxSelected>>", lambda _e: self.compute())
+        field(obs, "spectral λ [µm]", "lam", "1.6")
+        field(obs, "spectral band [µm]", "fw_um", "0.40")
         field(obs, "resolving power R", "R", "1000")
         field(obs, "source FWHM [″]", "src", "0.3")
         field(obs, "exposure [hr]", "thr", "0.75")
@@ -175,8 +182,14 @@ class ETCGui:
 
     def refresh_elements(self):
         _, spec = self._modes()
-        self._elem_mode = "Spectroscopy" if spec else "Imaging"
-        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get(self._elem_mode, {})
+        filters = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
+        filter_names = list(filters.keys())
+        self.filter_cb["values"] = filter_names
+        if filter_names and self.imaging_filter.get() not in filter_names:
+            self.imaging_filter.set(filter_names[0])
+
+        self._elem_mode = "Spectroscopy"
+        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Spectroscopy", {}) if spec else {}
         names = list(els.keys())
         self.elem_cb["values"] = names
         if names and self.element.get() not in names:
@@ -196,6 +209,15 @@ class ETCGui:
         if compute:
             self.compute()
 
+    def selected_filter(self):
+        """Return selected imaging filter as (name, pivot_um, width_um)."""
+        els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
+        name = self.imaging_filter.get()
+        if name not in els:
+            raise ValueError(f"No imaging filter is available for {self.telescope.get()}")
+        lam_um, width_um = els[name]
+        return name, float(lam_um), float(width_um)
+
     def cfg(self):
         kw = dict(diameter_cm=self._f("diam"), obstruction=self._obs, R=self._f("R"),
                   pix_scale=self._f("pix"), eta_peak=self._f("eta"), read_noise=self._f("read"),
@@ -211,6 +233,8 @@ class ETCGui:
     # ---- main compute -------------------------------------------------------
     def compute(self, *_):
         c = self.cfg(); lamA = self._f("lam") * 1e4; fwA = self._f("fw_um") * 1e4
+        filter_name, filter_lam_um, filter_width_um = self.selected_filter()
+        img_lamA, img_fwA = filter_lam_um * 1e4, filter_width_um * 1e4
         t = self._f("thr") * HR; src = self._f("src"); o = self.out
         o.delete("1.0", "end")
         img, spec = self._modes()
@@ -218,13 +242,15 @@ class ETCGui:
         active = "+".join([m for m, on in [("Imaging", img), ("Spectroscopy", spec)] if on])
         o.insert("end", f"{self.telescope.get()} [{det}]  {active} / {self.calc.get()}\n")
         o.insert("end", f"D={c.diameter_cm/100:.2f} m  pix={c.pix_scale}″  "
-                        f"PSF={c.psf_fwhm(lamA):.3f}″\n")
+                        f"PSF={c.psf_fwhm(img_lamA if img else lamA):.3f}″\n")
         if spec:
             o.insert("end", f"R={c.R:.0f}  Δλ={c.resolution_element_A(lamA):.1f}Å  "
                             f"disp={c.dispersion_A_per_pix(lamA):.1f}Å/pix\n")
         if img:
             o.insert("end", "="*40 + "\nIMAGING\n")
-            self._out_imaging(o, c, lamA, fwA, t)
+            o.insert("end", f"filter={filter_name}  pivot={filter_lam_um:.4f} µm  "
+                            f"rect.width={filter_width_um:.4f} µm\n")
+            self._out_imaging(o, c, img_lamA, img_fwA, t)
         if spec:
             o.insert("end", "="*40 + "\nSPECTROSCOPY\n")
             self._out_spectrum(o, c, lamA, t, src, fwA)
@@ -283,21 +309,43 @@ class ETCGui:
         self.fig.tight_layout(); self.canvas.draw()
 
     def _plot_imaging(self, ax):
-        c = self.cfg(); fwA = self._f("fw_um") * 1e4
+        c = self.cfg()
+        filter_name, filter_lam_um, filter_width_um = self.selected_filter()
+        fwA = filter_width_um * 1e4
         if self.calc.get() == "Limiting depth":
             els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
-            lam_um = np.array([v[0] for v in els.values()])
-            w_um = np.array([v[1] for v in els.values()])
-            for mult, col in [(1, "#3898ec"), (4, "#4ec9b0"), (16, "#d97757")]:
+            names = list(els)
+            x = np.arange(len(names), dtype=float)
+            lam_um = np.array([els[name][0] for name in names])
+            w_um = np.array([els[name][1] for name in names])
+            offsets = (-0.18, 0.0, 0.18)
+            for (mult, col), dx in zip([(1, "#3898ec"), (4, "#4ec9b0"),
+                                        (16, "#d97757")], offsets):
                 tt = self._f("thr")*mult
                 m = [etc.imaging_maglimit(c, l*1e4, w*1e4, tt*HR) for l, w in zip(lam_um, w_um)]
-                ax.errorbar(lam_um, m, xerr=w_um/2, fmt="o", color=col, capsize=2, label=f"{tt:.2f} hr")
-            ax.set_xlabel("filter λ [µm]"); ax.set_ylabel("5σ AB mag"); ax.invert_yaxis()
-            ax.set_title(f"{self.telescope.get()} imaging depth per filter")
+                ax.plot(x + dx, m, "o-", color=col, ms=4, lw=1.2,
+                        label=f"{tt:.2f} hr")
+            # The bands separate filter systems.  The calculation uses each
+            # filter's pivot wavelength and rectangular-equivalent bandwidth.
+            if names == list(etc.STANDARD_FILTERS):
+                for lo, hi, colour in [(0, 4, "#f3ead8"), (5, 9, "#e4f0f8"),
+                                        (10, 12, "#ebe6f4")]:
+                    ax.axvspan(lo - 0.48, hi + 0.48, color=colour, alpha=0.65, zorder=0)
+                for xpos, label in [(2, "Johnson-Cousins"), (7, "SDSS"), (11, "2MASS")]:
+                    ax.text(xpos, 1.02, label, ha="center", va="bottom", fontsize=7,
+                            transform=ax.get_xaxis_transform())
+            short_names = [name.split()[-1] for name in names]
+            ax.set_xticks(x, short_names, fontsize=7)
+            ax.set_xlim(-0.55, len(names) - 0.45)
+            ax.set_xlabel("standard photometric filter")
+            ax.set_ylabel(r"$5\sigma$ point-source depth [AB mag]")
+            ax.invert_yaxis()
+            ax.set_title(f"{self.telescope.get()} imaging depth by passband")
         else:
-            ts = np.logspace(np.log10(60), np.log10(48*HR), 120); lamA = self._f("lam")*1e4
+            ts = np.logspace(np.log10(60), np.log10(48*HR), 120); lamA = filter_lam_um*1e4
             sn = [etc.imaging_snr(c, self._f("mag"), lamA, fwA, t) for t in ts]
-            ax.plot(ts/HR, sn, color="#3898ec", lw=2, label=f"AB={self._f('mag'):.1f}")
+            ax.plot(ts/HR, sn, color="#3898ec", lw=2,
+                    label=f"{filter_name}, AB={self._f('mag'):.1f}")
             ax.axhline(self._f("snr"), ls=":", color="k", label=f"S/N={self._f('snr'):.0f}")
             ax.set_xscale("log"); ax.set_yscale("log")
             ax.set_xlabel("exposure [hr]"); ax.set_ylabel("imaging S/N"); ax.set_title("Imaging S/N vs exposure")
