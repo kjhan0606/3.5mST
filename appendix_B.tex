@@ -91,22 +91,25 @@ diffraction structure that the coronagraph suppresses.}
 \end{figure}
 
 Two numbers set the achievable science. Figure~\ref{fig:contrast} (left)
-shows the point-source contrast against angular separation. The raw
-coronagraph reaches a floor near $10^{-8}$ beyond the inner working angle,
-and reference- and angular-differential post-processing lower it toward
-$10^{-9}$. A Jupiter analog at $4\times10^{-9}$ sits above that floor, and
-an Earth analog at $2\times10^{-10}$ sits below it. The floor is set by
-wavefront stability. A wavefront error of root-mean-square $\sigma$
+shows an illustrative point-source contrast against angular separation.
+The $10^{-8}$ raw contrast represents the flight-demonstration regime of
+the Roman Coronagraph. A post-processed contrast near $10^{-9}$ is a
+development goal for the present concept rather than a demonstrated
+performance level. A Jupiter analog at $4\times10^{-9}$ can lie above the
+goal near full phase. An Earth analog at $2\times10^{-10}$ remains below
+the goal. Wavefront stability contributes to the contrast floor. A
+wavefront error of root-mean-square $\sigma$
 scatters a fraction $(2\pi\sigma/\lambda)^2$ of the starlight out of the
 core, and spreading that light across the roughly $10^{3}$ controllable
 modes of the dark hole leaves a mean contrast near
-$(2\pi\sigma/\lambda)^2/N$. Figure~\ref{fig:contrast} (right) inverts this
-relation. A $10^{-9}$ floor then demands $\sigma$ of order 100\,pm, and an
-Earth analog a few tens of picometres. A wavefront-error spectrum
-concentrated near the inner working angle tightens the requirement
-further. This tens-of-picometre regime, rather than the collecting area,
-is what separates the giant-planet program from the Earth-analog program
-\cite{bailey23}.
+$(2\pi\sigma/\lambda)^2/N$. Figure~\ref{fig:contrast} (right) uses the
+relation only as an order-of-magnitude scaling. The total RMS error does
+not define a coronagraph requirement because segment piston, low-order
+drift, pointing jitter, amplitude errors, and their temporal spectra
+couple differently into the dark hole. An end-to-end propagation model
+of the selected coronagraph must establish the actual stability budget.
+The tens-of-picometre regime remains a useful scale for the long-term
+Earth-analog goal \cite{bailey23}.
 
 \begin{figure}[tp]
 \centering
@@ -115,12 +118,13 @@ is what separates the giant-planet program from the Earth-analog program
 outer working angles and the reflected-light contrasts of Earth and
 Jupiter analogs \cite{traub10} (the $4\times10^{-9}$ Jupiter value is the
 near-full-phase brightness; at quadrature the ratio is near $10^{-9}$),
-and the raw-contrast floor versus wavefront-error stability (right) from
+and a heuristic contrast scaling versus wavefront-error stability (right) from
 the $(2\pi\sigma/\lambda)^2$ scatter relation divided across the
-$\sim$$10^{3}$ controllable modes of the dark hole. The design floor of
-$10^{-9}$ requires a wavefront stable at the $\sim$100\,pm level, and an
-Earth analog a few tens of picometres, matched to the Roman Coronagraph
-technology path \cite{bailey23}.}
+$\sim$$10^{3}$ controllable modes of the dark hole. The scaling provides
+physical context and does not replace a coronagraph-specific error budget.
+Roman provides the $10^{-8}$ flight-demonstration reference. The
+$10^{-9}$ level is a development goal for mature-giant imaging
+\cite{bailey23}.}
 \label{fig:contrast}
 \end{figure}
 
@@ -262,10 +266,14 @@ coronagraphic dark hole and removes the star from the target list.
 About 46\% of solar-type stars host a companion \cite{raghavan10}, and
 about 27\% of M dwarfs do \cite{winters19}. The intermediate-separation
 pairs that fall within the search region should be dropped. A Gaia
-renormalized unit weight error below 1.4 serves as a data-driven flag
-for astrometrically clean single stars \cite{lindegren21}. This cut
-leaves 39 single FGK dwarfs within 10.3\,pc, 143 within 15.4\,pc, and
-7{,}411 within 53.5\,pc (Table~\ref{tab:targets}). Wide, well-resolved
+renormalized unit weight error below 1.4 serves only as a data-driven flag
+for a well-fit five-parameter astrometric solution \cite{lindegren21}.
+The RUWE cut does not prove that a star is single. The cut leaves 39 photometrically
+selected, RUWE-clean FGK candidates within 10.3\,pc, 143 within
+15.4\,pc, and 7{,}411 within 53.5\,pc (Table~\ref{tab:targets}). The
+15.4\,pc sample includes 11 objects typed as early M stars by SIMBAD and
+must therefore be spectroscopically reclassified before a final FGK count
+is quoted. Wide, well-resolved
 binaries remain usable through observation of a single component and
 are not counted here as losses.
 
@@ -274,7 +282,7 @@ are not counted here as losses.
 \small
 \begin{tabular}{llrrrr}
 \toprule
-Horizon & Enables & All stars$^{a}$ & FGK & Single FGK$^{b}$ & M dwarfs \\
+Horizon & Enables & All stars$^{a}$ & FGK & RUWE-clean FGK$^{b}$ & M dwarfs \\
 \midrule
 3.5\,pc  & Earth twin, 1.6\,$\mu$m          & 14       & 3     & 2     & 11 \\
 10.3\,pc & Earth twin, $3\lambda/D$, 550\,nm & 338      & 61    & 39    & 268 \\
@@ -290,7 +298,7 @@ $2.0 < M_G < 8.0$ and colour $0.3 < (G_{\rm BP}-G_{\rm RP}) < 2.0$;
 M dwarfs by $M_G > 8.5$. $^{a}$Total is a lower limit at the smallest
 radii, where bright nearby stars saturate Gaia. The volume-complete
 10\,pc census has 541 objects in 339 systems \cite{reyle21}.
-$^{b}$Astrometrically clean single-star candidates, Gaia RUWE $<1.4$.}
+$^{b}$Photometric candidates with Gaia RUWE $<1.4$. The threshold is an astrometric-quality cut and does not prove that a source is single.}
 \label{tab:targets}
 \end{table}
 
@@ -299,15 +307,18 @@ $^{b}$Astrometrically clean single-star candidates, Gaia RUWE $<1.4$.}
 \includegraphics[width=\textwidth]{target_map_optical.png}
 \caption{The coronagraph target stars on the optical Milky Way, in
 Galactic coordinates (Mollweide projection, optical panorama by
-ESO/S.~Brunier). Points are astrometrically clean single FGK dwarfs from
-Gaia DR3 \cite{gaiadr3}. Orange marks those within the 15.4\,pc
-Earth-analog horizon and blue those from 15.4 to 53.5\,pc. Named nearby
+ESO/S.~Brunier). Points are RUWE-clean photometric candidates from
+Gaia DR3 \cite{gaiadr3}. Orange marks candidates within the 15.4\,pc
+geometric horizon and blue marks candidates from 15.4 to 53.5\,pc. Named nearby
 anchors are starred. The targets spread almost uniformly across the sky.
 The bright Milky Way band marks the high stellar density where
 background-star confusion (Section~\ref{sec:backgrounds}) is worst. The
 targets can therefore be drawn preferentially from the sparse
-high-latitude sky. Magenta rings mark the 13 stars whose habitable zone
-is resolvable at $3\lambda/D$ (Table~\ref{tab:hztargets}).}
+high-latitude sky. The open symbols show the assessment of the 13
+preliminary EEID candidates in Table~\ref{tab:hztargets}. Green circles
+mark retained targets. Gold diamonds mark IWA-borderline targets. Magenta
+squares mark conditional targets and the red cross marks the rejected
+spectroscopic binary.}
 \label{fig:mollweide}
 \end{figure}
 
@@ -319,16 +330,17 @@ face-on view a virtual observer sees around the Sun. Axes are Galactic
 $X$ (toward the Galactic center) and $Y$ (toward $\ell=90^\circ$).
 Dashed circles are the reflected-light horizons of
 Table~\ref{tab:horizon}. Colors follow Figure~\ref{fig:mollweide}. The
-single FGK targets number 143 within 15.4\,pc and 7{,}411 within
+RUWE-clean photometric candidates number 143 within 15.4\,pc and 7{,}411 within
 53.5\,pc. The overdensity near $X\simeq-45$\,pc is the Hyades open
-cluster.}
+cluster. Open symbols use the assessment scheme of
+Figure~\ref{fig:mollweide}.}
 \label{fig:faceon}
 \end{figure}
 
 The result sets the scale of the two programs. The Earth-analog
-reflected-light survey addresses of order a few dozen single FGK stars
+reflected-light survey addresses a reviewed subset of nearby FGK stars
 within the 10--15\,pc horizon. The giant-planet survey at $10^{-9}$
-contrast opens several thousand single FGK stars within 53.5\,pc, where
+contrast opens a much larger photometric candidate pool within 53.5\,pc, where
 the photon budget rather than the target supply becomes the limiting
 factor. Because the count grows as the cube of the horizon, every gain
 in inner working angle or contrast multiplies the accessible sample.
@@ -424,12 +436,13 @@ projection), from the Schlegel-Finkbeiner-Davis reddening map
 Figure~\ref{fig:mollweide} overplotted. The gray scale is the
 total-column $E(B\!-\!V)$ to infinity on a logarithmic stretch. The dust
 forms a narrow band along the Galactic plane and thin high-latitude
-filaments, while the FGK targets fill the clean high-latitude sky. The
+filaments while the photometric candidates fill the clean high-latitude sky. The
 map shows the full Galactic column. A target within 10--50\,pc lies
 inside the nearly dust-free Local Bubble \cite{lallement19} and suffers
 almost no extinction. Named nearby anchors are starred, including
-$\alpha$~Centauri near the plane at $b=-0.7^\circ$. Magenta rings mark the
-13 habitable-zone-resolvable targets of Table~\ref{tab:hztargets}.}
+$\alpha$~Centauri near the plane at $b=-0.7^\circ$. Open symbols show the
+assessment of the 13 preliminary EEID candidates in
+Table~\ref{tab:hztargets}.}
 \label{fig:cirrus}
 \end{figure}
 
@@ -513,7 +526,7 @@ velocities this yields dynamical masses, which calibrate evolutionary
 models of giant planets \cite{gaudi21}.
 \end{itemize}
 
-\subsection{Discovery space and expected yield}
+\subsection{Discovery space and illustrative population scaling}
 \label{sec:yield}
 
 The two instrument parameters of Section~\ref{sec:perf} map onto the
@@ -531,36 +544,38 @@ while Earth, small and close, is not reached at all.
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.78\textwidth]{yield_completeness.png}
-\caption{Single-visit completeness for a star at 10\,pc in the
+\caption{Geometric single-visit completeness for a star at 10\,pc in the
 planet-radius versus semi-major-axis plane, from a Monte-Carlo integration
 over inclination and orbital phase with the $3\lambda/D$ inner working
 angle and the $10^{-9}$ contrast floor at 550\,nm. Solar-system planets
-are marked. The reachable region is giants and large sub-Neptunes at
-$1$--$10$\,AU.}
+are marked. The calculation omits separation-dependent throughput,
+finite stellar diameter, exozodiacal emission, detector noise, and the
+time required for each visit. The result is a discovery-space diagnostic
+rather than a mission-yield prediction.}
 \label{fig:completeness}
 \end{figure}
 
-Summing the completeness over the 7411 astrometrically clean single FGK
-dwarfs within 53.5\,pc, weighted by measured occurrence rates, gives the
-expected detections. Cold giants occur around roughly 15\% of FGK stars
-\cite{fernandes19,fulton21}, and temperate small planets are more common
-still \cite{fulton17,bryson21}. Figure~\ref{fig:yieldbar} shows the
-result. At the $10^{-9}$ floor of current technology the mission images of
-order 140 cold giants and almost no smaller planets. Deepening the floor
-to $10^{-10}$ raises the giant yield above 700 and opens roughly 60
-temperate sub-Neptunes and a handful of rocky habitable-zone planets. The
-giant-planet census is therefore in reach now, and the terrestrial census
-is the reward of the contrast roadmap of Section~\ref{sec:roadmap}.
+Figure~\ref{fig:yieldbar} multiplies geometric completeness by adopted
+occurrence rates across the 7411 RUWE-clean photometric candidates.
+Cold giants occur around roughly 15\% of FGK stars
+\cite{fernandes19,fulton21}. Temperate small planets are more common
+\cite{fulton17,bryson21}. The resulting counts show how strongly an
+idealized accessible population changes with contrast. The counts are
+not expected detections. A defensible mission yield requires
+separation-dependent coronagraph throughput, stellar leakage,
+astrophysical backgrounds, target-specific exposure times, revisits,
+reliability, and optimization under a fixed mission-time budget.
 
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.74\textwidth]{yield_bar.png}
-\caption{Expected reflected-light detections over the 7411 single-FGK
-sample within 53.5\,pc, by planet class and contrast floor. Occurrence
-rates: cold giants 0.15 \cite{fernandes19,fulton21}, temperate
-sub-Neptunes 0.30 \cite{fulton17}, rocky habitable-zone 0.30
-\cite{bryson21}. The current $10^{-9}$ floor delivers the giant census;
-the $10^{-10}$ floor delivers the terrestrial one.}
+\caption{Illustrative accessible populations over the 7411 RUWE-clean
+photometric candidates within 53.5\,pc. The adopted occurrence rates are
+0.15 for cold giants \cite{fernandes19,fulton21}, 0.30 for temperate
+sub-Neptunes \cite{fulton17}, and 0.30 for rocky habitable-zone planets
+\cite{bryson21}. The bars apply geometric completeness and a hard
+contrast threshold. The bars do not include exposure time or target
+optimization and must not be interpreted as mission detections.}
 \label{fig:yieldbar}
 \end{figure}
 
@@ -608,11 +623,12 @@ For the nearest targets the same machinery extends toward smaller
 planets. Reflected-light spectroscopy of super-Earths and
 sub-Neptunes within a few parsecs can distinguish cloudy hydrogen
 envelopes from thin secondary atmospheres \cite{damiano23}. The
-$R=5000$ resolving power also enables cross-correlation of a faint
-planetary spectrum against molecular templates. The planet's orbital
-motion Doppler-shifts its lines away from the residual starlight, which
-recovers detections at contrast levels above the raw coronagraphic
-floor. These measurements complement transit spectroscopy, which probes
+$R=5000$ resolving power also supports template matching across a
+molecular band. One resolution element spans about
+60\,\si{km.s^{-1}}. Typical orbital velocities do not cleanly separate
+the planet spectrum from the stellar spectrum at this resolution. A
+Doppler-separation gain would require a dedicated high-resolution mode
+and is not included here. Reflected-light measurements complement transit spectroscopy, which probes
 the upper atmosphere along the terminator, because reflected light
 probes the dayside at depth \cite{robinson18}. The two geometries
 together give a far more complete picture than either alone.
@@ -622,40 +638,35 @@ together give a far more complete picture than either alone.
 
 The resolving power sets the exposure time as much as the detection
 does. At $R=5000$ an individual molecular line of a reflected-light
-planet holds far less than one photon. A band is therefore measured by
-cross-correlating its whole forest of lines, which combines them and
-raises the significance as the square root of their number.
+planet holds far less than one photon. A band can be measured by
+combining many spectral elements with a molecular template.
 Figure~\ref{fig:specetc} gives the resulting time for a $5\sigma$
 detection of a molecular band as a function of host brightness and
 planet-to-star contrast, from a photon budget that includes the planet,
 the residual starlight speckle floor, the local zodiacal light
-\cite{leinert98}, and the exozodiacal light \cite{ertel20}. These times
-are photon-noise-limited lower bounds. The model assumes the speckle field
-subtracts to its own photon noise and omits detector read noise and
-residual-speckle systematics, both of which lengthen a real integration.
-Reflected-light giant planets, at contrasts of $10^{-9}$ to $10^{-8}$
-\cite{traub10}, reach a molecular detection in minutes to a few hours
-around the nearest bright FGK hosts. An Earth twin at $2\times10^{-10}$
-contrast requires hundreds of hours per band on a 3.5\,m aperture. That
-places true Earth-analog spectroscopy in the domain of the larger
-Habitable Worlds Observatory \cite{seager25}. The $R=5000$ program
-therefore characterizes the atmospheres of nearby giants and warm
-sub-Neptunes, and it measures the reference reflected-light spectra
-against which the flagship missions will interpret their terrestrial
-detections.
+\cite{leinert98} and the exozodiacal light \cite{ertel20}. The times are
+optimistic photon-noise lower bounds. The model assigns 500 lines a
+common mean depth and assumes that the speckle field subtracts to photon
+noise. The calculation omits wavelength-dependent planet spectra,
+template mismatch, detector noise, correlated speckles, and the loss of
+coronagraph throughput near the IWA. The curves are sensitivity scalings
+rather than observing-time predictions. Bright reflected-light giants
+remain the appropriate spectroscopic targets. Earth-analog spectroscopy
+belongs to the stretch-goal regime and to larger observatories such as
+HWO \cite{seager25}.
 
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.78\textwidth]{exo_spec_etc.png}
-\caption{Exposure time for a $5\sigma$ cross-correlation detection of a
+\caption{Optimistic photon-noise time for a $5\sigma$ template detection of a
 molecular band with the $R=5000$ spectrograph, as a function of
 host-star $V$ magnitude, for three planet-to-star contrasts. The photon
 budget uses a 3.5\,m aperture, an end-to-end throughput of 0.10, a
 post-processed speckle floor of $10^{-9}$, the local zodiacal light at
 $V=23$\,mag\,arcsec$^{-2}$ \cite{leinert98}, and a 3-zodi exozodi
-\cite{ertel20}, with a band of 500 lines of mean depth 0.2. Reflected-light giants are reached in hours
-around the nearest bright hosts. Earth twins fall beyond a practical
-single-target budget for this aperture.}
+\cite{ertel20}, with an idealized band of 500 lines of mean depth 0.2.
+The calculation omits correlated residual speckles, detector noise,
+template mismatch, and separation-dependent coronagraph throughput.}
 \label{fig:specetc}
 \end{figure}
 
@@ -682,14 +693,14 @@ hundreds of times deeper than the giant-planet regime.}
 \label{fig:specetcsens}
 \end{figure}
 
-Table~\ref{tab:hztargets} applies this model to the 13 catalog stars of
-Section~\ref{sec:catalog} whose habitable zone clears the inner working
-angle. The nearest cool dwarfs, 61~Cygni~A and $\epsilon$~Indi, reach an
-Earth-analog molecular band in about ten hours, because their compact
-habitable zones raise the reflected-light contrast. The more luminous
-hosts have wider and fainter habitable zones and require hundreds of
-hours. These 13 stars are ringed in Figures~\ref{fig:mollweide}
-and~\ref{fig:cirrus}.
+Table~\ref{tab:hztargets} applies the same lower-bound model to the 13
+preliminary EEID candidates of Section~\ref{sec:catalog}. The numerical
+times isolate photon scaling and must not be used as exposure-time
+requests. The calculation gives especially short times for nearby K
+dwarfs because compact EEIDs raise the reflected-light contrast. The
+same targets lie close to the IWA where the omitted throughput and
+stellar-leakage terms can dominate. Figures~\ref{fig:mollweide}
+and~\ref{fig:cirrus} show the target assessments.
 
 \input{hz_targets_table.tex}
 
@@ -735,36 +746,37 @@ and the archive gives their orbits. Table~\ref{tab:firstlight} ranks the
 known planets of the catalog stars by their maximum angular separation and
 lists the reflected-light contrast that follows from the measured or
 assumed radius. Six of them fall between the inner and outer working
-angles at 550\,nm and clear the $10^{-9}$ contrast floor. These six are
-the coronagraph's first-light targets, planets whose existence, orbit, and
-mass are already known. A detection is therefore a characterization rather
-than a search. The five widest known planets, including the directly
+angles at 550\,nm and clear the adopted $10^{-9}$ threshold. These six are
+first-light candidates whose existence and approximate orbits are already
+known. Final selection requires predicted phase, radius or albedo,
+separation-dependent throughput, and stellar leakage. A successful
+recovery would test characterization methods rather than blind discovery.
+The five widest known planets, including the directly
 imaged cold giant $\epsilon$~Indi~A~b, project beyond the $20\lambda/D$
 outer working angle and reflect too little light to clear the floor. They
 remain out of reach in reflected light.
 
 \input{first_light_table.tex}
 
-The exposure-time model of Section~\ref{sec:specetc} turns the target list
-into a mission timeline. Figure~\ref{fig:ops-exo} shows the cumulative observing
-time when the targets are taken cheapest first. Spectroscopy of a Jupiter
-analog around each of the 143 nearest single FGK stars takes a few hours
-per bright target, and 122 of the 143 are reached within one mission year
-of observing. The 13 habitable-zone Earth-analog measurements are far more
-expensive and fill a comparable amount of time on their own. A three-year
-program therefore completes the giant-planet spectroscopic census of the
-solar neighborhood and makes a first attempt on the nearest habitable
-zones.
+Figure~\ref{fig:ops-exo} shows an ETC scaling rather than a mission
+timeline. The calculation places a Jupiter analog around every one of
+the 143 input stars and orders the hypothetical spectra by photon-noise
+time. Planet occurrence is not applied. A real program first searches
+the candidate stars and confirms detected companions. Spectroscopy then
+follows only for planets with adequate separation and brightness. The
+EEID curve provides a stretch-goal comparison and does not define a
+scheduled Earth-analog campaign.
 
 \begin{figure}[tp]
 \centering
 \includegraphics[width=0.76\textwidth]{ops_timebudget.png}
-\caption{Cumulative number of targets whose atmosphere reaches a $5\sigma$
-molecular detection, against observing time, ordering targets cheapest
-first, from the $R=5000$ model of Section~\ref{sec:specetc}. Giant-planet
-spectroscopy of the 143 nearest single FGK stars ($C=4\times10^{-9}$)
-largely completes within one observing year; the 13 habitable-zone
-Earth-analog measurements are much slower.}
+\caption{Illustrative cumulative ETC scaling for hypothetical planets,
+ordered by photon-noise time. The giant curve assigns a
+$C=4\times10^{-9}$ Jupiter analog to each of the 143 input stars. The
+EEID curve assigns an Earth analog to each preliminary EEID candidate.
+Neither curve applies planet occurrence, coronagraph throughput near the
+IWA, correlated residuals, confirmation visits, or operational overhead.
+The curves do not represent a mission yield or schedule.}
 \label{fig:ops-exo}
 \end{figure}
 
@@ -969,17 +981,15 @@ preselect the stars that host wide giants. The mission's own wide-field
 time-domain surveys supply the stellar-activity monitoring of
 Section~\ref{sec:activity} without dedicated observing time.
 
-The roadmap groups the science by technical difficulty. Reflected-light
-imaging of Jupiter analogs at $10^{-9}$ contrast is the core program
-that current coronagraph technology supports \cite{galicher23}.
-Spectroscopic follow-up of the brightest detections with the $R=5000$
-spectrographs follows as contrast control matures. Earth-analog work at
-$10^{-10}$ contrast defines the long-term goal, and it positions the
-mission as a technology and target-selection precursor for the dedicated
-flagship observatories \cite{quanz22,seager25}. Each stage delivers
-standalone science. Together they convert the solar neighborhood, the
-single point marked on the Galactic map of Figure~\ref{fig:mwhorizon},
-into a surveyed volume of characterized planetary systems.
+The roadmap separates demonstrated capability from development goals.
+The baseline program uses $10^{-8}$-class performance for young
+self-luminous giants, debris disks, and selected known companions. The
+development program targets calibrated $10^{-9}$ performance for mature
+giant discovery and follow-up of the brightest detections. Earth-analog
+work at $10^{-10}$ is a stretch goal rather than a mission promise. The
+stretch program positions the mission as a wavefront-control and
+target-selection precursor for dedicated flagship observatories
+\cite{quanz22,seager25}.
 
 \section{Five-Year Observing Schedule}
 \label{sec:schedule}
@@ -996,27 +1006,21 @@ windows per year rather than continuous access, and the darkest sky, with it
 the deepest integrations, falls to the high-ecliptic-latitude quarter of the
 sample.
 
-The second is that the cadence differs by planet type. A Jupiter analog
-reaches its image and its $R=5000$ spectrum within a single window, so the
-giant-planet survey proceeds target by target and front-loads into the first
-three years. An Earth analog in the habitable zone should instead be recovered
-near maximum elongation, which recurs only about once a year, and each
-detection needs hundreds of hours. The habitable-zone campaign is therefore
-revisited across several years.
+The second fact is that search, confirmation, and characterization have
+different cadences. A search visit identifies candidates. Confirmation
+visits reject background sources and constrain orbital motion. Spectroscopy
+is reserved for confirmed planets that meet the brightness and separation
+limits. EEID observations remain an unscheduled stretch activity because
+the present ETC does not establish their feasibility.
 
 Table~\ref{tab:exotimeline} sets out an illustrative five-year envelope, and
 Figure~\ref{fig:exotimeline} shows the same programs against the
-month-by-month field of regard. As in the companion cosmology survey plan,
-the year ranges are an existence proof rather than a committed schedule. The
-quoted science time sums to about $13{,}000$\,hr, near 30\% of the wall-clock
-available over five years, which matches the 30\% observing efficiency (about
-$2630$ observing hours per year) adopted for the exposure budget of
-Section~\ref{sec:specetc}. That budget absorbs the Sun-avoidance field of
-regard, the dark-sky preference, and the slew and calibration overhead of a
-robotic coronagraph. A three-year effort would then reach the
-giant-planet spectroscopic census of the solar neighborhood, with the
-remaining time given to the habitable-zone campaign and to the repeat epochs
-that turn the imaged giants into dynamical masses.
+month-by-month field of regard. The year ranges organize mission phases and
+do not establish science completeness. The science-time allocations are
+planning reserves. A validated schedule will require target-specific
+integration times, reference-star visits, dark-hole maintenance, roll
+diversity, acquisition, calibration, confirmation epochs, and orbital-phase
+constraints.
 
 \begin{table}[tp]
 \centering
@@ -1026,70 +1030,69 @@ that turn the imaged giants into dynamical masses.
 \textbf{Mission phase} & \textbf{Nominal period} & \textbf{Science time} & \textbf{Main deliverable}\\
  & mission year & hr & \\
 \midrule
-Commissioning and wavefront ramp & Year 1 & 300--500 hr & Dark-hole control to the $10^{-9}$ floor, with point-spread-function and contrast calibration.\\
+Commissioning and wavefront ramp & Year 1 & 300--500 hr & Demonstrate a calibrated dark hole near $10^{-8}$ and measure the achieved contrast, throughput, bandwidth, and stability.\\
 Young giants and debris disks & Years 1--2 & 250--450 hr & Thermal-emission imaging of nearby moving-group giants and scattered-light disks while the wavefront control matures.\\
-First-light known giants & Years 1--2 & 300--500 hr & Reflected-light recovery of the six known planets that clear the working angles (Table~\ref{tab:firstlight}).\\
-Reflected-light giant survey (143 FGK) & Years 1--3 & 3800--5200 hr & Images and $R=5000$ spectra of Jupiter analogs, one target per observability window.\\
+First-light known giants & Years 1--2 & 300--500 hr & Attempt reflected-light recovery of the candidates in Table~\ref{tab:firstlight} after phase and throughput review.\\
+Mature-giant search program & Years 2--4 & 3800--5200 hr & Search a reviewed stellar sample after $10^{-9}$ performance is demonstrated. Confirmed detections receive spectroscopic follow-up.\\
 Giant orbit determination & Years 2--5 & 600--1000 hr & Repeat epochs across the mission for orbital arcs and dynamical masses.\\
-HZ Earth-analog campaign (13) & Years 2--5 & 5200--8000 hr & Deep, multi-epoch reflected-light integrations of the 13 resolvable habitable zones (Table~\ref{tab:hztargets}), near maximum elongation.\\
+EEID feasibility study & Years 3--5 & unallocated & Reassess the reviewed EEID candidates after on-orbit contrast, throughput, and stability are measured.\\
 Stellar-activity monitoring & Years 1--5 & shared & Flare and rotation statistics from the wide-field time-domain program, without dedicated coronagraph time.\\
 \bottomrule
 \end{tabularx}
-\caption{Illustrative five-year coronagraph observing program. The
-science-time ranges follow from the field-of-view, contrast-floor, and
-overhead assumptions of Sections~\ref{sec:horizon} and~\ref{sec:specetc}, and
-they sum to about $13{,}000$\,hr, near 30\% of the five-year wall-clock,
-matching the 30\% observing efficiency of the exposure budget. The
-Jupiter-type giant programs proceed target by target within single
-observability windows and front-load into the early years. The habitable-zone
-campaign spans several years because an Earth analog is recoverable only near
-its yearly maximum elongation.}
+\caption{Illustrative five-year coronagraph program organized by technical
+maturity. The listed hours are planning reserves rather than a completed
+schedule. The mature-giant search begins only after on-orbit performance
+demonstrates the required contrast. Earth-analog observations remain an
+unallocated feasibility study. A later end-to-end analysis must include
+reference stars, dark-hole maintenance, target acquisition, roll diversity,
+confirmation visits, and calibration overhead.}
 \label{tab:exotimeline}
 \end{table}
 
 \begin{figure}[tp]
 \centering
 \includegraphics[width=\textwidth]{exo_timeline.png}
-\caption{Five-year coronagraph observing timetable. \emph{Top}: the observing
-programs of Table~\ref{tab:exotimeline} across the mission years, colored by
-planet type, with the cell shade tracking the scheduled science hours per
-month. The Jupiter-type giant programs front-load into Years~1--3, each target
-reached within a single $\sim$1-year observability window, while the
-Earth-type habitable-zone campaign spans Years~2--5 because each target is
-revisited near maximum elongation across several years. \emph{Bottom}: the
-fraction of the 143 giant-survey stars and of the 13 habitable-zone targets
-inside the $54$--$126^\circ$ solar-elongation field of regard on the fifteenth
-of each month, from an \texttt{astropy} Sun-position calculation. About half
-the giant sample is accessible in any month, while the smaller habitable-zone
-sample shows a stronger seasonal variation set by its sky distribution. The
-field of regard, the dark-sky preference of high ecliptic latitude, and the
-slew and calibration overhead together set the observing efficiency near
-30\% of wall-clock, about $2630$ observing hours per year. The year ranges
-are an existence proof, not a committed
-schedule.}
+\caption{Illustrative five-year coronagraph program. The top panel shows
+the technical phases in Table~\ref{tab:exotimeline}. Cell shade tracks the
+planning reserve per month. The EEID study remains unallocated. The bottom
+panel shows the monthly fraction of the 143 photometric candidates and 12
+reviewed EEID candidates inside the $54$--$126^\circ$ solar-elongation
+field of regard. The fractions use an \texttt{astropy} Sun-position
+calculation on the fifteenth of each month. The field of regard provides
+seasonal visibility only. The figure does not include a validated overhead
+or exposure-time model.}
 \label{fig:exotimeline}
 \end{figure}
 
-\section{Target Catalog: Single FGK Stars within 15.4\,pc}
+\section{Target Catalog: RUWE-clean Photometric Candidates within 15.4\,pc}
 \label{sec:catalog}
 
-Table~\ref{tab:catalog} lists the 143 astrometrically clean single FGK
-dwarfs inside the 15.4\,pc Earth-analog horizon of Section~\ref{sec:horizon}.
-These are the prime reflected-light targets mapped in
+Table~\ref{tab:catalog} lists the 143 Gaia photometric candidates with
+RUWE below 1.4 inside the 15.4\,pc geometric horizon of
+Section~\ref{sec:horizon}. The catalog is an input sample rather than a
+set of 143 confirmed single FGK dwarfs. SIMBAD classifies 11 as early-M stars. Several have
+IV--V luminosity classes, and known wide or spectroscopic binaries survive
+the RUWE cut.
+The candidates form the input sample mapped in
 Figures~\ref{fig:mollweide} and~\ref{fig:faceon}, ordered by distance.
 The catalog combines Gaia DR3 astrometry and photometry with SIMBAD
 identifiers and spectral types and with the confirmed-planet history from
 the NASA Exoplanet Archive. To keep it compact the table is laid out in
 two blocks, with star $k$ on the left and star $k+72$ on the right. For
 each star it lists the distance, brightness, and spectral type, together
-with the quantities that plan a reflected-light observation. The
-Earth-insolation distance $a_{\rm HZ}=\sqrt{L/L_\odot}$\,AU marks the
-habitable zone, and its angular separation
-$\theta_{\rm HZ}=a_{\rm HZ}/d$ sets whether the zone is resolvable. The
-final column of each block flags the stars whose habitable zone clears the
-$3\lambda/D$ inner working angle at 550\,nm. Only 13 of the 143 stars meet
-that condition. The remainder are limited to their wider giant planets, in
-line with the horizon arithmetic of Section~\ref{sec:horizon}. Twenty-two
+with quantities used to plan a reflected-light observation. The
+Earth-equivalent-insolation distance
+$a_{\rm EEID}=\sqrt{L/L_\odot}$\,AU is a representative orbit, not the
+full habitable zone. Its maximum angular separation
+$\theta_{\rm EEID}=a_{\rm EEID}/d$ supplies a preliminary geometric flag.
+The final column of each block marks the 13 stars for which this separation
+nominally clears the $3\lambda/D$ inner working angle at 550\,nm. The flag does
+not include orbital projection, phase completeness, IWA uncertainty, or
+companion-light contamination. Table~\ref{tab:hztargets} records the
+resulting target-by-target assessment. One entry is rejected and several
+entries are conditional or IWA-borderline. The remainder of the input sample may
+still offer accessible outer habitable-zone or giant-planet orbits.
+Twenty-two
 of the stars already host known planets, most from radial-velocity
 surveys, and these systems provide the first characterization targets for
 the coronagraph. Coordinates, luminosity, mass, the reflected-light
@@ -1211,4 +1214,3 @@ Section~\ref{sec:horizon}.
 
 \vspace{2mm}
 \noindent{\small\sffamily\color{muted} Planet and host-star data in Figures~\ref{fig:mwhorizon}--\ref{fig:hz} are drawn from the NASA Exoplanet Archive Planetary Systems Composite Parameters table (6{,}319 confirmed planets, accessed 2026 July 11). The face-on Galactic map is by NASA/JPL-Caltech/R.~Hurt (SSC/Caltech). Habitable-zone boundaries in Figure~\ref{fig:hz} use the polynomial coefficients of Kopparapu et al.\ (2013).}
-

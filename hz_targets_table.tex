@@ -4,24 +4,40 @@
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{r l l r r r r r r l}
 \toprule
-\textbf{\#} & \textbf{Name} & \textbf{SpT} & \textbf{d\,(pc)} & \textbf{V} & $\boldsymbol{a_{\rm HZ}}$ & $\boldsymbol{\theta_{\rm HZ}}$ & $\boldsymbol{C_{\oplus}}$ & $\boldsymbol{t_{\rm char}}$ & \textbf{Planets} \\
+\textbf{\#} & \textbf{Name} & \textbf{SpT} & \textbf{d\,(pc)} & \textbf{V} & $\boldsymbol{a_{\rm EEID}}$ & $\boldsymbol{\theta_{\rm EEID}}$ & $\boldsymbol{C_{\oplus}}$ & $\boldsymbol{t_{\rm char}}$ & \textbf{Assessment} \\
  & & & & & (AU) & (mas) & ($10^{-10}$) & (h) & \\
 \midrule
-1 & 61 Cyg A & K5V & 3.50 & 5.21 & 0.38 & 108 & 12.1 & 8.7 &  \\
-2 & eps Ind & K5V & 3.64 & 4.69 & 0.50 & 137 & 6.9 & 12 & 1 (RV) \\
-3 & 36 Oph B & K1V & 5.95 & 5.03 & 0.59 & 99 & 5.0 & 31 &  \\
-4 & 36 Oph A & K2V & 5.95 & 5.08 & 0.59 & 99 & 5.0 & 34 &  \\
-5 & ksi Boo A & G7Ve & 6.75 & 4.68 & 0.75 & 111 & 3.1 & 49 &  \\
-6 & 61 Vir & G6.5V & 8.53 & 4.74 & 0.91 & 107 & 2.1 & 112 & 3 (RV) \\
-7 & HD 102365 & G2V & 9.32 & 4.88 & 0.91 & 98 & 2.1 & 132 &  \\
-8 & kap01 Cet & G5V & 9.28 & 4.85 & 0.94 & 101 & 2.0 & 141 &  \\
-9 & zet Dor & F9VFe-0. & 11.69 & 4.71 & 1.22 & 104 & 1.2 & 322 &  \\
-10 & 36 UMa & F8V & 12.95 & 4.67 & 1.29 & 100 & 1.0 & 382 &  \\
-11 & lam Ser & G0-V & 11.92 & 4.42 & 1.43 & 120 & 0.9 & 417 & 1 (RV) \\
-12 & lam Aur & G1.5IV-V & 12.56 & 4.71 & 1.32 & 106 & 1.0 & 448 &  \\
-13 & tau01 Eri & F7V & 14.28 & 4.46 & 1.65 & 115 & 0.6 & 768 &  \\
+1 & 61 Cyg A & K5V & 3.50 & 5.21 & 0.38 & 108 & 12.1 & 8.7 & conditional$^{a}$ \\
+2 & eps Ind & K5V & 3.64 & 4.69 & 0.50 & 137 & 6.9 & 12 & retain$^{b}$ \\
+3 & 36 Oph B & K1V & 5.95 & 5.03 & 0.59 & 99 & 5.0 & 31 & conditional$^{c}$ \\
+4 & 36 Oph A & K2V & 5.95 & 5.08 & 0.59 & 99 & 5.0 & 34 & conditional$^{c}$ \\
+5 & ksi Boo A & G7Ve & 6.75 & 4.68 & 0.75 & 111 & 3.1 & 49 & conditional$^{d}$ \\
+6 & 61 Vir & G6.5V & 8.53 & 4.74 & 0.91 & 107 & 2.1 & 112 & retain$^{e}$ \\
+7 & HD 102365 & G2V & 9.32 & 4.88 & 0.91 & 98 & 2.1 & 132 & borderline$^{f}$ \\
+8 & kap01 Cet & G5V & 9.28 & 4.85 & 0.94 & 101 & 2.0 & 141 & borderline$^{g}$ \\
+9 & zet Dor & F9VFe-0. & 11.69 & 4.71 & 1.22 & 104 & 1.2 & 322 & conditional$^{h}$ \\
+10 & 36 UMa & F8V & 12.95 & 4.67 & 1.29 & 100 & 1.0 & 382 & borderline$^{i}$ \\
+11 & lam Ser & G0-V & 11.92 & 4.42 & 1.43 & 120 & 0.9 & 417 & retain$^{j}$ \\
+12 & lam Aur & G1.5IV-V & 12.56 & 4.71 & 1.32 & 106 & 1.0 & 448 & conditional$^{k}$ \\
+13 & tau01 Eri & F7V & 14.28 & 4.46 & 1.65 & 115 & 0.6 & 768 & reject$^{l}$ \\
 \bottomrule
 \end{tabular}
-\caption{The 13 targets whose habitable zone is resolvable by the 3.5\,m coronagraph at 550\,nm ($\theta_{\rm HZ}>3\lambda/D=97$\,mas), ordered by the spectroscopic exposure time. $C_\oplus$ is the reflected-light contrast of an Earth analog at the Earth-insolation distance $a_{\rm HZ}$ (geometric albedo 0.3, quadrature). $t_{\rm char}$ is the time for a $5\sigma$ cross-correlation detection of a molecular band with the $R=5000$ spectrograph, from the model of Section~\ref{sec:specetc} (a larger or closer planet scales the time down as $C^{-2}$). These stars are highlighted in Figures~\ref{fig:mollweide} and~\ref{fig:cirrus}.}
+\caption{The 13 preliminary targets whose Earth-equivalent-insolation distance (EEID) lies outside the nominal $3\lambda/D=97$\,mas inner working angle at 550\,nm, ordered by the modeled spectroscopic exposure time. The maximum-separation cut does not establish observability across the full habitable zone or at every orbital phase. ``Retain'' marks a sound candidate. ``Borderline'' marks a target within a few mas of the nominal IWA. ``Conditional'' identifies a target that requires further review of binarity, disks, or luminosity class. ``Reject'' identifies a target that is inconsistent with the nominal single-star sample. $C_\oplus$ assumes an Earth analog at $a_{\rm EEID}$ with a geometric albedo of 0.3 at quadrature. $t_{\rm char}$ is the modeled time for a $5\sigma$ cross-correlation detection of a molecular band at $R=5000$. The estimate is not an achieved instrumental sensitivity.}
 \label{tab:hztargets}
+\vspace{2pt}
+\begin{minipage}{0.98\textwidth}
+\footnotesize
+$^{a}$The 61~Cyg~AB binary has a separation of about $28''$. Retention requires a companion-light simulation.
+$^{b}$The known planet host is a strong nearby target. The field review must include the distant substellar companions.
+$^{c}$36~Oph~A and B form a nearly equal-brightness pair separated by about $5.1''$. The pair is one problematic binary system rather than two independent single stars. Both EEIDs are also IWA-borderline.
+$^{d}$Xi~Boo~A has a companion at about $5.2''$.
+$^{e}$Known three-planet host and a sound target.
+$^{f}$The EEID lies only $0.6$\,mas outside the nominal IWA. Performance uncertainty can reverse the flag.
+$^{g}$Only $3.7$\,mas outside the nominal IWA and magnetically active.
+$^{h}$The target is a very wide binary. Use requires the companion and circumstellar environment to satisfy the stray-light and background budgets.
+$^{i}$Only $2.3$\,mas outside the nominal IWA and a wide-binary component.
+$^{j}$Known planet host and a sound target, subject to ordinary activity/RV review.
+$^{k}$The wide-binary component has a SIMBAD luminosity class of G1.5IV--V rather than an unambiguous dwarf.
+$^{l}$The target is a known spectroscopic binary with a period of about 958 days. The target should be removed from a nominal single-star list unless a dedicated binary-coronagraph analysis demonstrates usability.
+\end{minipage}
 \end{table}
