@@ -90,7 +90,7 @@ In this context, the proposed mission aims to serve as a highly stable, rapid-re
 
 \section{Key Mission Design Principles}
 
-\subsection{Schedule-Driven Desig}
+\subsection{Schedule-Driven Design}
 
 Rather than pursuing the highest achievable performance at any cost, this mission adopts as its starting point the realization of a telescope that can be deployed when its scientific impact will be greatest. Development schedule is therefore treated not merely as an administrative constraint but as a fundamental design parameter that directly influences scientific return.
 
@@ -165,11 +165,13 @@ In summary, the mission design guidelines for the 3.5-meter Segmented-Mirror Rob
 \section{Telescope Overview}
 
 \begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image1.png}
+  \includegraphics[width=1.0\linewidth,height=0.45\textheight,keepaspectratio]{book_media/image1.png}
 \end{figure}
 
 Fig. 1. Schematic diagram of the 3.5-meter segmented-mirror robotic space telescope and its UV, VIS, and IR instruments
-
+\par
+\vspace{\baselineskip}
+\vspace{\baselineskip}
 \textbf{Table 1}. Basic Specifications of the 3.5 m Segmented-Mirror Robotic Space Telescope
 
 \begin{longtable}[]{@{}
@@ -196,7 +198,7 @@ Primary Mirror Diameter & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\colu
 Focal Ratio & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
 f/4.5} \\
 Wavelength Range & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-0.2 μm -- 3.0 μm} \\
+0.2 μm -- 1.5 μm} \\
 Field of View & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
 10′×10′--30'×30′} \\
 Instruments & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
@@ -229,6 +231,10 @@ At the core of the observatory is a 3.5-meter-class segmented primary mirror and
 
 The scientific payload is centered on wide-field imaging, precision time-series observations, and spectroscopic measurements. The entire observatory is designed around the capability for rapid target acquisition and the execution of highly automated observing sequences. As a result, the mission functions not merely as a single scientific instrument, but as an integrated observational platform capable of supporting a broad range of astrophysical investigations.
 
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
 \section{Spacecraft Bus}\label{spacecraft-bus}
 
 The scientific payload is integrated with a proven spacecraft bus that provides propulsion, attitude and orbit control, power generation and distribution, communications, and command and data handling functions. The bus design is based on technological heritage accumulated through previous space missions requiring deep-space operations and highly stable pointing performance. It incorporates the reliability and redundancy necessary for long-duration mission operations.
@@ -243,23 +249,26 @@ The communications and data handling system is designed to support highly automa
 
 The Optical Telescope Assembly (OTA) is the core component that determines the scientific performance of the mission. The OTA is centered on a 3.5-meter-class segmented primary mirror and is designed to provide a large effective collecting area while satisfying launch vehicle fairing constraints. To achieve this objective, the primary mirror is composed of multiple mirror segments that are deployed and aligned to function as a single optical surface after launch.
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image2.png}
-\end{figure}
-
-Fig. 2. Demonstration of segmented mirror phasing technology developed by KASI
-
 The primary mirror segments are fabricated from lightweight, low-thermal-expansion materials and are designed to achieve optical performance equivalent to that of a monolithic mirror through active on-orbit alignment and wavefront correction. The active wavefront control system precisely regulates the relative positions and surface figures of the mirror segments, compensating for performance degradation caused by manufacturing tolerances, launch-induced disturbances, and thermally induced deformations.
 
 The optical design is optimized to provide uniform image quality across a wide focal plane while simultaneously satisfying the requirements of multiple scientific instruments. The exit pupil and optical path incorporate a high-speed fine-steering element that provides fine-pointing correction, enabling the compensation of residual vibrations and pointing errors that occur during scientific observations.
 
 The overall OTA design is intended to achieve three key objectives simultaneously: near-diffraction-limited optical performance, long-term thermal stability, and rapid thermal settling following target repointing maneuvers. These capabilities are essential for supporting both precision time-domain observations and long-duration scientific monitoring programs while maintaining consistent observational quality throughout the mission lifetime.
 
+\vspace{\baselineskip}
+\begin{figure}[htbp]\centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image2.png}
+\end{figure}
+
+Fig. 2. Demonstration of segmented mirror phasing technology developed by KASI
+\vspace{\baselineskip}
+
 \begin{figure}[htbp]\centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image3.jpeg}
 \end{figure}
 
 Fig. 3. Attachment of fabricated segmented mirrors to the support structure, installation of actuators and micrometers, and alignment/control using an interferometer
+\vspace{\baselineskip}
 
 \section{Wide-Field Imaging and Time-Domain Observation Instrument}\label{wide-field-imaging-and-time-domain-observation-instrument}
 
@@ -276,12 +285,18 @@ The instrument is optimized for high-precision photometry through the minimizati
 \end{figure}
 
 Fig. 4. Conceptual illustration of the spectroscopic instrument(AI)
+\par
+\vspace{\baselineskip}
 
 The spectroscopic instrument suite is designed to provide continuous wavelength coverage across the optical and near-infrared regimes, with an emphasis on high-precision spectroscopy at low- to moderate-spectral resolution. These instruments support the physical characterization of astronomical sources required for time-domain astronomy, compact-object studies, and galaxy evolution research.
 
 The design minimizes the number of moving components in order to maximize reliability and calibration consistency while ensuring long-term stability for time-series spectroscopic observations. The spectrographs incorporate optical assemblies, dispersive elements, and low-noise near-infrared detectors, with particular attention given to thermal and mechanical stability so that performance variations remain minimal throughout extended mission operations.
 
-A comprehensive internal calibration system is incorporated to support high-precision spectrophotometric measurements. This capability reduces dependence on calibration observations of external astronomical standards, improves calibration repeatability, and enhances overall observing efficiency. By maintaining a stable and well-characterized instrumental response over long timescales, the spectroscopic instruments provide the precision required for a broad range of astrophysical investigations, including transient phenomena, exoplanet atmosphere studies, compact-object physics, and galaxy evolution.
+A comprehensive internal calibration system is incorporated to support high-precision spectrophotometric measurements. This capability reduces dependence on calibration observations of external astronomical standards, improves calibration repeatability, and enhances overall observing efficiency. By maintaining a stable and well-characterized instrumental response over long timescales, the spectroscopic instruments provide the precision required for a broad range of astrophysical investigations, including transient phenomena, exoplanet atmosphere studies, compact-object physics, and galaxy evolution. 
+
+Korea has accumulated internationally recognized expertise in the development
+of precision infrared spectrographs, providing a strong technological
+foundation for future space-borne spectroscopic instrumentation.
 
 \section{Optional High-Contrast Observing Capability and Future Expandability}\label{optional-high-contrast-observing-capability-and-future-expandability}
 
@@ -316,15 +331,15 @@ The accelerated expansion of the Universe was first discovered in 1998 through o
 
 The 3.5-meter-class multiwavelength space telescope is designed to address this problem in a manner distinct from all-sky survey missions that maximize statistical coverage. Instead, it will reduce systematic uncertainties in cosmological parameters and enhance physical interpretability through high-resolution, high-precision deep observations. Rather than performing shallow observations over the widest possible area, the telescope will repeatedly survey homogeneous deep fields covering several hundred square degrees, enabling precision tests of both the properties of dark energy and the validity of gravitational theory.
 
-The key observables describing cosmic acceleration are the distance--redshift relation and the cosmic expansion rate, H(z). These quantities can be measured directly through the Hubble diagram constructed using Type Ia supernovae as standard candles. By simultaneously utilizing a broad wavelength range from 0.2 to 3.0 μm, the telescope will enable supernova color corrections and evolutionary corrections to be performed within a single, internally consistent framework. This capability removes major limitations of ground-based observations, including variations in atmospheric transmission and wavelength-dependent calibration uncertainties, and enables stable photometric measurements with precision better than 0.01 mag.
+The key observables describing cosmic acceleration are the distance--redshift relation and the cosmic expansion rate, H(z). These quantities can be measured directly through the Hubble diagram constructed using Type Ia supernovae as standard candles. By simultaneously utilizing a broad wavelength range from 0.2 to 1.5 μm, the telescope will enable supernova color corrections and evolutionary corrections to be performed within a single, internally consistent framework. This capability removes major limitations of ground-based observations, including variations in atmospheric transmission and wavelength-dependent calibration uncertainties, and enables stable photometric measurements with precision better than 0.01 mag.
 
 As a result, a sample of several thousand high-redshift supernovae, extending to approximately z ≈ 1.5, could constrain the present-day value of the dark energy equation-of-state parameter, w₀, and its time-evolution parameter, wₐ, to approximately ±0.05 and ±0.2, respectively. Beyond improving statistical precision, such a dataset would provide a practical means of testing the temporal evolution of dark energy by directly controlling systematic uncertainties associated with color correction and dust extinction.
 
-Another independent probe of cosmic acceleration is provided by Baryon Acoustic Oscillations (BAOs). Acoustic waves that propagated through the primordial plasma of the early Universe have left an imprint on the large-scale distribution of galaxies as a characteristic length scale of approximately 150 Mpc. This standard ruler enables simultaneous measurements of the angular diameter distance, (D\_A(z)), and the Hubble parameter, (H(z)). The 3.5-meter telescope will conduct spectroscopic observations of emission-line galaxies in the intermediate-redshift range ((z \textbackslash approx 0.5)--2.5) at spectral resolutions of (R \textbackslash approx 500)--1000, enabling the construction of photometric--spectroscopic redshift samples containing millions of galaxies. Although the mission is not intended to perform an ultra-wide all-sky survey, its strategy of deep and homogeneous observations over selected fields provides a valuable independent benchmark for cross-validating the statistical results obtained by missions such as Euclid and the Roman Space Telescope. In particular, when combined with Type Ia supernova distance measurements obtained in the same fields, these observations enable direct tests of the consistency of geometric distance indicators, providing a powerful means of distinguishing among competing dark-energy models.
+Another independent probe of cosmic acceleration is provided by Baryon Acoustic Oscillations (BAOs). Acoustic waves that propagated through the primordial plasma of the early Universe have left an imprint on the large-scale distribution of galaxies as a characteristic length scale of approximately 150 Mpc. This standard ruler enables simultaneous measurements of the angular diameter distance, $D_A(z)$, and the Hubble parameter, (H(z)). The 3.5-meter telescope will conduct spectroscopic observations of emission-line galaxies in the intermediate-redshift range $z \approx 0.5 \sim 2.5$ at spectral resolutions of $R \approx 500 \sim 1000$, enabling the construction of photometric--spectroscopic redshift samples containing millions of galaxies. Although the mission is not intended to perform an ultra-wide all-sky survey, its strategy of deep and homogeneous observations over selected fields provides a valuable independent benchmark for cross-validating the statistical results obtained by missions such as Euclid and the Roman Space Telescope. In particular, when combined with Type Ia supernova distance measurements obtained in the same fields, these observations enable direct tests of the consistency of geometric distance indicators, providing a powerful means of distinguishing among competing dark-energy models.
 
 However, it remains unclear whether cosmic acceleration is driven by a new energy component, namely dark energy, or by a modification of gravity on cosmological scales. Discriminating between these possibilities requires measurements not only of the expansion history of the Universe but also of the growth rate of cosmic structure. Weak gravitational lensing, commonly referred to as cosmic shear, is one of the most powerful observational tools for directly probing the growth of structure.
 
-The proposed telescope will deliver diffraction-limited angular resolution of approximately 0.21 arcseconds at 3 μm, together with a highly stable point-spread function (PSF) over time. These characteristics enable precise measurements of subtle distortions in galaxy shapes induced by weak gravitational lensing. Through deep observations covering several hundred square degrees, the mission is expected to achieve a galaxy shape density of approximately 30--40 galaxies per square arcminute, allowing precise determinations of key cosmological parameters, including (\textbackslash sigma\_8), (\textbackslash Omega\_m), and the growth-rate parameter (f\textbackslash sigma\_8(z)).
+The proposed telescope will deliver diffraction-limited angular resolution of approximately 0.1 arcseconds at 1.5 μm, together with a highly stable point-spread function (PSF) over time. These characteristics enable precise measurements of subtle distortions in galaxy shapes induced by weak gravitational lensing. Through deep observations covering several hundred square degrees, the mission is expected to achieve a galaxy shape density of approximately 30--40 galaxies per square arcminute, allowing precise determinations of key cosmological parameters, including $\sigma_8$, $\Omega_m$, and the growth-rate parameter $f\sigma_8(z)$.
 
 These quantities describe how rapidly cosmic structures grow over time and provide direct observational tests capable of distinguishing the standard ΛCDM framework from modified-gravity theories such as (f(R)) gravity and the Dvali--Gabadadze--Porrati (DGP) model. In this sense, the telescope serves not merely as an instrument for measuring how fast the Universe is expanding, but as an experimental facility for investigating how gravity itself operates on the largest scales in the Universe.
 
@@ -334,7 +349,7 @@ Furthermore, measurements of offsets among the distributions of gas, stars, and 
 
 Ultimately, the cosmology program of the 3.5-meter space telescope does not rely on any single observational technique. Type Ia supernovae and BAO measurements probe the geometric expansion history of the Universe, while weak and strong gravitational lensing constrain the growth of cosmic structure and the distribution of dark matter. By combining these complementary approaches, it becomes possible to distinguish, at the 3--5σ level, whether cosmic acceleration is driven by a simple cosmological constant (Λ), a dynamically evolving form of dark energy, or a modification of gravity itself.
 
-In addition, independent distance-ladder measurements and time-delay lensing observations can provide complementary constraints on the Hubble constant, offering a potential avenue for resolving the currently observed Hubble tension ((H\_0) tension). These measurements are particularly valuable because they rely on fundamentally different physical principles and systematic uncertainties than traditional cosmological probes.
+In addition, independent distance-ladder measurements and time-delay lensing observations can provide complementary constraints on the Hubble constant, offering a potential avenue for resolving the currently observed Hubble tension ($H_0$ tension). These measurements are particularly valuable because they rely on fundamentally different physical principles and systematic uncertainties than traditional cosmological probes.
 
 In summary, this telescope is not designed primarily to expand all-sky survey statistics. Rather, it functions as a precision cosmology laboratory capable of physically discriminating among competing cosmological models and calibrating the systematic uncertainties that limit current large-scale survey missions. The temporal evolution of dark energy, the validity of gravitational theory on cosmological scales, and the macroscopic properties of dark matter will be directly constrained by the mission\textquotesingle s key observations. The resulting datasets are expected to provide foundational evidence that will shape the direction of cosmological theory and fundamental physics for decades to come.
 
@@ -346,19 +361,19 @@ The standard ΛCDM (Lambda Cold Dark Matter) model assumes that dark matter cons
 
 Determining the true nature of dark matter requires a comprehensive approach that combines astrophysical observations, particle-physics experiments, and cosmological datasets. Only through the integration of these complementary avenues of investigation can the physical properties of dark matter be constrained and its role in the evolution of the Universe be fully understood.
 
-\textbf{Dark Matter Candidates and Theoretical Frameworks}
+\subsubsection{Dark Matter Candidates and Theoretical Frameworks}
 
 Because dark matter cannot be explained by any particle contained within the Standard Model of particle physics, a wide variety of theoretical scenarios introducing new particles and interactions have been proposed. The oldest and most extensively studied candidates are Weakly Interacting Massive Particles (WIMPs), which are modeled as electrically neutral particles that interact predominantly through gravity and only very weakly through other fundamental forces. Other prominent candidates include axions, sterile neutrinos, and ultralight bosonic particles that may form Bose--Einstein condensate-like states. These candidates give rise to distinct formation histories and structure-formation mechanisms, leading to observable differences in astrophysical and cosmological phenomena [17].
 
 From a theoretical perspective, dark matter candidates are commonly classified according to their production mechanisms and thermodynamic evolution in the early Universe. Particles that were initially in thermal equilibrium and later decoupled through a freeze-out process can naturally account for the present-day relic density of dark matter. The resulting abundance depends sensitively on the particle mass, interaction cross section, and the expansion history of the Universe. In addition to these thermal production scenarios, contemporary dark matter research increasingly considers non-thermal production mechanisms and models involving complex dark sectors with multiple particle species and interactions. Such frameworks provide a rich theoretical landscape that extends well beyond the traditional WIMP paradigm and may offer explanations for observational phenomena that are difficult to reconcile within the standard cold dark matter model.
 
-\textbf{Observational Constraints and Experimental Searches}
+\subsubsection{Observational Constraints and Experimental Searches}
 
 Although astrophysical observations provide compelling evidence for the existence of dark matter, they do not directly reveal its microscopic physical properties. Galaxy rotation curves indicate that dark matter forms extended halos surrounding galaxies, a prediction that is broadly consistent with the ΛCDM framework. On larger scales, gravitational lensing and X-ray observations of galaxy clusters enable the reconstruction of their mass distributions, providing quantitative measurements of the spatial distribution of dark matter.
 
 Experimental searches for dark matter can be broadly divided into three categories. First, direct detection experiments seek signals produced when dark matter particles scatter off atomic nuclei in highly sensitive terrestrial detectors. Second, indirect detection searches attempt to observe products of dark matter annihilation or decay, such as gamma rays, electrons, positrons, or other high-energy particles. Third, collider searches investigate signatures of dark matter production in high-energy particle collisions, typically through measurements of missing energy and momentum. While none of these approaches has yet produced definitive evidence for a dark matter particle, experimental sensitivities continue to improve steadily, placing increasingly stringent constraints on theoretical models [18].
 
-\textbf{Cosmological Data and Sensitivity to Structure Formation}
+\subsubsection{Cosmological Data and Sensitivity to Structure Formation}
 
 Numerical simulations of cosmic structure formation demonstrate that the properties of large-scale structure are highly sensitive to the free-streaming length of dark matter particles. For example, hot dark matter, characterized by relativistic particle velocities in the early Universe, suppresses the formation of small-scale structures. In contrast, cold dark matter promotes structure formation even on relatively small scales, allowing galaxies and substructures to emerge efficiently. These differences are reflected in observable properties of the cosmic web, including the distribution of galaxies, filamentary structures, and the abundance of dwarf galaxies.
 
@@ -366,7 +381,7 @@ Recent studies have also explored the possibility of weak interactions between d
 
 Together, these observational and theoretical developments highlight the growing importance of combining cosmological observations, astrophysical measurements, and particle-physics experiments to uncover the fundamental nature of dark matter and its role in shaping the evolution of the Universe.
 
-\textbf{Future Prospects and Cosmological Experiments}
+\subsubsection{Future Prospects and Cosmological Experiments}
 
 Deep and high-precision cosmological observatories, such as a 3.5-meter space telescope, have the potential to probe the fine structure and dynamical properties of dark matter with unprecedented accuracy. For example, by analyzing weak and strong gravitational lensing distortions, it is possible to reconstruct the three-dimensional structure of dark matter halos and thereby place indirect constraints on the interaction properties predicted by particle physics models. When combined with ground-based experiments, these cosmological approaches will play a crucial role in unveiling the true nature of dark matter.
 
@@ -394,13 +409,13 @@ Precision cosmological observatories such as the proposed telescope can further 
 
 \subsection{Cosmic Reionization, Large-Scale Structure, and Cosmological Probes}\label{cosmic-reionization-large-scale-structure-and-cosmological-probes}
 
-The \textbf{Epoch of Reionization (EoR)} refers to the period in cosmic history following the era when the Universe remained largely neutral (z≳6z \textbackslash gtrsim 6z≳6), during which ultraviolet radiation emitted by the first generations of stars and galaxies reionized the hydrogen in the intergalactic medium (IGM). This epoch had profound consequences for the formation of large-scale cosmic structures and the evolution of the free-electron density in the Universe. It also serves as a critical astrophysical background for interpreting cosmological observables such as the matter distribution, gravitational lensing signals, and secondary anisotropies of the Cosmic Microwave Background (CMB). Understanding the processes of reionization and the associated formation of cosmic structures is therefore one of the fundamental challenges of modern cosmology [32].
+The \textbf{Epoch of Reionization (EoR)} refers to the period in cosmic history following the era when the Universe remained largely neutral (z≳6), during which ultraviolet radiation emitted by the first generations of stars and galaxies reionized the hydrogen in the intergalactic medium (IGM). This epoch had profound consequences for the formation of large-scale cosmic structures and the evolution of the free-electron density in the Universe. It also serves as a critical astrophysical background for interpreting cosmological observables such as the matter distribution, gravitational lensing signals, and secondary anisotropies of the Cosmic Microwave Background (CMB). Understanding the processes of reionization and the associated formation of cosmic structures is therefore one of the fundamental challenges of modern cosmology [32].
 
 Reionization is the outcome of a highly complex interplay of astrophysical processes. Star formation within galaxies, subsequent supernova explosions, feedback from active galactic nuclei (AGN), and the influence of cosmic rays all affect the escape fraction of ionizing ultraviolet photons and the thermal and dynamical state of the surrounding medium. Recent studies have demonstrated through numerical simulations that internal galactic feedback processes influence not only the evolution of the EoR itself but also the overall distribution of matter in the Universe. For example, galaxy-formation feedback can suppress star formation efficiency, thereby modifying both the timing and the amplitude of reionization. These effects, in turn, alter the interpretation of cosmological observables derived from large-scale surveys and precision cosmological measurements [33].
 
 The state of cosmic reionization in the early Universe is reflected in several key cosmological observables. In particular, the post-reionization scattering signature imprinted on the Cosmic Microwave Background (CMB), including its E-mode polarization and temperature anisotropy patterns, is closely linked to the cumulative evolution of the free-electron density over cosmic time. High-redshift objects, such as distant quasars and Lyman-α emitting galaxies, provide valuable observational windows into the inhomogeneous transition from a neutral to an ionized Universe [35].
 
-Cosmic reionization and the formation of large-scale structure (LSS) are intimately connected. Structures originating from primordial density fluctuations grow through gravitational instability, eventually forming the vast cosmic web of filaments, galaxy clusters, and superclusters observed today. This process not only constrains cosmological parameters---such as the matter density parameter (Ωm\textbackslash Omega\_mΩm), characteristic clustering scales, and the nature of gravity---but also leaves observable imprints from reionization. In particular, the size and distribution of ionized regions generated during reionization influence various LSS observables, including the matter power spectrum and galaxy environments. Reionization can suppress baryonic clustering on small scales, thereby modifying the evolution of cosmic structures [36].
+Cosmic reionization and the formation of large-scale structure (LSS) are intimately connected. Structures originating from primordial density fluctuations grow through gravitational instability, eventually forming the vast cosmic web of filaments, galaxy clusters, and superclusters observed today. This process not only constrains cosmological parameters---such as the matter density parameter ($\Omega_m$), characteristic clustering scales, and the nature of gravity---but also leaves observable imprints from reionization. In particular, the size and distribution of ionized regions generated during reionization influence various LSS observables, including the matter power spectrum and galaxy environments. Reionization can suppress baryonic clustering on small scales, thereby modifying the evolution of cosmic structures [36].
 
 More specifically, feedback mechanisms---including active galactic nucleus (AGN) outflows, supernova explosions, and cosmic-ray pressure---can redistribute baryonic matter beyond the boundaries of their host dark matter halos. Compared with models that consider only gravitational evolution, these processes suppress power on small scales in the matter power spectrum. Such suppression can introduce systematic biases when interpreting precision measurements of large-scale structure in combination with CMB observations, including weak gravitational lensing (cosmic shear) as well as the kinetic and thermal Sunyaev--Zel'dovich (kSZ and tSZ) effects [36].
 
@@ -430,7 +445,7 @@ First, it would enable high-precision analyses of pulsation modes through photom
 
 Second, a 3.5 m space telescope would enable detailed studies of compositional stratification and the mean atomic weight of white dwarf cores. Such investigations can be carried out not only through pulsation-mode analysis but also through spectroscopic chemical signatures. Most observed white dwarfs possess atmospheres dominated by either hydrogen (H) or helium (He), while some exhibit surface metal pollution resulting from the accretion of external material. These metal-contaminated surface layers provide important clues about the presence and distribution of heavier elements within the stellar interior and can help constrain the evolutionary history of the white dwarf [39].
 
-Third, the telescope would provide a unique opportunity to test crystallization processes and the equation of state of degenerate matter. White dwarf interiors reach extremely high densities, typically on the order of 10610\^{}6106--107~g cm−310\^{}7\textbackslash{} \textbackslash mathrm\{g\textbackslash,cm\^{}\{-3\}\}107~gcm−3. Under such conditions, matter can undergo a phase transition from a plasma state to a crystalline state on a macroscopic scale. This crystallization process releases latent heat and produces a measurable cooling delay, an effect that has already been observed in some high-mass white dwarfs. The energy released during crystallization leaves characteristic signatures in the white dwarf luminosity function. Through long-term monitoring and statistical sampling, a space telescope can quantitatively measure these signatures and provide direct empirical tests of dense-matter physics.
+Third, the telescope would provide a unique opportunity to test crystallization processes and the equation of state of degenerate matter. White dwarf interiors reach extremely high densities, typically on the order of $10^6 \sim 10^7 g/cm^3$. Under such conditions, matter can undergo a phase transition from a plasma state to a crystalline state on a macroscopic scale. This crystallization process releases latent heat and produces a measurable cooling delay, an effect that has already been observed in some high-mass white dwarfs. The energy released during crystallization leaves characteristic signatures in the white dwarf luminosity function. Through long-term monitoring and statistical sampling, a space telescope can quantitatively measure these signatures and provide direct empirical tests of dense-matter physics.
 
 The study of white dwarf interior properties also has important cosmological implications. For example, the use of Type Ia supernovae as standard candles is closely linked to the pre-explosion structure of white dwarf progenitors. Internal composition, chemical stratification, and the degree of electron degeneracy can influence the luminosity and color corrections applied to Type Ia supernova observations, thereby contributing to systematic uncertainties in cosmological distance measurements. Consequently, precise studies of white dwarf interiors improve not only our understanding of white dwarf physics but also the accuracy of cosmological parameter determinations derived from Type Ia supernova surveys.
 
@@ -438,41 +453,42 @@ In conclusion, a 3.5 m space telescope would make a unique and transformative co
 
 \subsection{Analyzing Circumstellar Material Around High-Density Compact Objects}\label{analyzing-circumstellar-material-around-high-density-compact-objects}
 
-The distribution and physical properties of circumstellar material around high-density compact objects, particularly white dwarfs, preserve valuable records of planetary systems that survived the final stages of stellar evolution. Because white dwarfs possess extremely strong gravitational fields, the detection of metal accretion onto their surfaces indicates the presence of material that remains in stable orbit around the star. This material is generally believed to originate from remnant planetary systems, such as asteroid belts, minor planets, or disrupted planetary bodies that survived the host star's evolution [41,42].
-
-A primary driver of circumstellar material around white dwarfs is planetary debris. Following stellar evolution, surviving asteroids or planetary remnants may be perturbed onto highly eccentric orbits that bring them close to the white dwarf's Roche limit. Once inside this critical distance, tidal forces can disrupt these bodies, fragmenting them into smaller particles and gas. The resulting debris is redistributed into a circumstellar debris disk surrounding the central star [42]. Such disks are frequently detected through infrared excess emission and provide strong evidence for the long-term presence of circumstellar material around white dwarfs [40].
-
 \begin{figure}[htbp]\centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image6.jpeg}
 \end{figure}
 
 Fig. 6. White dwarf(AI)
+\vspace{\baselineskip}
+
+The distribution and physical properties of circumstellar material around high-density compact objects, particularly white dwarfs, preserve valuable records of planetary systems that survived the final stages of stellar evolution. Because white dwarfs possess extremely strong gravitational fields, the detection of metal accretion onto their surfaces indicates the presence of material that remains in stable orbit around the star. This material is generally believed to originate from remnant planetary systems, such as asteroid belts, minor planets, or disrupted planetary bodies that survived the host star's evolution [41,42].
+
+A primary driver of circumstellar material around white dwarfs is planetary debris. Following stellar evolution, surviving asteroids or planetary remnants may be perturbed onto highly eccentric orbits that bring them close to the white dwarf's Roche limit. Once inside this critical distance, tidal forces can disrupt these bodies, fragmenting them into smaller particles and gas. The resulting debris is redistributed into a circumstellar debris disk surrounding the central star [42]. Such disks are frequently detected through infrared excess emission and provide strong evidence for the long-term presence of circumstellar material around white dwarfs [40].
 
 The detection of heavy elements such as calcium (Ca), magnesium (Mg), and iron (Fe) in white dwarf atmospheres is commonly referred to as metal pollution\textbf{.} This phenomenon is particularly significant because the strong gravitational fields of white dwarfs should cause heavy elements to settle out of the atmosphere on relatively short timescales. The continued presence of these metals therefore implies ongoing replenishment by external material [40,43]. In other words, material from the surrounding debris disk is continuously accreted onto the white dwarf surface. Measurements of the atmospheric abundances of these elements provide a unique opportunity to infer the composition and distribution of the disrupted planetary material from which they originated.
 
 Collisions and tidal disruption are considered the principal mechanisms responsible for disk formation and material redistribution. For example, observations of the system WD 1145+017 have revealed the ongoing disintegration of small planetary bodies in close proximity to a white dwarf [44]. These events are observed as irregular transit dimming signatures caused by clouds of dust and debris passing in front of the star. In addition, interactions among dust particles and gaseous material within the disk play a critical role in determining the dynamical evolution of the system. Several systems observed with the Spitzer Space Telescope have exhibited variations in disk brightness and color that are associated with changes in particle-size distributions, demonstrating the importance of disk dynamics and matter interactions within circumstellar debris environments [46].
 
-\textbf{Material Distribution and Composition Analysis}
+\subsubsection{Material Distribution and Composition Analysis}
 
 The chemical composition of circumstellar material around white dwarfs provides important clues about the nature of its parent bodies. A study by Xu et al. [47], based on an analysis of 19 white dwarf systems, found that the chemical abundances of the surrounding material exhibit patterns similar to those of terrestrial planets in the Solar System, with relatively consistent ratios of iron (Fe), magnesium (Mg), and calcium (Ca). These results suggest that the material surrounding white dwarfs is predominantly composed of rocky, terrestrial-like matter. Such analyses are derived from high-resolution spectroscopic observations and are inferred from the relative abundances of metallic elements detected in white dwarf atmospheres. By comparing these atmospheric abundances with models of diffusion and accretion, it is possible to reconstruct the composition of the disrupted planetary material from which they originated.
 
-\textbf{Mass Accretion and Condensation Processes}
+\subsubsection{Mass Accretion and Condensation Processes}
 
 Theoretical studies of the mechanisms by which circumstellar material is transported onto white dwarf surfaces are closely linked to the Poynting--Robertson (PR) drag effect. Rafikov [48] demonstrated through numerical modeling that PR drag causes disk particles to gradually lose angular momentum and spiral inward toward the white dwarf. During this inward migration, dust particles may undergo sublimation, transforming into gaseous material that can ultimately accrete onto the stellar surface. This process provides a natural pathway for the continuous replenishment of metals observed in polluted white dwarf atmospheres.
 
 Subsequent studies have expanded upon this framework by examining the coupled evolution of gas and dust within circumstellar disks. These investigations have proposed mechanisms involving gas--particle interactions, enhanced inward acceleration, and runaway accretion, which can lead to unstable mass-transfer episodes and significantly elevated accretion rates [48]. Such processes are believed to play a key role in shaping the dynamical evolution of debris disks and in regulating the flow of planetary material onto white dwarfs. Understanding these accretion mechanisms is therefore essential for interpreting the observed properties of polluted white dwarfs and for reconstructing the long-term evolution of remnant planetary systems.
 
-\textbf{Disk Structure and Overall Dynamics}
+\subsubsection{Disk Structure and Overall Dynamics}
 
 Observationally, circumstellar disks around white dwarfs consist of gaseous material and dusty debris and are most commonly detected through their infrared excess (IR excess) emission. Well-known examples include the white dwarfs G29-38 and GD 362. In particular, infrared observations of G29-38 with the Spitzer Space Telescope revealed that a significant fraction of the dust particles is concentrated near the white dwarf's Roche radius. This system has become one of the canonical examples for understanding the processes of disk formation and the redistribution of tidally disrupted planetary material into a circumstellar disk.
 
 Furthermore, the observed correlation between the degree of metal pollution and the presence of circumstellar disks provides quantitative information on accretion rates and the distribution of surrounding material. Interestingly, some white dwarfs exhibit clear atmospheric metal pollution despite showing no detectable debris disk. This suggests the existence of tenuous or low-mass debris populations that remain below current observational detection limits [49]. Such cases highlight the continuing importance of improving observational sensitivity and refining models of particle-size distributions in studies of circumstellar material around white dwarfs.
 
-\textbf{Significance of Observations with a Space Telescope}
+\subsubsection{Significance of Observations with a Space Telescope}
 
 A 3.5 m-class space telescope, equipped with high-resolution spectroscopic capabilities and enhanced infrared sensitivity, would provide unprecedented opportunities to investigate the structure, composition, and dynamical evolution of circumstellar material around white dwarfs. In particular, infrared spectroscopy and particle-size distribution measurements that were only possible for limited samples with missions such as the James Webb Space Telescope and the Spitzer Space Telescope could be extended to a much larger and more diverse population of systems. Such observations would enable detailed studies of the formation, evolution, and disruption of debris disks over both spatial and temporal scales, while also allowing quantitative assessments of how circumstellar material influences white dwarf evolution and the long-term development of planetary systems.
 
-\section{Conclusion}
+\subsubsection{Summary}
 
 In summary, the study of circumstellar material around white dwarfs extends far beyond the simple detection of remnant debris. It represents a crucial field of research for understanding the physical state and evolutionary mechanisms of matter surrounding high-density compact objects from both astrophysical and cosmological perspectives. These investigations provide essential constraints on the final stages of planetary system evolution, the formation and evolution of debris disks, and the relationship between accretion rates and material composition in polluted white dwarf systems. As observational capabilities continue to improve, studies of circumstellar material will play an increasingly important role in revealing the fate of planetary systems and the complex interactions between compact stars and their surrounding environments.
 
@@ -482,7 +498,7 @@ Dense compact objects, particularly \textbf{neutron stars} and \textbf{white dwa
 
 Research into particle interactions within dense compact objects extends beyond conventional nucleon--nucleon interactions and encompasses a wide range of possible states of matter, including strange quark matter, quark--gluon plasma phases, and superfluid or superconducting states. These exotic phases directly influence the pressure--density relationship within the stellar interior and consequently affect observable properties such as the mass--radius relation, oscillation modes, and radiative characteristics under extreme physical conditions [52,53].
 
-\textbf{Equation of State of Dense Matter and Nucleon Interactions}
+\subsubsection{Equation of State of Dense Matter and Nucleon Interactions}
 
 The equation of state (EOS) of nucleonic matter provides the fundamental starting point for understanding the conditions in the interiors of dense compact objects. In neutron stars, the strong interaction between nucleons is dominated by neutron--neutron (n--n) and neutron--proton (n--p) interactions. These interactions are modeled using modern nuclear physics theories and frameworks derived from quantum chromodynamics (QCD), which describes the behavior of strongly interacting particles at the fundamental level [54,55].
 
@@ -490,39 +506,38 @@ Conventional nucleon-based EOS models are considered relatively reliable near th
 
 Another possible state of matter predicted by QCD under extreme conditions is the quark--gluon plasma or a phase of color superconductivity. These exotic phases are of particular interest because microscopic particle interactions within them can significantly influence the central pressure and internal structure of neutron stars. Theoretical frameworks such as the MIT Bag Model and the Nambu--Jona-Lasinio (NJL) model are widely used to describe the microscopic interactions and thermodynamic properties of these dense quark-matter phases [57,58].
 
-\textbf{Observational Constraints on Particle Interactions from Gravitational Waves}
+\subsubsection{Observational Constraints on Particle Interactions from Gravitational Waves}
 
 Since 2015, gravitational-wave observations by the LIGO Scientific Collaboration, Virgo Collaboration, and KAGRA Collaboration have provided powerful new constraints on the equation of state (EOS) and particle interactions in neutron stars through the detection of compact-object merger events. One of the most significant examples is the gravitational-wave event GW170817, which enabled measurements of parameters related to the tidal deformability of neutron stars before and during the merger, thereby placing stringent constraints on the EOS of dense matter [1,59].
 
 Tidal deformability quantifies the extent to which a neutron star is distorted by the tidal gravitational field of its companion during a merger. This quantity is directly linked to the stiffness of the EOS and the underlying strength of particle interactions within the stellar interior. A stiffer EOS generally produces less tidal deformation, whereas a softer EOS allows the star to deform more easily under external gravitational forces. Because gravitational-wave signals are highly sensitive to these effects, observations of binary neutron star mergers provide an indirect but powerful probe of the microscopic interactions governing dense matter [60].
 
-\textbf{Neutron Star Cooling and Particle Interactions}
+\subsubsection{Neutron Star Cooling and Particle Interactions}
 
 The thermal evolution of neutron stars after their formation provides another important observational window into the physics of dense matter. Newly formed neutron stars cool rapidly during their first few minutes through intense neutrino emission. Subsequently, over timescales of thousands to hundreds of thousands of years, their thermal evolution can be tracked through observations of surface X-ray emission and temperature decline curves. The detailed cooling history depends strongly on microscopic physical processes, including nucleon interactions, superfluid energy gaps, and the possible presence of hyperons or other exotic particles in the stellar core [61,62].
 
 For example, nucleon superfluidity induces pairing effects among neutrons and protons within the stellar interior. These pairing interactions significantly influence neutrino production and emission rates, thereby modifying the cooling behavior of the star. By comparing theoretical cooling models with observational data, it is possible to constrain fundamental parameters such as the critical temperatures associated with superfluid transitions and the strengths of the relevant coupling constants. Such studies provide valuable insights into the microscopic properties of matter under conditions that cannot be reproduced in terrestrial laboratories.
 
-\textbf{Constraining Particle--Particle Interactions: Experimental and Theoretical Approaches}
+\subsubsection{Constraining Particle--Particle Interactions: Experimental and Theoretical Approaches}
 
 The study of the equation of state (EOS) and particle interactions in dense matter relies on a combination of experimental measurements and theoretical calculations. Experimental investigations of the quark--gluon plasma produced in relativistic heavy-ion collision facilities such as Relativistic Heavy Ion Collider and Large Hadron Collider provide valuable insights into the behavior of strongly interacting matter under extreme conditions. Although the thermodynamic regimes explored in these laboratory experiments differ from those found in neutron star interiors, comparisons between the two environments offer important constraints on the properties of dense matter and the underlying strong interaction.
 
 On the theoretical side, a wide range of approaches are employed to model dense matter. Traditional methods based on effective nucleon interaction potentials---including the Skyrme, Gogny, and Relativistic Mean Field (RMF) frameworks---are extensively used alongside approaches derived more directly from quantum chromodynamics (QCD). Among these, the RMF model describes strong interactions through the exchange of meson fields and has become one of the most widely used tools for calculating neutron star mass--radius relations and other macroscopic properties of compact objects. Ongoing comparisons between effective nuclear models and QCD-based approaches play a crucial role in reducing uncertainties in the EOS of dense matter.
-
-\textbf{Contributions of a 3.5 m Space Telescope}
-
-A 3.5 m-class space telescope could provide new observational constraints on particle interactions in dense compact objects. Its capabilities for high-precision photometry and high-resolution spectroscopy would enable exceptionally accurate measurements of the surface and spectral properties of neutron stars and white dwarfs. Such observations would provide indirect but powerful tests of microscopic particle interactions and the equation of state governing matter under extreme conditions.
-
-In particular, precision timing observations of neutron stars in optical and X-ray wavelengths could extend the principles of asteroseismology to compact objects, allowing oscillation modes influenced by particle interactions and internal matter properties to be identified and characterized. For example, detailed observations of periodic variability and glitch events in neutron stars may reveal signatures of internal superfluid layers and the interactions of strongly interacting particles within the stellar interior.
-
-Furthermore, studies of gravitational lensing distortions and the statistical properties of compact-object populations can provide measurements of stellar compactness and deformability, both of which depend sensitively on the underlying EOS. Such measurements can help discriminate among competing EOS models and improve our understanding of dense matter physics. Achieving these goals requires not a single observational technique but a comprehensive multimessenger strategy, integrating information from gravitational waves, electromagnetic observations, photometric monitoring, and spectroscopic measurements. Together, these complementary probes offer one of the most promising pathways toward uncovering the fundamental physics of matter at the highest densities found in nature.
 
 \begin{figure}[htbp]\centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image7.png}
 \end{figure}
 
 Fig. 7. Elements produced in collisions of compact stars
+\vspace{\baselineskip}
 
-\subsection{}\label{section}
+\subsubsection{Contributions of a 3.5 m Space Telescope}
+
+A 3.5 m-class space telescope could provide new observational constraints on particle interactions in dense compact objects. Its capabilities for high-precision photometry and high-resolution spectroscopy would enable exceptionally accurate measurements of the surface and spectral properties of neutron stars and white dwarfs. Such observations would provide indirect but powerful tests of microscopic particle interactions and the equation of state governing matter under extreme conditions.
+
+In particular, precision timing observations of neutron stars in optical and X-ray wavelengths could extend the principles of asteroseismology to compact objects, allowing oscillation modes influenced by particle interactions and internal matter properties to be identified and characterized. For example, detailed observations of periodic variability and glitch events in neutron stars may reveal signatures of internal superfluid layers and the interactions of strongly interacting particles within the stellar interior.
+
+Furthermore, studies of gravitational lensing distortions and the statistical properties of compact-object populations can provide measurements of stellar compactness and deformability, both of which depend sensitively on the underlying EOS. Such measurements can help discriminate among competing EOS models and improve our understanding of dense matter physics. Achieving these goals requires not a single observational technique but a comprehensive multimessenger strategy, integrating information from gravitational waves, electromagnetic observations, photometric monitoring, and spectroscopic measurements. Together, these complementary probes offer one of the most promising pathways toward uncovering the fundamental physics of matter at the highest densities found in nature.
 
 \section{Exoplanets}\label{exoplanets}
 
@@ -532,13 +547,13 @@ Direct imaging is one of the principal techniques for detecting and characterizi
 
 The key technologies underlying direct imaging are optical systems designed to suppress stellar light, such as coronagraphs and starshades. A coronagraph blocks or attenuates the stellar image within the optical system, allowing faint nearby objects---including exoplanets and circumstellar disks---to become detectable. These instruments represent one of the most important implementations of high-contrast imaging and are actively developed and employed in both space-based and ground-based observatories [63].
 
-\textbf{Principles and Limitations of Direct Imaging}
+\subsubsection{Principles and Limitations of Direct Imaging}
 
 Capturing exoplanets directly around their host stars is one of the most technically challenging methods in observational astronomy. Compared to the Sun, an Earth-like planet is typically more than a billion times fainter, making its detection extremely difficult. In addition, diffraction from the host star and wavefront aberrations within the optical system create significant obstacles to observing such faint signals. A coronagraph mitigates these effects by suppressing diffraction features and reducing scattered starlight, thereby darkening the region surrounding the star in the observer's field of view. This allows the much fainter planetary signal to become relatively more prominent.
 
 The performance of a coronagraph is primarily characterized by two key parameters: contrast and inner working angle (IWA). Contrast represents the ratio between the detectable planetary brightness and the brightness of the host star. Modern coronagraphs and high-contrast imaging systems are being developed to achieve contrast levels as high as approximately 10⁻⁸--10⁻⁹. The IWA defines the smallest angular separation from the host star at which the coronagraph can effectively suppress starlight. A smaller IWA enables the detection of planets orbiting closer to their stars, including those with smaller orbital radii.
 
-\textbf{Current Achievements in Direct Imaging}
+\subsubsection{Current Achievements in Direct Imaging}
 
 Although thousands of exoplanets have been discovered to date, only a relatively small fraction have been detected through direct imaging. Nevertheless, several massive exoplanets---particularly young giant planets such as those in the HR 8799 system (HR 8799 planetary system)---have been successfully observed using this technique. These detections have been made possible through the combination of coronagraphy and advanced adaptive optics systems on large ground-based telescopes.
 
@@ -549,10 +564,12 @@ In 2025, reports indicated that the James Webb Space Telescope (JWST) directly d
 \end{figure}
 
 Fig. 8. Keck observations of HR 8799 (left) and an AI-simulated image of an exoplanet located at 1 AU from Alpha Centauri A as expected to be observed with a 3.5-meter segmented-mirror space telescope
+\vspace{\baselineskip}
 
-\textbf{Direct Imaging Potential of a 3.5-Meter Space Telescope}
+\subsubsection{Direct Imaging Potential of a 3.5-Meter Space Telescope}
 
 A 3.5-meter-class space telescope can significantly expand the applicability of direct imaging through its improved angular resolution and low-background observing environment compared with existing technologies. A space-based platform offers the advantages of being free from atmospheric turbulence and capable of achieving long integration times, making it particularly well suited for high signal-to-noise, high-contrast imaging observations. When combined with a coronagraph, a 3.5-meter telescope can provide unique capabilities in several key areas.
+
 
 \begin{itemize}
 \item
@@ -566,8 +583,10 @@ A 3.5-meter-class space telescope can significantly expand the applicability of 
   Direct imaging is particularly valuable for studying young planetary systems and stellar associations, where newly formed planets remain relatively warm and luminous. Observations at optical and infrared wavelengths can distinguish young giant planets from their host stars, providing insights into planet formation mechanisms and early evolutionary processes.
 \end{itemize}
 
+
 Despite these advantages, significant technical challenges remain for achieving high-performance direct imaging with a 3.5-meter-class space telescope. Wavefront control within the coronagraph system requires extremely precise optical alignment and stability. Achieving deeper contrast levels and reducing the inner working angle to access planets at smaller angular separations demand increasingly sophisticated optical architectures, wavefront-sensing techniques, and post-processing algorithms. These challenges have motivated recent theoretical investigations into advanced approaches, including quantum-information-based signal processing and methods that explore the fundamental quantum limits of high-contrast imaging [65].
 
+\vspace{\baselineskip}
 \textbf{Future Prospects and Challenges}
 
 Direct imaging is expected to advance along several important directions in the coming decades:
@@ -596,7 +615,7 @@ In recent years, increasing attention has been directed toward the classificatio
 
 Statistical studies focus not only on the characteristics of individual exoplanets but also on determining how frequently different types of planets occur throughout the Galaxy. This field, commonly known as the \textbf{demographics of exoplanets}, seeks to measure occurrence rates and distribution functions as functions of planetary properties (such as mass and radius), orbital parameters (such as period and eccentricity), and host-star characteristics (such as spectral type) [68]. These statistical investigations provide critical constraints on theories of planet formation and evolution, helping to reveal the processes that shape planetary systems across a wide range of astrophysical environments.
 
-\subsection{Representative Statistical Studies of Exoplanets}\label{representative-statistical-studies-of-exoplanets}
+\subsubsection{Representative Statistical Studies of Exoplanets}
 
 One of the most influential examples of exoplanet population studies is the \textbf{Kepler mission} conducted by NASA. From 2009 to 2013, Kepler continuously monitored approximately 190,000 stars over a period of about four years and discovered thousands of exoplanet candidates. These observations enabled researchers to estimate planetary occurrence rates based on the measured radii and orbital periods of the detected planets. The Kepler dataset demonstrated that small-radius planets are extremely common within orbital distances of roughly 1 astronomical unit (AU) and revealed that planetary systems often exhibit architectures significantly different from that of our Solar System.
 
@@ -604,11 +623,11 @@ Accurate statistical analyses require careful correction for \textbf{selection b
 
 Exoplanet classification and demographic studies also play a crucial role in testing theories of \textbf{planet formation} and \textbf{planetary system evolution}. By comparing occurrence rates and classification spectra derived from multiple detection techniques with theoretical predictions, researchers can quantitatively evaluate physical processes such as protoplanetary disk mass distributions, star--planet interactions, and planetary migration. The resulting statistical patterns provide insights not only into the abundance of planets but also into the mechanisms that shape planetary systems and their long-term dynamical evolution [68].
 
-In recent years, significant progress has been made in addressing observational biases and improving completeness corrections in exoplanet demographic studies. For example, statistical analyses of the Kepler catalog have incorporated corrections for variations in detection sensitivity and the effects of false positives, enabling the derivation of bias-corrected occurrence rates. These methods have been used to estimate fundamental population parameters, including the occurrence rate of Earth-like planets, commonly denoted as \textbf{η⊕ (eta-Earth)} [69].
+In recent years, significant progress has been made in addressing observational biases and improving completeness corrections in exoplanet demographic studies. For example, statistical analyses of the Kepler catalog have incorporated corrections for variations in detection sensitivity and the effects of false positives, enabling the derivation of bias-corrected occurrence rates. These methods have been used to estimate fundamental population parameters, including the occurrence rate of Earth-like planets, commonly denoted as \textbf{η⊕} [69].
 
 Furthermore, studies of \textbf{planetary-system architectures} have become increasingly important for understanding how multiple planets are arranged and interact within a system. Such investigations examine statistical properties including orbital spacing ratios, orbital resonances, and eccentricity distributions. These measurements help characterize the typical architectures of exoplanetary systems and provide valuable constraints on theories of planetary formation, early dynamical evolution, and large-scale system organization [67].
 
-\subsection{Astrobiological Implications and Future Prospects}\label{astrobiological-implications-and-future-prospects}
+\subsubsection{Astrobiological Implications and Future Prospects}
 
 Exoplanet classification and population-statistics studies are also closely linked to \textbf{astrobiology} and investigations of \textbf{planetary habitability}. Large exoplanet datasets provide the fundamental statistical populations required for testing theories of habitability and evaluating how physical and environmental factors influence the potential for life. Such studies are essential for understanding the conditions under which habitable environments may emerge and persist on planetary bodies [70].
 
@@ -616,17 +635,19 @@ In summary, classification and demographic analyses based on the large samples o
 
 Future high-performance observatories, including a \textbf{3.5-meter-class space telescope}, will greatly expand the available exoplanet sample and enable increasingly detailed demographic investigations. Improved sensitivity, higher spatial resolution, and enhanced spectroscopic capabilities will allow the detection and characterization of previously inaccessible planetary populations. Ultimately, these advances will contribute to the construction of a comprehensive map of exoplanetary ecosystems, transforming our understanding from isolated examples to a statistically robust picture of planetary systems across the Universe.
 
+\subsection{Investigating the Habitability of Exoplanets}\label{investigating-the-habitability-of-exoplanets}
+
+The study of \textbf{exoplanet habitability} is one of the most challenging and significant areas of modern astronomy. This field extends beyond merely confirming the existence of exoplanets and seeks to determine whether a planet possesses the physical, chemical, and environmental conditions necessary to support or sustain life. Habitability assessments focus on several key factors, including the potential presence of liquid water on the planetary surface, the existence of stable temperature and pressure conditions, and the detectability of atmospheric \textbf{biosignatures} that may indicate biological activity [71,72].
+
+
 \begin{figure}[htbp]\centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image9.png}
 \end{figure}
 
 Fig. 9. Schematic diagram of the habitable zone in the Solar System(AI)
+\vspace{\baselineskip}
 
-\subsection{Investigating the Habitability of Exoplanets}\label{investigating-the-habitability-of-exoplanets}
-
-The study of \textbf{exoplanet habitability} is one of the most challenging and significant areas of modern astronomy. This field extends beyond merely confirming the existence of exoplanets and seeks to determine whether a planet possesses the physical, chemical, and environmental conditions necessary to support or sustain life. Habitability assessments focus on several key factors, including the potential presence of liquid water on the planetary surface, the existence of stable temperature and pressure conditions, and the detectability of atmospheric \textbf{biosignatures} that may indicate biological activity [71,72].
-
-\subsection{Habitability and the Habitable Zone}\label{habitability-and-the-habitable-zone}
+\subsubsection{Habitability and the Habitable Zone}
 
 The first step in evaluating planetary habitability is to identify the \textbf{habitable zone (HZ)} around a star. The habitable zone is defined as the range of orbital distances where stellar radiation allows liquid water to exist on a planet's surface. The location and extent of the HZ depend on the spectral type, luminosity, and evolutionary stage of the host star; consequently, the HZ varies with both stellar type and age.
 
@@ -634,7 +655,7 @@ Planets located within the habitable zone are generally considered more likely t
 
 When a planet experiences temperature conditions similar to those of Earth, liquid water may remain stable on its surface. Because of water's unique chemical properties and its role as the primary medium for known biological processes, the presence of liquid water is regarded as a fundamental requirement in most habitability studies. Nevertheless, the precise boundaries of the habitable zone are influenced by a variety of factors, including stellar ultraviolet radiation, atmospheric composition, cloud coverage, greenhouse processes, and planetary albedo. These effects are quantified through theoretical and numerical models that refine estimates of habitable-zone limits for different planetary and stellar environments [12].
 
-\subsection{Observational Approaches: Atmospheric Spectroscopy and Biosignatures}\label{observational-approaches-atmospheric-spectroscopy-and-biosignatures}
+\subsubsection{Observational Approaches: Atmospheric Spectroscopy and Biosignatures}
 
 The analysis of exoplanetary atmospheres is one of the most powerful tools for investigating planetary habitability. Certain atmospheric gases---such as \textbf{oxygen (O₂), ozone (O₃), methane (CH₄), carbon dioxide (CO₂), and water vapor (H₂O)}---are closely associated with biological processes on Earth. In particular, the simultaneous presence of oxygen and methane is of special interest because these gases tend to react with one another and are difficult to maintain together in significant quantities through purely abiotic processes. Their coexistence may therefore indicate a state of \textbf{chemical disequilibrium}, which is often regarded as a potential signature of biological activity.
 
@@ -642,13 +663,13 @@ Such potential indicators of life, known as \textbf{biosignatures}, can be detec
 
 High-contrast imaging combined with \textbf{reflected-light spectroscopy} also plays a crucial role in habitability studies. The reflected-light spectrum of a directly imaged exoplanet contains information about both its atmosphere and surface properties. Such observations can reveal the presence of water vapor, clouds, and a variety of molecular species that may be associated with habitable environments or biological activity. Because reflected-light spectroscopy can probe planetary environments in ways that complement transit observations, it is considered one of the key technologies for future large space-telescope missions dedicated to the search for habitable worlds and extraterrestrial life [75].
 
-\subsection{Interpretation and Limitations of Biosignatures}\label{interpretation-and-limitations-of-biosignatures}
+\subsubsection{Interpretation and Limitations of Biosignatures}
 
 One of the most frequently discussed biosignature candidates is \textbf{molecular oxygen (O₂)}, which constitutes approximately 21\% of Earth's atmosphere and is maintained primarily through biological activity. However, oxygen can also be produced through abiotic processes under certain planetary conditions. Consequently, the detection of oxygen alone cannot be regarded as definitive evidence for the existence of life. For this reason, combinations of multiple biosignatures---such as the simultaneous detection of \textbf{O₂ and methane (CH₄)}---are generally considered more compelling indicators of biological activity. Some researchers have further proposed that the presence of a significant \textbf{thermodynamic or chemical disequilibrium} within a planetary atmosphere may itself serve as a biosignature. To investigate such possibilities, methods have been developed to compare the relative abundances of multiple molecular species and evaluate whether their coexistence can be explained through known abiotic processes [76].
 
 Habitability studies must also carefully address the challenges of \textbf{false positives} and \textbf{false negatives}. For example, atmospheric chemical disequilibrium may arise from geological or photochemical processes rather than biological activity, leading to a false-positive interpretation of a biosignature. Conversely, life may exist on a planet without producing atmospheric signatures that are readily detectable, resulting in a false-negative outcome. Therefore, the interpretation of potential biosignatures requires the integration of multiple observational indicators and a comprehensive understanding of the planetary environment in which those signals are observed [72].
 
-\subsection{Contributions and Prospects of a 3.5-Meter Space Telescope}\label{contributions-and-prospects-of-a-3.5-meter-space-telescope}
+\subsubsection{Contributions and Prospects of a 3.5-Meter Space Telescope}
 
 A \textbf{3.5-meter-class space telescope} could make significant contributions to habitability studies by providing high-resolution spectroscopic observations and broad wavelength coverage for both direct imaging and atmospheric characterization. Such a facility would be particularly well suited for investigating the atmospheres of small terrestrial planets located within the habitable zones of nearby stars, enabling atmospheric analyses with greater precision than has been achieved for many targets observed by current facilities, including the James Webb Space Telescope [73].
 
@@ -662,7 +683,8 @@ In summary, the study of exoplanet habitability encompasses multiple interconnec
 
 \textbf{Stellar magnetic activity} encompasses a wide range of phenomena associated with stellar magnetic fields, including \textbf{starspots}, \textbf{stellar flares}, \textbf{coronal mass ejections (CMEs)}, and \textbf{high-energy X-ray and ultraviolet (XUV) radiation}. These processes can significantly influence the atmospheric composition, atmospheric retention, and surface environment of exoplanets. Their effects are particularly important in planetary systems around \textbf{M-type red dwarfs}, where the \textbf{habitable zone (HZ)} is located very close to the host star. Under such conditions, stellar magnetic activity becomes a key factor in determining planetary habitability [77,78]. Furthermore, investigating the effects of magnetic activity in young solar-type stars provides valuable insights into the evolution of Earth-like atmospheres and the environmental conditions that may have contributed to the origin of life on Earth [79].
 
-\subsection{Effects of Stellar Magnetic Activity on Planetary Atmospheres}\label{effects-of-stellar-magnetic-activity-on-planetary-atmospheres}
+
+\subsubsection{Effects of Stellar Magnetic Activity on Planetary Atmospheres}
 
 One of the most prominent manifestations of stellar magnetic activity is the \textbf{stellar flare}, which releases large amounts of high-energy photons and energetic particles. These events can directly affect both the chemical structure and long-term stability of planetary atmospheres. X-rays and extreme ultraviolet (EUV) radiation emitted during flares heat the upper layers of planetary atmospheres, thereby enhancing atmospheric escape processes. If such events occur repeatedly over long timescales, the cumulative loss of atmospheric material can gradually reduce atmospheric thickness and deplete water vapor and other gases essential for maintaining habitable conditions, ultimately diminishing planetary habitability [78].
 
@@ -672,19 +694,19 @@ On the other hand, stellar magnetic activity may also have beneficial effects fo
 
 Therefore, the study of stellar magnetic activity is important because it exhibits a dual role in planetary evolution. While intense activity can drive atmospheric loss and reduce habitability, it may simultaneously promote chemical processes that contribute to the emergence of life. Understanding these competing effects not only provides insight into the early evolution of life on Earth but also improves our ability to interpret potential biosignatures and assess the habitability of exoplanets around a wide variety of host stars.
 
-\subsection{Stellar Magnetic Activity and the Protective Role of Magnetospheres}\label{stellar-magnetic-activity-and-the-protective-role-of-magnetospheres}
+\subsubsection{Stellar Magnetic Activity and the Protective Role of Magnetospheres}
 
 At the planetary scale, a \textbf{magnetosphere} plays a crucial role in protecting an atmosphere from high-energy particles and radiation associated with stellar flares and other forms of stellar magnetic activity. Streams of charged particles carried by the \textbf{stellar wind} and flare-driven particle events can enhance atmospheric escape on planets with weak or absent magnetospheres. Over long timescales, such processes may lead to substantial atmospheric erosion and significant water loss, even for planets located within the habitable zone.
 
 This effect can be particularly severe in stellar environments where \textbf{superflares} occur frequently. In such systems, the absence or weakening of a planetary magnetosphere may result in continuous atmospheric stripping, potentially creating conditions unfavorable for the emergence or long-term persistence of life. Consequently, evaluating the habitability of exoplanets requires a quantitative understanding of the interactions among stellar magnetic activity, the duration and intensity of high-energy events, and the strength and structure of planetary magnetospheres.
 
-\subsection{Redefining the Habitable Zone in the Context of Stellar Magnetic Activity}\label{redefining-the-habitable-zone-in-the-context-of-stellar-magnetic-activity}
+\subsubsection{Redefining the Habitable Zone in the Context of Stellar Magnetic Activity}
 
 Traditionally, the \textbf{habitable zone (HZ)} has been defined primarily by orbital distance from the host star, based on the assumption that liquid water can exist on a planet's surface within a certain range of stellar irradiation. However, recent studies suggest that the concept of habitability should also incorporate the intensity and temporal variability of stellar magnetic activity.
 
 Under this framework, two planets receiving similar levels of stellar radiation may experience very different environmental conditions if their host stars exhibit different levels of magnetic activity. A highly active star may subject its planets to intense flare activity, elevated XUV radiation, and enhanced stellar-wind interactions, thereby reducing the region in which stable and long-term habitable conditions can be maintained. This concept has led to the proposal of a \textbf{dynamic habitable zone}, in which habitability depends not only on stellar irradiance but also on the surrounding space-weather environment. Such an approach requires consideration of stellar age, rotation rate, magnetic-field strength, and long-term activity evolution as integral components of habitability assessments [70].
 
-\subsection{Observational Constraints and the Need for Long-Term Monitoring}\label{observational-constraints-and-the-need-for-long-term-monitoring}
+\subsubsection{Observational Constraints and the Need for Long-Term Monitoring}
 
 To date, many studies of stellar flares and magnetic activity have focused on individual events or relatively limited samples of stars. However, a comprehensive assessment of exoplanet habitability requires long-term observations and statistical characterization of stellar magnetic activity across a wide range of stellar types and ages. Measurements of flare frequencies, XUV radiation levels, magnetic-activity cycles, and stellar-wind properties are essential for constructing realistic atmospheric-response models and evaluating the long-term evolution of planetary environments.
 
@@ -696,23 +718,25 @@ For example, potentially habitable planets orbiting M-type red dwarfs---such as 
 
 \subsection{Near-Earth Object Surveillance with a 3.5-Meter Space Telescope}\label{near-earth-object-surveillance-with-a-3.5-meter-space-telescope}
 
+The surveillance of \textbf{Near-Earth Objects (NEOs)} is a critical area of space science aimed at ensuring the long-term safety of Earth. NEOs consist primarily of \textbf{asteroids} and \textbf{comets}, some of which have orbits that approach or intersect Earth\textquotesingle s orbit, creating a potential impact hazard. The identification, tracking, and physical characterization of potentially hazardous NEOs are essential for impact-risk assessment and the development of planetary defense strategies. The importance of this research is underscored by evidence of past impact events, such as the Chicxulub impact, which had profound consequences for life on Earth.
+
+NEO surveillance using space-based telescopes offers significant advantages over ground-based observations. Ground observatories are constrained by atmospheric scattering, the day--night cycle, weather conditions, and seasonal visibility limitations, all of which directly affect observational efficiency. In contrast, space-based platforms operate free from these restrictions and can provide more continuous and comprehensive sky coverage. In particular, telescopes with high \textbf{infrared (IR) sensitivity} and wide-field survey capabilities are especially effective for detecting and tracking NEOs through their \textbf{thermal emission}, enabling the discovery of objects that may be difficult to detect in reflected visible light [13].
+
 \begin{figure}[htbp]\centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image10.png}
 \end{figure}
 
 Fig. 10. Visualization of the distribution of more than 37,000 currently known near-Earth objects using NASA's Eyes on Asteroids(AI)
-
-The surveillance of \textbf{Near-Earth Objects (NEOs)} is a critical area of space science aimed at ensuring the long-term safety of Earth. NEOs consist primarily of \textbf{asteroids} and \textbf{comets}, some of which have orbits that approach or intersect Earth\textquotesingle s orbit, creating a potential impact hazard. The identification, tracking, and physical characterization of potentially hazardous NEOs are essential for impact-risk assessment and the development of planetary defense strategies. The importance of this research is underscored by evidence of past impact events, such as the Chicxulub impact, which had profound consequences for life on Earth.
-
-NEO surveillance using space-based telescopes offers significant advantages over ground-based observations. Ground observatories are constrained by atmospheric scattering, the day--night cycle, weather conditions, and seasonal visibility limitations, all of which directly affect observational efficiency. In contrast, space-based platforms operate free from these restrictions and can provide more continuous and comprehensive sky coverage. In particular, telescopes with high \textbf{infrared (IR) sensitivity} and wide-field survey capabilities are especially effective for detecting and tracking NEOs through their \textbf{thermal emission}, enabling the discovery of objects that may be difficult to detect in reflected visible light [13].
-
-\subsection{Scientific Motivation for Near-Earth Object Surveillance}\label{scientific-motivation-for-near-earth-object-surveillance}
+\vspace{\baselineskip}
 
 \begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image11.jpeg}
+  \includegraphics[width=1.00\linewidth,height=0.5\textheight,keepaspectratio]{book_media/image11.jpeg}
 \end{figure}
 
 Fig. 11. KASI's Optical Wide-field Patrol (OWL) system for space object surveillance (left). The right panel shows the OWL observatory in Mongolia.
+\vspace{\baselineskip}
+
+\subsubsection{Scientific Motivation for Near-Earth Object Surveillance}
 
 Accurately determining the orbital and physical properties of potentially hazardous \textbf{Near-Earth Objects (NEOs)}---including their trajectories, sizes, albedos, rotation states, and surface characteristics---is the fundamental first step in assessing impact probabilities and developing effective planetary defense strategies. For NEOs with diameters ranging from several tens to hundreds of meters, the determination of orbital elements alone can often provide an initial estimate of impact risk. However, even much smaller objects, typically in the \textbf{10--30 m size range}, can produce significant regional damage upon atmospheric entry or impact. Consequently, the detection and monitoring of small NEOs remain an important scientific and societal challenge.
 
@@ -720,7 +744,7 @@ Most NEOs larger than approximately \textbf{100 m in diameter} are currently bei
 
 Observations conducted with a space telescope can simultaneously provide measurements of NEO brightness and motion across multiple wavelength bands. In particular, \textbf{infrared observations} offer a major advantage because they can detect both reflected sunlight and the object\textquotesingle s own \textbf{thermal emission}. By combining these measurements, astronomers can determine an object\textquotesingle s size and albedo with substantially greater accuracy than is typically achievable using visible-light observations alone. As a result, space-based infrared surveys provide a more reliable characterization of NEO populations and significantly improve our ability to assess potential impact hazards [44].
 
-\subsection{Role and Capabilities of a 3.5-Meter Space Telescope}\label{role-and-capabilities-of-a-3.5-meter-space-telescope}
+\subsubsection{Role and Capabilities of a 3.5-Meter Space Telescope}
 
 A \textbf{3.5-meter-class space telescope} can provide next-generation capabilities for space-based Near-Earth Object (NEO) surveillance. Its major contributions include the following:
 
@@ -742,7 +766,7 @@ A space-based platform can support long integration times and observations acros
 
 These capabilities would enable a more systematic and quantitative approach to \textbf{Near-Earth Object hazard assessment}. For example, accurate measurements of an NEO\textquotesingle s size, shape, and albedo can significantly improve estimates of impact energy, atmospheric entry behavior, and the geographical extent of potential damage. Consequently, a 3.5-meter-class space telescope would represent a powerful tool for advancing planetary defense and improving humanity's preparedness for future NEO impact threats.
 
-\subsection{Technical Requirements for Near-Earth Object Surveillance}\label{technical-requirements-for-near-earth-object-surveillance}
+\subsubsection{Technical Requirements for Near-Earth Object Surveillance}
 
 An effective NEO surveillance system requires several key technical capabilities:
 
@@ -759,7 +783,7 @@ An effective NEO surveillance system requires several key technical capabilities
 
 In particular, \textbf{infrared spectroscopic observations} play a crucial role in accurately characterizing NEOs. Observations based solely on reflected sunlight suffer from a degeneracy between an object\textquotesingle s size and albedo: two objects with the same apparent brightness may differ significantly in their actual sizes and reflectivities. In contrast, infrared thermal-emission measurements depend directly on an object\textquotesingle s surface temperature and physical size. By combining reflected-light and thermal-emission observations, astronomers can disentangle these effects and derive more reliable estimates of size, albedo, density, and surface properties.
 
-\subsection{Complementarity Between International Surveillance Networks and Space Telescopes}\label{complementarity-between-international-surveillance-networks-and-space-telescopes}
+\subsubsection{Complementarity Between International Surveillance Networks and Space Telescopes}
 
 Current NEO surveillance efforts rely on close cooperation between ground-based survey networks and space-based observatories. A notable example of a space-based infrared survey mission is NEOWISE, while major ground-based programs such as Catalina Sky Survey, Pan-STARRS, and ATLAS continuously discover and track NEOs.
 
@@ -767,11 +791,11 @@ Infrared observations from space provide sensitivity to objects that are difficu
 
 Ground-based telescopes have the advantage of surveying large regions of the sky rapidly and at relatively low operational cost. However, their performance is inevitably affected by atmospheric conditions, weather, seeing variations, and the day--night cycle. Space-based observations are free from these limitations and benefit from darker backgrounds, longer uninterrupted observing periods, and higher signal-to-noise ratios (SNRs). The combination of ground- and space-based observations therefore represents a highly effective strategy for improving the \textbf{completeness} of NEO surveys and enabling the construction of more comprehensive catalogs that include both large and small potentially hazardous objects.
 
-\subsection{NEO Data Processing and Impact Risk Assessment}\label{neo-data-processing-and-impact-risk-assessment}
+\subsubsection{NEO Data Processing and Impact Risk Assessment}
 
 Following NEO surveillance observations, the collected data must be incorporated into orbital-dynamics models and impact-probability calculations. Prominent examples include the NASA Jet Propulsion Laboratory \textbf{Sentry} impact-monitoring system and the European Space Agency \textbf{Near-Earth Object Coordination Centre (NEOCC)}, both of which calculate impact probabilities using the orbital elements of detected objects. Integrating NEO observations obtained from space-based telescopes with these monitoring systems can significantly improve the precision and reliability of impact-risk assessments. This demonstrates that NEO surveillance serves not only as a detection activity but also as a critical source of quantitative data for risk analysis, impact forecasting, and the development of mitigation strategies.
 
-\subsection{Summary and Future Prospects}\label{summary-and-future-prospects}
+\subsubsection{Summary and Future Prospects}
 
 A \textbf{3.5-meter-class space telescope} can make substantial contributions to NEO surveillance through its high sensitivity, broad wavelength coverage, long integration times, and space-based observing environment. These capabilities complement existing ground-based survey networks and are particularly valuable for the detection and characterization of small NEOs that are difficult to identify using current facilities. Beyond providing essential information for planetary defense and impact-risk assessment, such observations also contribute to our understanding of the origin, evolution, and dynamical behavior of small-body populations throughout the Solar System.
 
@@ -781,7 +805,7 @@ A \textbf{3.5-meter-class space telescope} can make substantial contributions to
 
 Space hazard analysis extends beyond identifying the existence and orbital characteristics of NEOs. Its primary objective is to quantitatively evaluate and predict risk by combining the \textbf{probability} of an impact event with its potential \textbf{consequences}. Achieving this goal requires high-precision determination of an object\textquotesingle s physical properties and orbital parameters, modeling of its long-term orbital evolution, rigorous assessment of uncertainties, and the integration of these factors into comprehensive \textbf{risk metrics}. Through this approach, researchers can better characterize potential hazards and support informed decision-making for planetary defense planning and impact-mitigation strategies.
 
-\subsection{Space Hazard Analysis: Integrating Probability, Consequences, and Systematic Risk Assessment}\label{space-hazard-analysis-integrating-probability-consequences-and-systematic-risk-assessment}
+\subsubsection{Space Hazard Analysis: Integrating Probability, Consequences, and Systematic Risk Assessment}
 
 Historically, NEO research has focused primarily on the detection and orbital determination of potentially hazardous objects. However, orbital information alone is insufficient for assessing actual impact risk. Risk cannot be represented by a single value; rather, it must be treated as a function of a probability distribution that combines uncertainties in orbital predictions with outcome-related variables such as an object\textquotesingle s size, density, composition, and impact velocity.
 
@@ -791,7 +815,7 @@ Another fundamental aspect of hazard analysis is \textbf{uncertainty propagation
 
 The combined evaluation of impact probability, impact consequences, and uncertainty propagation forms the foundation of quantitative space hazard analysis. Nevertheless, two major challenges remain. First, the distributions of impact consequences must be refined through improved knowledge of an object\textquotesingle s physical properties, including its size, density, shape, and albedo. Second, comprehensive dynamical models must incorporate \textbf{non-gravitational perturbations}, such as thermal forces and the \textbf{Yarkovsky effect}, which can gradually alter an object\textquotesingle s orbit over long timescales and significantly affect long-term impact predictions. Addressing these challenges is essential for improving the accuracy and reliability of future NEO hazard assessments.
 
-\subsection{Physical Properties of NEOs and Impact Consequences: The Importance of Separating Albedo and Size}\label{physical-properties-of-neos-and-impact-consequences-the-importance-of-separating-albedo-and-size}
+\subsubsection{Physical Properties of NEOs and Impact Consequences: The Importance of Separating Albedo and Size}
 
 Traditionally, the size of a \textbf{Near-Earth Object (NEO)} is estimated from its \textbf{absolute magnitude (H)} and \textbf{albedo}. However, optical observations alone cannot uniquely determine these two quantities because the observed brightness depends on both the object\textquotesingle s size and its reflectivity. As a result, uncertainties in albedo translate directly into uncertainties in size estimates. Since the size of an NEO is a primary parameter in determining its impact energy (approximately proportional to \textbf{½mv²}), accurate size determination is essential for reliable assessments of potential impact consequences.
 
@@ -799,7 +823,7 @@ To overcome this limitation, observations of an NEO's \textbf{thermal emission} 
 
 Furthermore, spectroscopic observations of reflected light can provide information on an object\textquotesingle s composition---such as whether it is dominated by silicates, carbonaceous materials, or metallic constituents---as well as its surface physical properties, including scattering behavior and surface roughness. These characteristics influence fragmentation processes, atmospheric entry dynamics, and energy-transfer mechanisms during an impact event. Consequently, they are critical inputs for \textbf{sensitivity analyses} within quantitative hazard-assessment models and for improving predictions of potential damage scenarios.
 
-\subsection{Non-Gravitational Perturbations: The Yarkovsky Effect and Long-Term Risk Evolution}\label{non-gravitational-perturbations-the-yarkovsky-effect-and-long-term-risk-evolution}
+\subsubsection{Non-Gravitational Perturbations: The Yarkovsky Effect and Long-Term Risk Evolution}
 
 One of the greatest challenges in long-term hazard prediction is accounting for \textbf{non-gravitational perturbations} that alter the orbits of NEOs over extended periods. Among the most important of these effects is the \textbf{Yarkovsky effect}, a mechanism in which absorbed solar radiation is re-emitted as thermal radiation, producing a small but continuous force that gradually modifies an asteroid's orbit.
 
@@ -807,7 +831,7 @@ Although the resulting acceleration is extremely weak, its cumulative influence 
 
 Numerical studies have demonstrated that neglecting the Yarkovsky effect may lead to substantial inaccuracies in long-term impact-risk assessments [83]. Consequently, modern hazard-analysis frameworks increasingly incorporate Yarkovsky-related parameters or plausible ranges of thermal-force models into \textbf{Monte Carlo simulations} and long-term orbital-evolution calculations. By doing so, researchers can explore a broader range of possible future trajectories and obtain a more realistic assessment of impact probabilities than would be possible using orbital covariance propagation alone. Such approaches provide a deeper understanding of long-term NEO risk evolution and improve the reliability of future planetary-defense planning.
 
-\subsection{The Role of a 3.5-Meter Space Telescope: From Surveillance to Hazard Analysis and Mitigation Planning}\label{the-role-of-a-3.5-meter-space-telescope-from-surveillance-to-hazard-analysis-and-mitigation-planning}
+\subsubsection{The Role of a 3.5-Meter Space Telescope: From Surveillance to Hazard Analysis and Mitigation Planning}
 
 A \textbf{3.5-meter-class space telescope} has the potential to significantly strengthen multiple stages of space hazard analysis. Its contributions extend well beyond simple object detection and can be summarized as follows:
 
@@ -843,7 +867,7 @@ This field integrates not only information about individually detected objects b
 
 The following sections discuss the fundamental concepts of space-hazard prediction and early warning, the principal analytical and computational techniques employed in this field, the role and expected performance improvements enabled by a 3.5-meter-class space telescope, and the quantitative characteristics of such research as demonstrated through relevant studies and references.
 
-\subsection{The Need for Space Hazard Prediction and Early Warning Systems}\label{the-need-for-space-hazard-prediction-and-early-warning-systems}
+\subsubsection{The Need for Space Hazard Prediction and Early Warning Systems}
 
 Potentially hazardous objects often possess significant orbital uncertainties at the time of their discovery. Initial observations typically cover only a \textbf{short observational arc}, making long-term orbital predictions subject to substantial uncertainty. Consequently, there is a critical need for \textbf{predictive and early warning systems} capable of identifying whether a Near-Earth Object (NEO) may pose an impact threat at some future time and of recognizing potentially hazardous scenarios as early as possible.
 
@@ -851,7 +875,7 @@ An effective warning system must provide a comprehensive response framework for 
 
 Importantly, an early warning system should do more than simply assign a risk rating. It must be designed to predict how impact risk may evolve in the future and to support the optimization of mitigation and response strategies as new information becomes available. A central objective is therefore the time-dependent modeling of how uncertainties in orbital elements and physical properties influence hazard metrics and risk assessments.
 
-\subsection{Predictive and Early Warning Methodologies}\label{predictive-and-early-warning-methodologies}
+\subsubsection{Predictive and Early Warning Methodologies}
 
 \subsubsection{1) Long-Term Orbital Prediction Modeling}\label{long-term-orbital-prediction-modeling}
 
@@ -865,13 +889,13 @@ A common approach involves generating large ensembles of \textbf{virtual clones}
 
 Such an approach provides a quantitative foundation for future early warning systems and enables more reliable long-term forecasting of potential NEO impact hazards.
 
-\subsection{2) Integrated Risk Scales and Warning Criteria}\label{integrated-risk-scales-and-warning-criteria}
+\subsubsection{2) Integrated Risk Scales and Warning Criteria}\label{integrated-risk-scales-and-warning-criteria}
 
 The \textbf{Palermo Technical Impact Hazard Scale} and the \textbf{Torino Scale} are the most widely used tools for impact-risk assessment. The Palermo Scale expresses risk as a logarithmic measure that combines impact probability with expected impact energy, facilitating quantitative comparisons among potential threats by specialists. The Torino Scale, in contrast, is designed for public communication and provides a simplified classification system that combines impact probability and potential consequences into a single risk level.
 
 For example, objects assigned a \textbf{Torino Scale value of 2 or higher} generally warrant additional observations and are often interpreted as representing a temporary warning level. Objects reaching \textbf{Torino Scale values of 5 or higher} are typically considered significant enough to justify substantial scientific attention and preparedness planning. Together, these scales provide a common framework for translating complex impact-risk assessments into standardized warning indicators.
 
-\subsection{Role of a 3.5-Meter Space Telescope and Expected Performance Improvements}\label{role-of-a-3.5-meter-space-telescope-and-expected-performance-improvements}
+\subsubsection{Role of a 3.5-Meter Space Telescope and Expected Performance Improvements}
 
 A \textbf{3.5-meter-class space telescope} has the potential to substantially enhance multiple stages of predictive and early-warning research for space hazards. Its major contributions can be summarized as follows:
 
@@ -895,7 +919,7 @@ One of the most important objectives of an early-warning system is determining w
 
 Observations obtained by a 3.5-meter-class space telescope can be integrated with ground-based optical and radar measurements as well as data from other space missions, such as the James Webb Space Telescope. Such multi-platform data fusion can substantially improve the accuracy of impact-risk assessments. For example, combining radar-derived distance and velocity measurements with space-based physical characterization data yields more precise orbital solutions and more reliable long-term predictions.
 
-\subsection{Expected Outcomes and Applications}\label{expected-outcomes-and-applications}
+\subsubsection{Expected Outcomes and Applications}
 
 Predictive and early-warning research for space hazards provides benefits that extend far beyond the issuance of impact alerts. Comprehensive time-dependent risk models can forecast the evolution of impact probabilities over periods spanning decades and identify when and where critical risk thresholds may emerge. These predictive risk maps can serve as valuable decision-support tools for public policy, emergency management, and disaster-preparedness planning.
 
@@ -909,15 +933,18 @@ The 3.5-meter segmented-mirror robotic space telescope is planned to operate eit
 
 Several orbital candidates were evaluated for the 3.5-meter segmented-mirror robotic space telescope, including geostationary orbit (GEO), the Sun--Earth L2 point, an Earth-trailing heliocentric orbit, and various medium Earth orbits (MEOs). The trade-off analysis considered multiple factors, including radiation exposure, the duration and frequency of eclipses, the effects of Earth infrared emission and reflected sunlight (albedo) on thermal stability, achievable data downlink rates as a function of distance, and the complexity of final orbit insertion maneuvers. Based on this assessment, we propose either the Sun--Earth L2 point (approximately 1.5 million km from Earth) or a low Earth orbit at an altitude of about 700 km as the most suitable operational orbit for the mission.
 
+
+These orbital environments have already been well demonstrated by previous space missions and are expected to provide high downlink capacity and excellent spacecraft stability. They offer access to nearly the entire sky, while their stable orbital characteristics minimize the need for station-keeping maneuvers, thereby reducing propellant consumption and extending the operational lifetime of the mission. In particular, the L2 orbit requires only minimal station-keeping and does not necessitate a dedicated disposal maneuver at the end of the mission.
+
+The left panel of Figure 13 does not explicitly represent the characteristics of a Sun-synchronous orbit (SSO), such as its orbit--Sun geometry. Instead, it is more accurately interpreted as a map of the annual observable days for a space telescope operating under a solar avoidance angle constraint of 60°, regardless of its specific orbit. The Field of Regard was calculated by counting the number of days during which the angular separation between a target and the Sun is greater than or equal to 60°. Under this condition, the theoretical minimum visibility is approximately 243 days per year for targets near the ecliptic plane, while the maximum visibility reaches 365 days per year for targets near the ecliptic poles. The right panel shows the corresponding result for an observatory operating at the Sun--Earth L2 point, yielding essentially the same visibility distribution.
+
+
 \begin{figure}[htbp]\centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image12.png}
 \end{figure}
 
 Fig. 12. The above figure illustrates the field of regard of the 3.5-meter space telescope for operation in a 700 km Sun-synchronous orbit (SSO) (left) and at the Sun--Earth L2 point (right). The color bar represents the annual number of observable days corresponding to each color, ranging from 243 days near the ecliptic plane to 365 days near the ecliptic poles for both orbital configurations(AI).
-
-These orbital environments have already been well demonstrated by previous space missions and are expected to provide high downlink capacity and excellent spacecraft stability. They offer access to nearly the entire sky, while their stable orbital characteristics minimize the need for station-keeping maneuvers, thereby reducing propellant consumption and extending the operational lifetime of the mission. In particular, the L2 orbit requires only minimal station-keeping and does not necessitate a dedicated disposal maneuver at the end of the mission.
-
-The left panel of Figure 13 does not explicitly represent the characteristics of a Sun-synchronous orbit (SSO), such as its orbit--Sun geometry. Instead, it is more accurately interpreted as a map of the annual observable days for a space telescope operating under a solar avoidance angle constraint of 60°, regardless of its specific orbit. The Field of Regard was calculated by counting the number of days during which the angular separation between a target and the Sun is greater than or equal to 60°. Under this condition, the theoretical minimum visibility is approximately 243 days per year for targets near the ecliptic plane, while the maximum visibility reaches 365 days per year for targets near the ecliptic poles. The right panel shows the corresponding result for an observatory operating at the Sun--Earth L2 point, yielding essentially the same visibility distribution.
+\vspace{\baselineskip}
 
 \section{Operations Concept}\label{operations-concept}
 
@@ -953,7 +980,7 @@ From a national perspective, the significance of this mission is equally substan
 
 Taken together, these factors suggest that the 3.5-meter segmented-mirror robotic space telescope has the potential to become far more than a single scientific mission. It represents a next-generation space observatory platform capable of delivering both significant scientific impact and strategic value in the post-2030 space astronomy landscape. By simultaneously linking scientific discovery, operational innovation, international collaboration, and national capability development, the mission offers a new model for future space observatories and may mark an important milestone in the transition of Korean astronomy into the era of space-based flagship observational facilities.
 
-\textbf{Acknowledgements}
+\subsubsection{Acknowledgements}
 
 This work was supported by the 2026 Korea Astronomy and Space Science Institute (KASI) major research program, ``Development of Advanced Laser Interferometry Technologies for Participation in the International Joint Development of Next-Generation Gravitational-Wave Detectors'' (Project No. 2026181000).
 
