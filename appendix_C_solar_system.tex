@@ -84,8 +84,8 @@
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
-\newcolumntype{T}[1]{>{\vspace{0pt}\raggedright\arraybackslash}p{#1}}
-\newcolumntype{Z}{>{\vspace{0pt}\raggedright\arraybackslash}X}
+\newcommand{\topcell}[1]{%
+  \begin{minipage}[t]{\linewidth}\vspace{0pt}#1\end{minipage}}
 \emergencystretch=3em
 
 \newtcolorbox{resultbox}[1][]{
@@ -138,17 +138,21 @@ create a thermal-infrared survey.
 
 \vspace{2mm}
 \noindent
-\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{cGold}}T{31mm}Z@{}}
-Proposal role & Planetary defense and small-body population science with a
-clear separation between discovery and post-discovery characterization.\\
-Baseline claim & High-value follow-up, physical characterization, and orbit
-refinement are feasible within the present optical and near-infrared concept.\\
-Upgrade claim & A cooled 4--10\,$\mu$m wide-field channel would provide a
-credible thermal discovery mode. The field of regard and survey cadence
-remain first-order requirements.\\
-Confirmation & Performance is stated as a requirement or a demonstrated
-comparison. Unverified limiting magnitudes and completeness claims are not
-treated as mission performance.
+\begin{tabularx}{\textwidth}{@{}P{31mm}Y@{}}
+\topcell{\bfseries\color{cGold}Proposal role} &
+\topcell{Planetary defense and small-body population science with a clear
+separation between discovery and post-discovery characterization.}\\
+\topcell{\bfseries\color{cGold}Baseline claim} &
+\topcell{High-value follow-up, physical characterization, and orbit refinement
+are feasible within the present optical and near-infrared concept.}\\
+\topcell{\bfseries\color{cGold}Upgrade claim} &
+\topcell{A cooled 4--10\,$\mu$m wide-field channel would provide a credible
+thermal discovery mode. The field of regard and survey cadence remain
+first-order requirements.}\\
+\topcell{\bfseries\color{cGold}Confirmation} &
+\topcell{Performance is stated as a requirement or a demonstrated comparison.
+Unverified limiting magnitudes and completeness claims are not treated as
+mission performance.}
 \end{tabularx}
 
 \section{Science Scope}
