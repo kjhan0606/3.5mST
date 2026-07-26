@@ -1313,66 +1313,6 @@ non-gravitational perturbations. Yeomans and Kiang instead identify the
 \cite{YeomansKiang1981}.
 \end{resultbox}
 
-\subsection{Historical comet identification}
-\label{sec:historical-comet-identification}
-
-The Historical Comet Identification Mode compares one fitted comet
-apparition with an independently preserved sky description. The calculation
-does not propagate the present orbit through an ancient close encounter.
-CODES selects the NASA/JPL solution for the relevant apparition and records
-the numeric solution identifier in every output product. The finder chart
-then places the topocentric comet position among Hipparcos stars for the
-specified terrestrial site.
-
-The first curated case uses the 1759 \mbox{1P/Halley} record from the
-\textit{Seongbyeon Cheukhu Danja}. The manuscript is held by Yonsei
-University Library and the digital image was provided by the Korea Astronomy
-and Space Science Institute \cite{KASISeongbyeon}. The record describes the
-comet within the Xu lunar mansion and north of the Liyu asterism on lunar
-March 11. The converted civil date is 1759 April 7 near dawn
-\cite{Lee2014Halley}. CODES adopts 20:30 UTC on the preceding civil evening
-as the reference epoch for the fifth night watch. The adopted epoch is a
-modeled center because the historical time expression has finite width.
-
-CODES selects Horizons apparition record 90000027. At the reference epoch
-the calculated ICRS position is
-$\alpha=329.7288^\circ$ and $\delta=-9.6505^\circ$. The elevation from
-Hanyang is $17.90^\circ$ and the solar elongation is $51.67^\circ$. The
-calculated point lies inside the Xu right ascension interval with a
-$1.72^\circ$ margin. The point is $4.75^\circ$ north of the adopted Liyu
-triplet. The two independent positional statements in the manuscript are
-therefore reproduced.
-
-\begin{warningbox}
-\textbf{\color{cOrange}The polar distance is not yet a validation point.}
-The manuscript description reports a north polar distance of
-$116^\circ$. The historical JPL solution gives $100.792^\circ$ when the
-declination is referred to the apparent equator of date. CODES preserves the
-raw value and the $-15.208^\circ$ residual in the provenance JSON but excludes
-the value from the identification score. A defensible numerical comparison
-requires a checked transcription of the complete page and calibration of the
-instrument scale and coordinate convention. The two categorical agreements
-demonstrate consistency. They do not by themselves prove the orbit.
-\end{warningbox}
-
-\begin{verbatim}
-python -m neo_orbit_calculator.cli spk 99942 \
-  --start 2026-01-01 --stop 2126-01-01
-
-python -m neo_orbit_calculator.cli propagate 99942 \
-  --start 2026-01-01 --stop 2126-01-01 \
-  --backend fortran
-
-python -m neo_orbit_calculator.cli comet-orbits 1P \
-  --start-year 800 --stop-year 2000
-
-python -m neo_orbit_calculator.cli comet-sky 1P \
-  --epochs 2061-07-28 2061-08-15 2061-09-01
-
-python -m neo_orbit_calculator.cli historical-comet \
-  --record joseon-halley-1759-03-11
-\end{verbatim}
-
 \subsection{Integrated CODES desktop interface}
 \label{sec:codes-gui}
 
@@ -1392,9 +1332,8 @@ The tab separates authoritative JPL products from the local force-model
 calculation. The clone-count and seed controls launch the full JPL-covariance
 virtual-asteroid ensemble. The full multi-body 1PN switch controls both
 nominal and ensemble propagation. The other tabs expose comet apparition
-histories, apparent sky positions, historical record comparison, and the
-validation suites. The run log records the executed command and returned
-file paths.}
+histories, apparent sky positions, and the validation suites. The run log
+records the executed command and returned file paths.}
 \label{fig:codes-gui}
 \end{figure}
 
@@ -1422,12 +1361,6 @@ semimajor axis, and perihelion distance\\
 Accepts UTC epochs and a Horizons observer code for a selected comet. &
 Apparent right ascension, declination, heliocentric distance, observer
 distance, IAU constellation, and a labeled sky track\\
-\cmidrule(lr){1-3}
-\textbf{Historical identification} &
-Accepts a curated record or a manually specified comet, epoch, apparition
-solution, terrestrial site, and chart scale. &
-Topocentric coordinate table, Hipparcos finder chart, historical constraint
-comparison, and provenance JSON\\
 \cmidrule(lr){1-3}
 \textbf{Validation} &
 Runs the ten-object NEO close-approach comparison or the historical
@@ -1635,19 +1568,6 @@ Roa, J., Farnocchia, D., \& Chesley, S. R. 2021,
 ``A novel approach to asteroid impact monitoring and hazard assessment,''
 \textit{Astronomical Journal}, 162, 277.
 \href{https://doi.org/10.3847/1538-3881/ac193f}{doi:10.3847/1538-3881/ac193f}.
-
-\bibitem{Lee2014Halley}
-Lee, K. W., Mihn, B. H., \& Ahn, Y. S. 2014,
-``Korean Historical Records on Halley's Comet Revisited,''
-\textit{Journal of Astronomy and Space Sciences}, 31, 215.
-\href{https://doi.org/10.5140/JASS.2014.31.3.215}
-{doi:10.5140/JASS.2014.31.3.215}.
-
-\bibitem{KASISeongbyeon}
-Korea Astronomy and Space Science Institute 2023,
-``Joseon Dynasty comet observation records proposed for the UNESCO Memory
-of the World Register.''
-\url{https://www.kasi.re.kr/kor/publication/post/newsMaterial/29446}.
 
 \bibitem{YeomansKiang1981}
 Yeomans, D. K., \& Kiang, T. 1981,

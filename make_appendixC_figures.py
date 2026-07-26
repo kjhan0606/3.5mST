@@ -262,7 +262,7 @@ def l2_observability() -> None:
 
     geometry = figure.add_subplot(grid[0, 0])
     geometry.set_aspect("equal")
-    geometry.set_xlim(-1.1, 1.35)
+    geometry.set_xlim(-1.30, 1.35)
     geometry.set_ylim(-1.2, 1.2)
     geometry.axis("off")
     l2 = np.array([0.0, 0.0])
