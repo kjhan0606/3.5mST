@@ -1,0 +1,630 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper,oneside]{book}
+
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Sans}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{graphicx,float}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\definecolor{cDeep}{HTML}{0E1B18}
+\definecolor{cPanel}{HTML}{172923}
+\definecolor{cPanelTwo}{HTML}{20372F}
+\definecolor{cText}{HTML}{F4F1E8}
+\definecolor{cMuted}{HTML}{C4C9C1}
+\definecolor{cTeal}{HTML}{56D6C2}
+\definecolor{cGold}{HTML}{FFD166}
+\definecolor{cOrange}{HTML}{FF8A4C}
+\definecolor{cRed}{HTML}{FF5C5C}
+\definecolor{cBlue}{HTML}{66B3FF}
+
+\pagecolor{cDeep}
+\color{cText}
+\arrayrulecolor{cMuted!35}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=cTeal,
+  citecolor=cTeal,
+  urlcolor=cGold,
+  pdftitle={Appendix C: Solar-System Small Bodies and Planetary Defense},
+  pdfauthor={Juhan Kim}
+}
+\captionsetup{
+  font=small,
+  labelfont={bf,color=cGold},
+  textfont={color=cMuted},
+  justification=raggedright,
+  singlelinecheck=false
+}
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{cText}}
+  {\Large\color{cGold}APPENDIX C}
+  {4pt}
+  {\fontsize{28}{32}\selectfont}
+\titleformat{\section}
+  {\Large\bfseries\color{cGold}}
+  {\thesection}{0.7em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{cTeal}}
+  {\thesubsection}{0.7em}{}
+\titlespacing*{\chapter}{0pt}{-15mm}{8mm}
+\titlespacing*{\section}{0pt}{6mm}{2mm}
+\setlist[itemize]{leftmargin=5mm,itemsep=1.5mm,topsep=1.5mm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.5mm}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\emergencystretch=3em
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\color{cMuted}\small 3.5-meter Segmented-Mirror Robotic Space Telescope}
+\fancyhead[R]{\color{cGold}\small Appendix C}
+\fancyfoot[C]{\color{cMuted}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{cTeal!50}\leaders\hrule height \headrulewidth\hfill}}
+
+\newtcolorbox{resultbox}[1][]{
+  enhanced,
+  colback=cPanel,
+  colframe=cTeal,
+  coltext=cText,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  #1
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,
+  colback=cPanel,
+  colframe=cOrange,
+  coltext=cText,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  #1
+}
+\newcommand{\facility}{3.5-meter Segmented-Mirror Robotic Space Telescope}
+\newcommand{\code}[1]{\texttt{\color{cTeal}#1}}
+
+\begin{document}
+\chapter{Solar-System Small Bodies and Planetary Defense}
+\label{app:solar-system}
+
+\begin{resultbox}
+\textbf{\color{cGold}Central design conclusion.}
+The baseline 0.2--1.5\,$\mu$m observatory is strongest as a rapid-response
+facility for astrometry, visible and near-infrared taxonomy, rotation and
+phase curves, recovery, and long-arc orbit improvement. Active cooling makes
+NEO discovery substantially stronger only when it is coupled to a dedicated
+4--10\,$\mu$m detector, cold fore-optics, low-emissivity baffling, a wide
+field, and access to small solar elongations. Cooling by itself does not
+create a thermal-infrared survey.
+\end{resultbox}
+
+\vspace{2mm}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{cGold}\raggedright\arraybackslash}p{31mm}Y@{}}
+Proposal role & Planetary defense and small-body population science, with a
+clear separation between discovery and post-discovery characterization.\\
+Baseline claim & High-value follow-up, physical characterization, and orbit
+refinement are feasible within the present optical and near-infrared concept.\\
+Upgrade claim & A cooled 4--10\,$\mu$m wide-field channel would provide a
+credible thermal discovery mode. The field of regard and survey cadence
+remain first-order requirements.\\
+Evidence standard & Performance is stated as a requirement or a demonstrated
+comparison. Unverified limiting magnitudes and completeness claims are not
+treated as mission performance.\\
+\end{tabularx}
+
+\section{Science Scope}
+
+The original proposal identifies NEO discovery, physical characterization,
+orbit refinement, impact-risk analysis, and early warning as one connected
+program. The scientific logic is sound, although the hardware requirements
+for each stage differ. A defensible mission architecture therefore divides
+the program into four products.
+
+\begin{enumerate}[leftmargin=7mm,itemsep=2mm]
+\item \textbf{\color{cTeal}Recovery and astrometry.} Measure accurate
+ICRF positions for recently discovered objects and extend the observational
+arc before ephemeris uncertainty grows.
+\item \textbf{\color{cGold}Physical characterization.} Measure colors,
+spectra, light curves, phase behavior, and thermal flux when a mid-infrared
+channel is present.
+\item \textbf{\color{cOrange}Dynamical refinement.} Fit gravitational and
+non-gravitational accelerations, including Yarkovsky drift when the data arc
+and physical priors support the fit.
+\item \textbf{\color{cRed}Hazard assessment.} Propagate the full orbit
+covariance through close encounters. A nominal trajectory alone is not an
+impact probability.
+\end{enumerate}
+
+The \facility\ contributes most strongly where aperture, angular resolution,
+robotic scheduling, and a stable space environment improve follow-up. A
+dedicated discovery survey additionally requires étendue, repeated cadence,
+moving-object processing, and access toward the Sun.
+
+\section{Size, Albedo, and Thermal Flux}
+
+For an asteroid with absolute magnitude $H$ and geometric albedo $p_V$, the
+diameter proxy is
+\begin{equation}
+  D\,[\mathrm{m}]
+  =1.329\times10^6\,p_V^{-1/2}10^{-0.2H}.
+  \label{eq:h-diameter}
+\end{equation}
+The equation shows why reflected-light discovery does not determine impact
+energy. A dark and large body may have the same $H$ as a bright and smaller
+body. Thermal-infrared flux breaks much of this degeneracy and supports a
+diameter estimate when the observing geometry and thermal model are known
+\cite{Mainzer2011,Mainzer2023}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.96\textwidth]{appendixC_assets/neo_h_diameter.png}
+\caption{Diameter inferred from $H$ depends strongly on the assumed visible
+geometric albedo. The plotted relation is Equation~\ref{eq:h-diameter}.}
+\end{figure}
+
+\subsection{Why active cooling helps}
+
+Wien's displacement law gives
+\begin{equation}
+  \lambda_{\rm peak}\,[\mu\mathrm{m}]
+  \simeq \frac{2898}{T\,[\mathrm{K}]}.
+\end{equation}
+Objects at 250--400\,K peak near 11.6--7.2\,$\mu$m. The present
+0.2--1.5\,$\mu$m range measures reflected sunlight for most NEOs. It does not
+sample the thermal maximum. NEO Surveyor illustrates the required system
+design. The mission uses 4.0--5.2 and 6.0--10.0\,$\mu$m channels, a broad
+field, a cold optical system, and a field of regard that approaches the Sun
+\cite{Mainzer2023}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.96\textwidth]{appendixC_assets/neo_thermal_windows.png}
+\caption{Normalized blackbody shapes for representative NEO temperatures.
+The gold intervals mark the NEO Surveyor channel ranges. The comparison
+explains the leverage of a cooled mid-infrared option without implying a
+specific 3.5ST flux limit.}
+\end{figure}
+
+\begin{warningbox}
+\textbf{\color{cOrange}Cooling is necessary but insufficient.}
+A credible discovery upgrade requires a mid-infrared focal plane, cold
+fore-optics, low detector dark current, low self-emission, a forward baffle,
+a wide field, repeated moving-object cadence, and a data system that links
+tracklets. A cold telescope with only the baseline detector remains an
+optical and near-infrared observatory.
+\end{warningbox}
+
+\section{Baseline Optical and Near-Infrared Program}
+
+\subsection{Astrometry and recovery}
+
+For a well-sampled point-spread function, a useful photon-limit estimate is
+\begin{equation}
+  \sigma_{\rm cent}
+  \simeq \frac{\mathrm{FWHM}}{2.355\,\mathrm{S/N}}.
+  \label{eq:centroid}
+\end{equation}
+Equation~\ref{eq:centroid} is not the mission astrometric error. Absolute
+accuracy also depends on geometric-distortion stability, detector effects,
+timing, guide-star errors, chromaticity, source trailing, and the reference
+catalog. The mission requirement should therefore specify both centroid
+precision and an externally validated ICRF floor.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{appendixC_assets/neo_astrometry.png}
+\caption{Photon-limited centroid precision for three representative PSF
+widths. The shaded floor is a calibration target, not a demonstrated
+performance value.}
+\end{figure}
+
+The high-value operational mode is a rapid Target-of-Opportunity sequence
+that acquires several short, untrailed exposures, repeats the sequence after
+a geometry-dependent interval, and publishes astrometry with a complete
+timing and distortion solution. The final cadence must be optimized with
+synthetic moving-object injection rather than adopted from a static-source
+survey.
+
+\subsection{Composition, rotation, and phase behavior}
+
+The Bus--DeMeo system uses spectra from 0.45 to 2.45\,$\mu$m and defines
+24 taxonomic classes \cite{DeMeo2009}. The baseline 0.2--1.5\,$\mu$m
+spectrograph therefore provides a useful but incomplete taxonomic interval.
+Extension to 2.45\,$\mu$m would improve continuity with the established
+classification system. Time-resolved photometry measures rotation, amplitude,
+and changing viewing geometry. These quantities constrain shape and spin
+priors that enter thermal and Yarkovsky models.
+
+\section{L2 Field of Regard}
+
+At Sun--Earth L2, the Sun, Earth, and Moon occupy nearly the same sky
+direction. The geometric solar disk is not the relevant exclusion angle.
+Scattered light, sunshade geometry, thermal stability, Earth thermal
+emission, lunar light, and allowed spacecraft attitudes set a much larger
+keep-out region. The present white-paper visibility calculation adopts a
+minimum solar elongation of $60^\circ$.
+
+For a fixed target at ecliptic latitude $\beta$ and solar exclusion angle
+$\theta$, the purely geometric annual visibility fraction is
+\begin{equation}
+ f_{\rm vis}(\beta)=
+ \begin{cases}
+  1-\dfrac{1}{\pi}
+  \cos^{-1}\!\left(\dfrac{\cos\theta}{\cos\beta}\right),
+  & |\beta|<\theta,\\[2mm]
+  1, & |\beta|\ge\theta.
+ \end{cases}
+ \label{eq:visibility}
+\end{equation}
+For $\theta=60^\circ$, Equation~\ref{eq:visibility} gives 243.5 observable
+days per year on the ecliptic and full-year access above
+$|\beta|=60^\circ$. These values describe geometry only.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/l2_observability.png}
+\caption{L2 field-of-regard concept. Red marks a $45^\circ$ inner exclusion
+zone. Orange marks the 45--$60^\circ$ region that requires a dedicated
+forward baffle and thermal design. Teal marks the current baseline outside
+$60^\circ$. Earth albedo is suppressed by the near-new-Earth phase as seen
+from L2, although Earth and Moon stray light, thermal emission, halo-orbit
+offsets, and sunshade geometry still require a measured rejection model.}
+\end{figure}
+
+NEO discovery benefits from observing at small elongation because Atira and
+other interior or Earth-approaching populations spend substantial time close
+to the Sun on the sky. A reduction from $60^\circ$ to $45^\circ$ is therefore
+scientifically valuable, but it is not a software setting. The change affects
+the baffle, sunshade, radiator view, detector background, and allowed roll
+angles. Zodiacal emission also rises toward the ecliptic and toward the Sun.
+The exposure-time model must use a wavelength-dependent zodiacal map rather
+than one scalar sky level.
+
+\section{Observation Architecture and Feasibility}
+
+\begin{longtable}{@{}P{30mm}P{37mm}P{47mm}P{48mm}@{}}
+\toprule
+\color{cGold}\textbf{Product} &
+\color{cGold}\textbf{Observable} &
+\color{cGold}\textbf{Baseline status} &
+\color{cGold}\textbf{Acceptance test}\\
+\midrule
+\endhead
+Recovery &
+ICRF position and angular rate &
+Feasible with direct imaging and rapid scheduling &
+Blind injection of trailed sources through detector, distortion, timing,
+and catalog calibration\\
+Rotation &
+Time-series flux and color &
+Feasible for targets with adequate cadence and S/N &
+Recover period and amplitude from synthetic irregular windows\\
+Taxonomy &
+0.45--1.5\,$\mu$m spectrum at baseline &
+Partial Bus--DeMeo interval &
+Class confusion matrix versus magnitude, phase angle, and trailing\\
+Diameter and albedo &
+Reflected plus thermal flux &
+Requires a mid-infrared upgrade or external thermal data &
+Joint fit to synthetic thermal models with shape and phase uncertainty\\
+Yarkovsky &
+Long-arc transverse acceleration $A_2$ &
+Target dependent &
+Recovery of injected $A_2$ after joint optical, radar, and thermal fitting\\
+Discovery completeness &
+Tracklets, linkage, selection function &
+Not established for the baseline &
+End-to-end survey simulation with field of regard, cadence, trailing,
+confusion, and false-link control\\
+\bottomrule
+\end{longtable}
+
+\section{Orbit Determination and Non-Gravitational Forces}
+
+The orbit state $\mathbf{x}=(\mathbf{r},\mathbf{v})$ is propagated with
+\begin{equation}
+ \ddot{\mathbf r}
+ = \sum_i GM_i
+ \frac{\mathbf r_i-\mathbf r}{|\mathbf r_i-\mathbf r|^3}
+ +\mathbf a_{\rm 1PN}
+ +\mathbf a_{\rm SRP}
+ +\mathbf a_{\rm PR}
+ +\mathbf a_{\rm SW}
+ +\mathbf a_{\rm NG}.
+ \label{eq:force-model}
+\end{equation}
+The implementation reads each $GM_i$ directly. It does not multiply a
+separate value of $G$ by a tabulated mass. This choice follows the precision
+structure of modern solar-system ephemerides.
+
+The solar Schwarzschild approximation used for sensitivity tests is
+\begin{equation}
+ \mathbf a_{\rm 1PN}
+ =\frac{GM_\odot}{c^2r^3}
+ \left[
+ \left(\frac{4GM_\odot}{r}-v^2\right)\mathbf r
+ +4(\mathbf r\cdot\mathbf v)\mathbf v
+ \right].
+\end{equation}
+The JPL authoritative solution uses its registered dynamical model. The local
+term above is not a replacement for the full Einstein--Infeld--Hoffmann
+multi-body formulation.
+
+Direct radiation pressure is proportional to area-to-mass ratio. The
+Poynting--Robertson term removes orbital energy through the velocity-dependent
+part of the radiation force. The calculator uses a configurable solar-wind
+drag factor, defaulting to 0.35 times the Poynting--Robertson drag
+\cite{Gustafson1996}. These terms matter most for dust, meter-scale material,
+and high area-to-mass artificial objects. For ordinary NEOs, fitted thermal
+recoil often dominates the non-gravitational orbit correction.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\textwidth]{appendixC_assets/neo_force_hierarchy.png}
+\caption{Force-model priorities depend on object scale and encounter
+geometry. ``Required'' refers to a scientific orbit solution, while
+size-dependent terms are enabled only when physical parameters support them.}
+\end{figure}
+
+\subsection{Yarkovsky and orbit uncertainty}
+
+The transverse parameter $A_2$ is a compact approximation to thermal recoil
+when the acceleration scales approximately as $r^{-2}$. The Bennu orbit
+solution measured a semimajor-axis drift near $-19\times10^{-4}$\,au\,Myr$^{-1}$
+\cite{Chesley2014}. Interpretation requires diameter, density, spin, thermal
+inertia, roughness, and shape. YORP-driven spin evolution may also change the
+thermal recoil over a sufficiently long interval.
+
+A 100-year nominal integration does not imply a 100-year hazard prediction.
+Close encounters map a small initial covariance into a non-Gaussian future
+distribution. A hazard result must propagate virtual asteroids or an
+equivalent uncertainty representation and report impact probability. JPL
+Sentry-II was designed for this nonlinear problem \cite{Roa2021}.
+
+\section{The 3.5ST NEO Orbit Calculator}
+
+The accompanying calculator is stored in
+\code{neo\_orbit\_calculator/}. It has two explicitly separated modes.
+
+\begin{resultbox}
+\textbf{\color{cGold}Authoritative SPK mode.}
+The Python interface requests a time-continuous small-body SPK from NASA/JPL
+Horizons for the selected interval. A 2026--2126 SPK is the preferred
+reproducibility product. SPK segments store piecewise Chebyshev coefficients.
+Their polynomial degree is not an orbit-integrator order.
+\end{resultbox}
+
+\begin{resultbox}
+\textbf{\color{cTeal}Local sensitivity mode.}
+A Fortran backend calls CSPICE directly at every force evaluation. The
+integrated state, force sums, and adaptive Runge--Kutta arithmetic use
+\code{selected\_real\_kind(33,4931)}. GNU Fortran provides 33 decimal digits
+on the current platform. SPICE input and output remain IEEE-754 binary64,
+which is the precision boundary of the JPL SPK interface.
+\end{resultbox}
+
+The phrase ``NASA 100th-order integration coefficients'' does not correspond
+to the JPL product. DE440 and DE441 are fitted numerical ephemerides delivered
+through SPK Chebyshev segments \cite{Park2021}. Increasing a formal local
+integrator order above 100 would not remove initial-state covariance,
+close-encounter sensitivity, uncertain thermal recoil, or omitted perturbers.
+
+\subsection{Included gravitational bodies}
+
+The baseline gravity model contains the following 27 sources. Planet-system
+barycenters are used where appropriate.
+
+\begin{tabularx}{\textwidth}{@{}P{43mm}Y@{}}
+\toprule
+\color{cGold}\textbf{Group} & \color{cGold}\textbf{Bodies}\\
+\midrule
+Major bodies &
+Sun, Mercury barycenter, Venus barycenter, Earth, Moon, Mars barycenter,
+Jupiter barycenter, Saturn barycenter, Uranus barycenter, Neptune barycenter,
+and Pluto barycenter\\
+SB441-N16 &
+Ceres, Vesta, Pallas, Hygiea, Davida, Interamnia, Europa, Sylvia, Eunomia,
+Juno, Psyche, Camilla, Thisbe, Iris, Euphrosyne, and Cybele\\
+\bottomrule
+\end{tabularx}
+
+SB441-N16 is not defined by a universal mass threshold. It is the JPL set of
+the 16 most massive main-belt perturbers. Cybele is the least massive object
+in this set with $GM=0.938105756$\,km$^3$\,s$^{-2}$. Conversion with a
+separately adopted $G$ gives a reference mass near
+$1.41\times10^{19}$\,kg, although the integrator uses $GM$ directly.
+The SB441 memo also provides a 373-body ephemeris for specialized studies
+\cite{Farnocchia2021SB441}.
+
+\subsection{Implemented and deferred force terms}
+
+\begin{tabularx}{\textwidth}{@{}P{43mm}P{37mm}Y@{}}
+\toprule
+\color{cGold}\textbf{Term} &
+\color{cGold}\textbf{Status} &
+\color{cGold}\textbf{Interpretation}\\
+\midrule
+Major-body gravity and SB441-N16 &
+\color{cTeal}\textbf{Implemented} &
+DE440s and SB441-N16 positions, with JPL $GM$ values\\
+Solar Schwarzschild 1PN &
+\color{cTeal}\textbf{Implemented} &
+Sensitivity approximation\\
+Solar radiation pressure &
+\color{cTeal}\textbf{Implemented} &
+User-supplied area-to-mass ratio and radiation coefficient\\
+Poynting--Robertson and solar-wind drag &
+\color{cTeal}\textbf{Implemented} &
+Secular approximation for small material\\
+$A_1,A_2,A_3$ &
+\color{cTeal}\textbf{Implemented} &
+JPL-style radial, transverse, and normal accelerations with $r^{-2}$ scaling\\
+Full orbit covariance and virtual asteroids &
+\color{cOrange}\textbf{Required next} &
+Mandatory before impact-probability use\\
+Planetary $J_2$ and higher harmonics &
+\color{cOrange}\textbf{Required for close flybys} &
+Most important during deep planetary encounters\\
+Full multi-body 1PN formulation &
+\color{cOrange}\textbf{Validation upgrade} &
+Needed to reproduce the complete JPL relativistic model locally\\
+Comet outgassing law and time lag &
+\color{cOrange}\textbf{Target dependent} &
+Required for active comets and selected dark comets\\
+Lorentz force and radiation shadowing &
+\color{cBlue}\textbf{Dust option} &
+Relevant for charged grains and eclipse geometries\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Reproducibility test}
+
+Every release should record the JPL orbit-solution identifier, solution date,
+DE and SB kernel names, kernel checksums, TDB epochs, compiler version,
+floating-point kind, tolerances, force switches, and source revision. The
+local state must be compared with Horizons at an independent epoch grid.
+Residuals should be reported before and after close encounters. A residual
+threshold must be set by the science case, not by the number of printed
+digits.
+
+\begin{verbatim}
+python -m neo_orbit_calculator.cli spk 99942 \
+  --start 2026-01-01 --stop 2126-01-01
+
+python -m neo_orbit_calculator.cli propagate 99942 \
+  --start 2026-01-01 --stop 2126-01-01 \
+  --backend fortran
+\end{verbatim}
+
+\section{Mission Decision Matrix}
+
+\begin{tabularx}{\textwidth}{@{}P{35mm}P{47mm}Y@{}}
+\toprule
+\color{cGold}\textbf{Configuration} &
+\color{cGold}\textbf{Scientific strength} &
+\color{cGold}\textbf{Principal limitation}\\
+\midrule
+Baseline 0.2--1.5\,$\mu$m &
+Rapid astrometry, recovery, light curves, phase curves, and partial
+visible/NIR taxonomy &
+Diameter--albedo degeneracy remains. Discovery close to the Sun is limited
+by field of regard.\\
+Extended to 2.45\,$\mu$m &
+More complete Bus--DeMeo coverage and improved mineralogical continuity &
+Still dominated by reflected light for ordinary NEO temperatures\\
+Actively cooled 4--10\,$\mu$m channel &
+Thermal discovery, diameter and albedo constraints, and reduced bias against
+dark objects &
+Requires cold optics, wide field, low-elongation access, and a dedicated
+cadence. Cost and thermal complexity are substantial.\\
+External-survey follow-up &
+High scientific return per unit mission complexity through coordination with
+NEO Surveyor, Rubin, radar, and ground-based astrometry &
+Discovery selection function is inherited from external facilities\\
+\bottomrule
+\end{tabularx}
+
+\section{Recommended Proposal Position}
+
+\begin{enumerate}[leftmargin=7mm,itemsep=2.2mm]
+\item Commit the baseline mission to rapid NEO follow-up, ICRF astrometry,
+time-resolved photometry, and visible/NIR characterization.
+\item Treat the 4--10\,$\mu$m channel as a costed mission option. Specify
+detector temperature, cold-optics temperature, field, cadence, elongation,
+and survey completeness together.
+\item Preserve a $60^\circ$ baseline solar avoidance requirement until a
+thermal and stray-light model demonstrates access to $45^\circ$.
+\item Validate orbit products against Horizons SPK output. Use covariance
+propagation before making any impact-probability claim.
+\item Use $GM$ values and versioned JPL kernels throughout. Record kernel
+checksums and orbit-solution identifiers in every derived product.
+\end{enumerate}
+
+\begin{warningbox}
+\textbf{\color{cRed}Claim boundary.}
+The present analysis supports a strong characterization and orbit-refinement
+program. It does not yet establish a limiting diameter, annual discovery
+yield, or 90-percent completeness level for 3.5ST. Those claims require the
+final detector, thermal background, field of regard, survey cadence, and
+moving-object selection function.
+\end{warningbox}
+
+\clearpage
+\renewcommand{\bibname}{References}
+\begin{thebibliography}{99}
+\color{cText}
+
+\bibitem{Chesley2014}
+Chesley, S. R., et al. 2014,
+``Orbit and bulk density of the OSIRIS-REx target Asteroid (101955) Bennu,''
+\textit{Icarus}, 235, 5.
+\href{https://doi.org/10.1016/j.icarus.2014.02.020}{doi:10.1016/j.icarus.2014.02.020}.
+
+\bibitem{DeMeo2009}
+DeMeo, F. E., Binzel, R. P., Slivan, S. M., \& Bus, S. J. 2009,
+``An extension of the Bus asteroid taxonomy into the near-infrared,''
+\textit{Icarus}, 202, 160.
+\href{https://doi.org/10.1016/j.icarus.2009.02.005}{doi:10.1016/j.icarus.2009.02.005}.
+
+\bibitem{Farnocchia2021SB441}
+Farnocchia, D. 2021,
+``Small-Body Perturber Files SB441-N16 and SB441-N373,''
+JPL Interoffice Memorandum 392R-21-005.
+\url{https://ssd.jpl.nasa.gov/ftp/eph/small_bodies/asteroids_de441/}.
+
+\bibitem{Gustafson1996}
+Gustafson, B. A. S. 1996,
+``Physics of zodiacal dust,''
+\textit{Annual Review of Earth and Planetary Sciences}, 24, 553.
+\href{https://doi.org/10.1146/annurev.earth.24.1.553}{doi:10.1146/annurev.earth.24.1.553}.
+
+\bibitem{Horizons}
+Giorgini, J. D., and JPL Solar System Dynamics Group,
+NASA/JPL Horizons On-Line Ephemeris System.
+\url{https://ssd.jpl.nasa.gov/horizons/}.
+
+\bibitem{Mainzer2011}
+Mainzer, A., et al. 2011,
+``NEOWISE observations of near-Earth objects,''
+\textit{Astrophysical Journal}, 743, 156.
+\href{https://doi.org/10.1088/0004-637X/743/2/156}{doi:10.1088/0004-637X/743/2/156}.
+
+\bibitem{Mainzer2023}
+Mainzer, A. K., et al. 2023,
+``The Near-Earth Object Surveyor Mission,''
+\textit{Planetary Science Journal}, 4, 224.
+\href{https://doi.org/10.3847/PSJ/ad0468}{doi:10.3847/PSJ/ad0468}.
+
+\bibitem{Park2021}
+Park, R. S., Folkner, W. M., Williams, J. G., \& Boggs, D. H. 2021,
+``The JPL Planetary and Lunar Ephemerides DE440 and DE441,''
+\textit{Astronomical Journal}, 161, 105.
+\href{https://doi.org/10.3847/1538-3881/abd414}{doi:10.3847/1538-3881/abd414}.
+
+\bibitem{Roa2021}
+Roa, J., Farnocchia, D., \& Chesley, S. R. 2021,
+``A novel approach to asteroid impact monitoring and hazard assessment,''
+\textit{Astronomical Journal}, 162, 277.
+\href{https://doi.org/10.3847/1538-3881/ac193f}{doi:10.3847/1538-3881/ac193f}.
+
+\end{thebibliography}
+
+\end{document}
