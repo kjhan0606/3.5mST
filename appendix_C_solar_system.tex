@@ -693,12 +693,13 @@ for Mars and the outer planets. A precision trajectory within a satellite
 system must also load the corresponding planet-center satellite SPK.
 
 \textbf{Relativistic acceleration.}
-The term $\mathbf a_{\rm 1PN}$ is the first post-Newtonian correction from the
-solar Schwarzschild field. The correction produces the leading relativistic
-perihelion precession and modifies timing near the Sun. The local expression
-below is retained as a controlled sensitivity term. The authoritative JPL
-trajectory uses the registered multi-body relativistic model of the selected
-orbit solution.
+The term $\mathbf a_{\rm 1PN}$ is the first post-Newtonian correction. CODES
+now evaluates the massless-target Einstein--Infeld--Hoffmann (EIH) expression
+using every active DE440s/SB441-N16 source. The correction includes source
+potentials, velocities, and Newtonian source accelerations; it reduces exactly
+to the solar Schwarzschild test-particle expression when the Sun is the only
+stationary source \cite{Newhall1983,Tamayo2020}. The source trajectories remain
+the prescribed JPL ephemerides rather than being re-integrated by CODES.
 
 \textbf{Solar radiation terms.}
 The outward term $\mathbf a_{\rm SRP}$ denotes direct solar-radiation
@@ -731,7 +732,8 @@ evaluated. A scientific orbit solution must fit the coefficients, lag, and
 covariance to astrometry. Nonzero trial values in CODES measure dynamical
 sensitivity and do not constitute a detection of a non-gravitational force.
 
-The solar Schwarzschild approximation used for sensitivity tests is
+The solar-only limit, retained behind the
+\code{--solar-1pn-only} diagnostic switch, is
 \begin{equation}
  \mathbf a_{\rm 1PN}
  =\frac{GM_\odot}{c^2r^3}
@@ -740,9 +742,37 @@ The solar Schwarzschild approximation used for sensitivity tests is
  +4(\mathbf r\cdot\mathbf v)\mathbf v
  \right].
 \end{equation}
-The JPL authoritative solution uses its registered dynamical model. The local
-term above is not a replacement for the full Einstein--Infeld--Hoffmann
-multi-body formulation.
+The implemented multi-body correction for target $i$ is
+\begin{equation}
+\begin{aligned}
+\mathbf a_i^{\rm 1PN}={}&
+\sum_{j\ne i}\frac{\mu_j\mathbf r_{ij}}{r_{ij}^{3}c^2}
+\left[
+4\sum_{k\ne i}\frac{\mu_k}{r_{ik}}
++\sum_{k\ne j}\frac{\mu_k}{r_{jk}}
+-v_i^2-2v_j^2+4\mathbf v_i\!\cdot\!\mathbf v_j \right.\\
+&\left.
++\frac{3(\mathbf r_{ij}\!\cdot\!\mathbf v_j)^2}{2r_{ij}^2}
++\frac{\mathbf r_{ij}\!\cdot\!\mathbf a_j^{N}}{2}
+\right]\\
+&+\sum_{j\ne i}\frac{\mu_j}{c^2}
+\left[
+\frac{\mathbf r_{ij}\!\cdot(4\mathbf v_i-3\mathbf v_j)}
+{r_{ij}^{3}}(\mathbf v_i-\mathbf v_j)
++\frac{7\mathbf a_j^{N}}{2r_{ij}}
+\right].
+\end{aligned}
+\end{equation}
+Here $\mu_j=GM_j$, $\mathbf r_{ij}=\mathbf r_i-\mathbf r_j$,
+$r_{ij}=|\mathbf r_{ij}|$, and $\mathbf v_i$ and $\mathbf v_j$ are
+barycentric velocities. The source acceleration
+$\mathbf a_j^{N}=\sum_{k\ne j}\mu_k(\mathbf r_k-\mathbf r_j)/r_{jk}^3$
+is Newtonian because a post-Newtonian correction inside this factor would
+enter only at order $c^{-4}$. The two sums include the Sun, planetary
+barycenters, Earth, Moon, and the enabled large asteroids. The Python and
+real128 Fortran implementations agree over a two-day Apophis cross-check to
+$4.49\times10^{-8}$\,km in position and
+$1.12\times10^{-8}$\,mm\,s$^{-1}$ in velocity.
 
 Direct radiation pressure is proportional to area-to-mass ratio. The
 Poynting--Robertson term uses the complete first-order photon momentum
@@ -774,6 +804,22 @@ Close encounters map a small initial covariance into a non-Gaussian future
 distribution. A hazard result must propagate virtual asteroids or an
 equivalent uncertainty representation and report impact probability. JPL
 Sentry-II was designed for this nonlinear problem \cite{Roa2021}.
+
+CODES now requests \code{cov=mat} and \code{full-prec=true} from JPL SBDB,
+reads the complete covariance at its own solution epoch, and draws a
+reproducible correlated ensemble. The sampled dimensions include the six
+heliocentric elements and fitted $A_1$, $A_2$, $A_3$, or time lag when those
+parameters occur in the JPL matrix. Every draw is transformed to a
+barycentric J2000 state and propagated independently through the same force
+model. For JPL Apophis solution 220, the nominal element-to-state conversion
+agrees with the independently requested Horizons state at the covariance
+epoch to 0.714\,m and $1.43\times10^{-4}$\,mm\,s$^{-1}$. The direct
+finite-sample impact fraction is a screening diagnostic, not a replacement
+for Sentry-II rare-event searches. Propagating that nominal local state to the
+2029 encounter gives 38,042.1\,km versus the CNEOS value 38,011.5\,km, with
+local-minus-JPL residuals of $+30.6$\,km and $-228.8$\,s. The covariance path
+is therefore operational, but this residual prevents presenting CODES as a
+replacement for the registered JPL force model.
 
 \section{CODES Orbit Dynamics and Ephemeris System}
 
@@ -852,8 +898,7 @@ ten-object close-approach suite\\
 \cmidrule(lr){1-3}
 Solar Schwarzschild 1PN &
 \color{cTeal}\textbf{Implemented} &
-Complete solar Schwarzschild test-particle term. The separate full
-multi-body 1PN row remains absent\\
+Retained as the \code{--solar-1pn-only} limiting-case diagnostic\\
 \cmidrule(lr){1-3}
 Solar radiation pressure &
 \color{cTeal}\textbf{Implemented} &
@@ -871,8 +916,10 @@ Configurable radial, transverse, and normal accelerations with $r^{-2}$
 scaling\\
 \cmidrule(lr){1-3}
 Full orbit covariance and virtual asteroids &
-\color{cOrange}\textbf{Not implemented} &
-Required before impact-probability use\\
+\color{cTeal}\textbf{Implemented} &
+Full JPL solution-epoch matrix, correlated seeded draws, fitted
+non-gravitational parameters, and independent clone propagation. Direct
+Monte Carlo remains a screening result\\
 \cmidrule(lr){1-3}
 Planetary $J_2$ and higher harmonics &
 \color{cTeal}\textbf{Implemented} &
@@ -880,8 +927,9 @@ Axisymmetric $J_2$, $J_4$, and $J_6$ in the time-dependent IAU pole
 direction\\
 \cmidrule(lr){1-3}
 Full multi-body 1PN formulation &
-\color{cOrange}\textbf{Not implemented} &
-Required to reproduce the complete JPL relativistic model locally\\
+\color{cTeal}\textbf{Implemented} &
+Massless-target EIH correction from every active source, with separate
+Python and real128 Fortran implementations\\
 \cmidrule(lr){1-3}
 Comet outgassing law and time lag &
 \color{cTeal}\textbf{Implemented} &
@@ -908,6 +956,13 @@ local state must be compared with Horizons at an independent epoch grid.
 Residuals should be reported before and after close encounters. A residual
 threshold must be set by the science case, not by the number of printed
 digits.
+
+The real128 Fortran step is selected by both the embedded
+Dormand--Prince local-error estimate and a physical close-passage limiter.
+For every active source, the internal step is no larger than 5\% of the
+gravity timescale $\sqrt{r^3/GM}$ or the relative crossing time
+$r/|\Delta\mathbf v|$. High acceleration or high relative speed therefore
+forces smaller steps independently of the requested output cadence.
 
 \subsection{Ten historical close-approach tests}
 \label{sec:historical-ca-tests}
@@ -946,10 +1001,11 @@ The source snapshot used here was retrieved on 2026-07-26 UTC.
 \caption{Observation context and propagation residuals for ten historical
 flybys. Gold bars in the left panel indicate discovery before closest
 approach; red bars indicate that the first discovery observation followed
-the flyby. The center and right panels compare the local force model with
+the flyby. A symmetric-log horizontal scale keeps both hour-scale and
+month-scale lead times visible. The center and right panels compare the local force model with
 the current official JPL solution. Across the ten cases, the maximum absolute
-residual is 0.197\,s in closest-approach epoch, 0.891\,km in miss distance,
-and 0.362\,km in pre-encounter semimajor axis.}
+residual is 0.330\,s in closest-approach epoch, 0.00259\,km in miss distance,
+and 0.00561\,km in pre-encounter semimajor axis.}
 \label{fig:neo-orbit-validation}
 \end{figure}
 
@@ -977,27 +1033,59 @@ position needed to schedule an observation.
 
 A return of 1P/Halley means a passage through perihelion rather than a return
 to Earth. The present JPL \#75 solution uses 8,518 observations over
-1835--1994. Its continuous Horizons ephemeris is not provided before 1599.
-CODES therefore does not extrapolate the modern state through the ancient
-record and call the result an observed trajectory. The calculation uses the
-JPL historical apparition solutions before 1599 and compares their perihelion
-times with the observation-constrained integration of Yeomans and Kiang
-\cite{Horizons,YeomansKiang1981}.
+1835--1994. The long-term propagation test takes only its barycentric state
+at 1850 January 2 TDB and the published non-gravitational coefficients
+$A_1=4.887055233121\times10^{-10}$ and
+$A_2=1.554720290005\times10^{-10}$\,au\,d$^{-2}$. CODES then propagates to
+2000 with its real128 Fortran integrator, DE440s major-body states,
+SB441-N16 perturbers, full multi-body 1PN, and the standard Marsden water-ice law.
+No JPL comparison state is ingested after the initial epoch.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{appendixC_assets/halley_return_history.png}
-\caption{Apparition-to-apparition evolution of 1P/Halley from the JPL
-historical solutions. The upper panel compares the JPL return intervals with
-the observation-constrained perihelion times of Yeomans and Kiang (blue
-stars) and the NASA/JPL official return epochs (gold diamonds). The upper
-panel rejects a fixed 76-year clock. The
-middle panel identifies the largest adjacent change in semimajor axis between
-the 989 and 1066 solutions. The lower panel shows that the perihelion distance
-also evolves. The orbit points are separate fitted apparition records rather
-than samples from one unconstrained millennium-long extrapolation.}
+\includegraphics[width=\textwidth]{appendixC_assets/halley_codes_longterm_validation.png}
+\caption{Independent 150-year CODES propagation of 1P/Halley. Open circles
+are CODES results and gold diamonds are separately requested NASA/JPL
+Horizons comparison values in every panel. From top to bottom, the continuous
+curves show the osculating period, semimajor axis, and perihelion distance
+derived from the CODES state. The CODES minus JPL perihelion-time residuals
+are $-12.956$\,s and $+8.835$\,s. The corresponding period residuals are
+$-3.840$\,d and $-1.931$\,d; the semimajor-axis residuals are
+$-247{,}460$\,km and $-124{,}487$\,km; and the perihelion-distance residuals
+are $+227.8$\,km and $-15.3$\,km.}
 \label{fig:halley-return-history}
 \end{figure}
+
+\begin{resultbox}
+\textbf{\color{cGold}What this validates.}
+The comparison tests long-term numerical propagation from one initial state,
+not merely the parsing of a sequence of JPL records. It demonstrates that
+CODES reproduces the two physical perihelion passages across 150 years.
+Because JPL solution \#75 was fitted with observations extending through
+1994, this is a propagation-consistency test rather than a blind historical
+orbit determination.
+\end{resultbox}
+
+Replacing the solar-only 1PN term by the full multi-body expression changes
+the 1986 perihelion-time residual by approximately $-0.20$\,s and its
+semimajor-axis residual by approximately $-3.5$\,km. The remaining
+$1.24\times10^5$\,km semimajor-axis difference is therefore not explained by
+the former relativistic approximation alone. Likewise, covariance propagation
+does not shift this nominal curve: it supplies an uncertainty ensemble around
+the same fitted central solution. Adding the physical adaptive-step limiter
+changes the 150-year trajectory by at most 13.6\,m and the final position by
+1.11\,m relative to error control alone, leaving the quoted passage values
+unchanged. Resolving the remaining difference requires a controlled comparison
+of the fitted comet non-gravitational law, source ephemeris, and JPL solution
+metadata.
+
+The modern-state integration cannot be extended honestly through the entire
+ancient record with DE440s. For returns before its supported interval, CODES
+therefore retains a separate historical product: JPL apparition solutions are
+compared with the observation-constrained perihelion times of Yeomans and
+Kiang \cite{Horizons,YeomansKiang1981}. Those records diagnose period changes
+without relabeling an unconstrained modern-state extrapolation as an observed
+trajectory.
 
 \input{halley_return_validation_table.tex}
 
@@ -1046,9 +1134,11 @@ directory remains explicit for every science mode.
 \includegraphics[width=\textwidth]{appendixC_assets/codes_gui.png}
 \caption{Integrated CODES desktop interface with the NEO dynamics tab open.
 The tab separates authoritative JPL products from the local force-model
-calculation. The other tabs expose comet apparition histories, apparent sky
-positions, and the validation suites. The run log records the executed
-command and the returned file paths.}
+calculation. The clone-count and seed controls launch the full JPL-covariance
+virtual-asteroid ensemble, while the full multi-body 1PN switch controls both
+nominal and ensemble propagation. The other tabs expose comet apparition
+histories, apparent sky positions, and the validation suites. The run log
+records the executed command and returned file paths.}
 \label{fig:codes-gui}
 \end{figure}
 
@@ -1059,11 +1149,12 @@ command and the returned file paths.}
 \color{cGold}\textbf{Scientific product}\\
 \midrule
 \textbf{NEO dynamics} &
-Selects the designation, TDB interval, sampling, force terms, and local
-non-gravitational coefficients. Separate buttons request an SPK, retrieve
-Horizons vectors, or run the Fortran propagator. &
+Selects the designation, TDB interval, sampling, covariance clone count and
+seed, force terms, and local non-gravitational coefficients. Separate buttons
+request an SPK, retrieve Horizons vectors, run the nominal propagator, or run
+the covariance ensemble. &
 Authoritative binary SPK, sampled state-vector CSV, local orbit projection,
-and residual summary against Horizons\\
+full-covariance clone products, and residual summary against Horizons\\
 \cmidrule(lr){1-3}
 \textbf{Comet evolution} &
 Selects a comet and an apparition-year interval. Known return years may be
@@ -1212,6 +1303,19 @@ Mainzer, A. K., et al. 2023,
 ``The Near-Earth Object Surveyor Mission,''
 \textit{Planetary Science Journal}, 4, 224.
 \href{https://doi.org/10.3847/PSJ/ad0468}{doi:10.3847/PSJ/ad0468}.
+
+\bibitem{Newhall1983}
+Newhall, X. X., Standish, E. M., \& Williams, J. G. 1983,
+``DE 102: a numerically integrated ephemeris of the Moon and planets spanning
+forty-four centuries,''
+\textit{Astronomy and Astrophysics}, 125, 150.
+
+\bibitem{Tamayo2020}
+Tamayo, D., et al. 2020,
+``REBOUNDx: a library for adding conservative and dissipative forces to
+otherwise symplectic N-body integrations,''
+\textit{Monthly Notices of the Royal Astronomical Society}, 491, 2885.
+\href{https://doi.org/10.1093/mnras/stz2870}{doi:10.1093/mnras/stz2870}.
 
 \bibitem{Masiero2023}
 Masiero, J. R., et al. 2023,

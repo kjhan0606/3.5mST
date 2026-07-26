@@ -20,7 +20,7 @@ from neo_orbit_calculator.comets import (
 ROOT = Path(__file__).resolve().parent
 CSV_PATH = ROOT / "halley_return_validation.csv"
 PROVENANCE_PATH = ROOT / "halley_return_provenance.json"
-FIGURE_PATH = ROOT / "appendixC_assets" / "halley_return_history.png"
+FIGURE_PATH = ROOT / "appendixC_assets" / "halley_apparition_history.png"
 TEX_PATH = ROOT / "halley_return_validation_table.tex"
 AU_KM = 149_597_870.700
 
@@ -74,7 +74,7 @@ def plot_validation(
         color="#B55220",
         marker="o",
         lw=1.8,
-        label="JPL Horizons apparition solutions",
+        label="CODES-assembled Horizons sequence",
     )
     historical = (
         np.isfinite(reference_interval)
@@ -126,7 +126,18 @@ def plot_validation(
         semimajor,
         color="#007C77",
         marker="o",
-        label="JPL semimajor axis",
+        label="CODES-assembled JPL semimajor axis",
+    )
+    axes[1].scatter(
+        years[official],
+        semimajor[official],
+        marker="D",
+        s=76,
+        facecolor="#FFD166",
+        edgecolor="#151B23",
+        linewidth=1.2,
+        zorder=6,
+        label="NASA/JPL official values",
     )
     axes[1].set_ylabel("semimajor axis [au]")
     axes[1].legend(frameon=False)
@@ -146,7 +157,18 @@ def plot_validation(
         perihelion,
         color="#B86B00",
         marker="s",
-        label="JPL perihelion distance",
+        label="CODES-assembled JPL perihelion distance",
+    )
+    axes[2].scatter(
+        years[official],
+        perihelion[official],
+        marker="D",
+        s=76,
+        facecolor="#FFD166",
+        edgecolor="#151B23",
+        linewidth=1.2,
+        zorder=6,
+        label="NASA/JPL official values",
     )
     axes[2].set_ylabel("perihelion distance [au]")
     axes[2].set_xlabel("perihelion return year")
