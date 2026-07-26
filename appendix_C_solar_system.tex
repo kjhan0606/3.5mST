@@ -187,8 +187,8 @@ moving-object processing, and access toward the Sun.
 
 \section{Size, Albedo, and Thermal Flux}
 
-For an asteroid with absolute magnitude $H$ and geometric albedo $p_V$, the
-diameter proxy is formulated as
+For an asteroid with absolute magnitude $H$ and visible geometric albedo
+$p_V$, the standard optical diameter relation \cite{RyanWoodward2010} is
 \begin{equation}
   D\,[\mathrm{m}]
   =1.329\times10^6\,p_V^{-1/2}10^{-0.2H}.
@@ -203,8 +203,12 @@ diameter estimate when the observing geometry and thermal model are known
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.96\textwidth]{appendixC_assets/neo_h_diameter.png}
-\caption{Diameter inferred from $H$ depends strongly on the assumed visible
-geometric albedo. The plotted relation is Equation~\ref{eq:h-diameter}.}
+\caption{The optical size degeneracy from Equation~\ref{eq:h-diameter}.
+The horizontal axis is absolute magnitude $H$, the vertical axis is visible
+geometric albedo $p_V$, and the color scale at right gives diameter $D$.
+White contours mark representative diameters. Thus, the same optical
+brightness can imply substantially different sizes as albedo changes.}
+\label{fig:neo-h-albedo-diameter}
 \end{figure}
 
 \subsection{Why mid-infrared imaging is required}
@@ -224,8 +228,16 @@ Near-Earth Asteroid Thermal Model has the schematic dependence
  \left(\frac{1-A}{\eta\epsilon r^2}\right)^{1/4},
  \label{eq:thermal-diameter}
 \end{equation}
-where $\Delta$ and $r$ are the observer and heliocentric distances. The
-diameter enters the emitted flux through the projected area as $D^2$.
+where $\Delta$ and $r$ are the observer and heliocentric distances.
+The dimensionless quantity $\epsilon$ is the bolometric thermal emissivity:
+it multiplies the greybody radiance and also enters the radiative-equilibrium
+temperature as $T\propto\epsilon^{-1/4}$. The dimensionless NEATM beaming
+parameter $\eta$ empirically rescales the surface-temperature distribution
+to account for the combined effects of thermal inertia, rotation, surface
+roughness, and observing geometry; increasing $\eta$ lowers the modeled
+temperature as $T\propto\eta^{-1/4}$ \cite{Harris1998}. The reference ETC
+calculation below adopts $\epsilon=0.9$ and $\eta=1.4$.
+The diameter enters the emitted flux through the projected area as $D^2$.
 The Bond albedo $A$ enters only through a fourth-root temperature correction
 \cite{Harris1998,Mainzer2011}. A measured thermal spectral energy distribution
 therefore provides a nearly albedo-independent diameter constraint. The
@@ -1343,6 +1355,14 @@ Newhall, X. X., Standish, E. M., \& Williams, J. G. 1983,
 ``DE 102: a numerically integrated ephemeris of the Moon and planets spanning
 forty-four centuries,''
 \textit{Astronomy and Astrophysics}, 125, 150.
+
+\bibitem{RyanWoodward2010}
+Ryan, E. L., \& Woodward, C. E. 2010,
+``Rectified asteroid albedos and diameters from IRAS and MSX photometry
+catalogs,''
+\textit{Astronomical Journal}, 140, 933.
+\href{https://doi.org/10.1088/0004-6256/140/4/933}
+{doi:10.1088/0004-6256/140/4/933}.
 
 \bibitem{Tamayo2020}
 Tamayo, D., et al. 2020,

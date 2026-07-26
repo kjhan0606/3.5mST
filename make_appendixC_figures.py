@@ -87,22 +87,53 @@ def thermal_windows() -> None:
 
 
 def diameter_proxy() -> None:
-    h_mag = np.linspace(13, 33, 700)
-    figure, axis = plt.subplots(figsize=(11.8, 6.8))
-    for albedo, color in [(0.03, ORANGE), (0.14, TEAL), (0.40, BLUE)]:
-        diameter_m = 1.329e6 / np.sqrt(albedo) * 10 ** (-0.2 * h_mag)
-        axis.plot(h_mag, diameter_m, lw=2.4, color=color, label=f"p = {albedo:.2f}")
-    for diameter, label in [(10, "10 m"), (30, "30 m"), (140, "140 m")]:
-        axis.axhline(diameter, color=GOLD, lw=0.9, alpha=0.65)
-        axis.text(32.7, diameter * 1.06, label, ha="right", color=GOLD, fontsize=10)
+    h_mag = np.linspace(13, 33, 601)
+    albedo = np.geomspace(0.01, 0.60, 401)
+    h_grid, albedo_grid = np.meshgrid(h_mag, albedo)
+    diameter_m = 1.329e6 / np.sqrt(albedo_grid) * 10 ** (-0.2 * h_grid)
+
+    figure, axis = plt.subplots(figsize=(12.2, 6.8))
+    diameter_map = axis.pcolormesh(
+        h_grid,
+        albedo_grid,
+        diameter_m,
+        cmap="cividis",
+        norm=mpl.colors.LogNorm(vmin=0.3, vmax=5.0e4),
+        shading="auto",
+    )
+    contour_levels = [10, 30, 140, 1000, 10000]
+    contours = axis.contour(
+        h_grid,
+        albedo_grid,
+        diameter_m,
+        levels=contour_levels,
+        colors="white",
+        linewidths=1.0,
+        alpha=0.90,
+    )
+    axis.clabel(
+        contours,
+        fmt={10: "10 m", 30: "30 m", 140: "140 m",
+             1000: "1 km", 10000: "10 km"},
+        inline=True,
+        fontsize=9,
+        colors="white",
+    )
+
+    colorbar = figure.colorbar(diameter_map, ax=axis, pad=0.025)
+    colorbar.set_label("Diameter D [m]")
+    colorbar.set_ticks([1, 10, 100, 1000, 10000])
+    colorbar.set_ticklabels(["1", "10", "100", "1,000", "10,000"])
+
     axis.set_yscale("log")
     axis.set_xlim(13, 33)
-    axis.set_ylim(3, 3000)
-    axis.set_xlabel("Absolute magnitude H")
-    axis.set_ylabel("Diameter [m]")
-    axis.set_title("Visible-light H alone does not determine NEO size")
-    axis.grid(True, which="both")
-    axis.legend(title="Assumed geometric albedo", labelcolor=TEXT)
+    axis.set_ylim(0.01, 0.60)
+    axis.set_yticks([0.01, 0.03, 0.10, 0.30, 0.60])
+    axis.set_yticklabels(["0.01", "0.03", "0.10", "0.30", "0.60"])
+    axis.set_xlabel("Absolute magnitude H (lower H is brighter)")
+    axis.set_ylabel(r"Visible geometric albedo $p_V$")
+    axis.set_title("Optical brightness does not uniquely determine NEO size")
+    axis.grid(False)
     save(figure, "neo_h_diameter.png")
 
 
@@ -235,8 +266,13 @@ def force_hierarchy() -> None:
     save(figure, "neo_force_hierarchy.png")
 
 
-thermal_windows()
-diameter_proxy()
-astrometric_limit()
-l2_observability()
-force_hierarchy()
+def main() -> None:
+    thermal_windows()
+    diameter_proxy()
+    astrometric_limit()
+    l2_observability()
+    force_hierarchy()
+
+
+if __name__ == "__main__":
+    main()
