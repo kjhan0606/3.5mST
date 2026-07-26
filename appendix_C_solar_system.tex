@@ -830,36 +830,47 @@ The SB441 memo also provides a 373-body ephemeris for specialized studies
 \midrule
 Major-body gravity and SB441-N16 &
 \color{cTeal}\textbf{Implemented} &
-DE440s and SB441-N16 positions, with JPL $GM$ values\\
+DE440s and SB441-N16 positions with JPL $GM$ values. Exercised by the
+ten-object close-approach suite\\
 Solar Schwarzschild 1PN &
-\color{cTeal}\textbf{Implemented} &
-Sensitivity approximation\\
+\color{cGold}\textbf{Partial} &
+Solar Schwarzschild sensitivity term only. The full multi-body formulation
+is absent\\
 Solar radiation pressure &
 \color{cTeal}\textbf{Implemented} &
-User-supplied area-to-mass ratio and radiation coefficient\\
+Enabled when the user supplies an area-to-mass ratio and radiation
+coefficient\\
 Poynting--Robertson and solar-wind drag &
-\color{cTeal}\textbf{Implemented} &
-Secular approximation for small material\\
+\color{cGold}\textbf{Partial} &
+Configurable secular approximation. Time-dependent solar-wind plasma is
+absent\\
 $A_1,A_2,A_3$ &
 \color{cTeal}\textbf{Implemented} &
-JPL-style radial, transverse, and normal accelerations with $r^{-2}$ scaling\\
+Configurable radial, transverse, and normal accelerations with $r^{-2}$
+scaling\\
 Full orbit covariance and virtual asteroids &
-\color{cOrange}\textbf{Required next} &
-Mandatory before impact-probability use\\
+\color{cOrange}\textbf{Not implemented} &
+Required before impact-probability use\\
 Planetary $J_2$ and higher harmonics &
-\color{cOrange}\textbf{Required for close flybys} &
-Most important during deep planetary encounters\\
+\color{cOrange}\textbf{Not implemented} &
+Required for deep planetary encounters\\
 Full multi-body 1PN formulation &
-\color{cOrange}\textbf{Validation upgrade} &
-Needed to reproduce the complete JPL relativistic model locally\\
+\color{cOrange}\textbf{Not implemented} &
+Required to reproduce the complete JPL relativistic model locally\\
 Comet outgassing law and time lag &
-\color{cOrange}\textbf{Target dependent} &
-Required for active comets and selected dark comets\\
+\color{cGold}\textbf{Partial} &
+Empirical $A_1,A_2,A_3$ and JPL apparition histories are available. A
+physical $g(r)$ law and time lag are absent\\
 Lorentz force and radiation shadowing &
-\color{cBlue}\textbf{Dust option} &
-Relevant for charged grains and eclipse geometries\\
+\color{cOrange}\textbf{Not implemented} &
+Required only for charged grains and eclipse geometries\\
 \bottomrule
 \end{tabularx}
+
+The status refers to the local CODES integrator. An authoritative Horizons
+SPK may contain additional registered force terms in the JPL orbit solution.
+The presence of such terms in an imported SPK does not imply that the same
+terms have been reproduced by the local integrator.
 
 \subsection{Reproducibility test}
 
