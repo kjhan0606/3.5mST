@@ -1313,6 +1313,80 @@ non-gravitational perturbations. Yeomans and Kiang instead identify the
 \cite{YeomansKiang1981}.
 \end{resultbox}
 
+\subsection{Historical comet identification}
+\label{sec:historical-comet-identification}
+
+The Historical Comet Identification Mode compares one fitted comet
+apparition with an independently preserved sky description. The calculation
+does not propagate the present orbit through an ancient close encounter.
+CODES selects the NASA/JPL solution for the relevant apparition and records
+the numeric solution identifier in every output product. The finder chart
+then places the topocentric comet position among Hipparcos stars for the
+specified terrestrial site.
+
+The first curated case uses the 1759 \mbox{1P/Halley} record from the
+\textit{Seongbyeon Cheukhu Danja}. The manuscript is held by Yonsei
+University Library and the digital image was provided by the Korea Astronomy
+and Space Science Institute \cite{KASISeongbyeon}. The record describes the
+comet within the Xu lunar mansion and north of the Liyu asterism on lunar
+March 11. The converted civil date is 1759 April 7 near dawn
+\cite{Lee2014Halley}. CODES adopts 20:30 UTC on the preceding civil evening
+as the reference epoch for the fifth night watch. The adopted epoch is a
+modeled center because the historical time expression has finite width.
+
+CODES selects Horizons apparition record 90000027. At the reference epoch
+the calculated ICRS position is
+$\alpha=329.7288^\circ$ and $\delta=-9.6505^\circ$. The elevation from
+Hanyang is $17.90^\circ$ and the solar elongation is $51.67^\circ$. The
+calculated point lies inside the Xu right ascension interval with a
+$1.72^\circ$ margin. The point is $4.75^\circ$ north of the adopted Liyu
+triplet. The two independent positional statements in the manuscript are
+therefore reproduced.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{appendixC_assets/seongbyeon_cheukhu_danja_1759.jpg}
+\caption{\textit{Seongbyeon Cheukhu Danja} manuscript for the 1759 Halley
+apparition. Yonsei University Library holds the manuscript. The digital image
+is provided by the Korea Astronomy and Space Science Institute
+\cite{KASISeongbyeon}. Source credit is included here. Redistribution in the
+submitted proposal requires confirmation from the image holder.}
+\label{fig:seongbyeon-halley-manuscript}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{appendixC_assets/joseon_halley_1759_finder_chart.png}
+\caption{CODES reconstruction of the 1759 Halley apparition from Hanyang.
+The green band marks the Xu right ascension interval. The cyan triplet marks
+Liyu and the gold symbol marks the lunar March 11 reference epoch. The orange
+curve uses the NASA/JPL historical apparition solution 90000027.}
+\label{fig:joseon-halley-identification}
+\end{figure}
+
+\begin{warningbox}
+\textbf{\color{cOrange}The polar distance is not yet a validation point.}
+The manuscript description reports a north polar distance of
+$116^\circ$. The historical JPL solution gives $100.792^\circ$ when the
+declination is referred to the apparent equator of date. CODES preserves the
+raw value and the $-15.208^\circ$ residual in the provenance JSON but excludes
+the value from the identification score. A defensible numerical comparison
+requires a checked transcription of the complete page and calibration of the
+instrument scale and coordinate convention. The two categorical agreements
+demonstrate consistency. They do not by themselves prove the orbit.
+\end{warningbox}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{appendixC_assets/codes_historical_gui.png}
+\caption{Historical identification controls in the CODES desktop interface.
+The user may select a bundled record or enter a comet, UTC epoch, numeric JPL
+apparition record, observing site, track duration, sampling, and finder chart
+radius. The calculation writes coordinates, the selected solution number,
+the record comparison, and complete provenance.}
+\label{fig:codes-historical-gui}
+\end{figure}
+
 \begin{verbatim}
 python -m neo_orbit_calculator.cli spk 99942 \
   --start 2026-01-01 --stop 2126-01-01
@@ -1326,6 +1400,9 @@ python -m neo_orbit_calculator.cli comet-orbits 1P \
 
 python -m neo_orbit_calculator.cli comet-sky 1P \
   --epochs 2061-07-28 2061-08-15 2061-09-01
+
+python -m neo_orbit_calculator.cli historical-comet \
+  --record joseon-halley-1759-03-11
 \end{verbatim}
 
 \subsection{Integrated CODES desktop interface}
@@ -1347,12 +1424,13 @@ The tab separates authoritative JPL products from the local force-model
 calculation. The clone-count and seed controls launch the full JPL-covariance
 virtual-asteroid ensemble. The full multi-body 1PN switch controls both
 nominal and ensemble propagation. The other tabs expose comet apparition
-histories, apparent sky positions, and the validation suites. The run log
-records the executed command and returned file paths.}
+histories, apparent sky positions, historical record comparison, and the
+validation suites. The run log records the executed command and returned
+file paths.}
 \label{fig:codes-gui}
 \end{figure}
 
-\begin{tabular}{@{}M{34mm}M{61mm}M{70mm}@{}}
+\noindent\begin{tabularx}{\textwidth}{@{}P{31mm}P{58mm}Y@{}}
 \toprule
 \color{cGold}\textbf{GUI tab} &
 \color{cGold}\textbf{Operation} &
@@ -1377,13 +1455,19 @@ Accepts UTC epochs and a Horizons observer code for a selected comet. &
 Apparent right ascension, declination, heliocentric distance, observer
 distance, IAU constellation, and a labeled sky track\\
 \cmidrule(lr){1-3}
+\textbf{Historical identification} &
+Accepts a curated record or a manually specified comet, epoch, apparition
+solution, terrestrial site, and chart scale. &
+Topocentric coordinate table, Hipparcos finder chart, historical constraint
+comparison, and provenance JSON\\
+\cmidrule(lr){1-3}
 \textbf{Validation} &
 Runs the ten-object NEO close-approach comparison or the historical
 1P/Halley return comparison. &
 Traceable CSV and JSON results, diagnostic figures, and direct residuals
 against NASA/JPL or observation-constrained historical solutions\\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 
 The GUI does not convert a sensitivity integration into an operational hazard
 solution. Impact probability still requires a fitted covariance and virtual
@@ -1583,6 +1667,19 @@ Roa, J., Farnocchia, D., \& Chesley, S. R. 2021,
 ``A novel approach to asteroid impact monitoring and hazard assessment,''
 \textit{Astronomical Journal}, 162, 277.
 \href{https://doi.org/10.3847/1538-3881/ac193f}{doi:10.3847/1538-3881/ac193f}.
+
+\bibitem{Lee2014Halley}
+Lee, K. W., Mihn, B. H., \& Ahn, Y. S. 2014,
+``Korean Historical Records on Halley's Comet Revisited,''
+\textit{Journal of Astronomy and Space Sciences}, 31, 215.
+\href{https://doi.org/10.5140/JASS.2014.31.3.215}
+{doi:10.5140/JASS.2014.31.3.215}.
+
+\bibitem{KASISeongbyeon}
+Korea Astronomy and Space Science Institute 2023,
+``Joseon Dynasty comet observation records proposed for the UNESCO Memory
+of the World Register.''
+\url{https://www.kasi.re.kr/kor/publication/post/newsMaterial/29446}.
 
 \bibitem{YeomansKiang1981}
 Yeomans, D. K., \& Kiang, T. 1981,
