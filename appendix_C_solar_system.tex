@@ -82,6 +82,8 @@
 \renewcommand{\theequation}{C.\arabic{equation}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
 \emergencystretch=3em
 
 \newtcolorbox{resultbox}[1][]{
@@ -648,6 +650,7 @@ The orbit state $\mathbf{x}=(\mathbf{r},\mathbf{v})$ is propagated with
  \ddot{\mathbf r}
  = \sum_i GM_i
  \frac{\mathbf r_i-\mathbf r}{|\mathbf r_i-\mathbf r|^3}
+ +\mathbf a_{\rm zonal}
  +\mathbf a_{\rm 1PN}
  +\mathbf a_{\rm SRP}
  +\mathbf a_{\rm PR}
@@ -680,6 +683,15 @@ It does not multiply a separate value of $G$ by a tabulated mass. The direct
 use of $\mu_i$ follows the precision structure of modern solar-system
 ephemerides.
 
+\textbf{Planetary zonal gravity.}
+The term $\mathbf a_{\rm zonal}$ contains the axisymmetric $J_2$, $J_4$, and
+$J_6$ corrections for bodies with measured coefficients. CODES evaluates the
+Legendre expansion in the time-dependent IAU north-pole direction supplied
+by the NAIF planetary constants kernel. The correction is most important
+during a close planetary passage. DE440s supplies a planet-system barycenter
+for Mars and the outer planets. A precision trajectory within a satellite
+system must also load the corresponding planet-center satellite SPK.
+
 \textbf{Relativistic acceleration.}
 The term $\mathbf a_{\rm 1PN}$ is the first post-Newtonian correction from the
 solar Schwarzschild field. The correction produces the leading relativistic
@@ -695,11 +707,13 @@ pressure. Its amplitude is proportional to the solar radiation pressure at
 inverse square of heliocentric distance. The term $\mathbf a_{\rm PR}$ is the
 velocity-dependent Poynting--Robertson component of the same radiation field.
 The Poynting--Robertson acceleration removes orbital energy through radial
-and transverse drag. The term $\mathbf a_{\rm SW}$ is the secular drag from
-the solar wind. CODES scales the solar-wind term to the
-Poynting--Robertson drag with a configurable ratio whose default value is
-0.35. The three terms vanish in the local calculation when no credible
-area-to-mass ratio is supplied.
+and transverse drag. The term $\mathbf a_{\rm SW}$ transfers momentum from a
+radial proton wind after subtracting the target velocity from the wind
+velocity. The default density is 5\,cm$^{-3}$ at 1\,au and the default radial
+speed is 400\,km\,s$^{-1}$. Both quantities and the non-proton momentum factor
+are configurable. The model describes a stationary radial wind. It does not
+predict transient coronal structures. The three terms vanish in the local
+calculation when no credible area-to-mass ratio is supplied.
 
 \textbf{Empirical non-gravitational acceleration.}
 The term $\mathbf a_{\rm NG}$ represents accelerations that are constrained
@@ -709,10 +723,13 @@ heliocentric radial, transverse, and orbit-normal unit vectors. The adopted
 amplitude scales as the inverse square of heliocentric distance. The
 transverse coefficient $A_2$ provides a compact Yarkovsky sensitivity model
 for an asteroid. The radial and normal coefficients also support diagnostic
-fits for asymmetric cometary outgassing. A scientific orbit solution must fit
-the coefficients and covariance to astrometry. Nonzero trial values in CODES
-measure dynamical sensitivity and do not constitute a detection of a
-non-gravitational force.
+fits for asymmetric cometary outgassing. The comet option replaces the
+inverse-square amplitude by the normalized Marsden water-ice law. A specified
+time lag is applied to the osculating heliocentric state with a
+universal-variable Kepler shift before the sublimation amplitude is
+evaluated. A scientific orbit solution must fit the coefficients, lag, and
+covariance to astrometry. Nonzero trial values in CODES measure dynamical
+sensitivity and do not constitute a detection of a non-gravitational force.
 
 The solar Schwarzschild approximation used for sensitivity tests is
 \begin{equation}
@@ -728,12 +745,12 @@ term above is not a replacement for the full Einstein--Infeld--Hoffmann
 multi-body formulation.
 
 Direct radiation pressure is proportional to area-to-mass ratio. The
-Poynting--Robertson term removes orbital energy through the velocity-dependent
-part of the radiation force. The calculator uses a configurable solar-wind
-drag factor, defaulting to 0.35 times the Poynting--Robertson drag
-\cite{Gustafson1996}. These terms matter most for dust, meter-scale material,
-and high area-to-mass artificial objects. For ordinary NEOs, fitted thermal
-recoil often dominates the non-gravitational orbit correction.
+Poynting--Robertson term uses the complete first-order photon momentum
+equation \cite{Gustafson1996}. The solar-wind term uses the relative velocity
+of a configurable radial proton wind. The terms matter most for dust,
+meter-scale material, and high area-to-mass artificial objects. For ordinary
+NEOs, fitted thermal recoil often dominates the non-gravitational orbit
+correction.
 
 \begin{figure}[H]
 \centering
@@ -822,7 +839,7 @@ The SB441 memo also provides a 373-body ephemeris for specialized studies
 
 \subsection{Implemented and deferred force terms}
 
-\begin{tabularx}{\textwidth}{@{}P{43mm}P{37mm}Y@{}}
+\begin{tabular}{@{}M{43mm}C{37mm}M{85mm}@{}}
 \toprule
 \color{cGold}\textbf{Term} &
 \color{cGold}\textbf{Status} &
@@ -832,40 +849,50 @@ Major-body gravity and SB441-N16 &
 \color{cTeal}\textbf{Implemented} &
 DE440s and SB441-N16 positions with JPL $GM$ values. Exercised by the
 ten-object close-approach suite\\
+\cmidrule(lr){1-3}
 Solar Schwarzschild 1PN &
-\color{cGold}\textbf{Partial} &
-Solar Schwarzschild sensitivity term only. The full multi-body formulation
-is absent\\
+\color{cTeal}\textbf{Implemented} &
+Complete solar Schwarzschild test-particle term. The separate full
+multi-body 1PN row remains absent\\
+\cmidrule(lr){1-3}
 Solar radiation pressure &
 \color{cTeal}\textbf{Implemented} &
 Enabled when the user supplies an area-to-mass ratio and radiation
 coefficient\\
+\cmidrule(lr){1-3}
 Poynting--Robertson and solar-wind drag &
-\color{cGold}\textbf{Partial} &
-Configurable secular approximation. Time-dependent solar-wind plasma is
-absent\\
+\color{cTeal}\textbf{Implemented} &
+First-order photon momentum equation and configurable radial proton-wind
+momentum transfer\\
+\cmidrule(lr){1-3}
 $A_1,A_2,A_3$ &
 \color{cTeal}\textbf{Implemented} &
 Configurable radial, transverse, and normal accelerations with $r^{-2}$
 scaling\\
+\cmidrule(lr){1-3}
 Full orbit covariance and virtual asteroids &
 \color{cOrange}\textbf{Not implemented} &
 Required before impact-probability use\\
+\cmidrule(lr){1-3}
 Planetary $J_2$ and higher harmonics &
-\color{cOrange}\textbf{Not implemented} &
-Required for deep planetary encounters\\
+\color{cTeal}\textbf{Implemented} &
+Axisymmetric $J_2$, $J_4$, and $J_6$ in the time-dependent IAU pole
+direction\\
+\cmidrule(lr){1-3}
 Full multi-body 1PN formulation &
 \color{cOrange}\textbf{Not implemented} &
 Required to reproduce the complete JPL relativistic model locally\\
+\cmidrule(lr){1-3}
 Comet outgassing law and time lag &
-\color{cGold}\textbf{Partial} &
-Empirical $A_1,A_2,A_3$ and JPL apparition histories are available. A
-physical $g(r)$ law and time lag are absent\\
+\color{cTeal}\textbf{Implemented} &
+Normalized Marsden water-ice law with configurable coefficients and a
+universal-variable Kepler time shift\\
+\cmidrule(lr){1-3}
 Lorentz force and radiation shadowing &
 \color{cOrange}\textbf{Not implemented} &
 Required only for charged grains and eclipse geometries\\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 
 The status refers to the local CODES integrator. An authoritative Horizons
 SPK may contain additional registered force terms in the JPL orbit solution.
@@ -961,11 +988,14 @@ times with the observation-constrained integration of Yeomans and Kiang
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/halley_return_history.png}
 \caption{Apparition-to-apparition evolution of 1P/Halley from the JPL
-historical solutions. The upper panel rejects a fixed 76-year clock. The
+historical solutions. The upper panel compares the JPL return intervals with
+the observation-constrained perihelion times of Yeomans and Kiang (blue
+stars) and the NASA/JPL official return epochs (gold diamonds). The upper
+panel rejects a fixed 76-year clock. The
 middle panel identifies the largest adjacent change in semimajor axis between
 the 989 and 1066 solutions. The lower panel shows that the perihelion distance
-also evolves. The points are separate fitted apparition records rather than
-samples from one unconstrained millennium-long extrapolation.}
+also evolves. The orbit points are separate fitted apparition records rather
+than samples from one unconstrained millennium-long extrapolation.}
 \label{fig:halley-return-history}
 \end{figure}
 
@@ -999,6 +1029,65 @@ python -m neo_orbit_calculator.cli comet-orbits 1P \
 python -m neo_orbit_calculator.cli comet-sky 1P \
   --epochs 2061-07-28 2061-08-15 2061-09-01
 \end{verbatim}
+
+\subsection{Integrated CODES desktop interface}
+\label{sec:codes-gui}
+
+The desktop interface is launched with
+\code{python -m neo\_orbit\_calculator}. The interface exposes the same
+command-line calculations without changing force switches or numerical
+defaults. Each action displays the complete command in a common run log and
+executes the calculation in a background thread. A long Horizons request or
+Fortran propagation therefore does not freeze the window. The output
+directory remains explicit for every science mode.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/codes_gui.png}
+\caption{Integrated CODES desktop interface with the NEO dynamics tab open.
+The tab separates authoritative JPL products from the local force-model
+calculation. The other tabs expose comet apparition histories, apparent sky
+positions, and the validation suites. The run log records the executed
+command and the returned file paths.}
+\label{fig:codes-gui}
+\end{figure}
+
+\begin{tabular}{@{}M{34mm}M{61mm}M{70mm}@{}}
+\toprule
+\color{cGold}\textbf{GUI tab} &
+\color{cGold}\textbf{Operation} &
+\color{cGold}\textbf{Scientific product}\\
+\midrule
+\textbf{NEO dynamics} &
+Selects the designation, TDB interval, sampling, force terms, and local
+non-gravitational coefficients. Separate buttons request an SPK, retrieve
+Horizons vectors, or run the Fortran propagator. &
+Authoritative binary SPK, sampled state-vector CSV, local orbit projection,
+and residual summary against Horizons\\
+\cmidrule(lr){1-3}
+\textbf{Comet evolution} &
+Selects a comet and an apparition-year interval. Known return years may be
+entered when Horizons aliases are incomplete. &
+CSV of the separate JPL apparition solutions and a plot of return interval,
+semimajor axis, and perihelion distance\\
+\cmidrule(lr){1-3}
+\textbf{Sky positions} &
+Accepts UTC epochs and a Horizons observer code for a selected comet. &
+Apparent right ascension, declination, heliocentric distance, observer
+distance, IAU constellation, and a labeled sky track\\
+\cmidrule(lr){1-3}
+\textbf{Validation} &
+Runs the ten-object NEO close-approach comparison or the historical
+1P/Halley return comparison. &
+Traceable CSV and JSON results, diagnostic figures, and direct residuals
+against NASA/JPL or observation-constrained historical solutions\\
+\bottomrule
+\end{tabular}
+
+The GUI does not convert a sensitivity integration into an operational hazard
+solution. Impact probability still requires a fitted covariance and virtual
+asteroid propagation. The distinction remains visible because authoritative
+JPL retrieval, local propagation, and validation are separate commands.
 
 \section{Mission Decision Matrix}
 
