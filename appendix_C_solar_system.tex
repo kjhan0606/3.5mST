@@ -203,7 +203,7 @@ be engineered closer to the Sun.
 \subsection{Atmosphere, airmass, and the usable sky window}
 
 For a ground observation at zenith angle $z$, the airmass is approximately
-$X\simeq\sec z$ away from the horizon, and atmospheric extinction contributes
+$X\simeq\sec z$ away from the horizon. Atmospheric extinction contributes
 $A_\lambda=k_\lambda X$. Increasing airmass therefore attenuates the source
 and increases wavelength-dependent extinction, differential refraction,
 seeing, and calibration systematics. A moving-object survey consequently
@@ -214,13 +214,13 @@ The restrictions produce a smaller ground-based sky window. The excluded
 region is set by data-quality and scheduling requirements, not only by
 whether the target is geometrically above the horizon.
 
-Mid-infrared astronomy is possible from exceptional dry sites, but only
+Mid-infrared astronomy is possible from exceptional dry sites but only
 through restricted atmospheric windows. For example, ESO/VISIR operates in
 the M, N, and Q windows near 5, 10, and 19\,$\mu$m. The atmosphere absorbs
-most MIR radiation outside those windows, while the warm atmosphere and
+most MIR radiation outside those windows while the warm atmosphere and
 telescope create a very high photon background that requires rapid
 chopping and nodding \cite{ESOVISIR2019}. Thus, it would be inaccurate to
-state that all ground-based MIR observations are impossible. A defensible
+state that all ground-based MIR observations are impossible. The defensible
 mission statement is stronger and more specific. A sensitive, wide-field,
 continuous 4--10\,$\mu$m NEO survey cannot be performed competitively from
 the ground. A cold space telescope removes atmospheric absorption and can
@@ -259,7 +259,7 @@ spacecraft thermal limits define the field of regard\\
 Image and calibration &
 Seeing, extinction, telluric absorption, and differential refraction vary
 with time and direction &
-Stable PSF and throughput are achievable, but detector persistence, cosmic
+Stable PSF and throughput are achievable. Detector persistence, cosmic
 rays, pointing, and calibration must still be controlled\\
 \addlinespace
 NEO selection &
@@ -717,14 +717,14 @@ $|\beta|=60^\circ$. These values describe geometry only.
 zone. Orange marks the 45--$60^\circ$ region that requires a dedicated
 forward baffle and thermal design. Teal marks the current baseline outside
 $60^\circ$. Earth albedo is suppressed by the near-new-Earth phase as seen
-from L2, although Earth and Moon stray light, thermal emission, halo-orbit
+from L2 although Earth and Moon stray light, thermal emission, halo-orbit
 offsets, and sunshade geometry still require a measured rejection model.}
 \end{figure}
 
 NEO discovery benefits from observing at small elongation because Atira and
 other interior or Earth-approaching populations spend substantial time close
 to the Sun on the sky. A reduction from $60^\circ$ to $45^\circ$ is therefore
-scientifically valuable, but it is not a software setting. The change affects
+scientifically valuable. Access at $45^\circ$ is not a software setting. The change affects
 the baffle, sunshade, radiator view, detector background, and allowed roll
 angles. Zodiacal emission also rises toward the ecliptic and toward the Sun.
 The exposure-time model must use a wavelength-dependent zodiacal map rather
@@ -1024,7 +1024,7 @@ finite-sample impact fraction is a screening diagnostic, not a replacement
 for Sentry-II rare-event searches. Propagating that nominal local state to the
 2029 encounter gives 38,042.1\,km versus the CNEOS value 38,011.5\,km, with
 local-minus-JPL residuals of $+30.6$\,km and $-228.8$\,s. The covariance path
-is therefore operational, but this residual prevents presenting CODES as a
+is therefore operational. The residual prevents presenting CODES as a
 replacement for the registered JPL force model.
 
 \section{CODES Orbit Dynamics and Ephemeris System}
@@ -1085,7 +1085,7 @@ SB441-N16 is not defined by a universal mass threshold. It is the JPL set of
 the 16 most massive main-belt perturbers. Cybele is the least massive object
 in this set with $GM=0.938105756$\,km$^3$\,s$^{-2}$. Conversion with a
 separately adopted $G$ gives a reference mass near
-$1.41\times10^{19}$\,kg, although the integrator uses $GM$ directly.
+$1.41\times10^{19}$\,kg although the integrator uses $GM$ directly.
 The SB441 memo also provides a 373-body ephemeris for specialized studies
 \cite{Farnocchia2021SB441}.
 
@@ -1345,7 +1345,7 @@ directory remains explicit for every science mode.
 \caption{Integrated CODES desktop interface with the NEO dynamics tab open.
 The tab separates authoritative JPL products from the local force-model
 calculation. The clone-count and seed controls launch the full JPL-covariance
-virtual-asteroid ensemble, while the full multi-body 1PN switch controls both
+virtual-asteroid ensemble. The full multi-body 1PN switch controls both
 nominal and ensemble propagation. The other tabs expose comet apparition
 histories, apparent sky positions, and the validation suites. The run log
 records the executed command and returned file paths.}
