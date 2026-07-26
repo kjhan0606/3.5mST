@@ -228,9 +228,20 @@ as $D^3$.
 
 Wien's displacement law gives
 \begin{equation}
-  \lambda_{\rm peak}\,[\mu\mathrm{m}]
-  \simeq \frac{2898}{T\,[\mathrm{K}]}.
+  \lambda_{\rm peak}
+  =\frac{b}{T},
+  \qquad
+  b\simeq2898\,\mu\mathrm{m\,K}.
+  \label{eq:wien}
 \end{equation}
+The left-hand side $\lambda_{\rm peak}$ is the wavelength at which the
+blackbody spectral radiance per unit wavelength $B_\lambda(T)$ reaches its
+maximum. The symbol $T$ is the effective blackbody temperature in kelvin and
+$b$ is Wien's displacement constant. Equation~\ref{eq:wien} returns
+$\lambda_{\rm peak}$ in micrometers when $b$ is expressed in
+$\mu\mathrm{m\,K}$. The numerical constant applies to the peak of
+$B_\lambda$. A spectrum expressed per unit frequency as $B_\nu$ has a
+different numerical peak.
 Objects at 250--400\,K peak near 11.6--7.2\,$\mu$m. The present
 0.2--1.5\,$\mu$m range measures reflected sunlight for most NEOs. It does not
 sample the thermal maximum. NEO Surveyor illustrates the required system
@@ -298,22 +309,26 @@ ETC values are the geometric means of each range.
 \caption{Reference requirements used by the cooled MIR imaging ETC. The
 detector and throughput entries are proposal requirements. They are not
 measured component values.}
-\begin{tabularx}{\textwidth}{@{}P{36mm}YY@{}}
+\begin{tabularx}{\textwidth}{@{}P{39mm}YY@{}}
 \toprule
 \textbf{\color{cGold}Quantity} &
 \textbf{\color{cGold}MIR-1} &
 \textbf{\color{cGold}MIR-2}\\
 \midrule
 Bandpass & 4.0--5.2\,$\mu$m & 6.0--10.0\,$\mu$m\\
-Pixel scale & \multicolumn{2}{c}{0.35 arcsec pixel$^{-1}$}\\
-End-to-end throughput & \multicolumn{2}{c}{0.30 requirement}\\
-Telescope temperature & \multicolumn{2}{c}{$55$\,K requirement}\\
-Telescope emissivity & \multicolumn{2}{c}{0.10 requirement}\\
-Detector temperature & \multicolumn{2}{c}{$\leq40$\,K requirement}\\
-Read noise & \multicolumn{2}{c}{15 e$^-$ per pixel per exposure requirement}\\
-Dark current & \multicolumn{2}{c}{0.01 e$^-$ s$^{-1}$ pixel$^{-1}$ requirement}\\
-Visit & \multicolumn{2}{c}{six dithered integrations and 145\,s net exposure}\\
-Field & \multicolumn{2}{c}{$30'\times30'=0.25$\,deg$^2$}\\
+Pixel scale & 0.35 arcsec pixel$^{-1}$ & 0.35 arcsec pixel$^{-1}$\\
+End-to-end throughput & 0.30 & 0.30\\
+Telescope temperature & $55$\,K & $55$\,K\\
+Telescope emissivity & 0.10 & 0.10\\
+Detector temperature & $\leq40$\,K & $\leq40$\,K\\
+Read noise &
+15 e$^-$ pixel$^{-1}$ exposure$^{-1}$ &
+15 e$^-$ pixel$^{-1}$ exposure$^{-1}$\\
+Dark current &
+0.01 e$^-$ s$^{-1}$ pixel$^{-1}$ &
+0.01 e$^-$ s$^{-1}$ pixel$^{-1}$\\
+Visit & Six integrations, 145\,s net & Six integrations, 145\,s net\\
+Field & $30'\times30'$ (0.25\,deg$^2$) & $30'\times30'$ (0.25\,deg$^2$)\\
 \bottomrule
 \end{tabularx}
 \label{tab:mir-etc-requirements}
