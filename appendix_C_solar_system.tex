@@ -81,6 +81,7 @@
 \renewcommand{\thetable}{C.\arabic{table}}
 \renewcommand{\theequation}{C.\arabic{equation}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
@@ -783,10 +784,10 @@ enter the yield calculation.
 The 30$'\times30'$ field covers 0.25\,deg$^2$. A dedicated day retains
 21.75 hours after the 2.25-hour downlink allocation reported for NEO
 Surveyor \cite{Mainzer2023}. Four visits per field then cover
-27.2 unique deg$^2$ per day before the 13-day repeat. The accessible
-45--$120^\circ$ longitude range on both sides of the Sun and
-$|\beta|\leq40^\circ$ covers 11,051\,deg$^2$. The 13-day fractional coverage
-is only 3.20 percent.
+27.2 unique deg$^2$ per day before the 13-day repeat. The accessible sky
+outside the $60^\circ$ solar exclusion region and within
+$|\beta|\leq40^\circ$ covers 18,111\,deg$^2$. The 13-day fractional coverage
+is only 1.95 percent.
 
 The survey emulator propagates every NEOMOD3 object at 13-day intervals for
 five years. Each epoch recomputes the L2 geometry, phase angle, optical
@@ -803,7 +804,7 @@ interval. ``New'' uses approximate known fractions of 3 percent at 30--50\,m,
 10 percent at 50--140\,m, 38 percent at 140\,m--1\,km, and 95 percent above
 1\,km. The 38-percent value follows the NEO Surveyor Known Object Model
 \cite{Grav2023}. The other fractions are explicit scenario assumptions.}
-\begin{tabularx}{\textwidth}{@{}P{23mm}P{25mm}P{18mm}YYYY@{}}
+\begin{tabularx}{\textwidth}{@{}P{23mm}P{25mm}P{18mm}ZZZZ@{}}
 \toprule
 \textbf{\color{cGold}MIR time} &
 \textbf{\color{cGold}Search latitude} &
@@ -813,10 +814,10 @@ interval. ``New'' uses approximate known fractions of 3 percent at 30--50\,m,
 \textbf{\color{cGold}Cataloged $\geq140$ m} &
 \textbf{\color{cGold}New $\geq140$ m}\\
 \midrule
-25 percent & $|\beta|\leq40^\circ$ & 0.80 percent & 181 & 79 & 42 & 25\\
-100 percent & $|\beta|\leq40^\circ$ & 3.20 percent & 2,855 & 1,250 & 659 & 388\\
-25 percent & $|\beta|\leq20^\circ$ & 1.50 percent & 437 & 201 & 109 & 64\\
-100 percent & $|\beta|\leq20^\circ$ & 6.01 percent & 6,770 & 3,086 & 1,646 & 970\\
+25 percent & $|\beta|\leq40^\circ$ & 0.49 percent & 75 & 32 & 18 & 11\\
+100 percent & $|\beta|\leq40^\circ$ & 1.95 percent & 1,201 & 514 & 284 & 167\\
+25 percent & $|\beta|\leq20^\circ$ & 0.93 percent & 181 & 81 & 47 & 28\\
+100 percent & $|\beta|\leq20^\circ$ & 3.74 percent & 2,853 & 1,278 & 738 & 435\\
 \bottomrule
 \end{tabularx}
 \label{tab:neo-reference-yield}
@@ -830,8 +831,8 @@ left panel holds the four-visit cadence, 13-day linking interval, full-time
 allocation, and $|\beta|\leq40^\circ$ search region fixed while changing the
 instantaneous field. The right panel holds the 0.25\,deg$^2$ field fixed.
 Two visits do not satisfy the accepted four-detection tracklet definition.
-Six visits reduce unique sky area and lower the $D\geq140$\,m yield from 659
-to 299. Four visits provide the highest defensible yield per observing time.}
+Six visits reduce unique sky area and lower the $D\geq140$\,m yield from 284
+to 128. Four visits provide the highest defensible yield per observing time.}
 \label{fig:neo-survey-yield}
 \end{figure}
 
@@ -841,10 +842,104 @@ Four visits per tracklet are the cost-effective minimum. A fifth or sixth
 visit should be triggered only by weather-equivalent data loss, focal-plane
 gaps, or a high-priority object. The 0.25\,deg$^2$ field is the dominant
 discovery limitation. Full-time use of the baseline field reaches only
-3.35 percent of the NEOMOD3 $D\geq140$\,m population in the full latitude
-search. A 1\,deg$^2$ MIR field raises the reference fraction to 40 percent.
+1.44 percent of the NEOMOD3 $D\geq140$\,m population in the full latitude
+search. A 1\,deg$^2$ MIR field raises the reference fraction to 20 percent.
 The larger field requires a separate focal-plane, optical, telemetry, and
 cost trade.
+\end{resultbox}
+
+\subsection{Earth-centered detection area and ideal warning time}
+
+Figure~\ref{fig:neo-single-visit-reach} converts the optical ETC limit into
+an Earth-centered detection area. The calculation uses a 145\,s Johnson
+$V$ exposure with a $5\sigma$ limit of $V_{\rm AB}=26.48$. The assumed
+geometric albedo is $p_V=0.15$. The standard diameter relation in
+Equation~\ref{eq:h-diameter} and the $H,G$ phase law with $G=0.15$ determine
+the reflected flux \cite{Bowell1989}. The observer is placed at Sun--Earth
+L2, 0.01\,au from Earth in the figure geometry.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/neo_single_visit_reach.png}
+\caption{Earth-centered single-exposure detection area for reflected light.
+The colored contours show where each representative asteroid reaches
+$\mathrm{S/N}\geq5$ in a 145\,s Johnson $V$ exposure. The Sun is one au from
+Earth. The L2 observer is 0.01\,au from Earth. Every contour adopts
+$p_V=0.15$ and the $H,G$ phase law. The greatest radial reach occurs near
+opposition because the illuminated fraction and reflected-light geometry
+are favorable. The contours are instantaneous flux limits. Trailing,
+confusion, cadence, linking losses, and orbit uncertainty are not included.}
+\label{fig:neo-single-visit-reach}
+\end{figure}
+
+The direction of easiest discovery is not the physical source direction of
+all impactors. Optical discovery reaches the greatest distance near
+opposition. The resulting catalog therefore contains a strong opposition
+selection effect. Real impactors can approach from a broad range of solar
+elongations. The 17--20\,m Chelyabinsk impactor approached within
+$15^\circ$ of the Sun and could not be detected by conventional survey
+telescopes in that direction \cite{JPLChelyabinsk2013}. The solar keep-out
+zone therefore prevents a nonzero guaranteed warning time for every
+possible impactor.
+
+An ideal geometric lead time follows from the maximum Earth-centered
+detection distance $d_{\oplus,\max}$,
+\begin{equation}
+ t_{\rm lead}
+ \simeq
+ \frac{d_{\oplus,\max}}{v_{\rm rel}}
+ =
+ 57.7\,{\rm d}
+ \left(\frac{d_{\oplus,\max}}{1\,{\rm au}}\right)
+ \left(\frac{30\,{\rm km\,s^{-1}}}{v_{\rm rel}}\right).
+ \label{eq:ideal-warning-time}
+\end{equation}
+Table~\ref{tab:ideal-warning-time} evaluates Equation~
+\ref{eq:ideal-warning-time} for representative approach speeds. The
+20\,m and 50\,m rows correspond approximately to the Chelyabinsk and
+Tunguska size scales \cite{NASAEmergency2021}. The 140\,m row marks the
+NASA population-survey threshold \cite{NASASDT2017}.
+
+\begin{table}[H]
+\centering
+\caption{Ideal warning time in favorable opposition geometry. The two speed
+columns bracket a reference approach-speed range. Values assume continuous
+coverage, immediate processing, and successful linkage.}
+\begin{tabularx}{\textwidth}{@{}P{20mm}P{45mm}P{32mm}Y@{}}
+\toprule
+\textbf{\color{cGold}Diameter} &
+\textbf{\color{cGold}Reference role} &
+\textbf{\color{cGold}$d_{\oplus,\max}$} &
+\textbf{\color{cGold}Lead time at 20 and 30 km s$^{-1}$}\\
+\midrule
+5\,m & Small-object sensitivity & 0.242\,au & 21.0 and 14.0 days\\
+10\,m & Warning threshold scale & 0.416\,au & 36.0 and 24.0 days\\
+20\,m & Chelyabinsk scale & 0.691\,au & 59.8 and 39.9 days\\
+50\,m & Tunguska scale & 1.273\,au & 110.2 and 73.5 days\\
+140\,m & NASA census threshold & 2.387\,au & 206.6 and 137.8 days\\
+1\,km & Large-object reference & 7.100\,au & 614.7 and 409.8 days\\
+\bottomrule
+\end{tabularx}
+\label{tab:ideal-warning-time}
+\end{table}
+
+The tabulated times are upper bounds for one favorable trajectory family.
+The baseline 0.25\,deg$^2$ field covers only 27.2 unique deg$^2$ per
+dedicated day before the repeat. The 13-day cadence can consume most of the
+ideal 5\,m warning interval. Reliable alerts also require a tracklet,
+cross-night linkage, and an orbit solution. Continuous all-sky coverage is
+therefore not provided by the baseline design. Mid-infrared measurements
+remain important after detection because reflected light constrains
+$p_VD^2$ rather than diameter alone.
+
+\begin{resultbox}
+\textbf{\color{cGold}Warning-time interpretation.}
+The baseline ETC can detect a favorable 20\,m object tens of days before
+impact in the idealized speed range. The statement is not a guaranteed
+warning requirement. Solar-direction approaches can remain hidden until
+impact. A defensible alert claim requires deterministic sky coverage,
+real-time processing, linkage efficiency, and a quantified solar blind
+zone.
 \end{resultbox}
 
 \section{Orbit Determination and Non-Gravitational Forces}
@@ -1414,7 +1509,7 @@ and survey completeness together.
 discovery cadence. Reserve additional visits for data loss or targeted
 follow-up.
 \item Do not claim a competitive blind NEO census with a 0.25\,deg$^2$ field.
-The reference calculation yields 659 cataloged $D\geq140$\,m objects over
+The reference calculation yields 284 cataloged $D\geq140$\,m objects over
 five years under a full-time MIR allocation. A discovery-led option requires
 at least a 1\,deg$^2$ MIR field trade.
 \item Preserve a $60^\circ$ baseline solar avoidance requirement until a
@@ -1439,6 +1534,12 @@ gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
 \renewcommand{\refname}{References}
 \begin{thebibliography}{99}
 \color{cText}
+
+\bibitem{Bowell1989}
+Bowell, E., Hapke, B., Domingue, D., et al. 1989,
+``Application of photometric models to asteroids,''
+in \textit{Asteroids II}, eds. R. P. Binzel, T. Gehrels, and M. S. Matthews,
+524.
 
 \bibitem{Chesley2014}
 Chesley, S. R., et al. 2014,
@@ -1499,6 +1600,13 @@ NASA/JPL Center for Near-Earth Object Studies,
 ``Close-Approach Data API.''
 \url{https://ssd-api.jpl.nasa.gov/doc/cad.html}.
 
+\bibitem{JPLChelyabinsk2013}
+Yeomans, D., \& Chodas, P. 2013,
+``Additional Details on the Large Fireball Event over Russia on
+February 15, 2013,''
+NASA/JPL Center for Near-Earth Object Studies.
+\url{https://cneos.jpl.nasa.gov/news/fireball_130301.html}.
+
 \bibitem{Mainzer2011}
 Mainzer, A., et al. 2011,
 ``NEOWISE observations of near-Earth objects,''
@@ -1544,6 +1652,16 @@ Nesvorn\'y, D., et al. 2024,
 ``NEOMOD 3. The Debiased Size Distribution of Near Earth Objects,''
 \textit{Icarus}, 417, 116110.
 \href{https://doi.org/10.1016/j.icarus.2024.116110}{doi:10.1016/j.icarus.2024.116110}.
+
+\bibitem{NASAEmergency2021}
+NASA 2021,
+\textit{Report on Near-Earth Object Impact Threat Emergency Protocols}.
+\url{https://www.nasa.gov/wp-content/uploads/2015/12/neo-impact-threat-emergency-protocols-jan2021.pdf}.
+
+\bibitem{NASASDT2017}
+NASA 2017,
+``New Report Assesses Status of Detecting Near-Earth Asteroids.''
+\url{https://www.nasa.gov/solar-system/new-report-assesses-status-of-detecting-near-earth-asteroids/}.
 
 \bibitem{MPCObservations}
 International Astronomical Union Minor Planet Center,

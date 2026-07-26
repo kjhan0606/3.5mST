@@ -319,6 +319,20 @@ def l2_observability() -> None:
         fontsize=10,
         arrowprops={"arrowstyle": "->", "color": GOLD, "lw": 1.2},
     )
+    longitude_ticks_deg = np.arange(-150, 151, 30)
+    sky.set_xticks(np.deg2rad(longitude_ticks_deg))
+    sky.set_xticklabels(
+        [rf"{-value:d}$^\circ$" for value in longitude_ticks_deg]
+    )
+    sky.text(
+        0.5,
+        -0.09,
+        "Solar-relative ecliptic longitude, east positive to the left",
+        transform=sky.transAxes,
+        ha="center",
+        color=MUTED,
+        fontsize=9.5,
+    )
     sky.grid(color=MUTED, alpha=0.22)
     sky.set_title("C. Instantaneous field of regard in Sun-centered ecliptic coordinates", loc="left", pad=18)
     figure.legend(

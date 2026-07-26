@@ -21,6 +21,8 @@ DOWNLINK_HOURS_DAY = 2.25
 FOV_DEG2 = 0.25
 TRACKLET_VISITS = 4
 LINK_EFFICIENCY = 0.95
+MIN_SOLAR_ELONGATION_DEG = 60.0
+MAX_SOLAR_ELONGATION_DEG = 180.0
 
 
 def load_population():
@@ -48,8 +50,8 @@ def detection_mask(population, days):
         NET_EXPOSURE_S)
     rate = angular_rate_deg_day(population, days, geometry)
     common = (
-        (geometry["elongation_deg"] >= 45.0)
-        & (geometry["elongation_deg"] <= 120.0)
+        (geometry["elongation_deg"] >= MIN_SOLAR_ELONGATION_DEG)
+        & (geometry["elongation_deg"] <= MAX_SOLAR_ELONGATION_DEG)
         & (rate >= 0.008)
         & (rate <= 8.0)
         & ((nc1_ujy >= nc1_limit) | (nc2_ujy >= nc2_limit))
@@ -85,10 +87,19 @@ def pair_counts(population):
 
 
 def search_region_area_deg2(latitude_limit_deg):
-    longitude_width_rad = np.radians(2.0 * (120.0 - 45.0))
-    area_sr = (
-        longitude_width_rad
-        * 2.0 * np.sin(np.radians(latitude_limit_deg)))
+    latitude_limit_rad = np.radians(latitude_limit_deg)
+    latitude_rad = np.linspace(
+        -latitude_limit_rad, latitude_limit_rad, 20001)
+    solar_exclusion_half_width = np.arccos(np.clip(
+        np.cos(np.radians(MIN_SOLAR_ELONGATION_DEG))
+        / np.cos(latitude_rad),
+        -1.0,
+        1.0,
+    ))
+    allowed_longitude_width = 2.0 * (
+        np.pi - solar_exclusion_half_width)
+    area_sr = np.trapezoid(
+        allowed_longitude_width * np.cos(latitude_rad), latitude_rad)
     return area_sr * (180.0 / np.pi)**2
 
 

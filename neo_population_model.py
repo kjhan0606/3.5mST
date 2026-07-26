@@ -299,8 +299,8 @@ def evaluate_population(population):
     nc2_limit = mir_limit_ujy(
         "NC2", geometry["elongation_deg"], geometry["latitude_deg"])
     accessible = (
-        (geometry["elongation_deg"] >= 45.0)
-        & (geometry["elongation_deg"] <= 120.0)
+        (geometry["elongation_deg"] >= 60.0)
+        & (geometry["elongation_deg"] <= 180.0)
         & (np.abs(geometry["latitude_deg"]) <= 40.0)
     )
     detected = accessible & (
@@ -351,7 +351,7 @@ def make_figure(population, nc2_ujy, detected):
     axes[1].grid(alpha=0.18)
     axes[1].text(
         0.03, 0.04,
-        "Gold objects satisfy the 45-120 deg field of regard and ETC limit",
+        "Gold objects satisfy elongation >= 60 deg and the ETC limit",
         transform=axes[1].transAxes, color="#5C6875", fontsize=9)
 
     figure.patch.set_facecolor("white")
