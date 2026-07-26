@@ -185,6 +185,143 @@ robotic scheduling, and a stable space environment improve follow-up. A
 dedicated discovery survey additionally requires étendue, repeated cadence,
 moving-object processing, and access toward the Sun.
 
+\section{Ground-Based and Space-Based NEO Survey Regimes}
+\label{sec:ground-space-surveys}
+
+Ground and space surveys are complementary rather than interchangeable.
+Wide-field ground observatories can deliver large optical étendue at
+comparatively low cost, replace or upgrade instruments, and distribute
+longitude coverage across a network. Rubin Observatory demonstrates the
+power of this approach for repeated optical imaging over a very large field
+\cite{Ivezic2019}. A space survey should therefore not be justified as a
+smaller copy of a ground survey. Its case rests on access to a different
+observational phase space: low-background thermal infrared imaging, stable
+calibration without an atmosphere, a larger usable time window, and a field
+of regard that can be engineered closer to the Sun.
+
+\subsection{Atmosphere, airmass, and the usable sky window}
+
+For a ground observation at zenith angle $z$, the airmass is approximately
+$X\simeq\sec z$ away from the horizon, and atmospheric extinction contributes
+$A_\lambda=k_\lambda X$. Increasing airmass therefore attenuates the source
+and increases wavelength-dependent extinction, differential refraction,
+seeing, and calibration systematics. A moving-object survey consequently
+imposes a maximum acceptable airmass rather than using the full geometric
+hemisphere. Daylight and twilight, the horizon, weather, lunar background,
+and seasonal visibility further reduce the effective sky and cadence window.
+This is the practical sense in which the ground-based sky window is smaller:
+the excluded region is set by data-quality and scheduling requirements, not
+only by whether the target is geometrically above the horizon.
+
+Mid-infrared astronomy is possible from exceptional dry sites, but only
+through restricted atmospheric windows. For example, ESO/VISIR operates in
+the M, N, and Q windows near 5, 10, and 19\,$\mu$m. The atmosphere absorbs
+most MIR radiation outside those windows, while the warm atmosphere and
+telescope create a very high photon background that requires rapid
+chopping and nodding \cite{ESOVISIR2019}. Thus, it would be inaccurate to
+state that all ground-based MIR observations are impossible. The defensible
+mission statement is stronger and more specific: a sensitive, wide-field,
+continuous 4--10\,$\mu$m NEO survey cannot be performed competitively from
+the ground. A cold space telescope removes atmospheric absorption and can
+reduce instrumental thermal emission enough to exploit this full band.
+
+\begin{table}[H]
+\centering
+\caption{NEO-survey capabilities of ground and space observatories. The
+comparison separates intrinsic platform advantages from requirements that
+still depend on the actual field, detector, cadence, and thermal design.}
+\small
+\begin{tabularx}{\textwidth}{@{}P{30mm}YY@{}}
+\toprule
+\textbf{\color{cGold}Survey property} &
+\textbf{\color{cGold}Ground-based survey} &
+\textbf{\color{cGold}Space-based survey}\\
+\midrule
+Primary strength &
+Large optical étendue, mature operations, upgradeability, and economical
+survey-area coverage &
+Atmosphere-free stability, thermal-IR access, continuous scheduling, and
+engineered solar-elongation access\\
+\addlinespace
+Usable wavelength range &
+Visible/NIR plus restricted MIR atmospheric windows; transmission and sky
+background vary with water vapor and airmass &
+Detector- and thermal-design limited; a cooled system can use broad
+4--10\,$\mu$m bands continuously\\
+\addlinespace
+Sky and time window &
+Night, horizon, airmass, weather, Moon, twilight, and season constrain each
+field &
+No weather, horizon, or day--night cycle; Sun/Earth/Moon avoidance and
+spacecraft thermal limits define the field of regard\\
+\addlinespace
+Image and calibration &
+Seeing, extinction, telluric absorption, and differential refraction vary
+with time and direction &
+Stable PSF and throughput are achievable, but detector persistence, cosmic
+rays, pointing, and calibration must still be controlled\\
+\addlinespace
+NEO selection &
+Reflected-light discovery is biased against low-albedo objects and is weak
+in bright twilight and near-Sun directions &
+MIR thermal emission is substantially less albedo biased; a suitable
+sunshade can extend coverage toward smaller solar elongation
+\cite{Mainzer2023}\\
+\addlinespace
+Cadence and recovery &
+Weather and daylight can interrupt tracklets; a longitude-distributed
+network can mitigate gaps &
+Repeated cadence can continue across terrestrial day and weather, subject
+to field-of-regard, downlink, and mission-scheduling constraints\\
+\addlinespace
+Lifecycle and risk &
+Accessible maintenance, detector replacement, and incremental expansion &
+Higher cost and launch risk, finite consumables and telemetry, and usually
+limited servicing after launch\\
+\bottomrule
+\end{tabularx}
+\label{tab:ground-space-neo}
+\end{table}
+
+\clearpage
+\subsection{Space-survey advantages relevant to the \facility}
+
+\begin{enumerate}[leftmargin=7mm,itemsep=2mm]
+\item \textbf{\color{cTeal}Thermal detection and physical size.}
+A cooled 4--10\,$\mu$m channel detects sunlight re-radiated by an NEO,
+reducing the strong visible-light selection against dark objects and
+providing a diameter constraint that is much less dependent on $p_V$.
+\item \textbf{\color{cGold}Larger effective observing window.}
+The absence of weather, daylight, horizon, and airmass restrictions supports
+uniform revisit timing and more reliable tracklet linking. The gain must be
+quantified with the actual Sun/Earth/Moon avoidance geometry rather than
+described as unrestricted all-sky access.
+\item \textbf{\color{cOrange}Access toward the Sun.}
+A thermally qualified baffle and sunshade can observe smaller solar
+elongations than night-time ground surveys, improving sensitivity to objects
+approaching from directions that are poorly sampled in optical surveys
+\cite{Mainzer2023}.
+\item \textbf{\color{cBlue}Stable astrometry and photometry.}
+Removing seeing, atmospheric dispersion, extinction changes, and telluric
+structure improves repeatability. The remaining floor is set by PSF
+calibration, pointing reconstruction, detector effects, and the inertial
+reference catalog.
+\item \textbf{\color{cRed}Complementarity with ground assets.}
+The efficient architecture is a joint system: ground surveys provide optical
+étendue and long temporal baselines, while the space mission supplies MIR
+diameters, near-Sun discovery, weather-independent cadence, and rapid
+follow-up.
+\end{enumerate}
+
+\begin{resultbox}
+\textbf{\color{cGold}Mission consequence.}
+The competitive claim for a cooled \facility\ is not greater raw optical
+survey speed than the largest ground facilities. It is recovery and
+characterization from a stable space platform, together with an optional
+MIR discovery mode in wavelength and solar-elongation regimes that the
+ground cannot survey efficiently.
+\end{resultbox}
+
 \section{Size, Albedo, and Thermal Flux}
 
 For an asteroid with absolute magnitude $H$ and visible geometric albedo
@@ -1326,6 +1463,11 @@ DeMeo, F. E., Binzel, R. P., Slivan, S. M., \& Bus, S. J. 2009,
 \textit{Icarus}, 202, 160.
 \href{https://doi.org/10.1016/j.icarus.2009.02.005}{doi:10.1016/j.icarus.2009.02.005}.
 
+\bibitem{ESOVISIR2019}
+European Southern Observatory 2019,
+\textit{VISIR User Manual}, VLT-MAN-ESO-14300-3514.
+\url{https://www.eso.org/sci/facilities/paranal/instruments/visir/doc/VLT-MAN-ESO-14300-3514_2019-02-20.pdf}.
+
 \bibitem{Farnocchia2021SB441}
 Farnocchia, D. 2021,
 ``Small-Body Perturber Files SB441-N16 and SB441-N373,''
@@ -1354,6 +1496,14 @@ Harris, A. W. 1998,
 Giorgini, J. D., and JPL Solar System Dynamics Group,
 NASA/JPL Horizons On-Line Ephemeris System.
 \url{https://ssd.jpl.nasa.gov/horizons/}.
+
+\bibitem{Ivezic2019}
+Ivezi\'c, \v{Z}., et al. 2019,
+``LSST: From science drivers to reference design and anticipated data
+products,''
+\textit{Astrophysical Journal}, 873, 111.
+\href{https://doi.org/10.3847/1538-4357/ab042c}
+{doi:10.3847/1538-4357/ab042c}.
 
 \bibitem{JPLCAD}
 NASA/JPL Center for Near-Earth Object Studies,
