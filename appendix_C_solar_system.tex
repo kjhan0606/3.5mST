@@ -197,7 +197,34 @@ diameter estimate when the observing geometry and thermal model are known
 geometric albedo. The plotted relation is Equation~\ref{eq:h-diameter}.}
 \end{figure}
 
-\subsection{Why active cooling helps}
+\subsection{Why mid-infrared imaging is required}
+
+Mid-infrared imaging is required because reflected light alone does not
+provide an independent size measurement. The reflected flux constrains a
+combination proportional to $p_VD^2$. Equation~\ref{eq:h-diameter} therefore
+leaves the diameter uncertain by $p_V^{-1/2}$. The thermal flux in the
+Near-Earth Asteroid Thermal Model has the schematic dependence
+\begin{equation}
+ F_{\nu}^{\rm th}
+ \mathrel{\propto}
+ \frac{\epsilon D^2}{\Delta^2}
+ B_\nu\!\left(T\right),
+ \qquad
+ T\mathrel{\propto}
+ \left(\frac{1-A}{\eta\epsilon r^2}\right)^{1/4},
+ \label{eq:thermal-diameter}
+\end{equation}
+where $\Delta$ and $r$ are the observer and heliocentric distances. The
+diameter enters the emitted flux through the projected area as $D^2$.
+The Bond albedo $A$ enters only through a fourth-root temperature correction
+\cite{Harris1998,Mainzer2011}. A measured thermal spectral energy distribution
+therefore provides a nearly albedo-independent diameter constraint. The
+constraint is independent of the assumed visible geometric albedo $p_V$
+although shape, thermal inertia, surface roughness, rotation, and the beaming
+parameter $\eta$ remain model uncertainties. Combining the MIR diameter with
+$H$ then determines $p_V$ rather than assuming $p_V$. The distinction is
+essential for hazard assessment because impact energy scales approximately
+as $D^3$.
 
 Wien's displacement law gives
 \begin{equation}
