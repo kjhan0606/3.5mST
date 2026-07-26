@@ -309,16 +309,25 @@ def evaluate_population(population):
 
 
 def make_figure(population, nc2_ujy, detected):
-    plt.style.use("dark_background")
+    plt.style.use("default")
+    plt.rcParams.update({
+        "font.family": "DejaVu Sans",
+        "font.size": 10.5,
+        "text.color": "#151B23",
+        "axes.labelcolor": "#151B23",
+        "axes.edgecolor": "#5C6875",
+        "xtick.color": "#151B23",
+        "ytick.color": "#151B23",
+    })
     figure, axes = plt.subplots(
         1, 2, figsize=(12.8, 5.0), constrained_layout=True)
     diameters = population["diameter_km"] * 1000.0
     bins = np.logspace(np.log10(30.0), np.log10(3000.0), 45)
     axes[0].hist(
-        diameters, bins=bins, histtype="step", lw=2.2, color="#56D6C2",
+        diameters, bins=bins, histtype="step", lw=2.2, color="#007C77",
         label="NEOMOD3 realization")
-    axes[0].axvline(140.0, color="#FFD166", lw=2.0, label="140 m")
-    axes[0].axvline(1000.0, color="#FF8A4C", lw=2.0, label="1 km")
+    axes[0].axvline(140.0, color="#B86B00", lw=2.0, label="140 m")
+    axes[0].axvline(1000.0, color="#B55220", lw=2.0, label="1 km")
     axes[0].set_xscale("log")
     axes[0].set_yscale("log")
     axes[0].set_xlabel("Diameter [m]")
@@ -330,7 +339,7 @@ def make_figure(population, nc2_ujy, detected):
     rng = np.random.default_rng(20260726)
     indices = rng.choice(
         len(diameters), size=min(30000, len(diameters)), replace=False)
-    colors = np.where(detected[indices], "#FFD166", "#56D6C2")
+    colors = np.where(detected[indices], "#B86B00", "#007C77")
     axes[1].scatter(
         diameters[indices], nc2_ujy[indices], s=4, c=colors, alpha=0.35,
         linewidths=0)
@@ -343,14 +352,14 @@ def make_figure(population, nc2_ujy, detected):
     axes[1].text(
         0.03, 0.04,
         "Gold objects satisfy the 45-120 deg field of regard and ETC limit",
-        transform=axes[1].transAxes, color="#C4C9C1", fontsize=9)
+        transform=axes[1].transAxes, color="#5C6875", fontsize=9)
 
-    figure.patch.set_facecolor("#0E1B18")
+    figure.patch.set_facecolor("white")
     for axis in axes:
-        axis.set_facecolor("#172923")
+        axis.set_facecolor("white")
         for spine in axis.spines.values():
-            spine.set_color("#C4C9C1")
-    figure.savefig(OUTPUT_FIGURE, dpi=220, transparent=True)
+            spine.set_color("#5C6875")
+    figure.savefig(OUTPUT_FIGURE, dpi=220, facecolor="white")
     plt.close(figure)
 
 

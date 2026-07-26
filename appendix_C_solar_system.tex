@@ -1,108 +1,124 @@
 % !TEX program = xelatex
-\documentclass[11pt,a4paper,oneside]{book}
+\documentclass[10pt,onecolumn]{article}
 
-\usepackage[margin=18mm,headheight=22pt]{geometry}
-\usepackage{fontspec}
-\setmainfont{DejaVu Sans}
-\setsansfont{DejaVu Sans}
-\setmonofont{DejaVu Sans Mono}
-\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,margin=18mm,top=17mm,bottom=18mm]{geometry}
+\raggedbottom
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\floatpagefraction}{0.85}
+\usepackage{microtype}
 \usepackage{amsmath,amssymb}
 \usepackage{siunitx}
-\usepackage{booktabs,tabularx,longtable,array}
-\usepackage{graphicx,float}
-\usepackage[dvipsnames,table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage[dvipsnames,svgnames,table]{xcolor}
 \usepackage[most]{tcolorbox}
 \usepackage{titlesec}
-\usepackage{caption}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
-\usepackage{microtype}
 \usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
 
-\definecolor{cDeep}{HTML}{0E1B18}
-\definecolor{cPanel}{HTML}{172923}
-\definecolor{cPanelTwo}{HTML}{20372F}
-\definecolor{cText}{HTML}{F4F1E8}
-\definecolor{cMuted}{HTML}{C4C9C1}
-\definecolor{cTeal}{HTML}{56D6C2}
-\definecolor{cGold}{HTML}{FFD166}
-\definecolor{cOrange}{HTML}{FF8A4C}
-\definecolor{cRed}{HTML}{FF5C5C}
-\definecolor{cBlue}{HTML}{66B3FF}
+\definecolor{ink}{HTML}{151B23}
+\definecolor{titlebg}{HTML}{100880}
+\definecolor{softink}{HTML}{263441}
+\definecolor{muted}{HTML}{5C6875}
+\definecolor{paper}{HTML}{F6F7F2}
+\definecolor{panel}{HTML}{FFFFFF}
+\definecolor{line}{HTML}{D8DEE5}
+\definecolor{teal}{HTML}{007C77}
+\definecolor{blue}{HTML}{245AA6}
+\definecolor{gold}{HTML}{B86B00}
+\definecolor{rose}{HTML}{A7354D}
+\definecolor{green}{HTML}{23724A}
+\definecolor{orange}{HTML}{B55220}
 
-\pagecolor{cDeep}
-\color{cText}
-\arrayrulecolor{cMuted!35}
+% Compatibility aliases used throughout the Appendix C body.
+\colorlet{cDeep}{white}
+\colorlet{cPanel}{paper}
+\colorlet{cPanelTwo}{panel}
+\colorlet{cText}{ink}
+\colorlet{cMuted}{muted}
+\colorlet{cTeal}{teal}
+\colorlet{cGold}{gold}
+\colorlet{cOrange}{orange}
+\colorlet{cRed}{rose}
+\colorlet{cBlue}{blue}
+
+\arrayrulecolor{line}
 \hypersetup{
   colorlinks=true,
-  linkcolor=cTeal,
-  citecolor=cTeal,
-  urlcolor=cGold,
+  linkcolor=blue,
+  citecolor=teal,
+  urlcolor=gold,
   pdftitle={Appendix C: Solar-System Small Bodies and Planetary Defense},
   pdfauthor={Juhan Kim}
 }
-\captionsetup{
-  font=small,
-  labelfont={bf,color=cGold},
-  textfont={color=cMuted},
-  justification=raggedright,
-  singlelinecheck=false
-}
-\titleformat{\chapter}[display]
-  {\normalfont\bfseries\color{cText}}
-  {\Large\color{cGold}APPENDIX C}
-  {4pt}
-  {\fontsize{28}{32}\selectfont}
-\titleformat{\section}
-  {\Large\bfseries\color{cGold}}
-  {\thesection}{0.7em}{}
-\titleformat{\subsection}
-  {\large\bfseries\color{cTeal}}
-  {\thesubsection}{0.7em}{}
-\titlespacing*{\chapter}{0pt}{-15mm}{8mm}
-\titlespacing*{\section}{0pt}{6mm}{2mm}
-\setlist[itemize]{leftmargin=5mm,itemsep=1.5mm,topsep=1.5mm}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1.5mm}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize 3.5-meter Segmented-Mirror Robotic Space Telescope}
+\fancyhead[R]{\sffamily\footnotesize Appendix C: Solar-System Science}
+\fancyfoot[C]{\sffamily\footnotesize C-\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{ink}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries\color{blue}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{softink}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.45em}
+\titlespacing*{\subsection}{0pt}{0.85em}{0.3em}
+\captionsetup{font={small,sf},labelfont={bf,color=blue}}
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=3pt}
 \renewcommand{\arraystretch}{1.18}
+\renewcommand{\thesection}{C.\arabic{section}}
+\renewcommand{\thesubsection}{C.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{C.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand{\thefigure}{C.\arabic{figure}}
+\renewcommand{\thetable}{C.\arabic{table}}
+\renewcommand{\theequation}{C.\arabic{equation}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \emergencystretch=3em
 
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\color{cMuted}\small 3.5-meter Segmented-Mirror Robotic Space Telescope}
-\fancyhead[R]{\color{cGold}\small Appendix C}
-\fancyfoot[C]{\color{cMuted}\thepage}
-\renewcommand{\headrulewidth}{0.3pt}
-\renewcommand{\headrule}{\hbox to\headwidth{\color{cTeal!50}\leaders\hrule height \headrulewidth\hfill}}
-
 \newtcolorbox{resultbox}[1][]{
   enhanced,
-  colback=cPanel,
-  colframe=cTeal,
-  coltext=cText,
-  boxrule=0.8pt,
-  arc=1.5mm,
-  left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  colback=paper,
+  colframe=teal,
+  coltext=ink,
+  boxrule=0.9pt,
+  arc=2mm,
+  left=2.2mm,right=2.2mm,top=1.8mm,bottom=1.8mm,
   #1
 }
 \newtcolorbox{warningbox}[1][]{
   enhanced,
-  colback=cPanel,
-  colframe=cOrange,
-  coltext=cText,
-  boxrule=0.8pt,
-  arc=1.5mm,
-  left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  colback=rose!4,
+  colframe=rose,
+  coltext=ink,
+  boxrule=0.9pt,
+  arc=2mm,
+  left=2.2mm,right=2.2mm,top=1.8mm,bottom=1.8mm,
   #1
 }
 \newcommand{\facility}{3.5-meter Segmented-Mirror Robotic Space Telescope}
-\newcommand{\code}[1]{\texttt{\color{cTeal}#1}}
+\newcommand{\code}[1]{\texttt{\color{teal}#1}}
 
 \begin{document}
-\chapter{Solar-System Small Bodies and Planetary Defense}
+\thispagestyle{empty}
+\begin{tcolorbox}[enhanced,colback=titlebg,colframe=titlebg,arc=2.5mm,
+  left=5mm,right=5mm,top=7mm,bottom=7mm]
+{\sffamily\color{white}\fontsize{23}{28}\selectfont\bfseries
+Appendix C: Solar-System Small Bodies and Planetary Defense}\\[2.2mm]
+{\sffamily\color{white}\fontsize{14}{18}\selectfont on the \facility}\\[3mm]
+{\sffamily\color{white!78}\normalsize NEO discovery, physical
+characterization, MIR survey feasibility, orbit propagation, and
+historical close-approach validation}
+\end{tcolorbox}
+\phantomsection
 \label{app:solar-system}
 
 \begin{resultbox}
@@ -117,6 +133,7 @@ create a thermal-infrared survey.
 \end{resultbox}
 
 \vspace{2mm}
+\noindent
 \begin{tabularx}{\textwidth}{@{}>{\bfseries\color{cGold}\raggedright\arraybackslash}p{31mm}Y@{}}
 Proposal role & Planetary defense and small-body population science, with a
 clear separation between discovery and post-discovery characterization.\\
@@ -466,7 +483,7 @@ than one scalar sky level.
 
 \section{Observation Architecture and Feasibility}
 
-\begin{longtable}{@{}P{30mm}P{37mm}P{47mm}P{48mm}@{}}
+\begin{longtable}{@{}P{30mm}P{36mm}P{46mm}P{46mm}@{}}
 \toprule
 \color{cGold}\textbf{Product} &
 \color{cGold}\textbf{Observable} &
@@ -678,6 +695,7 @@ close-encounter sensitivity, uncertain thermal recoil, or omitted perturbers.
 The baseline gravity model contains the following 27 sources. Planet-system
 barycenters are used where appropriate.
 
+\noindent
 \begin{tabularx}{\textwidth}{@{}P{43mm}Y@{}}
 \toprule
 \color{cGold}\textbf{Group} & \color{cGold}\textbf{Bodies}\\
@@ -878,7 +896,7 @@ gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
 \end{warningbox}
 
 \clearpage
-\renewcommand{\bibname}{References}
+\renewcommand{\refname}{References}
 \begin{thebibliography}{99}
 \color{cText}
 

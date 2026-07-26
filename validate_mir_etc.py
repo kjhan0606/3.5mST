@@ -57,15 +57,25 @@ def write_csv():
                             observatory, channel, level, exposure_s),
                     })
     with CSV_PATH.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=rows[0].keys())
+        writer = csv.DictWriter(
+            stream, fieldnames=rows[0].keys(), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
 
 def make_figure():
-    plt.style.use("dark_background")
+    plt.style.use("default")
+    plt.rcParams.update({
+        "font.family": "DejaVu Sans",
+        "font.size": 10.5,
+        "text.color": "#151B23",
+        "axes.labelcolor": "#151B23",
+        "axes.edgecolor": "#5C6875",
+        "xtick.color": "#151B23",
+        "ytick.color": "#151B23",
+    })
     fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.2), constrained_layout=True)
-    colors = {"low": "#56D6C2", "nominal": "#FFD166", "high": "#FF8A4C"}
+    colors = {"low": "#007C77", "nominal": "#B86B00", "high": "#B55220"}
 
     ax = axes[0]
     x = np.arange(2)
@@ -81,10 +91,10 @@ def make_figure():
         lower, upper = PUBLISHED_NESI5_UJY[channel]
         ax.fill_between(
             [index - 0.42, index + 0.42], lower, upper,
-            color="#66B3FF", alpha=0.22)
+            color="#245AA6", alpha=0.16)
         ax.hlines(
             np.sqrt(lower * upper), index - 0.42, index + 0.42,
-            color="#66B3FF", lw=2.0)
+            color="#245AA6", lw=2.0)
     ax.set_xticks(x, ("NC1  4.0-5.2 um", "NC2  6.0-10.0 um"))
     ax.set_ylabel("NESI5 [uJy]")
     ax.set_title("Literature validation with the 50 cm configuration")
@@ -94,7 +104,7 @@ def make_figure():
     ax.text(
         0.02, 0.03,
         "Blue bands: Mainzer et al. (2023) requirements",
-        transform=ax.transAxes, color="#C4C9C1", fontsize=9)
+        transform=ax.transAxes, color="#5C6875", fontsize=9)
 
     ax = axes[1]
     for channel, linestyle in (("NC1", "-"), ("NC2", "--")):
@@ -115,12 +125,12 @@ def make_figure():
     ax.grid(alpha=0.18)
     ax.legend(ncol=2, fontsize=8)
 
-    fig.patch.set_facecolor("#0E1B18")
+    fig.patch.set_facecolor("white")
     for ax in axes:
-        ax.set_facecolor("#172923")
+        ax.set_facecolor("white")
         for spine in ax.spines.values():
-            spine.set_color("#C4C9C1")
-    fig.savefig(FIGURE_PATH, dpi=220, transparent=True)
+            spine.set_color("#5C6875")
+    fig.savefig(FIGURE_PATH, dpi=220, facecolor="white")
     plt.close(fig)
 
 

@@ -242,29 +242,30 @@ def _make_figure(rows: list[dict[str, object]]) -> None:
 
     plt.rcParams.update(
         {
+            "font.family": "DejaVu Sans",
             "font.size": 12,
-            "axes.labelcolor": "white",
-            "axes.edgecolor": "#A9B7C6",
-            "xtick.color": "white",
-            "ytick.color": "white",
-            "text.color": "white",
+            "axes.labelcolor": "#151B23",
+            "axes.edgecolor": "#5C6875",
+            "xtick.color": "#151B23",
+            "ytick.color": "#151B23",
+            "text.color": "#151B23",
             "axes.titleweight": "bold",
         }
     )
     figure, axes = plt.subplots(
-        1, 3, figsize=(15.2, 7.0), sharey=True, facecolor="#071018"
+        1, 3, figsize=(15.2, 7.0), sharey=True, facecolor="white"
     )
-    colors = ["#F4C95D" if value >= 0 else "#FF7B72" for value in lead]
+    colors = ["#B86B00" if value >= 0 else "#A7354D" for value in lead]
     panels = (
         (lead, "MPC discovery relative to CA [h]", colors),
-        (time_error, "Local - JPL CA time [s]", "#64D8CB"),
-        (distance_error, "Local - JPL CA distance [km]", "#7FB3FF"),
+        (time_error, "Local - JPL CA time [s]", "#007C77"),
+        (distance_error, "Local - JPL CA distance [km]", "#245AA6"),
     )
     for axis, (values, xlabel, color) in zip(axes, panels, strict=True):
-        axis.set_facecolor("#071018")
-        axis.axvline(0, color="#D8DEE9", lw=0.8, alpha=0.7)
+        axis.set_facecolor("white")
+        axis.axvline(0, color="#5C6875", lw=0.8, alpha=0.7)
         axis.barh(y, values, color=color, height=0.62)
-        axis.grid(axis="x", color="white", alpha=0.12, lw=0.7)
+        axis.grid(axis="x", color="#5C6875", alpha=0.20, lw=0.7)
         axis.set_xlabel(xlabel)
         axis.spines[["top", "right"]].set_visible(False)
     axes[0].set_yticks(y, labels)
@@ -283,15 +284,14 @@ def _make_figure(rows: list[dict[str, object]]) -> None:
         "Yellow: detected before closest approach; red: first reported after flyby. "
         "Initial state and official comparison use the current JPL orbit solution.",
         ha="center",
-        color="#D8DEE9",
+        color="#5C6875",
         fontsize=10.5,
     )
     figure.tight_layout(rect=(0.02, 0.05, 1.0, 0.94))
     figure.savefig(
         FIGURE_PATH,
         dpi=220,
-        facecolor=figure.get_facecolor(),
-        transparent=True,
+        facecolor="white",
     )
     plt.close(figure)
 
@@ -391,7 +391,8 @@ def main() -> None:
         )
 
     with CSV_PATH.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(
+            stream, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     provenance = {

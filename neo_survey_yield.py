@@ -162,13 +162,26 @@ def build_scenarios(population, counts):
 
 def write_csv(scenarios):
     with OUTPUT_CSV.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=scenarios[0].keys())
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=scenarios[0].keys(),
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(scenarios)
 
 
 def make_figure(scenarios):
-    plt.style.use("dark_background")
+    plt.style.use("default")
+    plt.rcParams.update({
+        "font.family": "DejaVu Sans",
+        "font.size": 10.5,
+        "text.color": "#151B23",
+        "axes.labelcolor": "#151B23",
+        "axes.edgecolor": "#5C6875",
+        "xtick.color": "#151B23",
+        "ytick.color": "#151B23",
+    })
     figure, axes = plt.subplots(
         1, 2, figsize=(12.8, 5.0), constrained_layout=True)
 
@@ -183,7 +196,7 @@ def make_figure(scenarios):
     completeness = [
         100.0 * row["d140plus_completeness"] for row in fov_scenarios]
     new = [row["d140plus_new"] for row in fov_scenarios]
-    axes[0].plot(fov, completeness, "o-", color="#FFD166", lw=2.2)
+    axes[0].plot(fov, completeness, "o-", color="#B86B00", lw=2.2)
     axes[0].set_xscale("log")
     axes[0].set_xlabel("Instantaneous field [deg2]")
     axes[0].set_ylabel("Five-year D >= 140 m catalog fraction [%]")
@@ -193,7 +206,7 @@ def make_figure(scenarios):
     for x, y, value in zip(fov, completeness, new):
         axes[0].annotate(
             f"{value:,.0f} new", (x, y), xytext=(0, 8),
-            textcoords="offset points", ha="center", color="#C4C9C1")
+            textcoords="offset points", ha="center", color="#5C6875")
 
     visit_scenarios = [
         row for row in scenarios
@@ -204,7 +217,7 @@ def make_figure(scenarios):
     visit_scenarios = sorted(visit_scenarios, key=lambda row: row["visits"])
     visits = [row["visits"] for row in visit_scenarios]
     cataloged = [row["d140plus_cataloged"] for row in visit_scenarios]
-    colors = ["#FF5C5C", "#56D6C2", "#FF8A4C"]
+    colors = ["#A7354D", "#007C77", "#B55220"]
     axes[1].bar(visits, cataloged, color=colors, width=0.7)
     axes[1].set_xticks(visits)
     axes[1].set_xlabel("Visits per tracklet")
@@ -216,14 +229,14 @@ def make_figure(scenarios):
         0.03, 0.91,
         "Two visits fail the >=4-detection tracklet criterion.\n"
         "Six visits reduce survey area with little efficiency gain.",
-        transform=axes[1].transAxes, va="top", color="#C4C9C1")
+        transform=axes[1].transAxes, va="top", color="#5C6875")
 
-    figure.patch.set_facecolor("#0E1B18")
+    figure.patch.set_facecolor("white")
     for axis in axes:
-        axis.set_facecolor("#172923")
+        axis.set_facecolor("white")
         for spine in axis.spines.values():
-            spine.set_color("#C4C9C1")
-    figure.savefig(OUTPUT_FIGURE, dpi=220, transparent=True)
+            spine.set_color("#5C6875")
+    figure.savefig(OUTPUT_FIGURE, dpi=220, facecolor="white")
     plt.close(figure)
 
 
