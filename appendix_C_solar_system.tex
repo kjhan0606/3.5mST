@@ -164,18 +164,18 @@ for each stage are significantly different. A defensible mission architecture th
 the program into four products.
 
 \begin{enumerate}[leftmargin=7mm,itemsep=2mm]
-\item \textbf{\color{cTeal}Recovery and astrometry:} measure accurate
+\item \textbf{\color{cTeal}Recovery and astrometry.} Measure accurate
 positions in the International Celestial Reference Frame (ICRF), the
 quasar-defined inertial reference frame used for high-accuracy celestial
 astrometry for recently discovered objects, and extend the observational arc
 before ephemeris uncertainty grows.
-\item \textbf{\color{cGold}Physical characterization:} measure colors,
+\item \textbf{\color{cGold}Physical characterization.} Measure colors,
 spectra, light curves, phase behavior, and thermal flux when a mid-infrared
 channel is present.
-\item \textbf{\color{cOrange}Dynamical refinement:} fit gravitational and
+\item \textbf{\color{cOrange}Dynamical refinement.} Fit gravitational and
 non-gravitational accelerations, including Yarkovsky drift when the data arc
 and physical priors support the fit.
-\item \textbf{\color{cRed}Hazard assessment:} propagate the full orbit
+\item \textbf{\color{cRed}Hazard assessment.} Propagate the full orbit
 covariance through close encounters. A nominal trajectory alone is not an
 impact probability.
 \end{enumerate}
@@ -194,10 +194,11 @@ comparatively low cost, replace or upgrade instruments, and distribute
 longitude coverage across a network. Rubin Observatory demonstrates the
 power of this approach for repeated optical imaging over a very large field
 \cite{Ivezic2019}. A space survey should therefore not be justified as a
-smaller copy of a ground survey. Its case rests on access to a different
-observational phase space: low-background thermal infrared imaging, stable
-calibration without an atmosphere, a larger usable time window, and a field
-of regard that can be engineered closer to the Sun.
+smaller copy of a ground survey. The case for a space survey rests on access
+to a different observational phase space. The additional phase space
+includes low-background thermal infrared imaging, stable calibration without
+an atmosphere, a larger usable time window, and a field of regard that can
+be engineered closer to the Sun.
 
 \subsection{Atmosphere, airmass, and the usable sky window}
 
@@ -209,9 +210,9 @@ seeing, and calibration systematics. A moving-object survey consequently
 imposes a maximum acceptable airmass rather than using the full geometric
 hemisphere. Daylight and twilight, the horizon, weather, lunar background,
 and seasonal visibility further reduce the effective sky and cadence window.
-This is the practical sense in which the ground-based sky window is smaller:
-the excluded region is set by data-quality and scheduling requirements, not
-only by whether the target is geometrically above the horizon.
+The restrictions produce a smaller ground-based sky window. The excluded
+region is set by data-quality and scheduling requirements, not only by
+whether the target is geometrically above the horizon.
 
 Mid-infrared astronomy is possible from exceptional dry sites, but only
 through restricted atmospheric windows. For example, ESO/VISIR operates in
@@ -219,11 +220,11 @@ the M, N, and Q windows near 5, 10, and 19\,$\mu$m. The atmosphere absorbs
 most MIR radiation outside those windows, while the warm atmosphere and
 telescope create a very high photon background that requires rapid
 chopping and nodding \cite{ESOVISIR2019}. Thus, it would be inaccurate to
-state that all ground-based MIR observations are impossible. The defensible
-mission statement is stronger and more specific: a sensitive, wide-field,
+state that all ground-based MIR observations are impossible. A defensible
+mission statement is stronger and more specific. A sensitive, wide-field,
 continuous 4--10\,$\mu$m NEO survey cannot be performed competitively from
 the ground. A cold space telescope removes atmospheric absorption and can
-reduce instrumental thermal emission enough to exploit this full band.
+reduce instrumental thermal emission enough to exploit the full band.
 
 \begin{table}[H]
 \centering
@@ -244,15 +245,15 @@ Atmosphere-free stability, thermal-IR access, continuous scheduling, and
 engineered solar-elongation access\\
 \addlinespace
 Usable wavelength range &
-Visible/NIR plus restricted MIR atmospheric windows; transmission and sky
+Visible/NIR plus restricted MIR atmospheric windows. Transmission and sky
 background vary with water vapor and airmass &
-Detector- and thermal-design limited; a cooled system can use broad
+Detector- and thermal-design limited. A cooled system can use broad
 4--10\,$\mu$m bands continuously\\
 \addlinespace
 Sky and time window &
 Night, horizon, airmass, weather, Moon, twilight, and season constrain each
 field &
-No weather, horizon, or day--night cycle; Sun/Earth/Moon avoidance and
+No weather, horizon, or day--night cycle. Sun/Earth/Moon avoidance and
 spacecraft thermal limits define the field of regard\\
 \addlinespace
 Image and calibration &
@@ -264,12 +265,12 @@ rays, pointing, and calibration must still be controlled\\
 NEO selection &
 Reflected-light discovery is biased against low-albedo objects and is weak
 in bright twilight and near-Sun directions &
-MIR thermal emission is substantially less albedo biased; a suitable
+MIR thermal emission is substantially less albedo biased. A suitable
 sunshade can extend coverage toward smaller solar elongation
 \cite{Mainzer2023}\\
 \addlinespace
 Cadence and recovery &
-Weather and daylight can interrupt tracklets; a longitude-distributed
+Weather and daylight can interrupt tracklets. A longitude-distributed
 network can mitigate gaps &
 Repeated cadence can continue across terrestrial day and weather, subject
 to field-of-regard, downlink, and mission-scheduling constraints\\
@@ -307,8 +308,8 @@ structure improves repeatability. The remaining floor is set by PSF
 calibration, pointing reconstruction, detector effects, and the inertial
 reference catalog.
 \item \textbf{\color{cRed}Complementarity with ground assets.}
-The efficient architecture is a joint system: ground surveys provide optical
-étendue and long temporal baselines, while the space mission supplies MIR
+The efficient architecture is a joint system. Ground surveys provide optical
+étendue and long temporal baselines while the space mission supplies MIR
 diameters, near-Sun discovery, weather-independent cadence, and rapid
 follow-up.
 \end{enumerate}
@@ -316,10 +317,10 @@ follow-up.
 \begin{resultbox}
 \textbf{\color{cGold}Mission consequence.}
 The competitive claim for a cooled \facility\ is not greater raw optical
-survey speed than the largest ground facilities. It is recovery and
-characterization from a stable space platform, together with an optional
-MIR discovery mode in wavelength and solar-elongation regimes that the
-ground cannot survey efficiently.
+survey speed than the largest ground facilities. The mission advantage lies
+in recovery and characterization from a stable space platform together with
+an optional MIR discovery mode in wavelength and solar-elongation regimes
+that the ground cannot survey efficiently.
 \end{resultbox}
 
 \section{Size, Albedo, and Thermal Flux}
@@ -331,9 +332,9 @@ $p_V$, the standard optical diameter relation \cite{RyanWoodward2010} is
   =1.329\times10^6\,p_V^{-1/2}10^{-0.2H}.
   \label{eq:h-diameter}
 \end{equation}
-The absolute magnitude $H$ removes observing geometry: it is defined at
-$r=\Delta=1$\,au and zero phase angle. For a real observation, the apparent
-visual magnitude and the corresponding diameter threshold are
+The absolute magnitude $H$ removes observing geometry. The definition sets
+$r=\Delta=1$\,au and the phase angle to zero. For a real observation, the
+apparent visual magnitude and the corresponding diameter threshold are
 \cite{Horizons}
 \begin{equation*}
 \begin{aligned}
@@ -344,8 +345,9 @@ visual magnitude and the corresponding diameter threshold are
  \frac{r\Delta}{\sqrt{\Phi(\alpha)}} ,
 \end{aligned}
 \end{equation*}
-where $r$ is the heliocentric distance, $\Delta$ is the telescope--NEO
-distance, both in au, and $\Phi(\alpha)$ is the normalized phase function.
+where $r$ is the heliocentric distance, $\Delta$ is the distance between the
+telescope and the NEO in au, and $\Phi(\alpha)$ is the normalized phase
+function.
 Thus, at fixed albedo and limiting magnitude, the detectable minimum
 diameter grows linearly with both $r$ and $\Delta$ and increases at
 unfavorable phase angle. For example, at $m_{\rm lim}=25$, $p_V=0.14$,
@@ -362,12 +364,12 @@ diameter estimate when the observing geometry and thermal model are known
 \includegraphics[width=0.96\textwidth]{appendixC_assets/neo_h_diameter.png}
 \caption{Distance-aware optical detection threshold. Each panel gives the
 diameter that produces observed magnitude $m_V$ as a function of visible
-geometric albedo $p_V$ at telescope--NEO distance $\Delta$. The shared color
+geometric albedo $p_V$ at distance $\Delta$ from the telescope. The shared color
 scale and continuous white contours give diameter $D$. The reference
-calculation sets $r=1$\,au and $\Phi(\alpha)=1$, so the color at a survey's
-$m_V=m_{\rm lim}$ is an optimistic minimum detectable diameter. General
-geometry scales the result by $r/\sqrt{\Phi(\alpha)}$. This is a flux
-threshold relation, not a survey-completeness prediction.}
+calculation sets $r=1$\,au and $\Phi(\alpha)=1$. The color at a survey's
+$m_V=m_{\rm lim}$ gives an optimistic minimum detectable diameter. General
+geometry scales the result by $r/\sqrt{\Phi(\alpha)}$. The figure presents a
+flux threshold relation rather than a survey-completeness prediction.}
 \label{fig:neo-h-albedo-diameter}
 \end{figure}
 
@@ -393,7 +395,7 @@ The dimensionless quantity $\epsilon$ is the bolometric thermal emissivity, whic
 temperature as $T\propto\epsilon^{-1/4}$. The dimensionless NEATM beaming
 parameter $\eta$ empirically rescales the surface-temperature distribution
 to account for the combined effects of thermal inertia, rotation, surface
-roughness, and observing geometry; increasing $\eta$ lowers the modeled
+roughness, and observing geometry. Increasing $\eta$ lowers the modeled
 temperature as $T\propto\eta^{-1/4}$ \cite{Harris1998}. The reference ETC
 calculation below adopts $\epsilon=0.9$ and $\eta=1.4$.
 The diameter enters the emitted flux through the projected area as $D^2$.
@@ -483,9 +485,9 @@ per detector pixel is
 \end{equation}
 The left-hand side $\dot N_{\rm bg,pix}$ is therefore the detected
 background photoelectron rate in one physical pixel, in
-e$^-$\,s$^{-1}$\,pixel$^{-1}$; it is not the total background in the source
-aperture. The ETC multiplies it by the extraction-aperture pixel count before
-forming the noise variance.
+e$^-$\,s$^{-1}$\,pixel$^{-1}$. The rate is not the total background in the
+source aperture. The ETC multiplies the pixel rate by the
+extraction-aperture pixel count before forming the noise variance.
 The zodiacal input uses the DIRBE convention $\nu I_\nu$. The adopted low and
 high levels are 220 and 4200\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-1 and 1700 and
 22,000\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-2. The values and their variation
@@ -533,7 +535,7 @@ uses
  \quad {\rm arcsec\ pixel^{-1}},
 \end{equation*}
 at each channel's geometric pivot wavelength $\lambda_p$, with $D=3.5$\,m.
-The physical pixel scale of any one focal plane is fixed; the wavelength
+The physical pixel scale of any one focal plane is fixed. The wavelength
 dependence in Table~\ref{tab:mir-etc-requirements} is a two-channel design
 requirement and therefore needs separate detector pixel pitches or re-imaging
 optics. A common 0.35 arcsec pixel$^{-1}$ focal plane would undersample both
@@ -899,10 +901,11 @@ system must also load the corresponding planet-center satellite SPK.
 The term $\mathbf a_{\rm 1PN}$ is the first post-Newtonian correction. CODES
 now evaluates the massless-target Einstein--Infeld--Hoffmann (EIH) expression
 using every active DE440s/SB441-N16 source. The correction includes source
-potentials, velocities, and Newtonian source accelerations; it reduces exactly
-to the solar Schwarzschild test-particle expression when the Sun is the only
-stationary source \cite{Newhall1983,Tamayo2020}. The source trajectories remain
-the prescribed JPL ephemerides rather than being re-integrated by CODES.
+potentials, velocities, and Newtonian source accelerations. The full
+expression reduces exactly to the solar Schwarzschild test-particle
+expression when the Sun is the only stationary source
+\cite{Newhall1983,Tamayo2020}. The source trajectories remain the prescribed
+JPL ephemerides rather than being re-integrated by CODES.
 
 \textbf{Solar radiation terms.}
 The outward term $\mathbf a_{\rm SRP}$ denotes direct solar-radiation
@@ -1203,7 +1206,7 @@ The source snapshot used here was retrieved on 2026-07-26 UTC.
 \includegraphics[width=\textwidth]{appendixC_assets/neo_orbit_validation_10cases.png}
 \caption{Observation context and propagation residuals for ten historical
 flybys. Gold bars in the left panel indicate discovery before closest
-approach; red bars indicate that the first discovery observation followed
+approach. Red bars indicate that the first discovery observation followed
 the flyby. All three horizontal axes use symmetric-log scaling so that zero,
 sign, and decade-level differences remain visible. The linear thresholds are
 12\,h, $10^{-3}$\,s, and $10^{-4}$\,km from left to right. The center and
@@ -1219,8 +1222,8 @@ and 0.00561\,km in pre-encounter semimajor axis.}
 The JPL initial state is based on the current orbit solution and can include
 post-encounter observations. Tables~\ref{tab:neo-ca-validation} and
 \ref{tab:neo-element-validation} therefore certify numerical propagation
-against an authoritative trajectory; they do not certify an independent
-orbit fit from a discovery-night arc. Operational acceptance additionally
+against an authoritative trajectory. The tables do not certify an
+independent orbit fit from a discovery-night arc. Operational acceptance additionally
 requires observatory-state reconstruction, catalog-bias correction,
 weighted batch least squares, a six-dimensional covariance, outlier
 handling, and archived discovery-epoch solutions for a blind backtest.
@@ -1255,20 +1258,21 @@ Horizons comparison values in every panel. From top to bottom, the continuous
 curves show the osculating period, semimajor axis, and perihelion distance
 derived from the CODES state. The CODES minus JPL perihelion-time residuals
 are $-12.956$\,s and $+8.835$\,s. The corresponding period residuals are
-$-3.840$\,d and $-1.931$\,d; the semimajor-axis residuals are
-$-247{,}460$\,km and $-124{,}487$\,km; and the perihelion-distance residuals
-are $+227.8$\,km and $-15.3$\,km.}
+$-3.840$\,d and $-1.931$\,d. The semimajor-axis residuals are
+$-247{,}460$\,km and $-124{,}487$\,km. The perihelion-distance residuals are
+$+227.8$\,km and $-15.3$\,km.}
 \label{fig:halley-return-history}
 \end{figure}
 
 \begin{resultbox}
 \textbf{\color{cGold}What this validates.}
 The comparison tests long-term numerical propagation from one initial state,
-not merely the parsing of a sequence of JPL records. It demonstrates that
-CODES reproduces the two physical perihelion passages across 150 years.
+not merely the parsing of a sequence of JPL records. The agreement
+demonstrates that CODES reproduces the two physical perihelion passages
+across 150 years.
 Because JPL solution \#75 was fitted with observations extending through
-1994, this is a propagation-consistency test rather than a blind historical
-orbit determination.
+1994, the comparison is a propagation-consistency test rather than a blind
+historical orbit determination.
 \end{resultbox}
 
 Replacing the solar-only 1PN term by the full multi-body expression changes
@@ -1276,8 +1280,9 @@ the 1986 perihelion-time residual by approximately $-0.20$\,s and its
 semimajor-axis residual by approximately $-3.5$\,km. The remaining
 $1.24\times10^5$\,km semimajor-axis difference is therefore not explained by
 the former relativistic approximation alone. Likewise, covariance propagation
-does not shift this nominal curve: it supplies an uncertainty ensemble around
-the same fitted central solution. Adding the physical adaptive-step limiter
+does not shift the nominal curve. Covariance propagation supplies an
+uncertainty ensemble around the same fitted central solution. Adding the
+physical adaptive-step limiter
 changes the 150-year trajectory by at most 13.6\,m and the final position by
 1.11\,m relative to error control alone, leaving the quoted passage values
 unchanged. Resolving the remaining difference requires a controlled comparison
@@ -1286,9 +1291,9 @@ metadata.
 
 The modern-state integration cannot be extended honestly through the entire
 ancient record with DE440s. For returns before its supported interval, CODES
-therefore retains a separate historical product: JPL apparition solutions are
+therefore retains a separate historical product. JPL apparition solutions are
 compared with the observation-constrained perihelion times of Yeomans and
-Kiang \cite{Horizons,YeomansKiang1981}. Those records diagnose period changes
+Kiang \cite{Horizons,YeomansKiang1981}. The records diagnose period changes
 without relabeling an unconstrained modern-state extrapolation as an observed
 trajectory.
 
