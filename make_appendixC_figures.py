@@ -88,80 +88,151 @@ def thermal_windows() -> None:
 
 
 def diameter_proxy() -> None:
-    h_mag = np.linspace(13, 33, 601)
+    apparent_mag = np.linspace(18, 31, 521)
     albedo = np.geomspace(0.01, 0.60, 401)
-    h_grid, albedo_grid = np.meshgrid(h_mag, albedo)
-    diameter_m = 1.329e6 / np.sqrt(albedo_grid) * 10 ** (-0.2 * h_grid)
+    magnitude_grid, albedo_grid = np.meshgrid(apparent_mag, albedo)
+    heliocentric_distance_au = 1.0
+    phase_function = 1.0
+    observer_distances_au = [0.01, 0.10, 1.00]
     diameter_colors = mpl.colors.LinearSegmentedColormap.from_list(
         "diameter_blue_yellow_red",
         [
             (0.00, "#082f73"),
-            (0.24, "#1769aa"),
-            (0.42, "#22a7c7"),
-            (0.52, "#f4e43a"),
-            (0.70, "#f49a24"),
-            (0.86, "#d73027"),
+            (0.28, "#1769aa"),
+            (0.48, "#22a7c7"),
+            (0.64, "#f4e43a"),
+            (0.79, "#f49a24"),
+            (0.91, "#d73027"),
             (1.00, "#7f0000"),
         ],
     )
 
-    figure, axis = plt.subplots(figsize=(12.2, 6.8))
-    diameter_map = axis.pcolormesh(
-        h_grid,
-        albedo_grid,
-        diameter_m,
-        cmap=diameter_colors,
-        norm=mpl.colors.LogNorm(vmin=0.3, vmax=5.0e4),
-        shading="auto",
+    figure, axes = plt.subplots(
+        1,
+        len(observer_distances_au),
+        figsize=(15.4, 5.8),
+        sharex=True,
+        sharey=True,
     )
-    contour_levels = [10, 30, 140, 1000, 10000]
-    contours = axis.contour(
-        h_grid,
-        albedo_grid,
-        diameter_m,
-        levels=contour_levels,
-        colors="white",
-        linewidths=1.0,
-        alpha=0.90,
-    )
-    label_albedo = 0.015
-    label_positions = [
-        (
-            -5.0 * np.log10(level * np.sqrt(label_albedo) / 1.329e6),
-            label_albedo,
+    diameter_norm = mpl.colors.LogNorm(vmin=0.03, vmax=1.0e4)
+    contour_levels = [0.3, 1, 10, 30, 140, 1000, 3000]
+    contour_format = {
+        level: (
+            f"{level:g} m" if level < 1000 else f"{level / 1000:g} km"
         )
         for level in contour_levels
-    ]
-    contour_labels = axis.clabel(
-        contours,
-        fmt={10: "10 m", 30: "30 m", 140: "140 m",
-             1000: "1 km", 10000: "10 km"},
-        inline=False,
-        fontsize=9.5,
-        colors="white",
-        manual=label_positions,
-    )
-    for label in contour_labels:
-        label.set_rotation(0)
-        label.set_weight("bold")
-        label.set_path_effects(
-            [patheffects.withStroke(linewidth=3.0, foreground="#17202a")]
+    }
+    label_albedo = 0.015
+    diameter_map = None
+
+    for axis, observer_distance_au in zip(axes, observer_distances_au):
+        diameter_m = (
+            1.329e6
+            * heliocentric_distance_au
+            * observer_distance_au
+            * 10 ** (-0.2 * magnitude_grid)
+            / np.sqrt(albedo_grid * phase_function)
         )
+        diameter_map = axis.pcolormesh(
+            magnitude_grid,
+            albedo_grid,
+            diameter_m,
+            cmap=diameter_colors,
+            norm=diameter_norm,
+            shading="auto",
+        )
+        visible_levels = [
+            level
+            for level in contour_levels
+            if diameter_m.min() < level < diameter_m.max()
+        ]
+        contours = axis.contour(
+            magnitude_grid,
+            albedo_grid,
+            diameter_m,
+            levels=visible_levels,
+            colors="white",
+            linewidths=1.0,
+            alpha=0.92,
+        )
+        label_levels = []
+        label_positions = []
+        for level in visible_levels:
+            label_magnitude = -5.0 * np.log10(
+                level
+                * np.sqrt(label_albedo * phase_function)
+                / (
+                    1.329e6
+                    * heliocentric_distance_au
+                    * observer_distance_au
+                )
+            )
+            if 18.35 < label_magnitude < 30.65:
+                label_levels.append(level)
+                label_positions.append((label_magnitude, label_albedo))
+        if label_levels:
+            contour_labels = axis.clabel(
+                contours,
+                fmt=contour_format,
+                inline=False,
+                fontsize=9.2,
+                colors="white",
+                manual=label_positions,
+            )
+            for label in contour_labels:
+                label.set_rotation(0)
+                label.set_weight("bold")
+                label.set_path_effects(
+                    [patheffects.withStroke(linewidth=3.0, foreground="#17202a")]
+                )
 
-    colorbar = figure.colorbar(diameter_map, ax=axis, pad=0.025)
+        axis.set_yscale("log")
+        axis.set_xlim(18, 31)
+        axis.set_ylim(0.01, 0.60)
+        axis.set_yticks([0.01, 0.03, 0.10, 0.30, 0.60])
+        axis.set_yticklabels(["0.01", "0.03", "0.10", "0.30", "0.60"])
+        axis.set_title(
+            rf"$\Delta={observer_distance_au:g}$ au",
+            fontsize=13,
+        )
+        axis.grid(False)
+
+    if diameter_map is None:
+        raise RuntimeError("No diameter map was generated")
+
+    axes[0].set_ylabel(r"Visible geometric albedo $p_V$")
+    figure.supxlabel(
+        r"Observed V-band magnitude $m_V$ (larger is fainter)",
+        y=0.035,
+    )
+    figure.suptitle(
+        "Detectable NEO size increases with telescope-target distance",
+        y=0.98,
+        fontsize=17,
+        weight="bold",
+    )
+    figure.text(
+        0.075,
+        0.885,
+        r"Reference geometry: $r=1$ au and $\Phi(\alpha)=1$",
+        color=MUTED,
+        fontsize=10.5,
+    )
+    figure.subplots_adjust(
+        left=0.075,
+        right=0.885,
+        bottom=0.17,
+        top=0.82,
+        wspace=0.08,
+    )
+    colorbar_axis = figure.add_axes([0.905, 0.17, 0.016, 0.65])
+    colorbar = figure.colorbar(
+        diameter_map,
+        cax=colorbar_axis,
+    )
     colorbar.set_label("Diameter D [m]")
-    colorbar.set_ticks([1, 10, 100, 1000, 10000])
-    colorbar.set_ticklabels(["1", "10", "100", "1,000", "10,000"])
-
-    axis.set_yscale("log")
-    axis.set_xlim(13, 33)
-    axis.set_ylim(0.01, 0.60)
-    axis.set_yticks([0.01, 0.03, 0.10, 0.30, 0.60])
-    axis.set_yticklabels(["0.01", "0.03", "0.10", "0.30", "0.60"])
-    axis.set_xlabel("Absolute magnitude H (lower H is brighter)")
-    axis.set_ylabel(r"Visible geometric albedo $p_V$")
-    axis.set_title("Optical brightness does not uniquely determine NEO size")
-    axis.grid(False)
+    colorbar.set_ticks([0.1, 1, 10, 100, 1000, 10000])
+    colorbar.set_ticklabels(["0.1", "1", "10", "100", "1,000", "10,000"])
     save(figure, "neo_h_diameter.png")
 
 

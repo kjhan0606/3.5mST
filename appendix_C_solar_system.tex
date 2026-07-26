@@ -194,6 +194,26 @@ $p_V$, the standard optical diameter relation \cite{RyanWoodward2010} is
   =1.329\times10^6\,p_V^{-1/2}10^{-0.2H}.
   \label{eq:h-diameter}
 \end{equation}
+The absolute magnitude $H$ removes observing geometry: it is defined at
+$r=\Delta=1$\,au and zero phase angle. For a real observation, the apparent
+visual magnitude and the corresponding diameter threshold are
+\cite{Horizons}
+\begin{equation*}
+\begin{aligned}
+ m_V &=
+ H+5\log_{10}(r\Delta)-2.5\log_{10}\Phi(\alpha),\\
+ D_{\min}\,[\mathrm{m}] &=
+ 1.329\times10^6\,p_V^{-1/2}10^{-0.2m_{\rm lim}}
+ \frac{r\Delta}{\sqrt{\Phi(\alpha)}} ,
+\end{aligned}
+\end{equation*}
+where $r$ is the heliocentric distance, $\Delta$ is the telescope--NEO
+distance, both in au, and $\Phi(\alpha)$ is the normalized phase function.
+Thus, at fixed albedo and limiting magnitude, the detectable minimum
+diameter grows linearly with both $r$ and $\Delta$ and increases at
+unfavorable phase angle. For example, at $m_{\rm lim}=25$, $p_V=0.14$,
+$r=1$\,au, and $\Phi=1$, the corresponding thresholds are 0.36, 3.6, and
+36\,m for $\Delta=0.01$, 0.1, and 1\,au, respectively.
 The equation shows why reflected-light discovery does not determine impact
 energy and consequently the hazard level of the source. A dark and large body may have the same $H$ as a bright and smaller
 body. On the other hand, thermal-infrared flux breaks much of this degeneracy and supports a
@@ -203,11 +223,14 @@ diameter estimate when the observing geometry and thermal model are known
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.96\textwidth]{appendixC_assets/neo_h_diameter.png}
-\caption{The optical size degeneracy from Equation~\ref{eq:h-diameter}.
-The horizontal axis is absolute magnitude $H$, the vertical axis is visible
-geometric albedo $p_V$, and the color scale at right gives diameter $D$.
-White contours mark representative diameters. Thus, the same optical
-brightness can imply substantially different sizes as albedo changes.}
+\caption{Distance-aware optical detection threshold. Each panel gives the
+diameter that produces observed magnitude $m_V$ as a function of visible
+geometric albedo $p_V$ at telescope--NEO distance $\Delta$. The shared color
+scale and continuous white contours give diameter $D$. The reference
+calculation sets $r=1$\,au and $\Phi(\alpha)=1$, so the color at a survey's
+$m_V=m_{\rm lim}$ is an optimistic minimum detectable diameter. General
+geometry scales the result by $r/\sqrt{\Phi(\alpha)}$. This is a flux
+threshold relation, not a survey-completeness prediction.}
 \label{fig:neo-h-albedo-diameter}
 \end{figure}
 
