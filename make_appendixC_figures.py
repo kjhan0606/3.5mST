@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import patheffects
 from matplotlib.patches import Patch
 
 OUT = Path("appendixC_assets")
@@ -91,13 +92,25 @@ def diameter_proxy() -> None:
     albedo = np.geomspace(0.01, 0.60, 401)
     h_grid, albedo_grid = np.meshgrid(h_mag, albedo)
     diameter_m = 1.329e6 / np.sqrt(albedo_grid) * 10 ** (-0.2 * h_grid)
+    diameter_colors = mpl.colors.LinearSegmentedColormap.from_list(
+        "diameter_blue_yellow_red",
+        [
+            (0.00, "#082f73"),
+            (0.24, "#1769aa"),
+            (0.42, "#22a7c7"),
+            (0.52, "#f4e43a"),
+            (0.70, "#f49a24"),
+            (0.86, "#d73027"),
+            (1.00, "#7f0000"),
+        ],
+    )
 
     figure, axis = plt.subplots(figsize=(12.2, 6.8))
     diameter_map = axis.pcolormesh(
         h_grid,
         albedo_grid,
         diameter_m,
-        cmap="cividis",
+        cmap=diameter_colors,
         norm=mpl.colors.LogNorm(vmin=0.3, vmax=5.0e4),
         shading="auto",
     )
@@ -111,14 +124,29 @@ def diameter_proxy() -> None:
         linewidths=1.0,
         alpha=0.90,
     )
-    axis.clabel(
+    label_albedo = 0.015
+    label_positions = [
+        (
+            -5.0 * np.log10(level * np.sqrt(label_albedo) / 1.329e6),
+            label_albedo,
+        )
+        for level in contour_levels
+    ]
+    contour_labels = axis.clabel(
         contours,
         fmt={10: "10 m", 30: "30 m", 140: "140 m",
              1000: "1 km", 10000: "10 km"},
-        inline=True,
-        fontsize=9,
+        inline=False,
+        fontsize=9.5,
         colors="white",
+        manual=label_positions,
     )
+    for label in contour_labels:
+        label.set_rotation(0)
+        label.set_weight("bold")
+        label.set_path_effects(
+            [patheffects.withStroke(linewidth=3.0, foreground="#17202a")]
+        )
 
     colorbar = figure.colorbar(diameter_map, ax=axis, pad=0.025)
     colorbar.set_label("Diameter D [m]")
