@@ -191,7 +191,10 @@ def make_figure(scenarios):
         and row["time_fraction"] == 1.0
         and row["latitude_limit_deg"] == 40
     ]
-    fov_scenarios = sorted(fov_scenarios, key=lambda row: row["fov_deg2"])
+    fov_scenarios = sorted(
+        {row["fov_deg2"]: row for row in fov_scenarios}.values(),
+        key=lambda row: row["fov_deg2"],
+    )
     fov = [row["fov_deg2"] for row in fov_scenarios]
     completeness = [
         100.0 * row["d140plus_completeness"] for row in fov_scenarios]
@@ -203,10 +206,18 @@ def make_figure(scenarios):
     axes[0].set_title("Discovery completeness is field limited")
     axes[0].grid(alpha=0.18)
     axes[0].set_ylim(0.0, max(completeness) * 1.18)
-    for x, y, value in zip(fov, completeness, new):
+    for index, (x, y, value) in enumerate(
+        zip(fov, completeness, new, strict=True)
+    ):
+        if index == 0:
+            alignment = "left"
+        elif index == len(fov) - 1:
+            alignment = "right"
+        else:
+            alignment = "center"
         axes[0].annotate(
             f"{value:,.0f} new", (x, y), xytext=(0, 8),
-            textcoords="offset points", ha="center", color="#5C6875")
+            textcoords="offset points", ha=alignment, color="#5C6875")
 
     visit_scenarios = [
         row for row in scenarios

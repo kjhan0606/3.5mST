@@ -13,6 +13,7 @@ PANEL = "#f6f7f2"
 TEXT = "#151b23"
 MUTED = "#5c6875"
 TEAL = "#007c77"
+VISIBLE_SKY = "#70d8c7"
 GOLD = "#b86b00"
 ORANGE = "#b55220"
 RED = "#a7354d"
@@ -177,8 +178,8 @@ def l2_observability() -> None:
     classes = np.zeros_like(elongation)
     classes[(elongation >= np.deg2rad(45)) & (elongation < np.deg2rad(60))] = 1
     classes[elongation >= np.deg2rad(60)] = 2
-    cmap = mpl.colors.ListedColormap([RED, ORANGE, TEAL])
-    sky.pcolormesh(longitude, lat_grid, classes, cmap=cmap, shading="auto", alpha=0.78)
+    cmap = mpl.colors.ListedColormap([RED, ORANGE, VISIBLE_SKY])
+    sky.pcolormesh(longitude, lat_grid, classes, cmap=cmap, shading="auto", alpha=0.92)
     sky.scatter([0], [0], color=GOLD, s=90, marker="*", zorder=5)
     sky.annotate(
         "Sun + Earth direction",
@@ -194,7 +195,7 @@ def l2_observability() -> None:
         handles=[
             Patch(facecolor=RED, label="forbidden: elongation < 45 deg"),
             Patch(facecolor=ORANGE, label="45-60 deg: dedicated forward baffle and thermal design"),
-            Patch(facecolor=TEAL, label="baseline field: elongation > 60 deg"),
+            Patch(facecolor=VISIBLE_SKY, label="baseline field: elongation > 60 deg"),
         ],
         loc="lower center",
         bbox_to_anchor=(0.5, -0.005),
