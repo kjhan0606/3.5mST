@@ -259,8 +259,8 @@ def _make_figure(rows: list[dict[str, object]]) -> None:
     colors = ["#E3A008" if value >= 0 else "#D1495B" for value in lead]
     panels = (
         (lead, "MPC discovery relative to CA [h]", colors),
-        (time_error, "Local - JPL CA time [s]", "#007C77"),
-        (distance_error, "Local - JPL CA distance [km]", "#245AA6"),
+        (time_error, "CODES - JPL CA time [s]", "#007C77"),
+        (distance_error, "CODES - JPL CA distance [km]", "#245AA6"),
     )
     for index, (axis, (values, xlabel, color)) in enumerate(
         zip(axes, panels, strict=True)
@@ -310,11 +310,12 @@ def _make_figure(rows: list[dict[str, object]]) -> None:
     )
     axes[0].set_yticks(y, labels)
     axes[0].invert_yaxis()
-    axes[0].set_title("MPC observing context")
+    axes[0].set_title("Minor Planet Center (MPC) context")
     axes[1].set_title("Close-approach epoch")
     axes[2].set_title("Geocentric miss distance")
     figure.suptitle(
-        "Ten historical close approaches: MPC observations + JPL-referenced propagation",
+        "Ten historical close approaches: Minor Planet Center (MPC) observations "
+        "+ JPL-referenced propagation",
         fontsize=17,
         y=0.98,
     )
@@ -342,10 +343,11 @@ def _write_tex_tables(rows: list[dict[str, object]]) -> None:
         r"\centering",
         r"\footnotesize",
         r"\caption{Historical close-approach reproduction. "
-        r"$N_{\rm obs}/N_{\rm stn}$ and lead time are measured from MPC ADES "
+        r"$N_{\rm obs}/N_{\rm stn}$ and lead time are measured from "
+        r"Minor Planet Center (MPC) ADES "
         r"observations \cite{MPCObservations}; the official epoch and "
         r"geocentric distance are NASA/JPL CNEOS CAD values \cite{JPLCAD}. "
-        r"Residuals are local Fortran minus JPL. Positive lead time means "
+        r"Residuals are CODES minus JPL. Positive lead time means "
         r"discovery before closest approach.}",
         r"\label{tab:neo-ca-validation}",
         r"\begin{tabularx}{\textwidth}{@{}l r r r r r r@{}}",
@@ -383,7 +385,7 @@ def _write_tex_tables(rows: list[dict[str, object]]) -> None:
             r"\caption{Osculating-element residuals one day before closest "
             r"approach. Columns labeled JPL are the current NASA/JPL Horizons "
             r"heliocentric ecliptic solution \cite{Horizons}; each "
-            r"$\Delta$ is local Fortran minus JPL at the same TDB epoch.}",
+            r"$\Delta$ is CODES minus JPL at the same TDB epoch.}",
             r"\label{tab:neo-element-validation}",
             r"\begin{tabularx}{\textwidth}{@{}l r r r r r r@{}}",
             r"\toprule",

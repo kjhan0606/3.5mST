@@ -596,18 +596,17 @@ limits in Table~\ref{tab:mir-etc-depth} become mission performance.
 
 \subsection{NEOMOD3 reference population and thermal flux}
 
-The reference population comes from the public NEOMOD3 Fortran simulator
-\cite{Nesvorny2024}. We requested the model number of objects between 30\,m
-and 3\,km with seed $-50202002$. The resulting realization contains 344,458
-NEOs. The sample contains 19,694 objects larger than 140\,m and 801 objects
-larger than 1\,km. These counts agree with the published estimates of
+We generated the reference population between 30\,m and 3\,km with the public
+NEOMOD3 Fortran simulator \cite{Nesvorny2024}. The resulting realization
+contains 344,458 NEOs. The sample contains 19,694 objects larger than 140\,m
+and 801 objects larger than 1\,km. These counts agree with the published estimates of
 $20,000\pm2,000$ and $830\pm60$ \cite{Nesvorny2024}. The simulation retains
 the NEOMOD3 size-dependent two-Rayleigh albedo distribution and the
 size-dependent orbital distribution.
 
 The simulator supplies $H$, $a$, $e$, $i$, diameter, and visible albedo.
 Longitude of ascending node, argument of perihelion, and mean anomaly were
-drawn uniformly with a recorded random seed. The orbits were propagated with
+drawn uniformly. The orbits were propagated with
 the two-body Kepler solution for the survey-selection calculation. The
 authoritative orbit analysis in Section~\ref{sec:calculator-bodies} remains
 an N-body calculation. The two-body propagation is adequate for a reference
@@ -1175,7 +1174,7 @@ forces smaller steps independently of the requested output cadence.
 
 The regression suite uses ten real NEOs observed between 2019 and 2024.
 For each object, the calculator downloads all available optical ADES
-astrometry from the Minor Planet Center and retains the observatory codes,
+astrometry from the Minor Planet Center (MPC) and retains the observatory codes,
 UTC epochs, reported coordinates, and MPC discovery flag
 \cite{MPCObservations}. The observing arc is therefore traceable to the
 measurements used by the international small-body community.
@@ -1195,7 +1194,7 @@ encounter, before the strongest terrestrial deflection.
 MPC supplies the observed astrometric history, station count, and discovery
 epoch. NASA/JPL supplies the official current initial state, osculating
 elements, closest-approach epoch, and geocentric distance. Every reported
-$\Delta$ is \textbf{local Fortran result minus NASA/JPL official result}.
+$\Delta$ is \textbf{CODES result minus NASA/JPL official result}.
 The source snapshot used here was retrieved on 2026-07-26 UTC.
 \end{resultbox}
 
