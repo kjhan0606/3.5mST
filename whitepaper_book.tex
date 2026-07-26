@@ -2,7 +2,8 @@
 % 3.5-meter Segmented-Mirror Robotic Space Telescope -- Mission White Paper
 % Book-style build using the kultem (KU Leuven) template, branding-neutralized.
 % Main body converted from Dr. Sang-Hyun Lee's Word white paper (draft 0623);
-% Appendices A (cosmology) and B (exoplanets) attached with \include.
+% Appendices A (cosmology), B (exoplanets), and C (solar-system science)
+% attached with \include.
 %
 % Build:  TEXINPUTS="./book_sty:" xelatex whitepaper_book.tex   (x2-3 passes)
 
@@ -136,6 +137,9 @@
 \clearpage
 \definecolor{Blue1}{HTML}{86A67C}\definecolor{Blue2}{HTML}{5E8158}\definecolor{Blue3}{HTML}{45613F}% Appendix B: muted sage green
 \include{appendix_B}
+\clearpage
+\definecolor{Blue1}{HTML}{72AAA5}\definecolor{Blue2}{HTML}{3E817B}\definecolor{Blue3}{HTML}{285F5A}% Appendix C: muted teal
+\include{appendix_C_book}
 \clearpage
 \definecolor{Blue1}{HTML}{1FABD5}\definecolor{Blue2}{HTML}{1D8DB0}\definecolor{Blue3}{HTML}{116E8A}% reset to blue for the back cover
 

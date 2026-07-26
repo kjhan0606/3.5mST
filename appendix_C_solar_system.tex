@@ -1,3 +1,47 @@
+\ifdefined\APPENDIXCBOOK
+\let\appendixCfinish\relax
+\definecolor{orange}{HTML}{B55220}
+\colorlet{cDeep}{white}
+\colorlet{cPanel}{paper}
+\colorlet{cPanelTwo}{panel}
+\colorlet{cText}{ink}
+\colorlet{cMuted}{muted}
+\colorlet{cTeal}{teal}
+\colorlet{cGold}{gold}
+\colorlet{cOrange}{orange}
+\colorlet{cRed}{rose}
+\colorlet{cBlue}{blue}
+\arrayrulecolor{line}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcommand{\topcell}[1]{%
+  \begin{minipage}[t]{\linewidth}\vspace{0pt}#1\end{minipage}}
+\newtcolorbox{resultbox}[1][]{
+  enhanced,
+  colback=paper,
+  colframe=teal,
+  coltext=ink,
+  boxrule=0.9pt,
+  arc=2mm,
+  left=2.2mm,right=2.2mm,top=1.8mm,bottom=1.8mm,
+  #1
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,
+  colback=rose!4,
+  colframe=rose,
+  coltext=ink,
+  boxrule=0.9pt,
+  arc=2mm,
+  left=2.2mm,right=2.2mm,top=1.8mm,bottom=1.8mm,
+  #1
+}
+\newcommand{\code}[1]{\texttt{\color{teal}#1}}
+\chapter{Solar-System Small Bodies and Planetary Defense}
+\label{app:solar-system}
+\else
 % !TEX program = xelatex
 \documentclass[10pt,onecolumn]{article}
 
@@ -111,6 +155,7 @@
 }
 \newcommand{\facility}{3.5-meter Segmented-Mirror Robotic Space Telescope}
 \newcommand{\code}[1]{\texttt{\color{teal}#1}}
+\newcommand{\appendixCfinish}{\end{document}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -125,6 +170,7 @@ historical close-approach validation}
 \end{tcolorbox}
 \phantomsection
 \label{app:solar-system}
+\fi
 
 \begin{resultbox}
 \textbf{\color{cGold}Central design conclusion.}
@@ -732,7 +778,7 @@ than one scalar sky level.
 
 \section{Observation Architecture and Feasibility}
 
-\begin{longtable}{@{}P{30mm}P{36mm}P{46mm}P{46mm}@{}}
+\begin{longtable}{@{}P{30mm}P{36mm}P{45mm}P{45mm}@{}}
 \toprule
 \color{cGold}\textbf{Product} &
 \color{cGold}\textbf{Observable} &
@@ -799,19 +845,20 @@ quality, station keeping, and unplanned downtime.
 
 \begin{table}[H]
 \centering
+\small
 \caption{Five-year reference yield for four visits and a 13-day linking
 interval. ``New'' uses approximate known fractions of 3 percent at 30--50\,m,
 10 percent at 50--140\,m, 38 percent at 140\,m--1\,km, and 95 percent above
 1\,km. The 38-percent value follows the NEO Surveyor Known Object Model
 \cite{Grav2023}. The other fractions are explicit scenario assumptions.}
-\begin{tabularx}{\textwidth}{@{}P{23mm}P{25mm}P{18mm}ZZZZ@{}}
+\begin{tabularx}{0.99\textwidth}{@{}P{23mm}P{25mm}P{18mm}ZZZZ@{}}
 \toprule
 \textbf{\color{cGold}MIR time} &
 \textbf{\color{cGold}Search latitude} &
 \textbf{\color{cGold}13-day coverage} &
 \textbf{\color{cGold}New 30--50 m} &
 \textbf{\color{cGold}New 50--140 m} &
-\textbf{\color{cGold}Cataloged $\geq140$ m} &
+\textbf{\color{cGold}Total $\geq140$ m} &
 \textbf{\color{cGold}New $\geq140$ m}\\
 \midrule
 25 percent & $|\beta|\leq40^\circ$ & 0.49 percent & 75 & 32 & 18 & 11\\
@@ -857,20 +904,6 @@ geometric albedo is $p_V=0.15$. The standard diameter relation in
 Equation~\ref{eq:h-diameter} and the $H,G$ phase law with $G=0.15$ determine
 the reflected flux \cite{Bowell1989}. The observer is placed at Sun--Earth
 L2, 0.01\,au from Earth in the figure geometry.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{appendixC_assets/neo_single_visit_reach.png}
-\caption{Earth-centered single-exposure detection area for reflected light.
-The colored contours show where each representative asteroid reaches
-$\mathrm{S/N}\geq5$ in a 145\,s Johnson $V$ exposure. The Sun is one au from
-Earth. The L2 observer is 0.01\,au from Earth. Every contour adopts
-$p_V=0.15$ and the $H,G$ phase law. The greatest radial reach occurs near
-opposition because the illuminated fraction and reflected-light geometry
-are favorable. The contours are instantaneous flux limits. Trailing,
-confusion, cadence, linking losses, and orbit uncertainty are not included.}
-\label{fig:neo-single-visit-reach}
-\end{figure}
 
 The direction of easiest discovery is not the physical source direction of
 all impactors. Optical discovery reaches the greatest distance near
@@ -922,6 +955,20 @@ coverage, immediate processing, and successful linkage.}
 \end{tabularx}
 \label{tab:ideal-warning-time}
 \end{table}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/neo_single_visit_reach.png}
+\caption{Earth-centered single-exposure detection area for reflected light.
+The colored contours show where each representative asteroid reaches
+$\mathrm{S/N}\geq5$ in a 145\,s Johnson $V$ exposure. The Sun is one au from
+Earth. The L2 observer is 0.01\,au from Earth. Every contour adopts
+$p_V=0.15$ and the $H,G$ phase law. The greatest radial reach occurs near
+opposition because the illuminated fraction and reflected-light geometry
+are favorable. The contours are instantaneous flux limits. Trailing,
+confusion, cadence, linking losses, and orbit uncertainty are not included.}
+\label{fig:neo-single-visit-reach}
+\end{figure}
 
 The tabulated times are upper bounds for one favorable trajectory family.
 The baseline 0.25\,deg$^2$ field covers only 27.2 unique deg$^2$ per
@@ -1185,7 +1232,7 @@ The SB441 memo also provides a 373-body ephemeris for specialized studies
 
 \subsection{Implemented and deferred force terms}
 
-\begin{tabular}{@{}M{43mm}C{37mm}M{85mm}@{}}
+\begin{tabular}{@{}M{42mm}C{34mm}M{80mm}@{}}
 \toprule
 \color{cGold}\textbf{Term} &
 \color{cGold}\textbf{Status} &
@@ -1531,7 +1578,9 @@ gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
 \end{warningbox}
 
 \clearpage
+\ifdefined\APPENDIXCBOOK\else
 \renewcommand{\refname}{References}
+\fi
 \begin{thebibliography}{99}
 \color{cText}
 
@@ -1656,12 +1705,14 @@ Nesvorn\'y, D., et al. 2024,
 \bibitem{NASAEmergency2021}
 NASA 2021,
 \textit{Report on Near-Earth Object Impact Threat Emergency Protocols}.
-\url{https://www.nasa.gov/wp-content/uploads/2015/12/neo-impact-threat-emergency-protocols-jan2021.pdf}.
+\href{https://www.nasa.gov/wp-content/uploads/2015/12/neo-impact-threat-emergency-protocols-jan2021.pdf}
+{NASA report archive}.
 
 \bibitem{NASASDT2017}
 NASA 2017,
 ``New Report Assesses Status of Detecting Near-Earth Asteroids.''
-\url{https://www.nasa.gov/solar-system/new-report-assesses-status-of-detecting-near-earth-asteroids/}.
+\href{https://www.nasa.gov/solar-system/new-report-assesses-status-of-detecting-near-earth-asteroids/}
+{NASA planetary-defense report summary}.
 
 \bibitem{MPCObservations}
 International Astronomical Union Minor Planet Center,
@@ -1694,4 +1745,4 @@ Yeomans, D. K., \& Kiang, T. 1981,
 
 \end{thebibliography}
 
-\end{document}
+\appendixCfinish
