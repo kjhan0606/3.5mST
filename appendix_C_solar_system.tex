@@ -655,9 +655,64 @@ The orbit state $\mathbf{x}=(\mathbf{r},\mathbf{v})$ is propagated with
  +\mathbf a_{\rm NG}.
  \label{eq:force-model}
 \end{equation}
-The implementation reads each $GM_i$ directly. It does not multiply a
-separate value of $G$ by a tabulated mass. This choice follows the precision
-structure of modern solar-system ephemerides.
+\textbf{Left-hand side.}
+The vector $\mathbf r(t)$ is the barycentric position of the target in the
+J2000 International Celestial Reference Frame. Its first derivative is the
+barycentric velocity $\mathbf v=\dot{\mathbf r}$. The second derivative
+$\ddot{\mathbf r}$ is the total acceleration rather than a force. CODES treats
+the target as a massless test particle. The target changes neither the
+planetary ephemeris nor the motion of another perturber. Time is measured on
+the TDB-compatible ephemeris scale. Positions and accelerations are evaluated
+in km and km\,s$^{-2}$ within the numerical force routine.
+
+\textbf{Newtonian gravity.}
+The index $i$ runs over the Sun, Mercury barycenter, Venus barycenter, Earth,
+Moon, Mars barycenter, Jupiter barycenter, Saturn barycenter, Uranus
+barycenter, Neptune barycenter, and Pluto barycenter. The default calculation
+also includes the 16 massive main-belt perturbers in the JPL SB441-N16
+ephemeris. The vector $\mathbf r_i(t)$ is the barycentric ephemeris position
+of body $i$. The displacement $\mathbf r_i-\mathbf r$ points from the target
+toward the perturber and its cubic norm supplies the inverse-square
+acceleration with the correct direction. The coefficient $GM_i\equiv\mu_i$
+is the measured gravitational parameter of the perturber. The implementation
+reads $\mu_i$ directly from the JPL kernel or its associated constant table.
+It does not multiply a separate value of $G$ by a tabulated mass. The direct
+use of $\mu_i$ follows the precision structure of modern solar-system
+ephemerides.
+
+\textbf{Relativistic acceleration.}
+The term $\mathbf a_{\rm 1PN}$ is the first post-Newtonian correction from the
+solar Schwarzschild field. The correction produces the leading relativistic
+perihelion precession and modifies timing near the Sun. The local expression
+below is retained as a controlled sensitivity term. The authoritative JPL
+trajectory uses the registered multi-body relativistic model of the selected
+orbit solution.
+
+\textbf{Solar radiation terms.}
+The outward term $\mathbf a_{\rm SRP}$ denotes direct solar-radiation
+pressure. Its amplitude is proportional to the solar radiation pressure at
+1\,au, the radiation coefficient $C_R$, the area-to-mass ratio, and the
+inverse square of heliocentric distance. The term $\mathbf a_{\rm PR}$ is the
+velocity-dependent Poynting--Robertson component of the same radiation field.
+The Poynting--Robertson acceleration removes orbital energy through radial
+and transverse drag. The term $\mathbf a_{\rm SW}$ is the secular drag from
+the solar wind. CODES scales the solar-wind term to the
+Poynting--Robertson drag with a configurable ratio whose default value is
+0.35. The three terms vanish in the local calculation when no credible
+area-to-mass ratio is supplied.
+
+\textbf{Empirical non-gravitational acceleration.}
+The term $\mathbf a_{\rm NG}$ represents accelerations that are constrained
+from astrometry but are not predicted reliably from the known shape and
+surface state. CODES resolves the term into $A_1$, $A_2$, and $A_3$ along the
+heliocentric radial, transverse, and orbit-normal unit vectors. The adopted
+amplitude scales as the inverse square of heliocentric distance. The
+transverse coefficient $A_2$ provides a compact Yarkovsky sensitivity model
+for an asteroid. The radial and normal coefficients also support diagnostic
+fits for asymmetric cometary outgassing. A scientific orbit solution must fit
+the coefficients and covariance to astrometry. Nonzero trial values in CODES
+measure dynamical sensitivity and do not constitute a detection of a
+non-gravitational force.
 
 The solar Schwarzschild approximation used for sensitivity tests is
 \begin{equation}
@@ -703,10 +758,15 @@ distribution. A hazard result must propagate virtual asteroids or an
 equivalent uncertainty representation and report impact probability. JPL
 Sentry-II was designed for this nonlinear problem \cite{Roa2021}.
 
-\section{The 3.5ST NEO Orbit Calculator}
+\section{CODES Orbit Dynamics and Ephemeris System}
 
-The accompanying calculator is stored in
-\code{neo\_orbit\_calculator/}. It has two explicitly separated modes.
+The Close-approach Orbit Dynamics and Ephemeris System
+(CODES)\footnote{\url{https://github.com/kjhan0606/CODES.git}} provides the
+accompanying high-precision NEO calculator. The local Python package remains
+\code{neo\_orbit\_calculator} for command-line compatibility. The integrated
+desktop interface groups the calculation into NEO dynamics, comet-orbit
+evolution, apparent sky positions, and validation. The NEO dynamics tab keeps
+the authoritative JPL product separate from the local sensitivity calculation.
 
 \begin{resultbox}
 \textbf{\color{cGold}Authoritative SPK mode.}
@@ -867,6 +927,53 @@ weighted batch least squares, a six-dimensional covariance, outlier
 handling, and archived discovery-epoch solutions for a blind backtest.
 \end{warningbox}
 
+\subsection{Medium- and long-period comet modes}
+
+CODES also provides two comet products. The \code{comet-orbits} mode
+assembles the separate NASA/JPL Horizons solution for each identified
+apparition and shows the evolution of the return interval, semimajor axis,
+and perihelion distance. The \code{comet-sky} mode accepts specified UTC
+epochs and returns the geocentric right ascension, declination, distance, and
+IAU constellation. The two products distinguish long-term dynamics from the
+position needed to schedule an observation.
+
+A return of 1P/Halley means a passage through perihelion rather than a return
+to Earth. The present JPL \#75 solution uses 8,518 observations over
+1835--1994. Its continuous Horizons ephemeris is not provided before 1599.
+CODES therefore does not extrapolate the modern state through the ancient
+record and call the result an observed trajectory. The calculation uses the
+JPL historical apparition solutions before 1599 and compares their perihelion
+times with the observation-constrained integration of Yeomans and Kiang
+\cite{Horizons,YeomansKiang1981}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/halley_return_history.png}
+\caption{Apparition-to-apparition evolution of 1P/Halley from the JPL
+historical solutions. The upper panel rejects a fixed 76-year clock. The
+middle panel identifies the largest adjacent change in semimajor axis between
+the 989 and 1066 solutions. The lower panel shows that the perihelion distance
+also evolves. The points are separate fitted apparition records rather than
+samples from one unconstrained millennium-long extrapolation.}
+\label{fig:halley-return-history}
+\end{figure}
+
+\input{halley_return_validation_table.tex}
+
+\begin{resultbox}
+\textbf{\color{cGold}Largest detected change.}
+The largest adjacent change occurs from the 989 solution to the 1066
+solution. The semimajor axis increases by 0.332\,au and the osculating period
+increases by 2.133\,yr. The subsequent 1066--1145 return interval is
+79.079\,yr. The 1066 historical solution places the minimum separation from
+the Jupiter barycenter at 1.614\,au on 1067 March 5 TDB. The separation is not
+a close encounter and the complete period change cannot be assigned to one
+Jupiter passage. The fitted orbit includes accumulated planetary and
+non-gravitational perturbations. Yeomans and Kiang instead identify the
+0.04\,au Earth encounter in 837 as the severe ancient rectification boundary
+\cite{YeomansKiang1981}.
+\end{resultbox}
+
 \begin{verbatim}
 python -m neo_orbit_calculator.cli spk 99942 \
   --start 2026-01-01 --stop 2126-01-01
@@ -874,6 +981,12 @@ python -m neo_orbit_calculator.cli spk 99942 \
 python -m neo_orbit_calculator.cli propagate 99942 \
   --start 2026-01-01 --stop 2126-01-01 \
   --backend fortran
+
+python -m neo_orbit_calculator.cli comet-orbits 1P \
+  --start-year 800 --stop-year 2000
+
+python -m neo_orbit_calculator.cli comet-sky 1P \
+  --epochs 2061-07-28 2061-08-15 2061-09-01
 \end{verbatim}
 
 \section{Mission Decision Matrix}
@@ -1035,6 +1148,12 @@ Roa, J., Farnocchia, D., \& Chesley, S. R. 2021,
 ``A novel approach to asteroid impact monitoring and hazard assessment,''
 \textit{Astronomical Journal}, 162, 277.
 \href{https://doi.org/10.3847/1538-3881/ac193f}{doi:10.3847/1538-3881/ac193f}.
+
+\bibitem{YeomansKiang1981}
+Yeomans, D. K., \& Kiang, T. 1981,
+``The long-term motion of comet Halley,''
+\textit{Monthly Notices of the Royal Astronomical Society}, 197, 633.
+\href{https://doi.org/10.1093/mnras/197.3.633}{doi:10.1093/mnras/197.3.633}.
 
 \end{thebibliography}
 

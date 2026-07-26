@@ -102,9 +102,14 @@ def make_figure():
     ax.grid(axis="y", alpha=0.18)
     ax.legend(fontsize=9)
     ax.text(
-        0.02, 0.03,
+        0.03, 0.78,
         "Blue bands: Mainzer et al. (2023) requirements",
-        transform=ax.transAxes, color="#5C6875", fontsize=9)
+        transform=ax.transAxes,
+        color="#5C6875",
+        fontsize=9,
+        va="top",
+        bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.82, "pad": 1.5},
+    )
 
     ax = axes[1]
     for channel, linestyle in (("NC1", "-"), ("NC2", "--")):

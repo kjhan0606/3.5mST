@@ -1,4 +1,4 @@
-"""Command-line interface for the JPL-backed NEO orbit calculator."""
+"""Command-line interface for CODES."""
 
 from __future__ import annotations
 
@@ -11,6 +11,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.time import Time
 
+from .comets import (
+    collect_comet_apparitions,
+    comet_sky_positions,
+    plot_orbit_evolution,
+    plot_sky_positions,
+    write_apparitions_csv,
+    write_sky_csv,
+)
 from .core import AU_KM, ForceModel, propagate_custom
 from .jpl import download_horizons_spk, horizons_vectors
 
@@ -59,7 +67,10 @@ def _plot_orbit(path: Path, designation: str, jd: np.ndarray, states: np.ndarray
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="NASA/JPL-backed NEO orbit calculator",
+        description=(
+            "CODES, the NASA/JPL-backed Close-approach Orbit Dynamics "
+            "and Ephemeris System"
+        ),
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -108,11 +119,101 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Skip the 16 SB441-N16 main-belt perturbers",
     )
+
+    comet_orbits = subparsers.add_parser(
+        "comet-orbits",
+        help="Plot apparition-to-apparition orbit evolution for a comet",
+    )
+    comet_orbits.add_argument("designation", help="Example: 1P")
+    comet_orbits.add_argument("--start-year", type=int, default=800)
+    comet_orbits.add_argument("--stop-year", type=int, default=2100)
+    comet_orbits.add_argument(
+        "--return-years",
+        type=int,
+        nargs="+",
+        help="Known return years for a comet not resolved by Horizons aliases",
+    )
+    comet_orbits.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("output/comet_orbits"),
+    )
+
+    comet_sky = subparsers.add_parser(
+        "comet-sky",
+        help="Plot apparent comet positions and report IAU constellations",
+    )
+    comet_sky.add_argument("designation", help="Example: 1P")
+    comet_sky.add_argument(
+        "--epochs",
+        nargs="+",
+        required=True,
+        help="UTC epochs such as 2061-07-28",
+    )
+    comet_sky.add_argument(
+        "--observer",
+        default="500@399",
+        help="Horizons observer center, default geocentric",
+    )
+    comet_sky.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("output/comet_sky"),
+    )
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
+    if args.command == "comet-orbits":
+        apparitions = collect_comet_apparitions(
+            args.designation,
+            args.start_year,
+            args.stop_year,
+            args.return_years,
+        )
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        csv_path = args.output_dir / "comet_apparitions.csv"
+        plot_path = args.output_dir / "comet_orbit_evolution.png"
+        write_apparitions_csv(csv_path, apparitions)
+        plot_orbit_evolution(plot_path, apparitions)
+        print(
+            json.dumps(
+                {
+                    "designation": args.designation,
+                    "apparitions": len(apparitions),
+                    "csv": str(csv_path.resolve()),
+                    "plot": str(plot_path.resolve()),
+                },
+                indent=2,
+            )
+        )
+        return
+
+    if args.command == "comet-sky":
+        rows = comet_sky_positions(
+            args.designation,
+            args.epochs,
+            observer=args.observer,
+        )
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        csv_path = args.output_dir / "comet_sky_positions.csv"
+        plot_path = args.output_dir / "comet_sky_positions.png"
+        write_sky_csv(csv_path, rows)
+        plot_sky_positions(plot_path, args.designation, rows)
+        print(
+            json.dumps(
+                {
+                    "designation": args.designation,
+                    "positions": rows,
+                    "csv": str(csv_path.resolve()),
+                    "plot": str(plot_path.resolve()),
+                },
+                indent=2,
+            )
+        )
+        return
+
     if args.command == "spk":
         path, spk_id = download_horizons_spk(
             args.designation,
