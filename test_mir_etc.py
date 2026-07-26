@@ -24,6 +24,19 @@ def test_mir_flux_limit_inverts_snr():
         )
 
 
+def test_mir_pixel_scale_tracks_channel_pivot_wavelength():
+    scales = {}
+    for channel in ("NC1", "NC2"):
+        cfg = etc.mir_imaging_cfg(channel, "nominal")
+        pivot_um = np.sqrt(np.prod(etc.MIR_CHANNELS[channel]["band_um"]))
+        expected = etc.diffraction_nyquist_pixel_scale_arcsec(
+            pivot_um, cfg.diameter_cm)
+        assert np.isclose(cfg.pix_scale, expected, rtol=0.0, atol=1e-12)
+        scales[channel] = cfg.pix_scale
+
+    assert scales["NC1"] < scales["NC2"]
+
+
 def test_mir_limit_improves_with_exposure_and_aperture():
     band = (6.0e4, 10.0e4)
     cfg = etc.mir_imaging_cfg("NC2", "nominal")

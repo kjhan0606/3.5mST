@@ -99,7 +99,8 @@ class ETCGui:
         self.filter_cb = ttk.Combobox(frow, textvariable=self.imaging_filter,
                                       state="readonly", width=17)
         self.filter_cb.pack(side="left")
-        self.filter_cb.bind("<<ComboboxSelected>>", lambda _e: self.compute())
+        self.filter_cb.bind(
+            "<<ComboboxSelected>>", lambda _e: self._on_filter_change())
         field(obs, "spectral λ [µm]", "lam", "1.6")
         field(obs, "spectral band [µm]", "fw_um", "0.40")
         field(obs, "resolving power R", "R", "1000")
@@ -170,6 +171,7 @@ class ETCGui:
         if self.telescope.get() == "3.5mST MIR":
             self.mode.set("Imaging")
         self.refresh_elements()
+        self._sync_mir_pixel_scale(compute=False)
         self.compute()
 
     def _modes(self):
@@ -234,14 +236,24 @@ class ETCGui:
             return "high"
         return "nominal"
 
+    def _sync_mir_pixel_scale(self, compute=True):
+        channel = self._mir_channel()
+        if channel:
+            cfg = etc.mir_imaging_cfg(
+                channel, self._mir_background_level(),
+                diameter_cm=self._f("diam"))
+            self.v["pix"].set(f"{cfg.pix_scale:.4f}")
+        if compute:
+            self.compute()
+
+    def _on_filter_change(self):
+        self._sync_mir_pixel_scale()
+
     def _mir_cfg(self, filter_name=None):
         channel = self._mir_channel(filter_name)
-        return etc.mir_imaging_cfg(
-            channel,
-            self._mir_background_level(),
+        overrides = dict(
             diameter_cm=self._f("diam"),
             obstruction=self._obs,
-            pix_scale=self._f("pix"),
             eta_peak=self._f("eta"),
             read_noise=self._f("read"),
             dark_current=self._f("dark"),
@@ -252,6 +264,12 @@ class ETCGui:
             stray_star_sep_arcsec=self._f("straysep"),
             ipc_alpha=self._f("ipc"),
         )
+        if filter_name is None:
+            overrides["pix_scale"] = self._f("pix")
+        return etc.mir_imaging_cfg(
+            channel,
+            self._mir_background_level(),
+            **overrides)
 
     def cfg(self):
         if self.telescope.get() == "3.5mST MIR":

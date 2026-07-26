@@ -84,6 +84,8 @@
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{M}[1]{>{\raggedright\arraybackslash}m{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{T}[1]{>{\vspace{0pt}\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Z}{>{\vspace{0pt}\raggedright\arraybackslash}X}
 \emergencystretch=3em
 
 \newtcolorbox{resultbox}[1][]{
@@ -136,7 +138,7 @@ create a thermal-infrared survey.
 
 \vspace{2mm}
 \noindent
-\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{cGold}\raggedright\arraybackslash}p{31mm}Y@{}}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{cGold}}T{31mm}Z@{}}
 Proposal role & Planetary defense and small-body population science with a
 clear separation between discovery and post-discovery characterization.\\
 Baseline claim & High-value follow-up, physical characterization, and orbit
@@ -159,8 +161,10 @@ the program into four products.
 
 \begin{enumerate}[leftmargin=7mm,itemsep=2mm]
 \item \textbf{\color{cTeal}Recovery and astrometry.} Measure accurate
-ICRF positions for recently discovered objects and extend the observational
-arc before ephemeris uncertainty grows.
+positions in the International Celestial Reference Frame (ICRF), the
+quasar-defined inertial reference frame used for high-accuracy celestial
+astrometry, for recently discovered objects and extend the observational arc
+before ephemeris uncertainty grows.
 \item \textbf{\color{cGold}Physical characterization.} Measure colors,
 spectra, light curves, phase behavior, and thermal flux when a mid-infrared
 channel is present.
@@ -289,8 +293,11 @@ rectangular passband. A flat $F_\nu$ point source produces
  {\cal E}(\lambda,r_{\rm ap})\,d\lambda ,
  \label{eq:mir-source-rate}
 \end{equation}
-where ${\cal E}$ is the encircled energy inside the photometric aperture. The
-diffuse-background rate per pixel is
+Here the left-hand side $\dot N_{\rm src}$ is the detected source
+photoelectron rate, in e$^-$\,s$^{-1}$, integrated over the passband and the
+photometric aperture. The factor ${\cal E}$ is the wavelength-dependent
+encircled-energy fraction inside that aperture. The diffuse-background rate
+per detector pixel is
 \begin{equation}
  \dot N_{\rm bg,pix}
  = A_{\rm eff}\Omega_{\rm pix}
@@ -299,6 +306,11 @@ diffuse-background rate per pixel is
  \eta(\lambda)\,d\lambda .
  \label{eq:mir-background-rate}
 \end{equation}
+The left-hand side $\dot N_{\rm bg,pix}$ is therefore the detected
+background photoelectron rate in one physical pixel, in
+e$^-$\,s$^{-1}$\,pixel$^{-1}$; it is not the total background in the source
+aperture. The ETC multiplies it by the extraction-aperture pixel count before
+forming the noise variance.
 The zodiacal input uses the DIRBE convention $\nu I_\nu$. The adopted low and
 high levels are 220 and 4200\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-1 and 1700 and
 22,000\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-2. The values and their variation
@@ -318,7 +330,10 @@ measured component values.}
 \textbf{\color{cGold}MIR-2}\\
 \midrule
 Bandpass & 4.0--5.2\,$\mu$m & 6.0--10.0\,$\mu$m\\
-Pixel scale & 0.35 arcsec pixel$^{-1}$ & 0.35 arcsec pixel$^{-1}$\\
+Pivot wavelength & 4.56\,$\mu$m & 7.75\,$\mu$m\\
+Nyquist pixel scale at $\lambda_p$ &
+0.134 arcsec pixel$^{-1}$ &
+0.228 arcsec pixel$^{-1}$\\
 End-to-end throughput & 0.30 & 0.30\\
 Telescope temperature & $55$\,K & $55$\,K\\
 Telescope emissivity & 0.10 & 0.10\\
@@ -335,6 +350,19 @@ Field & $30'\times30'$ (0.25\,deg$^2$) & $30'\times30'$ (0.25\,deg$^2$)\\
 \end{tabularx}
 \label{tab:mir-etc-requirements}
 \end{table}
+
+The tabulated detector sampling is not one wavelength-independent value. It
+uses
+\begin{equation*}
+ s_{\rm pix}(\lambda_p)=206265\,\frac{\lambda_p}{2D}
+ \quad {\rm arcsec\ pixel^{-1}},
+\end{equation*}
+at each channel's geometric pivot wavelength $\lambda_p$, with $D=3.5$\,m.
+The physical pixel scale of any one focal plane is fixed; the wavelength
+dependence in Table~\ref{tab:mir-etc-requirements} is a two-channel design
+requirement and therefore needs separate detector pixel pitches or re-imaging
+optics. A common 0.35 arcsec pixel$^{-1}$ focal plane would undersample both
+channels, most severely MIR-1, and is no longer used by the ETC.
 
 The reference visit follows the six-dither and 145\,s net-integration format
 used by NEO Surveyor \cite{Mainzer2023}. The 3.5ST field remains much smaller
@@ -355,8 +383,8 @@ columns span the published zodiacal-background range.}
 \textbf{\color{cGold}High}\\
  & & & \multicolumn{3}{c}{\textbf{\color{cMuted}$5\sigma$ limit [$\mu$Jy]}}\\
 \midrule
-MIR-1 & 4.0--5.2\,$\mu$m & 0.29 arcsec & 0.47 & 0.83 & 1.66\\
-MIR-2 & 6.0--10.0\,$\mu$m & 0.48 arcsec & 1.08 & 2.03 & 3.85\\
+MIR-1 & 4.0--5.2\,$\mu$m & 0.29 arcsec & 0.51 & 0.66 & 1.11\\
+MIR-2 & 6.0--10.0\,$\mu$m & 0.48 arcsec & 1.01 & 1.87 & 3.53\\
 \bottomrule
 \end{tabularx}
 \label{tab:mir-etc-depth}

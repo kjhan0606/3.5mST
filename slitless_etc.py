@@ -862,6 +862,12 @@ MIR_CHANNELS = {
 }
 
 
+def diffraction_nyquist_pixel_scale_arcsec(wavelength_um, diameter_cm):
+    """Nyquist detector sampling lambda/(2D), in arcsec per pixel."""
+    wavelength_cm = float(wavelength_um) * 1e-4
+    return 206265.0 * wavelength_cm / (2.0 * float(diameter_cm))
+
+
 def mir_imaging_cfg(channel="NC2", background="nominal",
                     observatory="3.5mST", **overrides):
     """Construct a cooled MIR survey-imaging configuration.
@@ -881,8 +887,9 @@ def mir_imaging_cfg(channel="NC2", background="nominal",
     band_A = (lo_um * 1e4, hi_um * 1e4)
 
     if observatory == "3.5mST":
+        pivot_um = np.sqrt(lo_um * hi_um)
         values = dict(
-            diameter_cm=350.0, obstruction=0.15, pix_scale=0.35,
+            diameter_cm=350.0, obstruction=0.15, pix_scale=0.0,
             read_noise=15.0, dark_current=0.01, n_exp=6, n_groups=8,
             eta_peak=0.30, band_min_A=band_A[0], band_max_A=band_A[1],
             edge_roll_A=500.0, dichroic_split_A=0.0, tel_temp=55.0,
@@ -908,6 +915,9 @@ def mir_imaging_cfg(channel="NC2", background="nominal",
         raise ValueError(f"Unknown MIR observatory {observatory!r}")
 
     values.update(overrides)
+    if observatory == "3.5mST" and "pix_scale" not in overrides:
+        values["pix_scale"] = diffraction_nyquist_pixel_scale_arcsec(
+            pivot_um, values["diameter_cm"])
     values["imaging_sky_nuinu_nw_m2_sr"] = (
         (band_A[0], band_A[1], nuinu),)
     return InstrumentConfig(**values)
@@ -926,7 +936,7 @@ TELESCOPE_PRESETS = {
     "3.5mST":         dict(det="HgCdTe (concept)", diam=350., obstruction=0.15,  pix=0.11,  eta=0.30,
                            read=8., dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, split=10000., realistic=True),
     "3.5mST MIR":     dict(det="40 K HgCdTe MIR array (requirement)", diam=350., obstruction=0.15,
-                           pix=0.35, eta=0.30, read=15., dark=0.010, nexp=6,
+                           pix=0.134, eta=0.30, read=15., dark=0.010, nexp=6,
                            fw=100000., ttel=55., R=10., band=(4.00, 10.00),
                            lam=7.75, split=0., realistic=False),
     "Roman WFI":      dict(det="H4RG-10", diam=240., obstruction=0.31,  pix=0.11,  eta=0.42,

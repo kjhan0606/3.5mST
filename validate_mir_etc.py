@@ -142,6 +142,15 @@ def make_figure():
 def validate():
     failures = []
     for channel in ("NC1", "NC2"):
+        cfg = etc.mir_imaging_cfg(channel)
+        pivot_um = np.sqrt(np.prod(etc.MIR_CHANNELS[channel]["band_um"]))
+        expected_scale = etc.diffraction_nyquist_pixel_scale_arcsec(
+            pivot_um, cfg.diameter_cm)
+        if not np.isclose(cfg.pix_scale, expected_scale, rtol=0.0, atol=1e-12):
+            failures.append(
+                f"{channel} pixel scale is not lambda/(2D): "
+                f"{cfg.pix_scale:.6f} versus {expected_scale:.6f} arcsec")
+
         model = limit_ujy("NEO Surveyor", channel, "nominal", 145.0)
         published = np.sqrt(np.prod(PUBLISHED_NESI5_UJY[channel]))
         residual = model / published - 1.0
@@ -178,7 +187,9 @@ def main():
         nominal = limit_ujy("3.5mST", channel, "nominal", 145.0)
         high = limit_ujy("3.5mST", channel, "high", 145.0)
         print(
-            f"{channel} 145 s NESI5: {low:.2f}, {nominal:.2f}, "
+            f"{channel} pixel scale: "
+            f"{etc.mir_imaging_cfg(channel).pix_scale:.4f} arcsec; "
+            f"145 s NESI5: {low:.2f}, {nominal:.2f}, "
             f"{high:.2f} uJy; 55 K thermal fraction "
             f"{thermal_fraction(channel):.3%}")
     print(CSV_PATH)
