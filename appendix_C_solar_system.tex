@@ -212,6 +212,172 @@ tracklets. A cold telescope with only the baseline detector remains an
 optical and near-infrared observatory.
 \end{warningbox}
 
+\subsection{Cooled MIR imaging mode and exposure-time calculation}
+
+The proposed discovery option images the same field in two channels. MIR-1
+covers 4.0--5.2\,$\mu$m and MIR-2 covers 6.0--10.0\,$\mu$m. The channel
+definitions follow NEO Surveyor because the shorter channel constrains the
+color temperature while the longer channel covers the thermal emission of
+typical 200--300\,K NEOs \cite{Mainzer2023}. The channel choice does not imply
+that the NEO Surveyor focal plane or survey design transfers directly to a
+3.5\,m segmented telescope.
+
+The MIR imaging ETC integrates the source and background over the full
+rectangular passband. A flat $F_\nu$ point source produces
+\begin{equation}
+ \dot N_{\rm src}
+ = A_{\rm eff}\int_{\lambda_1}^{\lambda_2}
+ F_\nu\frac{c}{\lambda^2}
+ \frac{\lambda}{hc}\eta(\lambda)
+ {\cal E}(\lambda,r_{\rm ap})\,d\lambda ,
+ \label{eq:mir-source-rate}
+\end{equation}
+where ${\cal E}$ is the encircled energy inside the photometric aperture. The
+diffuse-background rate per pixel is
+\begin{equation}
+ \dot N_{\rm bg,pix}
+ = A_{\rm eff}\Omega_{\rm pix}
+ \int_{\lambda_1}^{\lambda_2}
+ I_\lambda(\lambda)\frac{\lambda}{hc}
+ \eta(\lambda)\,d\lambda .
+ \label{eq:mir-background-rate}
+\end{equation}
+The zodiacal input uses the DIRBE convention $\nu I_\nu$. The adopted low and
+high levels are 220 and 4200\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-1 and 1700 and
+22,000\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-2. The values and their variation
+across the field of regard are reported by Mainzer et al. \cite{Mainzer2023}
+from the Leinert and Wright zodiacal models \cite{Leinert1998}. The nominal
+ETC values are the geometric means of each range.
+
+\begin{table}[H]
+\centering
+\caption{Reference requirements used by the cooled MIR imaging ETC. The
+detector and throughput entries are proposal requirements. They are not
+measured component values.}
+\begin{tabularx}{\textwidth}{@{}P{36mm}YY@{}}
+\toprule
+\textbf{\color{cGold}Quantity} &
+\textbf{\color{cGold}MIR-1} &
+\textbf{\color{cGold}MIR-2}\\
+\midrule
+Bandpass & 4.0--5.2\,$\mu$m & 6.0--10.0\,$\mu$m\\
+Pixel scale & \multicolumn{2}{c}{0.35 arcsec pixel$^{-1}$}\\
+End-to-end throughput & \multicolumn{2}{c}{0.30 requirement}\\
+Telescope temperature & \multicolumn{2}{c}{$55$\,K requirement}\\
+Telescope emissivity & \multicolumn{2}{c}{0.10 requirement}\\
+Detector temperature & \multicolumn{2}{c}{$\leq40$\,K requirement}\\
+Read noise & \multicolumn{2}{c}{15 e$^-$ per pixel per exposure requirement}\\
+Dark current & \multicolumn{2}{c}{0.01 e$^-$ s$^{-1}$ pixel$^{-1}$ requirement}\\
+Visit & \multicolumn{2}{c}{six dithered integrations and 145\,s net exposure}\\
+Field & \multicolumn{2}{c}{$30'\times30'=0.25$\,deg$^2$}\\
+\bottomrule
+\end{tabularx}
+\label{tab:mir-etc-requirements}
+\end{table}
+
+The reference visit follows the six-dither and 145\,s net-integration format
+used by NEO Surveyor \cite{Mainzer2023}. The 3.5ST field remains much smaller
+than the NEO Surveyor field. The larger aperture improves flux sensitivity
+but does not recover the lost sky coverage.
+
+\begin{table}[H]
+\centering
+\caption{ETC point-source sensitivity for one 145\,s MIR visit. The three
+columns span the published zodiacal-background range.}
+\begin{tabularx}{\textwidth}{@{}P{25mm}P{28mm}P{23mm}YYY@{}}
+\toprule
+\textbf{\color{cGold}Channel} &
+\textbf{\color{cGold}Band} &
+\textbf{\color{cGold}PSF FWHM} &
+\textbf{\color{cGold}Low} &
+\textbf{\color{cGold}Nominal} &
+\textbf{\color{cGold}High}\\
+ & & & \multicolumn{3}{c}{\textbf{\color{cMuted}$5\sigma$ limit [$\mu$Jy]}}\\
+\midrule
+MIR-1 & 4.0--5.2\,$\mu$m & 0.29 arcsec & 0.47 & 0.83 & 1.66\\
+MIR-2 & 6.0--10.0\,$\mu$m & 0.48 arcsec & 1.08 & 2.03 & 3.85\\
+\bottomrule
+\end{tabularx}
+\label{tab:mir-etc-depth}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/mir_etc_validation.png}
+\caption{MIR ETC verification and reference sensitivity. The left panel
+evaluates the 50\,cm literature configuration. The blue intervals show the
+published NEO Surveyor NESI5 requirements of 65--120\,$\mu$Jy in NC1 and
+110--280\,$\mu$Jy in NC2 \cite{Mainzer2023}. The channel-level effective
+throughputs in the comparison configuration were adjusted to the logarithmic
+midpoints of those intervals. The comparison verifies units and the noise
+propagation but is not an independent detector prediction. The right panel
+shows the 3.5ST requirement model. The sensitivity follows the expected
+$t^{-1/2}$ behavior once zodiacal photon noise dominates.}
+\label{fig:mir-etc-validation}
+\end{figure}
+
+\begin{resultbox}
+\textbf{\color{cTeal}Verification status.}
+Five regression tests preserve the established optical result, invert the
+MIR signal-to-noise equation, order the low and high background cases, recover
+the expected exposure and aperture trends, and reproduce the literature
+normalization after the stated channel calibration. At 55\,K, telescope
+self-emission contributes less than 0.1 percent of the low-background aperture
+rate in both channels under the reference emissivity. Detector qualification,
+stray-light analysis, and measured throughput remain required before the
+limits in Table~\ref{tab:mir-etc-depth} become mission performance.
+\end{resultbox}
+
+\subsection{NEOMOD3 reference population and thermal flux}
+
+The reference population comes from the public NEOMOD3 Fortran simulator
+\cite{Nesvorny2024}. We requested the model number of objects between 30\,m
+and 3\,km with seed $-50202002$. The resulting realization contains 344,458
+NEOs. The sample contains 19,694 objects larger than 140\,m and 801 objects
+larger than 1\,km. These counts agree with the published estimates of
+$20,000\pm2,000$ and $830\pm60$ \cite{Nesvorny2024}. The simulation retains
+the NEOMOD3 size-dependent two-Rayleigh albedo distribution and the
+size-dependent orbital distribution.
+
+The simulator supplies $H$, $a$, $e$, $i$, diameter, and visible albedo.
+Longitude of ascending node, argument of perihelion, and mean anomaly were
+drawn uniformly with a recorded random seed. The orbits were propagated with
+the two-body Kepler solution for the survey-selection calculation. The
+authoritative orbit analysis in Section~\ref{sec:calculator-bodies} remains
+an N-body calculation. The two-body propagation is adequate for a reference
+survey selection function but does not represent close encounters.
+
+Thermal flux uses the Near-Earth Asteroid Thermal Model \cite{Harris1998}.
+The adopted emissivity is 0.9 and the reference beaming parameter is
+$\eta=1.4$. The subsolar temperature is
+\begin{equation}
+ T_{\rm SS}=
+ \left[
+ \frac{(1-A)S_\odot}
+ {\eta\epsilon\sigma r^2}
+ \right]^{1/4}.
+ \label{eq:neatm-temperature}
+\end{equation}
+The illuminated visible hemisphere is integrated numerically at the actual
+phase angle. MIR-1 also includes reflected sunlight with
+$p_{\rm IR}=1.6p_V$ clipped to the interval 0.015--0.70. The ratio is a
+reference assumption because the validated NEO Surveyor model draws
+$p_{\rm IR}/p_V$ and $\eta$ from measured distributions
+\cite{Mainzer2023,Masiero2023}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/neo_reference_population.png}
+\caption{Public NEOMOD3 realization and reference thermal flux. The left
+panel verifies the population normalization over the requested diameter
+range. The right panel shows MIR-2 flux at one random orbital epoch. Gold
+points satisfy the 45--$120^\circ$ field of regard, the
+$|\beta|\leq40^\circ$ latitude cut, and at least one MIR ETC threshold.
+The instantaneous count is not a discovery yield because a discovery also
+requires cadence, repeat tracklets, and sky coverage.}
+\label{fig:neo-reference-population}
+\end{figure}
+
 \section{Baseline Optical and Near-Infrared Program}
 
 \subsection{Astrometry and recovery}
@@ -337,6 +503,85 @@ confusion, and false-link control\\
 \bottomrule
 \end{longtable}
 
+\subsection{Cadence and five-year reference yield}
+
+The adopted moving-object sequence follows the demonstrated NEO Surveyor
+logic \cite{Mainzer2023,Masiero2023}. One visit contains six dithered
+integrations with 145\,s net exposure in a 180\,s allocation. Four visits
+over approximately eight hours form a tracklet. The same survey region is
+sampled again after 13 days to support linking. A valid tracklet requires at
+least four detections with $\mathrm{S/N}>5$ and an angular rate between 0.008
+and 8 degrees per day \cite{Masiero2023}. The measured tracklet efficiency
+of 99 percent and a reference two-tracklet linking efficiency of 95 percent
+enter the yield calculation.
+
+The 30$'\times30'$ field covers 0.25\,deg$^2$. A dedicated day retains
+21.75 hours after the 2.25-hour downlink allocation reported for NEO
+Surveyor \cite{Mainzer2023}. Four visits per field then cover
+27.2 unique deg$^2$ per day before the 13-day repeat. The accessible
+45--$120^\circ$ longitude range on both sides of the Sun and
+$|\beta|\leq40^\circ$ covers 11,051\,deg$^2$. The 13-day fractional coverage
+is only 3.20 percent.
+
+The survey emulator propagates every NEOMOD3 object at 13-day intervals for
+five years. Each epoch recomputes the L2 geometry, phase angle, optical
+magnitude, both NEATM fluxes, position-dependent zodiacal threshold, and
+angular rate. Discovery requires two adjacent eligible epochs. Sky tiling
+within each 13-day window is represented as a random coverage probability.
+The approximation omits focal-plane gaps, confusion, false links, orbit-fit
+quality, station keeping, and unplanned downtime.
+
+\begin{table}[H]
+\centering
+\caption{Five-year reference yield for four visits and a 13-day linking
+interval. ``New'' uses approximate known fractions of 3 percent at 30--50\,m,
+10 percent at 50--140\,m, 38 percent at 140\,m--1\,km, and 95 percent above
+1\,km. The 38-percent value follows the NEO Surveyor Known Object Model
+\cite{Grav2023}. The other fractions are explicit scenario assumptions.}
+\begin{tabularx}{\textwidth}{@{}P{23mm}P{25mm}P{18mm}YYYY@{}}
+\toprule
+\textbf{\color{cGold}MIR time} &
+\textbf{\color{cGold}Search latitude} &
+\textbf{\color{cGold}13-day coverage} &
+\textbf{\color{cGold}New 30--50 m} &
+\textbf{\color{cGold}New 50--140 m} &
+\textbf{\color{cGold}Cataloged $\geq140$ m} &
+\textbf{\color{cGold}New $\geq140$ m}\\
+\midrule
+25 percent & $|\beta|\leq40^\circ$ & 0.80 percent & 181 & 79 & 42 & 25\\
+100 percent & $|\beta|\leq40^\circ$ & 3.20 percent & 2,855 & 1,250 & 659 & 388\\
+25 percent & $|\beta|\leq20^\circ$ & 1.50 percent & 437 & 201 & 109 & 64\\
+100 percent & $|\beta|\leq20^\circ$ & 6.01 percent & 6,770 & 3,086 & 1,646 & 970\\
+\bottomrule
+\end{tabularx}
+\label{tab:neo-reference-yield}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/neo_survey_yield.png}
+\caption{Survey-speed and cadence trades from the reference emulator. The
+left panel holds the four-visit cadence, 13-day linking interval, full-time
+allocation, and $|\beta|\leq40^\circ$ search region fixed while changing the
+instantaneous field. The right panel holds the 0.25\,deg$^2$ field fixed.
+Two visits do not satisfy the accepted four-detection tracklet definition.
+Six visits reduce unique sky area and lower the $D\geq140$\,m yield from 659
+to 299. Four visits provide the highest defensible yield per observing time.}
+\label{fig:neo-survey-yield}
+\end{figure}
+
+\begin{resultbox}
+\textbf{\color{cGold}Cadence and field conclusion.}
+Four visits per tracklet are the cost-effective minimum. A fifth or sixth
+visit should be triggered only by weather-equivalent data loss, focal-plane
+gaps, or a high-priority object. The 0.25\,deg$^2$ field is the dominant
+discovery limitation. Full-time use of the baseline field reaches only
+3.35 percent of the NEOMOD3 $D\geq140$\,m population in the full latitude
+search. A 1\,deg$^2$ MIR field raises the reference fraction to 40 percent.
+The larger field requires a separate focal-plane, optical, telemetry, and
+cost trade.
+\end{resultbox}
+
 \section{Orbit Determination and Non-Gravitational Forces}
 
 The orbit state $\mathbf{x}=(\mathbf{r},\mathbf{v})$ is propagated with
@@ -428,6 +673,7 @@ integrator order above 100 would not remove initial-state covariance,
 close-encounter sensitivity, uncertain thermal recoil, or omitted perturbers.
 
 \subsection{Included gravitational bodies}
+\label{sec:calculator-bodies}
 
 The baseline gravity model contains the following 27 sources. Planet-system
 barycenters are used where appropriate.
@@ -505,6 +751,62 @@ Residuals should be reported before and after close encounters. A residual
 threshold must be set by the science case, not by the number of printed
 digits.
 
+\subsection{Ten historical close-approach tests}
+\label{sec:historical-ca-tests}
+
+The regression suite uses ten real NEOs observed between 2019 and 2024.
+For each object, the calculator downloads all available optical ADES
+astrometry from the Minor Planet Center and retains the observatory codes,
+UTC epochs, reported coordinates, and MPC discovery flag
+\cite{MPCObservations}. The observing arc is therefore traceable to the
+measurements used by the international small-body community.
+
+This test isolates \emph{trajectory propagation}. The current JPL Horizons
+solution supplies the barycentric initial state two days before the official
+closest-approach epoch. The real128 Fortran model then propagates for four
+days with DE440s, SB441-N16, and solar 1PN enabled. A cubic interpolation of
+the propagated state locates the Earth-centered distance minimum between
+output epochs. The official epoch, miss distance, and relative speed come
+from the JPL CNEOS Close-Approach Data API \cite{JPLCAD}. Heliocentric
+ecliptic osculating elements are compared with Horizons one day before the
+encounter, before the strongest terrestrial deflection.
+
+\begin{resultbox}
+\textbf{\color{cGold}Source convention.}
+MPC supplies the observed astrometric history, station count, and discovery
+epoch. NASA/JPL supplies the official current initial state, osculating
+elements, closest-approach epoch, and geocentric distance. Every reported
+$\Delta$ is \textbf{local Fortran result minus NASA/JPL official result}.
+The source snapshot used here was retrieved on 2026-07-26 UTC.
+\end{resultbox}
+
+\input{neo_orbit_validation_tables.tex}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/neo_orbit_validation_10cases.png}
+\caption{Observation context and propagation residuals for ten historical
+flybys. Gold bars in the left panel indicate discovery before closest
+approach; red bars indicate that the first discovery observation followed
+the flyby. The center and right panels compare the local force model with
+the current official JPL solution. Across the ten cases, the maximum absolute
+residual is 0.197\,s in closest-approach epoch, 0.891\,km in miss distance,
+and 0.362\,km in pre-encounter semimajor axis.}
+\label{fig:neo-orbit-validation}
+\end{figure}
+
+\begin{warningbox}
+\textbf{\color{cOrange}Validation boundary.}
+The JPL initial state is based on the current orbit solution and can include
+post-encounter observations. Tables~\ref{tab:neo-ca-validation} and
+\ref{tab:neo-element-validation} therefore certify numerical propagation
+against an authoritative trajectory; they do not certify an independent
+orbit fit from a discovery-night arc. Operational acceptance additionally
+requires observatory-state reconstruction, catalog-bias correction,
+weighted batch least squares, a six-dimensional covariance, outlier
+handling, and archived discovery-epoch solutions for a blind backtest.
+\end{warningbox}
+
 \begin{verbatim}
 python -m neo_orbit_calculator.cli spk 99942 \
   --start 2026-01-01 --stop 2126-01-01
@@ -550,6 +852,13 @@ time-resolved photometry, and visible/NIR characterization.
 \item Treat the 4--10\,$\mu$m channel as a costed mission option. Specify
 detector temperature, cold-optics temperature, field, cadence, elongation,
 and survey completeness together.
+\item Use four visits over eight hours and a 13-day repeat as the reference
+discovery cadence. Reserve additional visits for data loss or targeted
+follow-up.
+\item Do not claim a competitive blind NEO census with a 0.25\,deg$^2$ field.
+The reference calculation yields 659 cataloged $D\geq140$\,m objects over
+five years under a full-time MIR allocation. A discovery-led option requires
+at least a 1\,deg$^2$ MIR field trade.
 \item Preserve a $60^\circ$ baseline solar avoidance requirement until a
 thermal and stray-light model demonstrates access to $45^\circ$.
 \item Validate orbit products against Horizons SPK output. Use covariance
@@ -560,11 +869,12 @@ checksums and orbit-solution identifiers in every derived product.
 
 \begin{warningbox}
 \textbf{\color{cRed}Claim boundary.}
-The present analysis supports a strong characterization and orbit-refinement
-program. It does not yet establish a limiting diameter, annual discovery
-yield, or 90-percent completeness level for 3.5ST. Those claims require the
-final detector, thermal background, field of regard, survey cadence, and
-moving-object selection function.
+The present analysis establishes a reproducible reference sensitivity and a
+preliminary yield under the requirements in Tables~\ref{tab:mir-etc-requirements}
+and \ref{tab:neo-reference-yield}. The result is not a mission completeness
+certification. A certified yield requires measured detector performance,
+the final field of regard, a deterministic pointing history, focal-plane
+gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
 \end{warningbox}
 
 \clearpage
@@ -596,10 +906,27 @@ Gustafson, B. A. S. 1996,
 \textit{Annual Review of Earth and Planetary Sciences}, 24, 553.
 \href{https://doi.org/10.1146/annurev.earth.24.1.553}{doi:10.1146/annurev.earth.24.1.553}.
 
+\bibitem{Grav2023}
+Grav, T., et al. 2023,
+``The NEO Surveyor Near Earth Asteroid Known Object Model,''
+\textit{Planetary Science Journal}, 4, 228.
+\href{https://doi.org/10.3847/PSJ/ad072c}{doi:10.3847/PSJ/ad072c}.
+
+\bibitem{Harris1998}
+Harris, A. W. 1998,
+``A thermal model for near-Earth asteroids,''
+\textit{Icarus}, 131, 291.
+\href{https://doi.org/10.1006/icar.1997.5865}{doi:10.1006/icar.1997.5865}.
+
 \bibitem{Horizons}
 Giorgini, J. D., and JPL Solar System Dynamics Group,
 NASA/JPL Horizons On-Line Ephemeris System.
 \url{https://ssd.jpl.nasa.gov/horizons/}.
+
+\bibitem{JPLCAD}
+NASA/JPL Center for Near-Earth Object Studies,
+``Close-Approach Data API.''
+\url{https://ssd-api.jpl.nasa.gov/doc/cad.html}.
 
 \bibitem{Mainzer2011}
 Mainzer, A., et al. 2011,
@@ -612,6 +939,30 @@ Mainzer, A. K., et al. 2023,
 ``The Near-Earth Object Surveyor Mission,''
 \textit{Planetary Science Journal}, 4, 224.
 \href{https://doi.org/10.3847/PSJ/ad0468}{doi:10.3847/PSJ/ad0468}.
+
+\bibitem{Masiero2023}
+Masiero, J. R., et al. 2023,
+``Validation of the Survey Simulator Tool for the NEO Surveyor Mission Using
+NEOWISE Data,''
+\textit{Planetary Science Journal}, 4, 225.
+\href{https://doi.org/10.3847/PSJ/ad00bb}{doi:10.3847/PSJ/ad00bb}.
+
+\bibitem{Nesvorny2024}
+Nesvorn\'y, D., et al. 2024,
+``NEOMOD 3. The Debiased Size Distribution of Near Earth Objects,''
+\textit{Icarus}, 417, 116110.
+\href{https://doi.org/10.1016/j.icarus.2024.116110}{doi:10.1016/j.icarus.2024.116110}.
+
+\bibitem{MPCObservations}
+International Astronomical Union Minor Planet Center,
+``Observations API: ADES observation retrieval.''
+\url{https://data.minorplanetcenter.net/api}.
+
+\bibitem{Leinert1998}
+Leinert, C., et al. 1998,
+``The 1997 reference of diffuse night sky brightness,''
+\textit{Astronomy and Astrophysics Supplement Series}, 127, 1.
+\href{https://doi.org/10.1051/aas:1998105}{doi:10.1051/aas:1998105}.
 
 \bibitem{Park2021}
 Park, R. S., Folkner, W. M., Williams, J. G., \& Boggs, D. H. 2021,

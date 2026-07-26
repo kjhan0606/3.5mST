@@ -1,0 +1,5 @@
+numpy>=2.0
+scipy>=1.13
+matplotlib>=3.8
+astropy>=6.0
+spiceypy>=7.0
