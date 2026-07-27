@@ -46,6 +46,9 @@ OFFICIAL_RETURNS = (
     (1910, "90000029", 2418781.6785),
     (1986, "90000030", 2446469.9736161465),
 )
+DENSE_CADENCE_DAYS = 365.25 / 2.0
+DENSE_PERIHELION_WINDOW_DAYS = 2.0 * 365.25
+DENSE_PERIHELION_STEP_DAYS = 30.4375
 
 
 def _heliocentric_distance(
@@ -197,6 +200,84 @@ def _official_perihelion(
     )
 
 
+def _dense_comparison_epochs(
+    start_jd: float,
+    stop_jd: float,
+) -> np.ndarray:
+    """Sample the full interval and resolve both perihelion neighborhoods."""
+    baseline = np.arange(
+        start_jd,
+        stop_jd + 1.0,
+        DENSE_CADENCE_DAYS,
+    )
+    near_perihelion = [
+        np.arange(
+            seed_jd - DENSE_PERIHELION_WINDOW_DAYS,
+            seed_jd + DENSE_PERIHELION_WINDOW_DAYS,
+            DENSE_PERIHELION_STEP_DAYS,
+        )
+        for _, _, seed_jd in OFFICIAL_RETURNS
+    ]
+    epochs = np.concatenate((baseline, *near_perihelion, [stop_jd]))
+    epochs = np.unique(np.round(epochs, decimals=8))
+    return epochs[(epochs >= start_jd) & (epochs <= stop_jd)]
+
+
+def _dense_official_elements(epochs: np.ndarray) -> np.ndarray:
+    """Fetch the JPL #75 osculating elements in bounded request batches."""
+    batches = []
+    for start in range(0, len(epochs), 25):
+        batch = epochs[start : start + 25]
+        for attempt in range(5):
+            try:
+                values, _ = horizons_elements(HALLEY_RECORD, batch)
+                batches.append(values)
+                time.sleep(0.2)
+                break
+            except (
+                RuntimeError,
+                urllib.error.HTTPError,
+                urllib.error.URLError,
+            ):
+                if attempt == 4:
+                    raise
+                time.sleep(2.0**attempt)
+    return np.vstack(batches)
+
+
+def _codes_elements_at(
+    epochs: np.ndarray,
+    integration_jd: np.ndarray,
+    integration_states: np.ndarray,
+    environment: DE440Environment,
+) -> np.ndarray:
+    """Interpolate the CODES trajectory and derive osculating elements."""
+    splines = [
+        CubicSpline(
+            integration_jd,
+            integration_states[:, component],
+        )
+        for component in range(6)
+    ]
+    states = np.column_stack([spline(epochs) for spline in splines])
+    return np.asarray(
+        [
+            _osculating_elements(state, epoch, environment)
+            for state, epoch in zip(states, epochs, strict=True)
+        ]
+    )
+
+
+def _residual_text(values: np.ndarray, unit: str) -> str:
+    rms = float(np.sqrt(np.mean(values**2)))
+    maximum = float(np.max(np.abs(values)))
+    return (
+        "CODES - JPL\n"
+        f"RMS {rms:,.2f} {unit}\n"
+        f"max {maximum:,.2f} {unit}"
+    )
+
+
 def run_validation() -> tuple[
     list[dict[str, float | int | str]],
     np.ndarray,
@@ -331,24 +412,6 @@ def write_outputs(
         writer.writeheader()
         writer.writerows(rows)
 
-    years = np.asarray([int(row["return_year"]) for row in rows])
-    codes_jd = np.asarray(
-        [float(row["codes_perihelion_jd_tdb"]) for row in rows]
-    )
-    official_jd = np.asarray(
-        [float(row["jpl_perihelion_jd_tdb"]) for row in rows]
-    )
-    codes_a = np.asarray([float(row["codes_a_au"]) for row in rows])
-    official_a = np.asarray([float(row["jpl_a_au"]) for row in rows])
-    codes_period = np.asarray(
-        [float(row["codes_period_years"]) for row in rows]
-    )
-    official_period = np.asarray(
-        [float(row["jpl_period_years"]) for row in rows]
-    )
-    codes_q = np.asarray([float(row["codes_q_au"]) for row in rows])
-    official_q = np.asarray([float(row["jpl_q_au"]) for row in rows])
-
     stride = 10
     timeline_jd = jd_tdb[::stride]
     timeline_year = Time(
@@ -376,167 +439,166 @@ def write_outputs(
         timeline_a,
         environment.gm["SUN"],
     )
+
+    comparison_jd = _dense_comparison_epochs(jd_tdb[0], jd_tdb[-1])
+    official_elements = _dense_official_elements(comparison_jd)
+    codes_elements = _codes_elements_at(
+        comparison_jd,
+        jd_tdb,
+        states,
+        environment,
+    )
+    comparison_year = Time(
+        comparison_jd,
+        format="jd",
+        scale="tdb",
+    ).decimalyear
+    codes_a = codes_elements[:, 0]
+    codes_q = codes_elements[:, 1]
+    codes_period = _period_years(codes_a, environment.gm["SUN"])
+    official_q = official_elements[:, 2]
+    official_a = official_elements[:, 7]
+    official_period = _period_years(
+        official_a,
+        environment.gm["SUN"],
+    )
+    period_residual_days = (codes_period - official_period) * 365.25
+    semimajor_residual_km = (codes_a - official_a) * AU_KM
+    perihelion_residual_km = (codes_q - official_q) * AU_KM
+
     figure, axes = plt.subplots(
         3,
         1,
-        figsize=(11.2, 9.4),
+        figsize=(12.2, 10.2),
         sharex=True,
     )
-    axes[0].plot(
-        timeline_year,
-        timeline_period,
-        color="#007C77",
-        lw=1.5,
-        label="CODES forward integration from one 1850 state",
+    series = (
+        (
+            timeline_period,
+            official_period,
+            "osculating period [yr]",
+            _residual_text(period_residual_days, "d"),
+        ),
+        (
+            timeline_a,
+            official_a,
+            "osculating semimajor axis [au]",
+            _residual_text(semimajor_residual_km, "km"),
+        ),
+        (
+            timeline_q,
+            official_q,
+            "osculating perihelion distance [au]",
+            _residual_text(perihelion_residual_km, "km"),
+        ),
     )
-    axes[0].scatter(
-        years,
-        codes_period,
-        marker="o",
-        s=115,
-        facecolor="none",
-        edgecolor="#B55220",
-        linewidth=2.0,
-        zorder=6,
-        label="CODES perihelia",
-    )
-    axes[0].scatter(
-        years,
-        official_period,
-        marker="D",
-        s=58,
-        facecolor="#FFD166",
-        edgecolor="#151B23",
-        linewidth=1.1,
-        zorder=7,
-        label="NASA/JPL Horizons",
-    )
-    axes[0].set_ylabel("osculating period [yr]")
-    axes[0].legend(frameon=False, ncol=3, fontsize=8.5)
-
-    axes[1].plot(
-        timeline_year,
-        timeline_a,
-        color="#007C77",
-        lw=1.5,
-        label="CODES trajectory",
-    )
-    axes[1].scatter(
-        years,
-        codes_a,
-        marker="o",
-        s=115,
-        facecolor="none",
-        edgecolor="#B55220",
-        linewidth=2.0,
-        zorder=6,
-        label="CODES perihelia",
-    )
-    axes[1].scatter(
-        years,
-        official_a,
-        marker="D",
-        s=58,
-        facecolor="#FFD166",
-        edgecolor="#151B23",
-        linewidth=1.1,
-        zorder=6,
-        label="NASA/JPL Horizons",
-    )
-    axes[1].set_ylabel("osculating semimajor axis [au]")
-    axes[1].legend(frameon=False)
-
-    axes[2].plot(
-        timeline_year,
-        timeline_q,
-        color="#B55220",
-        lw=1.5,
-        label="CODES trajectory",
-    )
-    axes[2].scatter(
-        years,
-        codes_q,
-        marker="o",
-        s=115,
-        facecolor="none",
-        edgecolor="#007C77",
-        linewidth=2.0,
-        zorder=6,
-        label="CODES perihelia",
-    )
-    axes[2].scatter(
-        years,
-        official_q,
-        marker="D",
-        s=58,
-        facecolor="#FFD166",
-        edgecolor="#151B23",
-        linewidth=1.1,
-        zorder=6,
-        label="NASA/JPL Horizons",
-    )
-    axes[2].set_ylabel("osculating perihelion distance [au]")
-    axes[2].set_xlabel("year [TDB]")
-    axes[2].legend(frameon=False)
-
-    for index, year in enumerate(years):
-        axes[0].annotate(
-            (
-                "$\\Delta P$="
-                f"{float(rows[index]['delta_period_days']):+.2f} d"
+    for axis, (codes_curve, official_values, ylabel, summary) in zip(
+        axes,
+        series,
+        strict=True,
+    ):
+        axis.plot(
+            timeline_year,
+            codes_curve,
+            color="#007C77",
+            lw=1.9,
+            zorder=3,
+            label="CODES forward integration",
+        )
+        axis.plot(
+            comparison_year,
+            official_values,
+            color="#E69F32",
+            lw=0.9,
+            alpha=0.58,
+            zorder=2,
+        )
+        axis.scatter(
+            comparison_year,
+            official_values,
+            marker="D",
+            s=20,
+            facecolor="#FFD166",
+            edgecolor="#713F24",
+            linewidth=0.55,
+            alpha=0.88,
+            zorder=4,
+            label=(
+                "NASA/JPL Horizons #75 "
+                f"({len(comparison_jd)} epochs)"
             ),
-            (year, codes_period[index]),
-            xytext=(8, 10 if index == 0 else -17),
-            textcoords="offset points",
-            color="#5C6875",
-            fontsize=8.5,
         )
-        axes[1].annotate(
-            f"$\\Delta a$={float(rows[index]['delta_a_km']):+.0f} km",
-            (year, codes_a[index]),
-            xytext=(8, 10 if index == 0 else -17),
-            textcoords="offset points",
-            color="#5C6875",
-            fontsize=8.5,
-        )
-        axes[2].annotate(
-            f"$\\Delta q$={float(rows[index]['delta_q_km']):+.0f} km",
-            (year, codes_q[index]),
-            xytext=(8, 10 if index == 0 else -17),
-            textcoords="offset points",
-            color="#5C6875",
-            fontsize=8.5,
-        )
-    for axis in axes:
+        for year in (1910, 1986):
+            axis.axvline(
+                year,
+                color="#A7354D",
+                lw=0.85,
+                ls="--",
+                alpha=0.5,
+            )
+        axis.set_ylabel(ylabel)
         axis.grid(alpha=0.22)
+        axis.text(
+            0.985,
+            0.93,
+            summary,
+            transform=axis.transAxes,
+            ha="right",
+            va="top",
+            fontsize=8.7,
+            color="#263441",
+            bbox={
+                "boxstyle": "round,pad=0.35",
+                "facecolor": "white",
+                "edgecolor": "#D8DEE5",
+                "alpha": 0.94,
+            },
+        )
+
+    axes[0].legend(
+        frameon=False,
+        ncol=2,
+        fontsize=9,
+        loc="lower left",
+    )
+    axes[2].set_xlabel("year [TDB]")
     figure.suptitle(
-        "Independent 150-year CODES propagation of 1P/Halley",
-        fontsize=16,
+        (
+            "Dense NASA/JPL comparison for the 150-year "
+            "CODES propagation of 1P/Halley"
+        ),
+        fontsize=15.5,
     )
     figure.text(
         0.5,
-        0.012,
+        0.014,
         (
-            "Initial state: JPL #75 at 1850-01-02 TDB. "
-            "No comparison state is ingested after the start epoch."
+            "JPL #75 sampled every 6 months, with monthly sampling within "
+            "2 years of the 1910 and 1986 perihelia. JPL states are used "
+            "only for post-propagation comparison."
         ),
         ha="center",
         color="#5C6875",
-        fontsize=9.5,
+        fontsize=9.2,
     )
-    figure.tight_layout(rect=(0, 0.035, 1, 0.97))
+    figure.tight_layout(rect=(0, 0.04, 1, 0.965))
     FIGURE_PATH.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(FIGURE_PATH, dpi=220, facecolor="white")
     plt.close(figure)
 
     provenance = {
-        "generated_utc": "2026-07-26",
+        "generated_utc": time.strftime("%Y-%m-%d", time.gmtime()),
         "purpose": "Independent long-term propagation consistency test",
         "initial_state_source": (
             "NASA/JPL Horizons record 90000030 at 1850-01-02 TDB"
         ),
         "comparison_source": (
-            "NASA/JPL Horizons records 90000029 and 90000030"
+            "NASA/JPL Horizons record 90000030 at 397 comparison epochs, "
+            "plus records 90000029 and 90000030 at the two perihelia"
+        ),
+        "dense_comparison_sampling": (
+            "Six-month cadence from 1850 to 2000, augmented by monthly "
+            "sampling within two years of the 1910 and 1986 perihelia"
         ),
         "integration_interval_tdb": [START_TDB, STOP_TDB],
         "force_model": {

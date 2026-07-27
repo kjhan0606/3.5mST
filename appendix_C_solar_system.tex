@@ -1393,24 +1393,28 @@ No JPL comparison state is ingested after the initial epoch.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/halley_codes_longterm_validation.png}
-\caption{Independent 150-year CODES propagation of 1P/Halley. Open circles
-are CODES results and gold diamonds are separately requested NASA/JPL
-Horizons comparison values in every panel. From top to bottom, the continuous
-curves show the osculating period, semimajor axis, and perihelion distance
-derived from the CODES state. The CODES minus JPL perihelion-time residuals
-are $-12.956$\,s and $+8.835$\,s. The corresponding period residuals are
-$-3.840$\,d and $-1.931$\,d. The semimajor-axis residuals are
-$-247{,}460$\,km and $-124{,}487$\,km. The perihelion-distance residuals are
-$+227.8$\,km and $-15.3$\,km.}
+\caption{Dense NASA/JPL comparison for the independent 150-year CODES
+propagation of 1P/Halley. Teal curves show the osculating period, semimajor
+axis, and perihelion distance derived from the CODES state. Gold diamonds
+show NASA/JPL Horizons solution \#75 at 397 independently requested epochs.
+The sampling interval is six months across 1850--2000 and one month within
+two years of the 1910 and 1986 perihelia. The dashed vertical lines mark
+those perihelia. CODES reproduces the phase and amplitude of the JPL
+oscillations in every panel. The period residual has an RMS of 0.27\,d and a
+maximum magnitude of 3.79\,d. The semimajor-axis residual has an RMS of
+17{,}189\,km and a maximum magnitude of 244{,}589\,km. The
+perihelion-distance residual has an RMS of 3.79\,km and a maximum magnitude
+of 27.26\,km. The JPL states are used only for post-propagation comparison
+and are not ingested by CODES after the 1850 initial epoch.}
 \label{fig:halley-return-history}
 \end{figure}
 
 \begin{resultbox}
 \textbf{\color{cGold}What this validates.}
 The comparison tests long-term numerical propagation from one initial state,
-not merely the parsing of a sequence of JPL records. The agreement
-demonstrates that CODES reproduces the two physical perihelion passages
-across 150 years.
+not merely the parsing of a sequence of JPL records. The dense comparison
+demonstrates that CODES reproduces the time-dependent oscillations and the
+two physical perihelion passages across 150 years.
 Because JPL solution \#75 was fitted with observations extending through
 1994, the comparison is a propagation-consistency test rather than a blind
 historical orbit determination.
