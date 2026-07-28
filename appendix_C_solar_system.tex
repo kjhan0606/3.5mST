@@ -1530,8 +1530,19 @@ MPC current format observation file, records the exact executable and
 configuration path, and preserves the ranging output. The ranging posterior
 is intentionally broad for a five exposure arc. This is the expected
 range and radial velocity degeneracy, not a failure of the angular
-astrometry. Figure~\ref{fig:codes-openorb-calculation} shows the resulting
-posterior in $(a,e)$ and $q$ together with the NASA/JPL comparison point.
+astrometry. Each accepted OpenOrb sample retains its astrometric
+$\chi^2$. The additive offset written by OpenOrb cancels in the likelihood
+ratio
+\[
+  \frac{L_i}{L_{\max}} =
+  \exp\left[-\frac{\chi_i^2-\chi_{\min}^2}{2}\right].
+\]
+Figure~\ref{fig:codes-openorb-calculation} shows the sampled likelihood
+field in $(a,e)$. The local likelihood sum is divided by the local sample
+count before smoothing. This operation reduces the influence of ranging
+density and its coordinate Jacobian. The right panel retains the posterior
+distribution of $q$. Both horizontal axes use logarithmic scales. The
+NASA/JPL point provides an external comparison.
 The CODES force model can propagate every accepted sample, allowing later
 observations to be tested against a distribution rather than one fragile
 preliminary orbit.
@@ -1540,9 +1551,12 @@ preliminary orbit.
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/codes_openorb_calculation.png}
 \caption{OpenOrb statistical ranging output for the DAD demonstration
-tracklet. Orange points are posterior samples and the star is the separate
-NASA/JPL solution for the same numbered object. The broad posterior shows
-why a short optical arc must not be reported as a unique orbit.}
+tracklet. The left panel gives the locally smoothed likelihood field in
+$(a,e)$. Color represents $L/L_{\max}$. Regions without sampled support
+remain blank. The right panel gives the OpenOrb posterior count in
+logarithmic $q$ bins. The horizontal axes are logarithmic. The star and
+vertical line mark the separate NASA/JPL solution for the same numbered
+object. The official solution does not enter the ranging calculation.}
 \label{fig:codes-openorb-calculation}
 \end{figure}
 
