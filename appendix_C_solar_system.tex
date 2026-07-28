@@ -382,7 +382,7 @@ $p_V$, the standard optical diameter relation \cite{RyanWoodward2010} is
 The absolute magnitude $H$ removes observing geometry. The definition sets
 $r=\Delta=1$\,au and the phase angle to zero. For a real observation, the
 apparent visual magnitude and the corresponding diameter threshold are
-\cite{Horizons}
+\cite{Bowell1989}
 \begin{equation*}
 \begin{aligned}
  m_V &=
@@ -538,9 +538,9 @@ extraction-aperture pixel count before forming the noise variance.
 The zodiacal input uses the DIRBE convention $\nu I_\nu$. The adopted low and
 high levels are 220 and 4200\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-1 and 1700 and
 22,000\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-2. The values and their variation
-across the field of regard are reported by Mainzer et al. \cite{Mainzer2023}
-from the Leinert and Wright zodiacal models \cite{Leinert1998}. The nominal
-ETC values are the geometric means of each range.
+across the field of regard are reported by Mainzer et al. from DIRBE-based
+zodiacal-light models \cite{Mainzer2023,Leinert1998}. The nominal ETC values
+are the geometric means of each range.
 
 \begin{table}[H]
 \centering
@@ -825,8 +825,9 @@ over approximately eight hours form a tracklet. The same survey region is
 sampled again after 13 days to support linking. A valid tracklet requires at
 least four detections with $\mathrm{S/N}>5$ and an angular rate between 0.008
 and 8 degrees per day \cite{Masiero2023}. The measured tracklet efficiency
-of 99 percent and a reference two-tracklet linking efficiency of 95 percent
-enter the yield calculation.
+of 99 percent enters the yield calculation. The adopted two-tracklet linking
+efficiency of 95 percent is a conservative scenario assumption. Masiero et
+al. use 99 percent for the corresponding linking efficiency.
 
 The 30$'\times30'$ field covers 0.25\,deg$^2$. A dedicated day retains
 21.75 hours after the 2.25-hour downlink allocation reported for NEO
@@ -1074,8 +1075,9 @@ amplitude scales as the inverse square of heliocentric distance. The
 transverse coefficient $A_2$ provides a compact Yarkovsky sensitivity model
 for an asteroid. The radial and normal coefficients also support diagnostic
 fits for asymmetric cometary outgassing. The comet option replaces the
-inverse-square amplitude by the normalized Marsden water-ice law. A specified
-time lag is applied to the osculating heliocentric state with a
+inverse-square amplitude by the normalized Marsden water-ice law
+\cite{Marsden1973}. A specified time lag is applied to the osculating
+heliocentric state with a
 universal-variable Kepler shift before the sublimation amplitude is
 evaluated. A scientific orbit solution must fit the coefficients, lag, and
 covariance to astrometry. Nonzero trial values in CODES measure dynamical
@@ -1125,7 +1127,7 @@ $1.12\times10^{-8}$\,mm\,s$^{-1}$ in velocity.
 
 Direct radiation pressure is proportional to area-to-mass ratio. The
 Poynting--Robertson term uses the complete first-order photon momentum
-equation \cite{Gustafson1996}. The solar-wind term uses the relative velocity
+equation \cite{Gustafson1994}. The solar-wind term uses the relative velocity
 of a configurable radial proton wind. The terms matter most for dust,
 meter-scale material, and high area-to-mass artificial objects. For ordinary
 NEOs, fitted thermal recoil often dominates the non-gravitational orbit
@@ -1389,7 +1391,8 @@ at 1850 January 2 TDB and the published non-gravitational coefficients
 $A_1=4.887055233121\times10^{-10}$ and
 $A_2=1.554720290005\times10^{-10}$\,au\,d$^{-2}$. CODES then propagates to
 2000 with its real128 Fortran integrator, DE440s major-body states,
-SB441-N16 perturbers, full multi-body 1PN, and the standard Marsden water-ice law.
+SB441-N16 perturbers, full multi-body 1PN, and the standard Marsden water-ice
+law \cite{Marsden1973}.
 No JPL comparison state is ingested after the initial epoch.
 
 \begin{figure}[H]
@@ -1481,7 +1484,8 @@ small astrometric CSV. CODES passes that CSV to OpenOrb for statistical
 ranging, which samples the admissible orbital-element distribution instead
 of selecting one distance from a short optical arc \cite{Granvik2009}.
 CODES then propagates the samples with the selected DE442 or DE441 kernel
-and its force model. The final comparison is made against a separately
+\cite{NAIFDE442,Park2021} and its force model. The final comparison is made
+against a separately
 retrieved NASA/JPL solution. The official solution is therefore a comparison
 target and is not used as an input to the ranging calculation.
 
@@ -1715,10 +1719,11 @@ gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
 \color{cText}
 
 \bibitem{Bowell1989}
-Bowell, E., Hapke, B., Domingue, D., et al. 1989,
+Bowell, E., Hapke, B., Domingue, D., Lumme, K., Peltoniemi, J.,
+\& Harris, A. W. 1989,
 ``Application of photometric models to asteroids,''
 in \textit{Asteroids II}, eds. R. P. Binzel, T. Gehrels, and M. S. Matthews,
-524.
+524--556.
 
 \bibitem{Chesley2014}
 Chesley, S. R., et al. 2014,
@@ -1739,34 +1744,35 @@ European Southern Observatory 2019,
 
 \bibitem{Farnocchia2021SB441}
 Farnocchia, D. 2021,
-``Small-Body Perturber Files SB441-N16 and SB441-N373,''
+``Small-Body Perturber Files SB441-N16 and SB441-N343,''
 JPL Interoffice Memorandum 392R-21-005.
-\url{https://ssd.jpl.nasa.gov/ftp/eph/small_bodies/asteroids_de441/}.
+\url{https://ssd.jpl.nasa.gov/ftp/eph/small_bodies/asteroids_de441/SB441_IOM392R-21-005_perturbers.pdf}.
 
-\bibitem{Gustafson1996}
-Gustafson, B. A. S. 1996,
+\bibitem{Gustafson1994}
+Gustafson, B. A. S. 1994,
 ``Physics of zodiacal dust,''
-\textit{Annual Review of Earth and Planetary Sciences}, 24, 553.
-\href{https://doi.org/10.1146/annurev.earth.24.1.553}{doi:10.1146/annurev.earth.24.1.553}.
+\textit{Annual Review of Earth and Planetary Sciences}, 22, 553.
+\href{https://doi.org/10.1146/annurev.ea.22.050194.003005}
+{doi:10.1146/annurev.ea.22.050194.003005}.
 
 \bibitem{Granvik2009}
-Granvik, M., Virtanen, K., Oszkiewicz, D., \& Muinonen, K. 2009,
+Granvik, M., Virtanen, J., Oszkiewicz, D., \& Muinonen, K. 2009,
 ``OpenOrb: Open-source asteroid orbit computation software including
 statistical ranging,''
-\textit{Meteoritics \& Planetary Science}, 44, 1853.
-\href{https://doi.org/10.1111/j.1945-5100.2009.tb01194.x}
-{doi:10.1111/j.1945-5100.2009.tb01194.x}.
+\textit{Meteoritics \& Planetary Science}, 44, 1853--1861.
+\href{https://doi.org/10.1111/j.1945-5100.2009.tb01994.x}
+{doi:10.1111/j.1945-5100.2009.tb01994.x}.
 
 \bibitem{DataLabDAD}
 NOIRLab Astro Data Lab,
-``DECam Asteroid Database DR2 and Simple Image Access service.''
+``DECam Asteroid Database.''
 \url{https://datalab.noirlab.edu/data/decam-asteroid-database}.
 
 \bibitem{Grav2023}
 Grav, T., et al. 2023,
-``The NEO Surveyor Near Earth Asteroid Known Object Model,''
+``The NEO Surveyor Near-Earth Asteroid Known Object Model,''
 \textit{Planetary Science Journal}, 4, 228.
-\href{https://doi.org/10.3847/PSJ/ad072c}{doi:10.3847/PSJ/ad072c}.
+\href{https://doi.org/10.3847/PSJ/ad072e}{doi:10.3847/PSJ/ad072e}.
 
 \bibitem{Harris1998}
 Harris, A. W. 1998,
@@ -1801,7 +1807,7 @@ NASA/JPL Center for Near-Earth Object Studies.
 
 \bibitem{Mainzer2011}
 Mainzer, A., et al. 2011,
-``NEOWISE observations of near-Earth objects,''
+``NEOWISE observations of near-Earth objects: Preliminary results,''
 \textit{Astrophysical Journal}, 743, 156.
 \href{https://doi.org/10.1088/0004-637X/743/2/156}{doi:10.1088/0004-637X/743/2/156}.
 
@@ -1839,6 +1845,12 @@ NEOWISE Data,''
 \textit{Planetary Science Journal}, 4, 225.
 \href{https://doi.org/10.3847/PSJ/ad00bb}{doi:10.3847/PSJ/ad00bb}.
 
+\bibitem{Marsden1973}
+Marsden, B. G., Sekanina, Z., \& Yeomans, D. K. 1973,
+``Comets and nongravitational forces. V,''
+\textit{Astronomical Journal}, 78, 211--225.
+\href{https://doi.org/10.1086/111402}{doi:10.1086/111402}.
+
 \bibitem{Nesvorny2024}
 Nesvorn\'y, D., et al. 2024,
 ``NEOMOD 3. The Debiased Size Distribution of Near Earth Objects,''
@@ -1846,19 +1858,22 @@ Nesvorn\'y, D., et al. 2024,
 \href{https://doi.org/10.1016/j.icarus.2024.116110}{doi:10.1016/j.icarus.2024.116110}.
 
 \bibitem{NASAEmergency2021}
-NASA 2021,
+Interagency Working Group on Near-Earth Object Impact Threat Emergency
+Protocols 2021,
 \textit{Report on Near-Earth Object Impact Threat Emergency Protocols}.
 \url{https://www.nasa.gov/wp-content/uploads/2015/12/neo-impact-threat-emergency-protocols-jan2021.pdf}.
 
 \bibitem{NASASDT2017}
-NASA 2017,
-``New Report Assesses Status of Detecting Near-Earth Asteroids.''
-\url{https://www.nasa.gov/solar-system/new-report-assesses-status-of-detecting-near-earth-asteroids/}.
+Stokes, G. H., et al. 2017,
+\textit{Update to Determine the Feasibility of Enhancing the Search and
+Characterization of NEOs},
+Report of the Near-Earth Object Science Definition Team.
+\url{https://cneos.jpl.nasa.gov/doc/2017_neo_sdt_final_e-version.pdf}.
 
 \bibitem{MPCObservations}
 International Astronomical Union Minor Planet Center,
 ``Observations API: ADES observation retrieval.''
-\url{https://data.minorplanetcenter.net/api}.
+\url{https://docs.minorplanetcenter.net/mpc-ops-docs/apis/get-obs/}.
 
 \bibitem{Leinert1998}
 Leinert, C., et al. 1998,
@@ -1872,9 +1887,14 @@ Park, R. S., Folkner, W. M., Williams, J. G., \& Boggs, D. H. 2021,
 \textit{Astronomical Journal}, 161, 105.
 \href{https://doi.org/10.3847/1538-3881/abd414}{doi:10.3847/1538-3881/abd414}.
 
+\bibitem{NAIFDE442}
+NASA/JPL Navigation and Ancillary Information Facility,
+``DE442 planetary SPK kernel.''
+\url{https://naif.jpl.nasa.gov/pub/naif/pds/wgc/kernels/spk/de442.bsp}.
+
 \bibitem{Roa2021}
 Roa, J., Farnocchia, D., \& Chesley, S. R. 2021,
-``A novel approach to asteroid impact monitoring and hazard assessment,''
+``A novel approach to asteroid impact monitoring,''
 \textit{Astronomical Journal}, 162, 277.
 \href{https://doi.org/10.3847/1538-3881/ac193f}{doi:10.3847/1538-3881/ac193f}.
 

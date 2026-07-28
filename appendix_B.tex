@@ -41,9 +41,11 @@ Faint companions and circumstellar disks then become detectable
 \cite{galicher23}. Two parameters summarize coronagraph performance.
 The \emph{contrast} is the faintest planet-to-star flux ratio that the
 system can detect. Modern space-coronagraph designs target contrasts of
-roughly $10^{-8}$ to $10^{-9}$, and the Roman Space Telescope hosts a
-technology-demonstration coronagraph with predicted performance near
-$10^{-9}$ \cite{galicher23,bailey23}. An Earth twin in reflected
+roughly $10^{-8}$ to $10^{-9}$. The Roman Space Telescope hosts a
+technology-demonstration coronagraph with a formal detection requirement
+near $10^{-8}$. Current performance models place its best-effort limit
+between $10^{-8}$ and a few times $10^{-9}$
+\cite{bailey23,llopsayson25}. An Earth twin in reflected
 visible light sits near $10^{-10}$, and a Jupiter twin near $10^{-9}$
 \cite{traub10}. The \emph{inner working angle} (IWA) is the smallest
 angular separation from the star at which that contrast is delivered.
@@ -124,7 +126,7 @@ $\sim$$10^{3}$ controllable modes of the dark hole. The scaling provides
 physical context and does not replace a coronagraph-specific error budget.
 Roman provides the $10^{-8}$ flight-demonstration reference. The
 $10^{-9}$ level is a development goal for mature-giant imaging
-\cite{bailey23}.}
+\cite{bailey23,llopsayson25}.}
 \label{fig:contrast}
 \end{figure}
 
@@ -218,7 +220,7 @@ self-luminous giants and bright debris disks. A system at $10^{-9}$
 adds mature giant planets in reflected light throughout the horizon of
 Table~\ref{tab:horizon}. Earth analogs open up only beyond $10^{-10}$,
 which is the regime targeted by the Habitable Worlds Observatory
-concept \cite{seager25}. The contrast floor therefore acts as a
+concept \cite{hwo26}. The contrast floor therefore acts as a
 selection on planet type, while the IWA acts as a selection on
 distance.
 
@@ -268,7 +270,8 @@ about 27\% of M dwarfs do \cite{winters19}. The intermediate-separation
 pairs that fall within the search region should be dropped. A Gaia
 renormalized unit weight error below 1.4 serves only as a data-driven flag
 for a well-fit five-parameter astrometric solution \cite{lindegren21}.
-The RUWE cut does not prove that a star is single. The cut leaves 39 photometrically
+The RUWE cut does not prove that a star is single because unresolved
+companions can remain within the nominal range \cite{stassun21}. The cut leaves 39 photometrically
 selected, RUWE-clean FGK candidates within 10.3\,pc, 143 within
 15.4\,pc, and 7{,}411 within 53.5\,pc (Table~\ref{tab:targets}). The
 15.4\,pc sample includes 11 objects typed as early M stars by SIMBAD and
@@ -558,8 +561,11 @@ rather than a mission-yield prediction.}
 Figure~\ref{fig:yieldbar} multiplies geometric completeness by adopted
 occurrence rates across the 7411 RUWE-clean photometric candidates.
 Cold giants occur around roughly 15\% of FGK stars
-\cite{fernandes19,fulton21}. Temperate small planets are more common
-\cite{fulton17,bryson21}. The resulting counts show how strongly an
+\cite{fernandes19,fulton21}. Small-planet occurrence depends on the
+adopted radius, period, and insolation intervals
+\cite{fulton17,bryson21}. The calculation uses 0.30 for each
+small-planet class as a fiducial assumption rather than a direct
+measurement. The resulting counts show how strongly an
 idealized accessible population changes with contrast. The counts are
 not expected detections. A defensible mission yield requires
 separation-dependent coronagraph throughput, stellar leakage,
@@ -571,9 +577,10 @@ reliability, and optimization under a fixed mission-time budget.
 \includegraphics[width=0.74\textwidth]{yield_bar.png}
 \caption{Illustrative accessible populations over the 7411 RUWE-clean
 photometric candidates within 53.5\,pc. The adopted occurrence rates are
-0.15 for cold giants \cite{fernandes19,fulton21}, 0.30 for temperate
-sub-Neptunes \cite{fulton17}, and 0.30 for rocky habitable-zone planets
-\cite{bryson21}. The bars apply geometric completeness and a hard
+0.15 for cold giants \cite{fernandes19,fulton21}. The calculation adopts
+fiducial values of 0.30 for temperate sub-Neptunes and rocky
+habitable-zone planets because published estimates depend on the class
+boundaries and completeness model \cite{fulton17,bryson21}. The bars apply geometric completeness and a hard
 contrast threshold. The bars do not include exposure time or target
 optimization and must not be interpreted as mission detections.}
 \label{fig:yieldbar}
@@ -583,29 +590,31 @@ optimization and must not be interpreted as mission detections.}
 \label{sec:spectra}
 
 Detection is only the entry point. The coronagraph feeds the mission's
-$R=5000$ optical and near-infrared spectrographs, and the combination
+$R=5000$ optical and near-infrared spectrographs and the combination
 turns direct imaging into atmospheric physics. At $R=5000$ one
-resolution element spans 60\,\si{km.s^{-1}}, and the absorption bands of
-water vapor and methane that dominate giant-planet reflection spectra are
-resolved into their band structure rather than recorded as broad
-depressions. Reflected-light spectra of giant planets show these
-bands, the signatures of clouds and hazes, and the phase-dependent
-brightness that encodes scattering properties \cite{houlle21,damiano23}. A
+resolution element spans 60\,\si{km.s^{-1}}. The absorption bands of
+water vapor and methane that dominate giant-planet reflection spectra
+are sampled across many resolution elements rather than recorded as
+single broad depressions. Reflected-light models show the bands, cloud
+and haze signatures, and phase-dependent brightness that encodes
+scattering properties \cite{cahoy10}. A
 sequence of observations across orbital phase samples the atmosphere at
 changing illumination and constrains cloud structure and vertical
 mixing \cite{robinson18}.
 
 Figure~\ref{fig:bands} shows which molecules the $R=5000$ band reaches
-and where. The methane and water bands that dominate giant atmospheres
-run across the whole optical and near-infrared range \cite{karkoschka94},
+and where. Methane and water shape giant-planet reflection spectra
+across the optical and near-infrared range
+\cite{karkoschka94,cahoy10},
 and the biosignature gases of a terrestrial atmosphere, oxygen, ozone,
 methane, and carbon dioxide, fall in the same window
 \cite{schwieterman18}. The resolving power matters most for the narrow
-features. The oxygen A-band at 0.76\,$\mu$m is a single broad depression
-at low resolution, but at $R=5000$ it resolves into its rotational-line
-forest, and that forest is what the cross-correlation of
-Section~\ref{sec:specetc} sums to lift a detection out of the residual
-starlight.
+features. The oxygen A-band at 0.76\,$\mu$m spans many $R=5000$
+resolution elements. The spectrum samples its structured envelope but
+does not fully resolve the individual rotational lines. The
+cross-correlation calculation of Section~\ref{sec:specetc} therefore
+combines resolved band structure rather than a fully separated line
+forest.
 
 \begin{figure}[tp]
 \centering
@@ -628,7 +637,8 @@ molecular band. One resolution element spans about
 60\,\si{km.s^{-1}}. Typical orbital velocities do not cleanly separate
 the planet spectrum from the stellar spectrum at this resolution. A
 Doppler-separation gain would require a dedicated high-resolution mode
-and is not included here. Reflected-light measurements complement transit spectroscopy, which probes
+near $R=100{,}000$ \cite{snellen15} and is not included here.
+Reflected-light measurements complement transit spectroscopy, which probes
 the upper atmosphere along the terminator, because reflected light
 probes the dayside at depth \cite{robinson18}. The two geometries
 together give a far more complete picture than either alone.
@@ -653,7 +663,7 @@ coronagraph throughput near the IWA. The curves are sensitivity scalings
 rather than observing-time predictions. Bright reflected-light giants
 remain the appropriate spectroscopic targets. Earth-analog spectroscopy
 belongs to the stretch-goal regime and to larger observatories such as
-HWO \cite{seager25}.
+HWO \cite{hwo26}.
 
 \begin{figure}[tp]
 \centering
@@ -867,7 +877,7 @@ samples these gases along the terminator during transits, a technique
 already demonstrated on giant planets by JWST. Reflected-light
 spectroscopy through the coronagraph samples the dayside and adds
 sensitivity to surface pressure, clouds, and even ultraviolet-band
-biosignatures \cite{damiano23,quanz22}. Interpretation should confront
+biosignatures \cite{damiano23}. Interpretation should confront
 false positives and false negatives, because abiotic photochemistry can
 mimic biosignatures and living planets can hide them
 \cite{schwieterman18,robinson18}. Multiple indicators observed in
@@ -881,7 +891,7 @@ capability tracks temporal variability, including clouds, seasons, and
 weather, on directly imaged planets \cite{robinson18}. Third, it
 serves as a working precursor for the Habitable Worlds Observatory
 class of missions, which require the $10^{-10}$ contrast regime to
-reach Earth analogs \cite{seager25,quanz22}. Experience with
+reach Earth analogs \cite{hwo26}. Experience with
 segmented-aperture wavefront control on this mission feeds directly into
 that technology path.
 
@@ -891,7 +901,7 @@ that technology path.
 Stellar magnetic activity shapes planetary habitability. Flares,
 coronal mass ejections, and X-ray and extreme-ultraviolet radiation
 heat planetary upper atmospheres and drive atmospheric escape
-\cite{chen21}. The effect is most severe for planets in the habitable
+\cite{airapetian17escape}. The effect is most severe for planets in the habitable
 zones of M dwarfs, because those zones lie very close to the star.
 Three-dimensional simulations show that repeated flaring restructures
 the atmospheric chemistry of tidally locked terrestrial planets and can
@@ -906,8 +916,10 @@ These considerations motivate a dynamic view of the habitable zone in
 which stellar irradiance is only one axis and the high-energy radiation
 history is another. The young Sun is the nearest laboratory for this
 history. Coronal-mass-ejection signatures were recently identified on
-the young solar analog EK~Draconis, and they imply that the early Sun's
-eruptions were far more energetic than today's \cite{namekata26}.
+the young solar analog EK~Draconis together with a Carrington-class
+flare \cite{namekata26}. The observation demonstrates energetic,
+structured outflows but does not determine the full eruption
+distribution of the early Sun.
 Stellar rotation and magnetic activity decline together over gigayears,
 a coupled evolution that angular-momentum models trace across stellar
 mass \cite{gallet17}. A habitability claim for any planet is therefore
@@ -928,20 +940,20 @@ then observed rather than assumed \cite{chen21,hong23}.
 
 The exoplanet field has turned from discovery to characterization, and
 the two largest programs have converged on the same destination. The
-United States Astro2020 decadal survey \cite{astro2020} and the European
-Voyage~2050 plan both place the characterization of temperate terrestrial
-planets and the search for biosignatures at the top of their forward
-priorities. The roads to that destination differ by method, and each
+United States Astro2020 decadal survey \cite{astro2020} and the
+European Voyage~2050 plan \cite{voyage2050} both assign high priority
+to the characterization of temperate terrestrial planets. The roads
+to that destination differ by method, and each
 method suits a different planet population.
 
 The United States has committed its flagship to a single large
 reflected-light coronagraph. The Habitable Worlds Observatory, the
 roughly 6\,m descendant of the LUVOIR and HabEx studies, is sized to
 image and characterize of order 25 Earth analogs around Sun-like stars at
-$10^{-10}$ contrast \cite{astro2020,seager25}. The Roman Space Telescope
+$10^{-10}$ contrast \cite{astro2020,hwo26}. The Roman Space Telescope
 Coronagraph Instrument is its 2.4\,m technology pathfinder, built to
 demonstrate $10^{-8}$ contrast and to reach a few $\times10^{-9}$
-\cite{bailey23}. Europe has instead spread its effort across a portfolio.
+\cite{bailey23,llopsayson25}. Europe has instead spread its effort across a portfolio.
 Ariel will survey the atmospheres of about one thousand transiting
 planets in the infrared \cite{tinetti18}, PLATO will find and weigh
 terrestrial planets in the habitable zones of bright stars by transit
@@ -989,7 +1001,7 @@ giant discovery and follow-up of the brightest detections. Earth-analog
 work at $10^{-10}$ is a stretch goal rather than a mission promise. The
 stretch program positions the mission as a wavefront-control and
 target-selection precursor for dedicated flagship observatories
-\cite{quanz22,seager25}.
+\cite{quanz22,hwo26}.
 
 \section{Five-Year Observing Schedule}
 \label{sec:schedule}
@@ -999,7 +1011,7 @@ Section~\ref{sec:horizon} together suggest a five-year observing plan. Two
 facts shape it. The first is that the Sun governs when a coronagraphic target
 is reachable. A Sun-shielded observatory can point only within a
 solar-elongation band, taken here as $54$--$126^\circ$ in the manner of the
-Roman Coronagraph, and reflected-light imaging at $10^{-9}$ contrast needs the
+Roman observatory \cite{romanfor}. Reflected-light imaging at $10^{-9}$ contrast needs the
 darkest possible zodiacal foreground, which favors high ecliptic latitude and
 elongations near quadrature. A given star therefore has one or two observing
 windows per year rather than continuous access, and the darkest sky, with it
@@ -1112,9 +1124,11 @@ Section~\ref{sec:horizon}.
 
 \bibitem{traub10} Traub W.~A., Oppenheimer B.~R., Direct imaging of exoplanets, in Seager S. (ed.), \emph{Exoplanets}, University of Arizona Press, Tucson, pp.~111--156 (2010).
 
-\bibitem{bailey23} Bailey V.~P., Bendek E., Monacelli B., et al., Nancy Grace Roman Space Telescope Coronagraph Instrument overview and status, Proc.~SPIE 12680:126800T (2023).
+\bibitem{bailey23} Bailey V.~P., Bendek E., Monacelli B., et al., Nancy Grace Roman Space Telescope Coronagraph Instrument overview and status, Proc.~SPIE 12680:126800T (2023), doi:10.1117/12.2679036.
 
-\bibitem{deshler24} Deshler N., Haffert S., Ashok A., Achieving quantum limits of exoplanet detection and localization, arXiv:2403.17988 (2024).
+\bibitem{llopsayson25} Llop-Sayson J., Bailey V.~P., Hom J., et al., Roman coronagraph simulations of exozodi observations in the presence of wavefront errors, JATIS 11:045009 (2025), doi:10.1117/1.JATIS.11.4.045009.
+
+\bibitem{deshler24} Deshler N., Haffert S., Ashok A., Quantum limits of exoplanet detection and localization, Phys.~Rev.~A 113:042406 (2026), doi:10.1103/g6kr-mqdj.
 
 \bibitem{marois08} Marois C., Macintosh B., Barman T., et al., Direct imaging of multiple planets orbiting the star HR~8799, Science 322:1348 (2008).
 
@@ -1122,13 +1136,15 @@ Section~\ref{sec:horizon}.
 
 \bibitem{macintosh15} Macintosh B., Graham J.~R., Barman T., et al., Discovery and spectroscopy of the young jovian planet 51~Eri~b with the Gemini Planet Imager, Science 350:64 (2015).
 
-\bibitem{lagrange25} Lagrange A.-M., Wilkinson C., M\^{a}lin M., et al., Evidence for a sub-Jovian planet in the young TWA~7 disk, Nature (2025), arXiv:2502.15081.
+\bibitem{lagrange25} Lagrange A.-M., Wilkinson C., M\^{a}lin M., et al., Evidence for a sub-Jovian planet in the young TWA~7 disk, Nature 642:905 (2025), doi:10.1038/s41586-025-09150-4.
 
 \bibitem{vanleeuwen07} van Leeuwen F., Validation of the new Hipparcos reduction, A\&A 474:653 (2007).
 
-\bibitem{houlle21} Houll\'{e} M., Vigan A., Carlotti A., et al., Direct imaging and spectroscopy of exoplanets with the ELT/HARMONI high-contrast module, A\&A 652:A67 (2021).
+\bibitem{cahoy10} Cahoy K.~L., Marley M.~S., Fortney J.~J., Exoplanet albedo spectra and colors as a function of planet phase, separation, and metallicity, ApJ 724:189 (2010), doi:10.1088/0004-637X/724/1/189.
 
 \bibitem{damiano23} Damiano M., Hu R., Mennesson B., Reflected spectroscopy of small exoplanets. III. Probing the UV band to measure biosignature gases, AJ 166:157 (2023).
+
+\bibitem{snellen15} Snellen I., de Kok R.~J., Birkby J.~L., et al., Combining high-dispersion spectroscopy with high contrast imaging. Probing rocky planets around our nearest neighbors, A\&A 576:A59 (2015), doi:10.1051/0004-6361/201425018.
 
 \bibitem{robinson18} Robinson T.~D., Characterizing exoplanet habitability, in \emph{Handbook of Exoplanets}, Springer, Cham, pp.~1--34 (2018).
 
@@ -1154,17 +1170,19 @@ Section~\ref{sec:horizon}.
 
 \bibitem{hong23} Hong S.~E., Kwon R.~Y., Kim Y., Kang H., Kim M., Exoplanets and habitability, PKAS 38:13 (2023).
 
-\bibitem{kopparapu13} Kopparapu R.~K., Ramirez R., Kasting J.~F., et al., Habitable zones around main-sequence stars: new estimates, ApJ 765:131 (2013); erratum ApJ 770:82 (2013).
+\bibitem{kopparapu13} Kopparapu R.~K., Ramirez R., Kasting J.~F., et al., Habitable zones around main-sequence stars: new estimates, ApJ 765:131 (2013). Erratum, ApJ 770:82 (2013).
 
 \bibitem{schwieterman18} Schwieterman E.~W., Kiang N.~Y., Parenteau M.~N., et al., Exoplanet biosignatures: a review of remotely detectable signs of life, Astrobiology 18:663 (2018).
 
 \bibitem{claudi19} Claudi R., Alei E., Biosignatures search in habitable planets, Galaxies 7:82 (2019).
 
-\bibitem{seager25} Seager S., Petkowski J.~J., Bains W., The diversity of exoplanetary environments and the search for signs of life beyond Earth, arXiv:2506.11690 (2025).
+\bibitem{hwo26} NASA, Habitable Worlds Observatory, NASA Science, \url{https://science.nasa.gov/astrophysics/programs/habitable-worlds-observatory/} (accessed 2026 July 28).
 
 \bibitem{quanz22} Quanz S.~P., Ottiger M., Fontanet E., et al., Large interferometric space missions for exoplanet direct imaging and biosignature detection (LIFE~I), A\&A 664:A21 (2022).
 
-\bibitem{chen21} Chen H., Zhan Z., Youngblood A., et al., Modeling stellar activity and its effects on exoplanet atmospheres and habitability, Nature Astronomy 5:298 (2021).
+\bibitem{airapetian17escape} Airapetian V.~S., Glocer A., Khazanov G.~V., et al., How hospitable are space weather affected habitable zones? The role of ion escape, ApJL 836:L3 (2017), doi:10.3847/2041-8213/836/1/L3.
+
+\bibitem{chen21} Chen H., Zhan Z., Youngblood A., et al., Persistence of flare-driven atmospheric chemistry on rocky habitable zone worlds, Nature Astronomy 5:298 (2021), doi:10.1038/s41550-020-01264-1.
 
 \bibitem{ridgway23} Ridgway R.~J., Zamyatina M., Mayne N.~J., et al., 3D modelling of the impact of stellar activity on tidally locked terrestrial exoplanets: atmospheric composition and habitability, MNRAS 518:2472 (2023).
 
@@ -1172,9 +1190,9 @@ Section~\ref{sec:horizon}.
 
 \bibitem{kobayashi23} Kobayashi K., Ise J., Aoki R., et al., Formation of amino acids and carboxylic acids in weakly reducing planetary atmospheres by solar energetic particles from the young Sun, Life 13:1103 (2023).
 
-\bibitem{namekata26} Namekata K., Airapetian V.~S., Petit P., et al., Discovery of multi-temperature coronal mass ejection signatures from a young solar analogue, Nature Astronomy 10:64 (2026).
+\bibitem{namekata26} Namekata K., France K., Chae J., et al., Discovery of multi-temperature coronal mass ejection signatures from a young solar analogue, Nature Astronomy 10:64 (2026), doi:10.1038/s41550-025-02691-8.
 
-\bibitem{gallet17} Gallet F., Charbonnel C., Amard L., Improved angular momentum evolution model for solar-like stars, A\&A 597:A14 (2017).
+\bibitem{gallet17} Gallet F., Bouvier J., Improved angular momentum evolution model for solar-like stars. II. Exploring the mass dependence, A\&A 577:A98 (2015), doi:10.1051/0004-6361/201525660.
 
 \bibitem{willmer18} Willmer C.~N.~A., The absolute magnitude of the Sun in several filters, ApJS 236:47 (2018).
 
@@ -1183,6 +1201,8 @@ Section~\ref{sec:horizon}.
 \bibitem{gaiadr3} Gaia Collaboration (Vallenari A., et al.), Gaia Data Release 3: summary of the content and survey properties, A\&A 674:A1 (2023).
 
 \bibitem{lindegren21} Lindegren L., Klioner S.~A., Hern\'{a}ndez J., et al., Gaia Early Data Release 3: the astrometric solution, A\&A 649:A2 (2021).
+
+\bibitem{stassun21} Stassun K.~G., Torres G., Parallax systematics and photocenter motions of benchmark eclipsing binaries in Gaia EDR3, ApJL 907:L33 (2021), doi:10.3847/2041-8213/abdaad.
 
 \bibitem{raghavan10} Raghavan D., McAlister H.~A., Henry T.~J., et al., A survey of stellar families: multiplicity of solar-type stars, ApJS 190:1 (2010).
 
@@ -1204,9 +1224,13 @@ Section~\ref{sec:horizon}.
 
 \bibitem{astro2020} National Academies of Sciences, Engineering, and Medicine, \emph{Pathways to Discovery in Astronomy and Astrophysics for the 2020s}, The National Academies Press, Washington, DC (2021).
 
+\bibitem{voyage2050} European Space Agency, Voyage 2050 sets sail. ESA chooses future science mission themes, \url{https://www.esa.int/Science_Exploration/Space_Science/Voyage_2050_sets_sail_ESA_chooses_future_science_mission_themes} (2021).
+
 \bibitem{tinetti18} Tinetti G., Drossart P., Eccleston P., et al., A chemical survey of exoplanets with Ariel, Experimental Astronomy 46:135 (2018).
 
 \bibitem{rauer14} Rauer H., Catala C., Aerts C., et al., The PLATO 2.0 mission, Experimental Astronomy 38:249 (2014).
+
+\bibitem{romanfor} NASA Goddard Space Flight Center, Roman observatory technical information, \url{https://roman.gsfc.nasa.gov/science/observatory_technical.html} (accessed 2026 July 28).
 
 \bibitem{nea} NASA Exoplanet Archive, Planetary Systems Composite Parameters table, NASA Exoplanet Science Institute, IPAC/Caltech, \url{https://exoplanetarchive.ipac.caltech.edu} (accessed 2026 July 11).
 

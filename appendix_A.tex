@@ -147,11 +147,11 @@ The most cost-effective wide-survey choice is triple-roll orientations. Two near
 \label{tab:rollcost}
 \end{table}
 
-The baseline deblending pipeline uses the most established approach for precision slitless work. This approach combines calibrated forward modeling, simultaneous fitting of all cataloged sources, and regularized sparse linear inversion across all rolls and dithers. This follows the operational logic of HST slitless extraction software, where direct-image positions, morphology, trace solutions, flat-field cubes, and contamination models define the extraction geometry \cite{axe2009}. It also follows the LINEAR formalism, where all transformations between direct-image sources and dispersed pixels are assembled into a large sparse linear system solved by LSQR \cite{linear2018}. The same principle is used in crowded-field 3D spectroscopy. Spectra are extracted by fitting many sources simultaneously with a wavelength-dependent PSF and an external high-resolution catalog prior \cite{kamann2013,husser2016}. Machine learning is therefore not the primary deblender. It plays a constrained, supporting role for catalog quality assurance, missing-neighbor discovery, trace-mask generation, artifact rejection, and flagging of high-contamination pixels. Convolutional or instance-segmentation networks can flag these inputs following astronomical Mask R-CNN deblending work \cite{burke2019}. Bayesian or variational modules can attach posterior uncertainties to flux, contamination fraction, and redshift purity \cite{liu2021}. Non-negative matrix factorization can be tested for unresolved background, nebular components, and calibration crosstalk \cite{horstman2022}. Generative models, including diffusion, are not part of the baseline cosmology extraction unless they are constrained to reproduce the detector pixels through the calibrated forward model and pass injection-recovery bias tests. The success criterion is therefore not visual cleanliness. It is recovered line flux bias, redshift failure rate, contamination covariance, and injection-recovery completeness as functions of neighbor separation, magnitude contrast, morphology, and roll geometry.
+The baseline deblending pipeline uses the most established approach for precision slitless work. This approach combines calibrated forward modeling, simultaneous fitting of all cataloged sources, and regularized sparse linear inversion across all rolls and dithers. This follows the operational logic of HST slitless extraction software, where direct-image positions, morphology, trace solutions, flat-field cubes, and contamination models define the extraction geometry \cite{axe2009}. It also follows the LINEAR formalism, where all transformations between direct-image sources and dispersed pixels are assembled into a large sparse linear system solved by LSQR \cite{linear2018}. The same principle is used in crowded-field 3D spectroscopy. Spectra are extracted by fitting many sources simultaneously with a wavelength-dependent PSF and an external high-resolution catalog prior \cite{kamann2013,husser2016}. Machine learning is therefore not the primary deblender. It plays a constrained, supporting role for catalog quality assurance, missing-neighbor discovery, trace-mask generation, artifact rejection, and flagging of high-contamination pixels. Convolutional or instance-segmentation networks can flag these inputs following astronomical Mask R-CNN deblending work \cite{burke2019}. Bayesian variational inference provides posterior uncertainties for source counts, positions, and fluxes \cite{liu2021}. Those posteriors inform subsequent estimates of contamination and redshift quality. Non-negative matrix factorization has reduced calibration crosstalk in the Keck OSIRIS integral-field spectrograph and provides a relevant test for calibration components here \cite{horstman2022}. Generative models, including diffusion, are not part of the baseline cosmology extraction unless they are constrained to reproduce the detector pixels through the calibrated forward model and pass injection-recovery bias tests. The success criterion is therefore not visual cleanliness. It is recovered line flux bias, redshift failure rate, contamination covariance, and injection-recovery completeness as functions of neighbor separation, magnitude contrast, morphology, and roll geometry.
 
-The machine-learning literature on deblending spans several families. It is useful to place each relative to this calibrated forward model. The first is constrained matrix factorization, exemplified by SCARLET, which models every source as a small number of components, each the product of a spectral energy distribution and a non-parametric spatial profile. The method imposes physical constraints such as non-negativity, monotonicity from the peak, and symmetry to make the separation well posed \cite{scarlet2018}. It is a semi-parametric optimization method rather than a trained network. It is the production deblender of the Rubin Observatory Science Pipelines. The second family is deep generative priors. Variational autoencoders \cite{arcelin2021,lanusse2021}, normalizing flows, and more recently score-based and diffusion models learn a distribution over galaxy morphologies from training data, using it to regularize the separation, which improves the recovery of heavily overlapping pairs. The third family is instance-segmentation networks such as Mask R-CNN that detect and mask overlapping sources at the pixel level \cite{burke2019}. The fourth is probabilistic and variational catalog inference that returns full posteriors on source positions and fluxes \cite{liu2021}. For a slitless cosmology survey the decisive property is not raw image-plane separation quality but control of line-flux bias. Therefore, the present baseline uses these methods as priors and quality checks inside the forward model rather than as standalone image cleaners. Any learned prior should reproduce the detector pixels through the same calibrated operator and pass injection-recovery tests before it enters the cosmology path.
+The machine-learning literature on deblending spans several families. It is useful to place each relative to this calibrated forward model. The first is constrained matrix factorization, exemplified by SCARLET, which models every source as a small number of components, each the product of a spectral energy distribution and a non-parametric spatial profile. The method imposes physical constraints such as non-negativity, monotonicity from the peak, and symmetry to make the separation well posed \cite{scarlet2018}. It is a semi-parametric optimization method rather than a trained network. It is the production deblender of the Rubin Observatory Science Pipelines. The second family is deep generative priors. Variational autoencoders have been applied directly to astronomical deblending \cite{arcelin2021}. Deep generative galaxy models provide morphology priors and realistic simulation populations \cite{lanusse2021}. Normalizing flows and score-based or diffusion models belong to the same broader family. The cited studies do not establish line-flux bias control for slitless spectra. The third family is instance-segmentation networks such as Mask R-CNN that detect and mask overlapping sources at the pixel level \cite{burke2019}. The fourth is probabilistic and variational catalog inference that returns full posteriors on source positions and fluxes \cite{liu2021}. For a slitless cosmology survey the decisive property is not raw image-plane separation quality but control of line-flux bias. Therefore, the present baseline uses these methods as priors and quality checks inside the forward model rather than as standalone image cleaners. Any learned prior should reproduce the detector pixels through the same calibrated operator and pass injection-recovery tests before it enters the cosmology path.
 
-The two wide-field space missions closest to this concept have made deliberately different choices. Both inform the baseline. Euclid performs its photometric source separation by fitting Sersic and disk-plus-Sersic profiles to every object simultaneously with the SourceXtractor++ package. This approach was validated in the Euclid Morphology Challenge, which showed it recovers structural parameters reliably across billions of galaxies \cite{sourcext2020,euclidmorph2023}. Its near-infrared slitless spectroscopy is then extracted by a forward model that incorporates the direct-image morphology of each source as a prior, the same logic adopted here. Roman extracts its grism spectra with pyLINEAR, the sparse linear inversion that assembles every transformation between direct-image sources and dispersed pixels into one large system \cite{linear2018,wang2021}. Its supernova program has already demonstrated the multi-roll extension, reconstructing a three-dimensional scene from slitless spectra taken at all available roll angles so that host-galaxy light can be separated from the supernova \cite{roman3d2026}. Forward-model emulators such as ESpRESSO now generate realistic Roman slitless scenes for training and validating these pipelines \cite{espresso2024}. Rubin, whose data are imaging rather than slitless, deblends with the constrained SCARLET factorization \cite{scarlet2018}. The present proposal sits closest to the Roman lineage because its science is slitless and its defining asset is multi-orientation coverage. It adopts the Roman and HST forward model of Eq.~\eqref{eq:scene} as the baseline, using the Euclid model-fitting priors and the Rubin and generative machine-learning methods as constrained support.
+The two wide-field space missions closest to this concept have made deliberately different choices. Both inform the baseline. The Euclid Morphology Challenge compared SourceXtractor++ with four other profile-fitting codes on about 1.5 million simulated galaxies. The tests forecast robust structural measurements for at least 400 million survey galaxies and also show the loss of accuracy caused by non-analytic morphologies \cite{sourcext2020,euclidmorph2023}. Euclid's SIR spectroscopic processing function uses a photometric source catalog to extract NISP spectra and model cross-contamination \cite{euclidsir2026}. Roman extracts its grism spectra with pyLINEAR, the sparse linear inversion that assembles every transformation between direct-image sources and dispersed pixels into one large system \cite{linear2018,wang2021}. Roman supernova simulations have demonstrated the multi-roll extension. The method reconstructs a three-dimensional scene from slitless spectra at the available roll angles and separates host-galaxy light from the supernova \cite{astraatmadja2026}. Forward-model emulators such as ESpRESSO now generate realistic Roman slitless scenes for training and validation \cite{espresso2024}. Rubin, whose data are imaging rather than slitless, deblends with the constrained SCARLET factorization \cite{scarlet2018}. The present proposal sits closest to the Roman lineage because its science is slitless and its defining asset is multi-orientation coverage. It adopts the Roman and HST forward model of Eq.~\eqref{eq:scene} as the baseline, using the Euclid model-fitting priors and the Rubin and generative machine-learning methods as constrained support.
 
 \begin{figure}[htbp]
 \centering
@@ -326,7 +326,7 @@ Read noise $\sigma_{\rm read}$ & $10$ e$^-$ pix$^{-1}$ & per read, three reads\\
 \label{tab:etc}
 \end{table}
 
-The single-wavelength estimate above is deliberately simple. A companion numerical calculator\footnote{Open-source at \url{https://github.com/kjhan0606/3.5mST}.} tracks the same photon budget wavelength by wavelength. It replaces the constant $\bar i_{\rm sky}$ and $\Delta\lambda_{\rm filt}$ of Eq.~\eqref{eq:etcbg} with the zodiacal spectrum integrated over the band, folds in the wavelength-dependent throughput and quantum efficiency, the optimal-extraction efficiency, the telescope thermal self-emission, the galactic cirrus scaled from the $100\,\mu$m intensity of the field \cite{ienaka2013}, and the split of the focal plane into a CCD optical arm and an HgCdTe near-infrared arm at the $1\,\mu$m dichroic \cite{cropper2016}, then solves the exact $5\sigma$ condition with the source shot noise retained. Cosmic-ray losses at the JWST-conventional L2 rate \cite{jwstdocs}, ramp-sampled read noise, per-field galactic extinction, saturation limits in both modes, the partially resolved [O\,\textsc{ii}] doublet width, and a Monte-Carlo completeness estimator are included as options. The zodiacal light is built from the observed solar reference spectrum scattered by interplanetary dust and reddened by the $\sim0.3$ mag in $(V-K)$ which the dust imposes relative to the Sun, with the dust thermal term added \cite{leinert1998}. With component-level throughput and quantum-efficiency curves the calculator returns $F_{5\sigma}\simeq1.6\times10^{-17}\,{\rm erg\,s^{-1}\,cm^{-2}}$ for an H$\alpha$ line at $1.6\,\mu$m in $0.75$\,hr (Figure~\ref{fig:etc}), consistent with the closed form. Run instead on the Roman and Euclid instrument parameters (Table~\ref{tab:romaneuclidval}), the same calculator sits moderately deeper than each mission's published slitless depth. This is the expected optimistic offset of an idealised photon calculator relative to survey depths that fold in pipeline extraction losses and wide-survey self-contamination. The offset is larger for Euclid mainly because its own published reference case adopts a looser significance level and a larger assumed source size than Roman's. It is not driven by Euclid's coarser $0.3''$ pixel scale, which on its own shifts the depth by only a few percent. These cross-checks confirm that the $1\times10^{-16}$ planning reference of Eq.~\eqref{eq:f5sigma} is conservative by roughly a factor of five. The same calculator is driven by a graphical interface that provides telescope presets and imaging or slitless-spectroscopy modes, shown in Figure~\ref{fig:etcgui}.
+The single-wavelength estimate above is deliberately simple. A companion numerical calculator\footnote{Open-source at \url{https://github.com/kjhan0606/3.5mST}.} tracks the same photon budget wavelength by wavelength. It replaces the constant $\bar i_{\rm sky}$ and $\Delta\lambda_{\rm filt}$ of Eq.~\eqref{eq:etcbg} with the zodiacal spectrum integrated over the band, folds in the wavelength-dependent throughput and quantum efficiency, the optimal-extraction efficiency, the telescope thermal self-emission, the galactic cirrus scaled from the $100\,\mu$m intensity of the field \cite{ienaka2013}, and a CCD optical arm separated from an HgCdTe near-infrared arm by a $1\,\mu$m dichroic following the Euclid VIS and NISP architecture \cite{euclidoverview2025}, then solves the exact $5\sigma$ condition with the source shot noise retained. Cosmic-ray losses use the event rate and affected-pixel prescription of the JWST Exposure Time Calculator \cite{jwstcrdocs}. Ramp-sampled read noise, per-field galactic extinction, saturation limits in both modes, the partially resolved [O\,\textsc{ii}] doublet width, and a Monte-Carlo completeness estimator are included as options. The zodiacal light is built from the observed solar reference spectrum scattered by interplanetary dust and reddened by the $\sim0.3$ mag in $(V-K)$ which the dust imposes relative to the Sun, with the dust thermal term added \cite{leinert1998}. With component-level throughput and quantum-efficiency curves the calculator returns $F_{5\sigma}\simeq1.6\times10^{-17}\,{\rm erg\,s^{-1}\,cm^{-2}}$ for an H$\alpha$ line at $1.6\,\mu$m in $0.75$\,hr (Figure~\ref{fig:etc}), consistent with the closed form. Run instead on the Roman and Euclid instrument parameters (Table~\ref{tab:romaneuclidval}), the same calculator sits moderately deeper than each mission's published slitless depth. This is the expected optimistic offset of an idealised photon calculator relative to survey depths that fold in pipeline extraction losses and wide-survey self-contamination. The offset is larger for Euclid mainly because its own published reference case adopts a looser significance level and a larger assumed source size than Roman's. It is not driven by Euclid's coarser $0.3''$ pixel scale, which on its own shifts the depth by only a few percent. These cross-checks confirm that the $1\times10^{-16}$ planning reference of Eq.~\eqref{eq:f5sigma} is conservative by roughly a factor of five. The same calculator is driven by a graphical interface that provides telescope presets and imaging or slitless-spectroscopy modes, shown in Figure~\ref{fig:etcgui}.
 
 The baseline sensitivities quoted in this key science do not apply a cosmic-ray loss correction. The planned observing sequence uses multiple exposures. The resulting efficiency loss will enter the final exposure-time budget after the detector readout pattern, ramp-fitting performance, and in-orbit cosmic-ray rate are fixed. Cosmic rays therefore do not change the present planning depth or the science forecasts.
 
@@ -1071,7 +1071,7 @@ The first validation realization uses the tracked program \texttt{detector\_scen
 
 A verification run now exercises the key science-A geometry with a $1536\times1536$ pixel tile and $1091$ pixel traces. It uses three roll angles and two dithers per roll. The run writes truth and direct-image catalogs, detector realizations, and recovery tables binned by magnitude and nearest-neighbour separation. It verifies that the proposed data products preserve the required association between truth and recovery across the complete observing pattern. Its analytic source population and forced-line measurement are intentionally unsuitable for a survey performance claim. The Phase A acceptance run must use a calibrated deep-field catalog and detector calibration files. It must then apply a blind redshift search with the flight forward-model extractor.
 
-A second verification run converts a 3D-HST COSMOS catalog into the same detector geometry \cite{skelton2014,momcheva2015}. The input contains 907 sources to $F160W_{\rm AB}=26$. It retains measured positions, magnitudes, half-light radii, axis ratios, position angles, reference redshifts, and fitted line properties. The reference redshifts and the ETC conversion from line flux to detector electrons limit this run to a test of scene density and data products. It does not test blind redshift recovery or survey sensitivity. The Phase A acceptance run must replace both with a calibrated detector model and a blind flight-pipeline extraction.
+A second verification run converts a 3D-HST COSMOS catalog into the same detector geometry \cite{skelton2014,momcheva2016}. The input contains 907 sources to $F160W_{\rm AB}=26$. It retains measured positions, magnitudes, half-light radii, axis ratios, position angles, reference redshifts, and fitted line properties. The reference redshifts and the ETC conversion from line flux to detector electrons limit this run to a test of scene density and data products. It does not test blind redshift recovery or survey sensitivity. The Phase A acceptance run must replace both with a calibrated detector model and a blind flight-pipeline extraction.
 
 \begin{itemize}
   \item redshift completeness, purity, and catastrophic-failure rates;
@@ -1658,7 +1658,7 @@ The defining advantage of the platform for this program is that the surface-brig
 
 \subsubsection{Intracluster Planetary Nebulae and Globular Clusters as Discrete Tracers}
 
-The slitless mode turns the diffuse light into a dynamical tracer through two populations of compact objects that a grism survey detects naturally. Because intracluster planetary nebulae radiate almost all of their light in the [O\,\textsc{iii}]\,$\lambda5007$ line, with negligible continuum, they appear in a slitless survey as pure emission-line point sources, exactly the kind of object the instrument is optimized to find. Hundreds to thousands of them populate a nearby cluster. Although the $300$\,km\,s$^{-1}$ resolution element does not resolve the motion of a single planetary nebula precisely, the relevant dynamical signal here is the cluster-scale velocity field, whose dispersion of $500$--$1000$\,km\,s$^{-1}$ is comfortably larger than the resolution. With adequate signal-to-noise on the bright line the per-object velocity is recovered to well within the cluster dispersion. The \emph{ensemble} line-of-sight velocity distribution of the intracluster planetary nebulae measures the kinematics of the diffuse stellar component directly. This tests whether the intracluster light and the dark matter share the same dynamical state and not merely the same projected shape. It extends the mass profile to large radii where lensing and X-ray data weaken. The planetary-nebula luminosity function additionally provides an independent distance to each cluster, anchoring the photometry \cite{montes2022review}.
+The slitless mode turns the diffuse light into a dynamical tracer through two populations of compact objects that a grism survey detects naturally. Because intracluster planetary nebulae radiate almost all of their light in the [O\,\textsc{iii}]\,$\lambda5007$ line, with negligible continuum, they appear in a slitless survey as pure emission-line point sources, exactly the kind of object the instrument is optimized to find. Hundreds to thousands of them populate a nearby cluster. Although the $300$\,km\,s$^{-1}$ resolution element does not resolve the motion of a single planetary nebula precisely, the relevant dynamical signal here is the cluster-scale velocity field, whose dispersion of $500$--$1000$\,km\,s$^{-1}$ is comfortably larger than the resolution. With adequate signal-to-noise on the bright line the per-object velocity is recovered to well within the cluster dispersion. The \emph{ensemble} line-of-sight velocity distribution of the intracluster planetary nebulae measures the kinematics of the diffuse stellar component directly. This tests whether the intracluster light and the dark matter share the same dynamical state and not merely the same projected shape. It extends the mass profile to large radii where lensing and X-ray data weaken. The planetary-nebula luminosity function additionally provides an independent distance estimate for nearby cluster fields \cite{ciardullo2012}.
 
 The second population is the globular clusters. The total number of globular clusters in a galaxy correlates nearly linearly with its host halo mass over several decades, making globular-cluster counts a photometric halo-mass estimator that is independent of the diffuse stellar luminosity \cite{harris2013}. Applied across a cluster, this yields a halo-mass-weighted map of the surviving substructure. Applied to individual UDGs it provides the halo masses that, in combination with the stellar kinematics measured by high-resolution follow-up, flag the dark-matter-rich and dark-matter-deficient extremes. The intracluster globular clusters, which have been stripped into the general cluster potential, trace the same diffuse halo as the intracluster light, giving a discrete spatial tracer to complement the continuous surface-brightness map. Both populations are by-products of the same deep imaging and slitless spectroscopy taken for the diffuse-light and UDG science. They add dynamical information at no extra observational cost.
 
@@ -1862,7 +1862,7 @@ The sharpest current statement of the small-scale tension comes from the rotatio
 \label{fig:sparcdiv}
 \end{figure}
 
-Environment is what disentangles them. A dwarf in a cluster has been tidally stripped, ram-pressure swept, and harassed. A dwarf in a group has likely interacted with neighbors. Any inference about dark-sector inner structure from such systems should separate these environmental effects from the signal because tidal stripping can lower a halo's central density in a way that superficially resembles a self-interaction core. A void dwarf has experienced essentially none of this, having assembled slowly and in isolation, and provides the zero-environment baseline against which field, group, and cluster populations can be compared at fixed halo mass. Differences that persist after the comparison are intrinsic, and those that vanish were environmental. The Void Galaxy Survey finds void dwarfs to be preferentially small, blue, gas-rich, late-type systems with extended undisturbed gas disks, consistent with slow, merger-free assembly in isolation \cite{kreckel2012}, more metal-poor at fixed stellar mass, and with a higher ratio of dark-matter halo mass to stellar mass than their denser-environment counterparts \cite{douglass2019}, exactly the signature expected if star formation is suppressed in shallow, isolated potentials \cite{hoeft2010}. Their extended, undisturbed disks are exactly the systems whose rotation curves most cleanly expose the core--cusp distinction and the diversity problem of Figure~\ref{fig:sparcdiv}, uncontaminated by the tidal confusion that limits cluster and group dwarfs. Because the mission observes void, field, group, and cluster dwarfs with the same instrument and selection function, it places all four environments on a common footing and measures the environmental dependence of both the galaxy--halo connection and the inner density structure, without the cross-survey systematics that have limited previous comparisons. This environmental span also sets the faint end of the galaxy--halo connection at the threshold of galaxy formation, where the relation between stellar and halo mass steepens and scatters. It tests whether a minimum halo mass for galaxy formation exists, and how sharply \cite{simon2019,bullock2017}. Present heterogeneous samples for this measurement are dominated by exactly the selection systematics that a single controlled survey removes.
+Environment is what disentangles them. A dwarf in a cluster has been tidally stripped, ram-pressure swept, and harassed. A dwarf in a group has likely interacted with neighbors. Any inference about dark-sector inner structure from such systems should separate these environmental effects from the signal because tidal stripping can lower a halo's central density in a way that superficially resembles a self-interaction core. Voids provide a low-density comparison sample rather than a zero-interaction control. The Void Galaxy Survey finds predominantly gas-rich, low-luminosity blue disks. Many systems also show signs of ongoing gas accretion or interactions, which indicates that assembly continues inside voids \cite{kreckel2012}. A MaNGA comparison finds no statistically significant environmental difference in the dark-matter-to-stellar-mass ratio or in its relation to gas-phase metallicity \cite{douglass2019}. These results make the controlled comparison itself the measurement. They do not justify assuming that void dwarfs have uniformly larger dark-matter fractions. Their gas-rich disks remain valuable rotation-curve targets for the core--cusp distinction and the diversity problem of Figure~\ref{fig:sparcdiv}. Because the mission observes void, field, group, and cluster dwarfs with the same instrument and selection function, it places all four environments on a common footing and measures the environmental dependence of both the galaxy--halo connection and the inner density structure without cross-survey systematics. This environmental span also sets the faint end of the galaxy--halo connection at the threshold of galaxy formation, where the relation between stellar and halo mass steepens and scatters. It tests whether a minimum halo mass for galaxy formation exists and how sharply \cite{simon2019,bullock2017}. Present heterogeneous samples for this measurement are dominated by exactly the selection systematics that a single controlled survey removes.
 
 \subsubsection{A Starlight-Independent Halo Census from Strong Lensing}
 
@@ -1874,7 +1874,7 @@ A slitless survey at $R=1000$ does not resolve the few-km\,s$^{-1}$ internal vel
 
 Cross-matching these emission-line detections against H\,\textsc{i} maps from current and future radio surveys (ALFALFA, Apertif, MeerKAT, and ultimately the SKA) completes the gas-plus-stars accounting, delivering a three-way classification. Systems seen in both lines and H\,\textsc{i} are gas-rich star-forming dwarfs. Systems seen in H\,\textsc{i} with only faint line emission are the almost-dark population. Systems seen in H\,\textsc{i} with no line emission and no continuum are the candidate genuinely dark halos that the void phenomenon predicts. A credible claim for the last class should combine several discriminants rather than rely on an H\,\textsc{i} detection alone. Isolation deep in a void, far from any plausible parent, is the first since a candidate there is unlikely to be tidal debris. A dynamical mass budget far exceeding the gas-plus-stars mass is the second since tidal debris is baryon-dominated. A deep optical non-detection is the third, where the mission's stable, airglow-free imaging sets the most stringent surface-brightness limits, individually and by stacking. This combination is what converts a heterogeneous list of curiosities into a quantitative measurement of how galaxy formation fails at the lowest halo masses.
 
-The void search is built around a set of nearby voids selected from catalogs constructed from the SDSS and DESI redshift surveys \cite{sutter2012}, restricted to $z\lesssim0.05$ to keep the diagnostic nebular lines within the most sensitive part of the band and to spatially resolve even very low-mass dwarfs. Tiling the interiors of a sample of large voids to the wide- and medium-tier depths yields a volume-complete emission-line census whose faint end measures the void galaxy luminosity and star-formation-rate functions with a uniform, space-based selection that heterogeneous, atmosphere-limited ground-based void surveys do not match. Because the search exploits the same emission-line sensitivity, multi-roll depth, and wide field that the flagship survey already delivers, the void, field, group, and cluster volumes are all covered at marginal additional cost. Table~\ref{tab:dwarfvoidreach} summarizes the resulting reach. Figure~\ref{fig:voidwedge} of Section~\ref{sec:voidphenom} makes the underlying target selection concrete with real archival data.
+The void search is built around nearby voids selected from catalogs constructed from SDSS DR7 and DESI DR1 \cite{sutter2012,rincon2025}. The sample is restricted to $z\lesssim0.05$ to keep the diagnostic nebular lines within the most sensitive part of the band and to spatially resolve even very low-mass dwarfs. Tiling the interiors of a sample of large voids to the wide- and medium-tier depths yields a volume-complete emission-line census whose faint end measures the void galaxy luminosity and star-formation-rate functions with a uniform, space-based selection that heterogeneous, atmosphere-limited ground-based void surveys do not match. Because the search exploits the same emission-line sensitivity, multi-roll depth, and wide field that the flagship survey already delivers, the void, field, group, and cluster volumes are all covered at marginal additional cost. Table~\ref{tab:dwarfvoidreach} summarizes the resulting reach. Figure~\ref{fig:voidwedge} of Section~\ref{sec:voidphenom} makes the underlying target selection concrete with real archival data.
 
 \begin{figure}[htbp]
 \centering
@@ -2087,10 +2087,11 @@ X. Wang et al.,
 \url{https://arxiv.org/html/2401.04171v2}
 \doi{10.1093/mnras/stae157}
 
-\bibitem{jwstdocs}
+\bibitem{jwstcrdocs}
 Space Telescope Science Institute,
-``NIRCam Grisms -- JWST User Documentation.''
-\url{https://jwst-docs.stsci.edu/jwst-near-infrared-camera/nircam-instrumentation/nircam-grisms}
+``JWST ETC Cosmic Ray Implementation,''
+\emph{JWST User Documentation}.
+\url{https://jwst-docs.stsci.edu/jwst-exposure-time-calculator-overview/jwst-etc-calculations-page-overview/jwst-etc-cosmic-ray-implementation}
 
 \bibitem{jdoxnircamsens}
 Space Telescope Science Institute,
@@ -2340,7 +2341,7 @@ C. Knobel et al.,
 \bibitem{astraatmadja2026}
 T. L. Astraatmadja et al.,
 ``Three-dimensional scene reconstruction using Roman slitless spectra,''
-\emph{arXiv:2601.05233}, 2026.
+\emph{The Astrophysical Journal}, 1000, 280, 2026.
 \url{https://arxiv.org/abs/2601.05233}
 \doi{10.3847/1538-4357/ae355e}
 
@@ -2368,8 +2369,8 @@ K.-G. Lee et al.,
 \bibitem{mortlock2024}
 L. Lenz, D. J. Mortlock, B. Leistedt, R. Barnett, and P. C. Hewett,
 ``An automated method for finding the most distant quasars,''
-\emph{arXiv:2408.12770}, 2024.
-\url{https://arxiv.org/html/2408.12770v2}
+\emph{The Open Journal of Astrophysics}, 8, 2025.
+\url{https://astro.theoj.org/article/142765-an-automated-method-for-finding-the-most-distant-quasars}
 \doi{10.33232/001c.142765}
 
 \bibitem{sdssdr17}
@@ -2408,10 +2409,11 @@ R. E. Ryan Jr., S. Casertano, and N. Pirzkal,
 \doi{10.1088/1538-3873/aaa53e}
 
 \bibitem{boker2022}
-T. B\"oker, P. Ferruit, S. Birkmann, et al.,
-``The Near-Infrared Spectrograph (NIRSpec) on the James Webb Space Telescope. IV. Capabilities and predicted performance for the NIRSpec IFU mode,''
+T. B\"oker, S. Arribas, N. L\"utzgendorf, et al.,
+``The Near-Infrared Spectrograph (NIRSpec) on the James Webb Space Telescope. III. Integral-field spectroscopy,''
 \emph{Astronomy \& Astrophysics}, 661, A82, 2022.
-\url{https://arxiv.org/abs/2202.03434}
+\url{https://arxiv.org/abs/2202.03308}
+\doi{10.1051/0004-6361/202142589}
 
 \bibitem{burke2019}
 C. J. Burke et al.,
@@ -2421,11 +2423,10 @@ C. J. Burke et al.,
 \doi{10.1093/mnras/stz2845}
 
 \bibitem{liu2021}
-R. Liu, J. D. McAuliffe, and J. Regier,
+R. Liu, J. D. McAuliffe, J. Regier, and the LSST Dark Energy Science Collaboration,
 ``Variational Inference for Deblending Crowded Starfields,''
-\emph{arXiv:2102.02409}, 2021.
-\url{https://arxiv.org/abs/2102.02409}
-\doi{10.48550/arXiv.2102.02409}
+\emph{Journal of Machine Learning Research}, 24, 179, 2023.
+\url{https://jmlr.org/papers/v24/21-0169.html}
 
 \bibitem{horstman2022}
 K. Horstman et al.,
@@ -3047,6 +3048,13 @@ M. Montes,
 \url{https://arxiv.org/abs/2203.06199}
 \doi{10.1038/s41550-022-01616-z}
 
+\bibitem{ciardullo2012}
+R. Ciardullo,
+``The Planetary Nebula Luminosity Function at the dawn of Gaia,''
+\emph{Astrophysics and Space Science}, 341, 151, 2012.
+\url{https://arxiv.org/abs/1203.5551}
+\doi{10.1007/s10509-012-1061-2}
+
 \bibitem{wolf2010}
 J. Wolf et al.,
 ``Accurate masses for dispersion-supported galaxies,''
@@ -3320,11 +3328,19 @@ P. M. Sutter, G. Lavaux, B. D. Wandelt, and D. H. Weinberg,
 \url{https://arxiv.org/abs/1207.2524}
 \doi{10.1088/0004-637X/761/1/44}
 
+\bibitem{rincon2025}
+H. Rincon et al.,
+``DESIVAST: Catalogs of Low-redshift Voids Using Data from the DESI Data Release 1 Bright Galaxy Survey,''
+\emph{The Astrophysical Journal}, 982, 38, 2025.
+\url{https://arxiv.org/abs/2411.00148}
+\doi{10.3847/1538-4357/adb559}
+
 \bibitem{malandrino2026}
 R. Malandrino, G. Lavaux, B. D. Wandelt, S. McAlpine, and J. Jasche,
 ``A Bayesian Catalog of 100 High-Significance Voids in the Local Universe,''
 \emph{Astronomy \& Astrophysics}, 705, A160, 2026.
 \url{https://arxiv.org/abs/2507.06866}
+\doi{10.1051/0004-6361/202556345}
 
 \bibitem{kirshner1981}
 R. P. Kirshner, A. Oemler, Jr., P. L. Schechter, and S. A. Shectman,
@@ -3386,12 +3402,12 @@ Euclid Collaboration: H. Bretonni\`ere et al.,
 \url{https://arxiv.org/abs/2209.12907}
 \doi{10.1051/0004-6361/202245042}
 
-\bibitem{roman3d2026}
-T. L. Astraatmadja et al.,
-``Three-dimensional scene reconstruction using Roman slitless spectra,''
-\emph{Astrophysical Journal}, 1000, 280, 2026.
-\url{https://arxiv.org/abs/2601.05233}
-\doi{10.3847/1538-4357/ae355e}
+\bibitem{euclidsir2026}
+Euclid Collaboration: Y. Copin et al.,
+``Euclid Quick Data Release (Q1). VI. From spectrograms to spectra: The SIR spectroscopic processing function,''
+\emph{Astronomy \& Astrophysics}, 711, A6, 2026.
+\url{https://arxiv.org/abs/2503.15307}
+\doi{10.1051/0004-6361/202554627}
 
 \bibitem{skelton2014}
 R. E. Skelton et al.,
@@ -3400,15 +3416,6 @@ Fields: Photometry, Photometric Redshifts, and Stellar Masses,''
 \emph{Astrophysical Journal Supplement Series}, 214, 24, 2014.
 \url{https://arxiv.org/abs/1403.3689}
 \doi{10.1088/0067-0049/214/2/24}
-
-\bibitem{momcheva2015}
-I. G. Momcheva et al.,
-``The 3D-HST Survey: Hubble Space Telescope WFC3/G141 Grism Spectra,
-Redshifts, and Emission Line Measurements for Approximately 100,000
-Galaxies,''
-\emph{Astrophysical Journal Supplement Series}, 225, 27, 2016.
-\url{https://arxiv.org/abs/1510.02106}
-\doi{10.3847/0067-0049/225/2/27}
 
 \bibitem{espresso2024}
 A. Gabrielpillai, I. G. B. Wold, S. Malhotra, J. Rhoads, G. Gao, M. Singha, and A. M. Koekemoer,
@@ -3535,12 +3542,12 @@ N. Ienaka et al.,
 \url{https://ui.adsabs.harvard.edu/abs/2013ApJ...767...80I/abstract}
 \doi{10.1088/0004-637X/767/1/80}
 
-\bibitem{cropper2016}
-M. Cropper et al.,
-``VIS: the visible imager for Euclid,''
-\emph{Proceedings of the SPIE}, 9904, 99040Q, 2016.
-\url{https://ui.adsabs.harvard.edu/abs/2016SPIE.9904E..0QC/abstract}
-\doi{10.1117/12.2234739}
+\bibitem{euclidoverview2025}
+Euclid Collaboration: Y. Mellier et al.,
+``Euclid. I. Overview of the Euclid mission,''
+\emph{Astronomy \& Astrophysics}, 697, A1, 2025.
+\url{https://www.aanda.org/articles/aa/full_html/2025/05/aa50810-24/aa50810-24.html}
+\doi{10.1051/0004-6361/202450810}
 
 \bibitem{lelli2016}
 F. Lelli, S. S. McGaugh, and J. M. Schombert,
