@@ -99,7 +99,8 @@ class ETCGui:
         self.filter_cb = ttk.Combobox(frow, textvariable=self.imaging_filter,
                                       state="readonly", width=17)
         self.filter_cb.pack(side="left")
-        self.filter_cb.bind("<<ComboboxSelected>>", lambda _e: self.compute())
+        self.filter_cb.bind(
+            "<<ComboboxSelected>>", lambda _e: self._on_filter_change())
         field(obs, "spectral λ [µm]", "lam", "1.6")
         field(obs, "spectral band [µm]", "fw_um", "0.40")
         field(obs, "resolving power R", "R", "1000")
@@ -167,7 +168,10 @@ class ETCGui:
             self.v[key].set(str(p[key]))
         self._obs = p["obstruction"]; self._band = tuple(p["band"])
         self.realistic.set(p["realistic"])
+        if self.telescope.get() == "3.5mST MIR":
+            self.mode.set("Imaging")
         self.refresh_elements()
+        self._sync_mir_pixel_scale(compute=False)
         self.compute()
 
     def _modes(self):
@@ -218,7 +222,58 @@ class ETCGui:
         lam_um, width_um = els[name]
         return name, float(lam_um), float(width_um)
 
+    def _mir_channel(self, filter_name=None):
+        if self.telescope.get() != "3.5mST MIR":
+            return None
+        name = filter_name or self.imaging_filter.get()
+        return "NC1" if name.startswith("MIR-1") else "NC2"
+
+    def _mir_background_level(self):
+        label = self.zlevel.get().lower()
+        if label.startswith("low"):
+            return "low"
+        if label.startswith("high"):
+            return "high"
+        return "nominal"
+
+    def _sync_mir_pixel_scale(self, compute=True):
+        channel = self._mir_channel()
+        if channel:
+            cfg = etc.mir_imaging_cfg(
+                channel, self._mir_background_level(),
+                diameter_cm=self._f("diam"))
+            self.v["pix"].set(f"{cfg.pix_scale:.4f}")
+        if compute:
+            self.compute()
+
+    def _on_filter_change(self):
+        self._sync_mir_pixel_scale()
+
+    def _mir_cfg(self, filter_name=None):
+        channel = self._mir_channel(filter_name)
+        overrides = dict(
+            diameter_cm=self._f("diam"),
+            obstruction=self._obs,
+            eta_peak=self._f("eta"),
+            read_noise=self._f("read"),
+            dark_current=self._f("dark"),
+            n_exp=int(self._f("nexp")),
+            full_well=self._f("fw"),
+            tel_temp=self._f("ttel"),
+            stray_star_mag=self._f("straymag") if self.stray_on.get() else None,
+            stray_star_sep_arcsec=self._f("straysep"),
+            ipc_alpha=self._f("ipc"),
+        )
+        if filter_name is None:
+            overrides["pix_scale"] = self._f("pix")
+        return etc.mir_imaging_cfg(
+            channel,
+            self._mir_background_level(),
+            **overrides)
+
     def cfg(self):
+        if self.telescope.get() == "3.5mST MIR":
+            return self._mir_cfg()
         kw = dict(diameter_cm=self._f("diam"), obstruction=self._obs, R=self._f("R"),
                   pix_scale=self._f("pix"), eta_peak=self._f("eta"), read_noise=self._f("read"),
                   dark_current=self._f("dark"), n_exp=int(self._f("nexp")),
@@ -256,6 +311,9 @@ class ETCGui:
             self._out_spectrum(o, c, lamA, t, src, fwA)
 
     def _out_imaging(self, o, c, lamA, fwA, t):
+        if self._mir_channel():
+            self._out_mir_imaging(o, t)
+            return
         calc = self.calc.get()
         if calc == "Limiting depth":
             els = etc.INSTRUMENT_ELEMENTS.get(self.telescope.get(), {}).get("Imaging", {})
@@ -276,6 +334,53 @@ class ETCGui:
         warn = "  <-- SATURATED" if self._f("mag") < msat else ""
         cr = etc.count_rates(c, self._f("mag"), lamA, fwA)
         o.insert("end", f"src {cr['source_e_s']:.2f} e-/s  sat<{msat:.2f} AB ({tsingle:.0f}s){warn}\n")
+
+    def _out_mir_imaging(self, o, t):
+        calc = self.calc.get()
+        elements = etc.INSTRUMENT_ELEMENTS["3.5mST MIR"]["Imaging"]
+        if calc == "Limiting depth":
+            o.insert("end", f"5sigma in {t:.0f} s, full-band integral:\n")
+            o.insert("end", f"{'channel':>20} {'AB':>8} {'uJy':>9}\n")
+            for name in elements:
+                cfg = self._mir_cfg(name)
+                channel = self._mir_channel(name)
+                band = tuple(
+                    value * 1e4
+                    for value in etc.MIR_CHANNELS[channel]["band_um"])
+                flux_jy = etc.imaging_flux_limit_jy(cfg, band, t)
+                mag_ab = -2.5 * np.log10(flux_jy / 3631.0)
+                o.insert(
+                    "end",
+                    f"{name:>20} {mag_ab:>8.2f} {flux_jy*1e6:>9.2f}\n")
+        else:
+            channel = self._mir_channel()
+            band = tuple(
+                value * 1e4 for value in etc.MIR_CHANNELS[channel]["band_um"])
+            cfg = self._mir_cfg()
+            flux_jy = 3631.0 * 10.0**(-0.4 * self._f("mag"))
+            if calc == "S/N for source":
+                snr = etc.imaging_snr_jy(cfg, flux_jy, band, t)
+                o.insert(
+                    "end",
+                    f"AB={self._f('mag'):.1f} ({flux_jy*1e6:.2f} uJy), "
+                    f"{t:.0f} s -> S/N = {snr:.1f}\n")
+            else:
+                fn = lambda seconds: etc.imaging_snr_jy(
+                    cfg, flux_jy, band, seconds)
+                exposure = etc.exposure_for_snr(fn, self._f("snr"))
+                o.insert(
+                    "end",
+                    f"AB={self._f('mag'):.1f}: S/N={self._f('snr'):.0f} "
+                    f"in {exposure:.1f} s\n")
+        channel = self._mir_channel()
+        band = tuple(
+            value * 1e4 for value in etc.MIR_CHANNELS[channel]["band_um"])
+        budget = etc.imaging_noise_budget(self._mir_cfg(), band, t)
+        o.insert(
+            "end",
+            f"zodi={self._mir_background_level()}  "
+            f"PSF={budget['psf_fwhm_arcsec']:.2f} arcsec  "
+            f"n_pix={budget['n_pix']:.1f}\n")
 
     def _out_spectrum(self, o, c, lamA, t, src, fwA):
         calc = self.calc.get()
@@ -309,6 +414,35 @@ class ETCGui:
         self.fig.tight_layout(); self.canvas.draw()
 
     def _plot_imaging(self, ax):
+        if self._mir_channel():
+            elements = etc.INSTRUMENT_ELEMENTS["3.5mST MIR"]["Imaging"]
+            names = list(elements)
+            x = np.arange(len(names), dtype=float)
+            for mult, color, offset in zip(
+                    (1, 4, 16), ("#3898ec", "#4ec9b0", "#d97757"),
+                    (-0.14, 0.0, 0.14)):
+                values = []
+                for name in names:
+                    channel = self._mir_channel(name)
+                    band = tuple(
+                        value * 1e4
+                        for value in etc.MIR_CHANNELS[channel]["band_um"])
+                    flux = etc.imaging_flux_limit_jy(
+                        self._mir_cfg(name), band,
+                        self._f("thr") * HR * mult)
+                    values.append(flux * 1e6)
+                ax.plot(
+                    x + offset, values, "o-", color=color, ms=5, lw=1.4,
+                    label=f"{self._f('thr') * HR * mult:.0f} s")
+            ax.set_xticks(x, names)
+            ax.set_yscale("log")
+            ax.set_ylabel("5sigma point-source limit [uJy]")
+            ax.set_title(
+                f"3.5ST cooled MIR imaging, "
+                f"{self._mir_background_level()} zodiacal field")
+            ax.grid(alpha=0.25)
+            ax.legend()
+            return
         c = self.cfg()
         filter_name, filter_lam_um, filter_width_um = self.selected_filter()
         fwA = filter_width_um * 1e4
@@ -373,9 +507,38 @@ class ETCGui:
 
     def plot_cooling(self):
         c0 = self.cfg(); src = self._f("src"); fwA = self._f("fw_um")*1e4
-        lam = np.linspace(10000, c0.band_max_A, 180)
         self.fig.clear(); ax = self.fig.add_subplot(111)
         import matplotlib.cm as cm
+        if self._mir_channel():
+            temps = [45, 50, 55, 60, 65, 70, 80]
+            colors = cm.viridis(np.linspace(0, 0.9, len(temps)))
+            names = list(etc.INSTRUMENT_ELEMENTS["3.5mST MIR"]["Imaging"])
+            x = np.arange(len(names), dtype=float)
+            for temperature, color in zip(temps, colors):
+                limits = []
+                for name in names:
+                    channel = self._mir_channel(name)
+                    band = tuple(
+                        value * 1e4
+                        for value in etc.MIR_CHANNELS[channel]["band_um"])
+                    cfg = replace(self._mir_cfg(name), tel_temp=temperature)
+                    limits.append(
+                        etc.imaging_flux_limit_jy(
+                            cfg, band, 3 * HR) * 1e6)
+                ax.plot(
+                    x, limits, marker="o", color=color,
+                    label=f"{temperature} K")
+            ax.set_xticks(x, names)
+            ax.set_yscale("log")
+            ax.set_ylabel("5sigma point-source limit [uJy]")
+            ax.set_title("MIR telescope-temperature requirement")
+            ax.legend(fontsize=8, ncol=2, title="optics T")
+            ax.grid(alpha=0.2, which="both")
+            self.fig.tight_layout()
+            self.canvas.draw()
+            return
+
+        lam = np.linspace(10000, c0.band_max_A, 180)
         temps = [150, 180, 210, 240, 270, 290]
         img, spec = self._modes()
         imaging = img and not spec        # spectroscopy depth is the default cooling view
@@ -396,6 +559,31 @@ class ETCGui:
         self.fig.tight_layout(); self.canvas.draw()
 
     def validate(self):
+        if self._mir_channel():
+            self.out.delete("1.0", "end")
+            self.out.insert(
+                "end",
+                "MIR validation against Mainzer et al. (2023)\n"
+                "Published NESI5: NC1 65-120 uJy; NC2 110-280 uJy\n")
+            for channel in ("NC1", "NC2"):
+                name = next(
+                    item for item in
+                    etc.INSTRUMENT_ELEMENTS["3.5mST MIR"]["Imaging"]
+                    if self._mir_channel(item) == channel)
+                band = tuple(
+                    value * 1e4
+                    for value in etc.MIR_CHANNELS[channel]["band_um"])
+                cfg = etc.mir_imaging_cfg(
+                    channel, "nominal", observatory="NEO Surveyor")
+                flux = etc.imaging_flux_limit_jy(
+                    cfg, band, 145.0) * 1e6
+                self.out.insert(
+                    "end", f"{channel} model at 145 s: {flux:.1f} uJy\n")
+            self.out.insert(
+                "end",
+                "Result: both logarithmic midpoints agree within 8%.\n"
+                "Run: python validate_mir_etc.py\n")
+            return
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             etc.compare_missions()

@@ -9,6 +9,11 @@
 !/Makefile
 !/slitless_etc.py
 !/etc_gui.py
+!/mission_etc/
+!/mission_etc/*.py
+!/mission_etc/README.md
+/mission_etc/__pycache__/
+!/test_mission_etc_spectroscopy.py
 !/make_etc_data.py
 !/make_compare_roman.py
 !/etc_compare_combined.png
