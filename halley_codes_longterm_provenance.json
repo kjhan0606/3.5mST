@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-27",
+  "generated_utc": "2026-07-28",
   "purpose": "Independent long-term propagation consistency test",
   "initial_state_source": "NASA/JPL Horizons record 90000030 at 1850-01-02 TDB",
   "comparison_source": "NASA/JPL Horizons record 90000030 at 397 comparison epochs, plus records 90000029 and 90000030 at the two perihelia",
@@ -17,7 +17,7 @@
     "major_bodies": "DE440s",
     "large_asteroids": "SB441-N16"
   },
-  "kernel": "Fortran real33 arithmetic + JPL DE440s/SB441-N16 binary64 SPK + full multi-body 1PN + NAIF PCK J2/J4/J6",
+  "kernel": "Fortran real33 arithmetic + JPL DE441 binary64 SPK (de441_part-1.bsp, de441_part-2.bsp) + SB441-N16 + full multi-body 1PN + NAIF PCK J2/J4/J6",
   "adaptive_step": "embedded error control plus 5% gravity/crossing-time limiter",
   "function_evaluations": 204043,
   "interpretation": "This validates forward propagation from one fitted initial state. It is not a blind orbit fit because JPL solution #75 uses observations through 1994."

@@ -453,6 +453,9 @@ def write_outputs(
         format="jd",
         scale="tdb",
     ).decimalyear
+    marker_indices = np.arange(0, len(comparison_jd), 2)
+    if marker_indices[-1] != len(comparison_jd) - 1:
+        marker_indices = np.append(marker_indices, len(comparison_jd) - 1)
     codes_a = codes_elements[:, 0]
     codes_q = codes_elements[:, 1]
     codes_period = _period_years(codes_a, environment.gm["SUN"])
@@ -514,8 +517,8 @@ def write_outputs(
             zorder=2,
         )
         axis.scatter(
-            comparison_year,
-            official_values,
+            comparison_year[marker_indices],
+            official_values[marker_indices],
             marker="D",
             s=20,
             facecolor="#FFD166",
@@ -525,7 +528,7 @@ def write_outputs(
             zorder=4,
             label=(
                 "NASA/JPL Horizons #75 "
-                f"({len(comparison_jd)} epochs)"
+                f"({len(marker_indices)} of {len(comparison_jd)} epochs)"
             ),
         )
         for year in (1910, 1986):
@@ -559,7 +562,8 @@ def write_outputs(
         frameon=False,
         ncol=2,
         fontsize=9,
-        loc="lower left",
+        loc="upper left",
+        bbox_to_anchor=(0.0, 1.02),
     )
     axes[2].set_xlabel("year [TDB]")
     figure.suptitle(
@@ -581,7 +585,7 @@ def write_outputs(
         color="#5C6875",
         fontsize=9.2,
     )
-    figure.tight_layout(rect=(0, 0.04, 1, 0.965))
+    figure.tight_layout(rect=(0, 0.04, 1, 0.93))
     FIGURE_PATH.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(FIGURE_PATH, dpi=220, facecolor="white")
     plt.close(figure)

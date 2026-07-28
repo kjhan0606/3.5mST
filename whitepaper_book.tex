@@ -31,6 +31,13 @@
 \usepackage{float}
 \usepackage{hyperref}
 
+%% Reserve enough TOC number width for B.10, C.10, and deeper descendants.
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.5em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{7.0em}{5.0em}}
+\makeatother
+
 %% tikz libraries used by the cosmology appendix diagrams
 \usetikzlibrary{arrows.meta,calc,positioning,shapes.geometric,%
   decorations.pathmorphing,backgrounds,fit}

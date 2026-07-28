@@ -517,7 +517,7 @@ rectangular passband. A flat $F_\nu$ point source produces
  {\cal E}(\lambda,r_{\rm ap})\,d\lambda ,
  \label{eq:mir-source-rate}
 \end{equation}
-where the left-hand side $\dot N_{\rm src}$ is the detected source
+Here the left-hand side $\dot N_{\rm src}$ is the detected source
 photoelectron rate, in e$^-$\,s$^{-1}$, integrated over the passband and the
 photometric aperture. The factor ${\cal E}$ is the wavelength-dependent
 encircled-energy fraction inside that aperture. The diffuse-background rate
@@ -554,7 +554,7 @@ measured component values.}
 \textbf{\color{cGold}MIR-2}\\
 \midrule
 Bandpass & 4.0--5.2\,$\mu$m & 6.0--10.0\,$\mu$m\\
-Pivot wavelength ($\lambda_p$) & 4.56\,$\mu$m & 7.75\,$\mu$m\\
+Pivot wavelength & 4.56\,$\mu$m & 7.75\,$\mu$m\\
 Nyquist pixel scale at $\lambda_p$ &
 0.134 arcsec pixel$^{-1}$ &
 0.228 arcsec pixel$^{-1}$\\
@@ -643,17 +643,18 @@ limits in Table~\ref{tab:mir-etc-depth} become mission performance.
 
 \subsection{NEOMOD3 reference population and thermal flux}
 
-We generated the reference population between 30\,m and 3\,km with the public
-NEOMOD3 Fortran simulator \cite{Nesvorny2024}. The resulting realization
-contains 344,458 NEOs. The sample contains 19,694 objects larger than 140\,m
-and 801 objects larger than 1\,km. These counts agree with the published estimates of
+The reference population comes from the public NEOMOD3 Fortran simulator
+\cite{Nesvorny2024}. We requested the model number of objects between 30\,m
+and 3\,km with seed $-50202002$. The resulting realization contains 344,458
+NEOs. The sample contains 19,694 objects larger than 140\,m and 801 objects
+larger than 1\,km. These counts agree with the published estimates of
 $20,000\pm2,000$ and $830\pm60$ \cite{Nesvorny2024}. The simulation retains
 the NEOMOD3 size-dependent two-Rayleigh albedo distribution and the
 size-dependent orbital distribution.
 
 The simulator supplies $H$, $a$, $e$, $i$, diameter, and visible albedo.
 Longitude of ascending node, argument of perihelion, and mean anomaly were
-drawn uniformly. The orbits were propagated with
+drawn uniformly with a recorded random seed. The orbits were propagated with
 the two-body Kepler solution for the survey-selection calculation. The
 authoritative orbit analysis in Section~\ref{sec:calculator-bodies} remains
 an N-body calculation. The two-body propagation is adequate for a reference
@@ -778,7 +779,7 @@ than one scalar sky level.
 
 \section{Observation Architecture and Feasibility}
 
-\begin{longtable}{@{}P{30mm}P{36mm}P{45mm}P{45mm}@{}}
+\begin{longtable}{@{}P{30mm}P{36mm}P{46mm}P{46mm}@{}}
 \toprule
 \color{cGold}\textbf{Product} &
 \color{cGold}\textbf{Observable} &
@@ -845,20 +846,19 @@ quality, station keeping, and unplanned downtime.
 
 \begin{table}[H]
 \centering
-\small
 \caption{Five-year reference yield for four visits and a 13-day linking
 interval. ``New'' uses approximate known fractions of 3 percent at 30--50\,m,
 10 percent at 50--140\,m, 38 percent at 140\,m--1\,km, and 95 percent above
 1\,km. The 38-percent value follows the NEO Surveyor Known Object Model
 \cite{Grav2023}. The other fractions are explicit scenario assumptions.}
-\begin{tabularx}{0.99\textwidth}{@{}P{23mm}P{25mm}P{18mm}ZZZZ@{}}
+\begin{tabularx}{\textwidth}{@{}P{23mm}P{25mm}P{18mm}ZZZZ@{}}
 \toprule
 \textbf{\color{cGold}MIR time} &
 \textbf{\color{cGold}Search latitude} &
 \textbf{\color{cGold}13-day coverage} &
 \textbf{\color{cGold}New 30--50 m} &
 \textbf{\color{cGold}New 50--140 m} &
-\textbf{\color{cGold}Total $\geq140$ m} &
+\textbf{\color{cGold}Cataloged $\geq140$ m} &
 \textbf{\color{cGold}New $\geq140$ m}\\
 \midrule
 25 percent & $|\beta|\leq40^\circ$ & 0.49 percent & 75 & 32 & 18 & 11\\
@@ -899,11 +899,27 @@ cost trade.
 
 Figure~\ref{fig:neo-single-visit-reach} converts the optical ETC limit into
 an Earth-centered detection area. The calculation uses a 145\,s Johnson
-$V$ exposure with a $5\sigma$ limit of $V_{\rm AB}=26.48$. The assumed
+$V$ exposure with a $5\sigma$ limit of $V_{\rm AB}=26.39$. The assumed
 geometric albedo is $p_V=0.15$. The standard diameter relation in
 Equation~\ref{eq:h-diameter} and the $H,G$ phase law with $G=0.15$ determine
 the reflected flux \cite{Bowell1989}. The observer is placed at Sun--Earth
 L2, 0.01\,au from Earth in the figure geometry.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/neo_single_visit_reach.png}
+\caption{Earth-centered single-exposure detection area for reflected light.
+The radial coordinate is the distance from Earth on a logarithmic scale, and
+the radial tick labels are given in au.
+The colored contours show where each representative asteroid reaches
+$\mathrm{S/N}\geq5$ in a 145\,s Johnson $V$ exposure. The Sun is one au from
+Earth. The L2 observer is 0.01\,au from Earth. Every contour adopts
+$p_V=0.15$ and the $H,G$ phase law. The greatest radial reach occurs near
+opposition because the illuminated fraction and reflected-light geometry
+are favorable. The contours are instantaneous flux limits. Trailing,
+confusion, cadence, linking losses, and orbit uncertainty are not included.}
+\label{fig:neo-single-visit-reach}
+\end{figure}
 
 The direction of easiest discovery is not the physical source direction of
 all impactors. Optical discovery reaches the greatest distance near
@@ -945,30 +961,16 @@ coverage, immediate processing, and successful linkage.}
 \textbf{\color{cGold}$d_{\oplus,\max}$} &
 \textbf{\color{cGold}Lead time at 20 and 30 km s$^{-1}$}\\
 \midrule
-5\,m & Small-object sensitivity & 0.242\,au & 21.0 and 14.0 days\\
-10\,m & Warning threshold scale & 0.416\,au & 36.0 and 24.0 days\\
-20\,m & Chelyabinsk scale & 0.691\,au & 59.8 and 39.9 days\\
-50\,m & Tunguska scale & 1.273\,au & 110.2 and 73.5 days\\
-140\,m & NASA census threshold & 2.387\,au & 206.6 and 137.8 days\\
-1\,km & Large-object reference & 7.100\,au & 614.7 and 409.8 days\\
+5\,m & Small-object sensitivity & 0.233\,au & 20.2 and 13.4 days\\
+10\,m & Warning threshold scale & 0.404\,au & 35.0 and 23.3 days\\
+20\,m & Chelyabinsk scale & 0.671\,au & 58.1 and 38.7 days\\
+50\,m & Tunguska scale & 1.239\,au & 107.3 and 71.5 days\\
+140\,m & NASA census threshold & 2.329\,au & 201.6 and 134.4 days\\
+1\,km & Large-object reference & 6.945\,au & 601.2 and 400.8 days\\
 \bottomrule
 \end{tabularx}
 \label{tab:ideal-warning-time}
 \end{table}
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=\textwidth]{appendixC_assets/neo_single_visit_reach.png}
-\caption{Earth-centered single-exposure detection area for reflected light.
-The colored contours show where each representative asteroid reaches
-$\mathrm{S/N}\geq5$ in a 145\,s Johnson $V$ exposure. The Sun is one au from
-Earth. The L2 observer is 0.01\,au from Earth. Every contour adopts
-$p_V=0.15$ and the $H,G$ phase law. The greatest radial reach occurs near
-opposition because the illuminated fraction and reflected-light geometry
-are favorable. The contours are instantaneous flux limits. Trailing,
-confusion, cadence, linking losses, and orbit uncertainty are not included.}
-\label{fig:neo-single-visit-reach}
-\end{figure}
 
 The tabulated times are upper bounds for one favorable trajectory family.
 The baseline 0.25\,deg$^2$ field covers only 27.2 unique deg$^2$ per
@@ -1232,7 +1234,7 @@ The SB441 memo also provides a 373-body ephemeris for specialized studies
 
 \subsection{Implemented and deferred force terms}
 
-\begin{tabular}{@{}M{42mm}C{34mm}M{80mm}@{}}
+\begin{tabular}{@{}M{43mm}C{37mm}M{85mm}@{}}
 \toprule
 \color{cGold}\textbf{Term} &
 \color{cGold}\textbf{Status} &
@@ -1316,7 +1318,7 @@ forces smaller steps independently of the requested output cadence.
 
 The regression suite uses ten real NEOs observed between 2019 and 2024.
 For each object, the calculator downloads all available optical ADES
-astrometry from the Minor Planet Center (MPC) and retains the observatory codes,
+astrometry from the Minor Planet Center and retains the observatory codes,
 UTC epochs, reported coordinates, and MPC discovery flag
 \cite{MPCObservations}. The observing arc is therefore traceable to the
 measurements used by the international small-body community.
@@ -1336,7 +1338,7 @@ encounter, before the strongest terrestrial deflection.
 MPC supplies the observed astrometric history, station count, and discovery
 epoch. NASA/JPL supplies the official current initial state, osculating
 elements, closest-approach epoch, and geocentric distance. Every reported
-$\Delta$ is \textbf{CODES result minus NASA/JPL official result}.
+$\Delta$ is \textbf{local Fortran result minus NASA/JPL official result}.
 The source snapshot used here was retrieved on 2026-07-26 UTC.
 \end{resultbox}
 
@@ -1393,28 +1395,24 @@ No JPL comparison state is ingested after the initial epoch.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/halley_codes_longterm_validation.png}
-\caption{Dense NASA/JPL comparison for the independent 150-year CODES
-propagation of 1P/Halley. Teal curves show the osculating period, semimajor
-axis, and perihelion distance derived from the CODES state. Gold diamonds
-show NASA/JPL Horizons solution \#75 at 397 independently requested epochs.
-The sampling interval is six months across 1850--2000 and one month within
-two years of the 1910 and 1986 perihelia. The dashed vertical lines mark
-those perihelia. CODES reproduces the phase and amplitude of the JPL
-oscillations in every panel. The period residual has an RMS of 0.27\,d and a
-maximum magnitude of 3.79\,d. The semimajor-axis residual has an RMS of
-17{,}189\,km and a maximum magnitude of 244{,}589\,km. The
-perihelion-distance residual has an RMS of 3.79\,km and a maximum magnitude
-of 27.26\,km. The JPL states are used only for post-propagation comparison
-and are not ingested by CODES after the 1850 initial epoch.}
+\caption{Independent 150-year CODES propagation of 1P/Halley. Open circles
+are CODES results and gold diamonds are separately requested NASA/JPL
+Horizons comparison values in every panel. From top to bottom, the continuous
+curves show the osculating period, semimajor axis, and perihelion distance
+derived from the CODES state. The CODES minus JPL perihelion-time residuals
+are $-12.956$\,s and $+8.835$\,s. The corresponding period residuals are
+$-3.840$\,d and $-1.931$\,d. The semimajor-axis residuals are
+$-247{,}460$\,km and $-124{,}487$\,km. The perihelion-distance residuals are
+$+227.8$\,km and $-15.3$\,km.}
 \label{fig:halley-return-history}
 \end{figure}
 
 \begin{resultbox}
 \textbf{\color{cGold}What this validates.}
 The comparison tests long-term numerical propagation from one initial state,
-not merely the parsing of a sequence of JPL records. The dense comparison
-demonstrates that CODES reproduces the time-dependent oscillations and the
-two physical perihelion passages across 150 years.
+not merely the parsing of a sequence of JPL records. The agreement
+demonstrates that CODES reproduces the two physical perihelion passages
+across 150 years.
 Because JPL solution \#75 was fitted with observations extending through
 1994, the comparison is a propagation-consistency test rather than a blind
 historical orbit determination.
@@ -1458,6 +1456,125 @@ non-gravitational perturbations. Yeomans and Kiang instead identify the
 \cite{YeomansKiang1981}.
 \end{resultbox}
 
+\begin{verbatim}
+python -m neo_orbit_calculator.cli spk 99942 \
+  --start 2026-01-01 --stop 2126-01-01
+
+python -m neo_orbit_calculator.cli propagate 99942 \
+  --start 2026-01-01 --stop 2126-01-01 \
+  --backend fortran
+
+python -m neo_orbit_calculator.cli comet-orbits 1P \
+  --start-year 800 --stop-year 2000
+
+python -m neo_orbit_calculator.cli comet-sky 1P \
+  --epochs 2061-07-28 2061-08-15 2061-09-01
+\end{verbatim}
+
+\section{DS9 to CODES with OpenOrb}
+\label{sec:ds9-codes-openorb}
+
+The operational path from an image sequence to an orbit product is shown in
+Figure~\ref{fig:ds9-codes-openorb-flow}. DS9 is used for visual inspection
+and candidate marking. The reviewed positions and times are exported as a
+small astrometric CSV. CODES passes that CSV to OpenOrb for statistical
+ranging, which samples the admissible orbital-element distribution instead
+of selecting one distance from a short optical arc \cite{Granvik2009}.
+CODES then propagates the samples with the selected DE442 or DE441 kernel
+and its force model. The final comparison is made against a separately
+retrieved NASA/JPL solution. The official solution is therefore a comparison
+target and is not used as an input to the ranging calculation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/ds9_codes_openorb_flow.png}
+\caption{Conceptual DS9 to CODES and OpenOrb pipeline. A candidate is
+reviewed in the time ordered image sequence before its astrometry is passed
+to statistical ranging. The posterior is then propagated by CODES and
+compared with an independent official orbit product.}
+\label{fig:ds9-codes-openorb-flow}
+\end{figure}
+
+\subsection{DS9 image review and astrometric handoff}
+
+The public NOIRLab Astro Data Lab DECam Asteroid Database DR2 provides the
+real calibrated DECam sequence used for the bridge demonstration
+\cite{DataLabDAD}. The cyan marks and candidate links use the same astrometric
+contract that the DS9 NEO menu exports. The implemented menu runs source
+extraction and frame to frame association before writing an astrometric CSV
+and frame specific DS9 FK5 region files. The observation time, right
+ascension, declination, uncertainty, observer code, and output paths are
+retained for auditability. Visual review remains mandatory before the
+astrometry is passed to CODES and OpenOrb.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/ogfinder_ds9_neo_runtime.png}
+\caption{Actual OGFinder DS9 runtime capture using five calibrated DECam
+exposures from the DECam Asteroid Database DR2. The NEO menu executed the
+local moving source detector. Cyan circles show four linked candidate
+tracks, with only the matching epoch displayed in each frame. The status
+line records successful association. These marks are candidates for visual
+review and do not by themselves validate an orbit.}
+\label{fig:ds9-ogfinder-interface}
+\end{figure}
+
+\subsection{OpenOrb ranging and CODES propagation}
+
+OpenOrb is called through its command line ranging task. CODES writes an
+MPC current format observation file, records the exact executable and
+configuration path, and preserves the ranging output. The ranging posterior
+is intentionally broad for a five exposure arc. This is the expected
+range and radial velocity degeneracy, not a failure of the angular
+astrometry. Figure~\ref{fig:codes-openorb-calculation} shows the resulting
+posterior in $(a,e)$ and $q$ together with the NASA/JPL comparison point.
+The CODES force model can propagate every accepted sample, allowing later
+observations to be tested against a distribution rather than one fragile
+preliminary orbit.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/codes_openorb_calculation.png}
+\caption{OpenOrb statistical ranging output for the DAD demonstration
+tracklet. Orange points are posterior samples and the star is the separate
+NASA/JPL solution for the same numbered object. The broad posterior shows
+why a short optical arc must not be reported as a unique orbit.}
+\label{fig:codes-openorb-calculation}
+\end{figure}
+
+\subsection{Verification sequence and claim boundary}
+
+The verification sequence is summarized in Figure~\ref{fig:ds9-codes-verification}.
+The image positions are checked in Figure~\ref{fig:ds9-ogfinder-interface},
+and the statistical ranging posterior is shown in
+Figure~\ref{fig:codes-openorb-calculation}. Figure~\ref{fig:ds9-codes-verification}
+therefore begins with the accepted samples passed to CODES. CODES propagates
+those samples with the selected planetary ephemeris and force switches.
+The predicted astrometry is then compared with a separately retrieved
+official solution. The official solution is not an input to propagation.
+The present demonstration verifies the data handoff, format conversion,
+OpenOrb execution, output preservation, and CODES input path. It does not
+claim an independent orbit determination from five exposures.
+
+An orbit accuracy test requires a longer observing arc, a blind fit that does
+not ingest post discovery observations, the observatory state, weighted
+astrometric uncertainties, outlier handling, and an archived reference orbit
+at the discovery epoch. These requirements are consistent with the
+validation boundary already stated in Section~\ref{sec:historical-ca-tests}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendixC_assets/ds9_codes_verification.png}
+\caption{Verification workflow after the DS9 review and OpenOrb ranging
+shown in Figures~\ref{fig:ds9-ogfinder-interface} and
+\ref{fig:codes-openorb-calculation}. The left panel contains only accepted
+posterior samples passed to CODES. The right panel keeps the NASA/JPL
+solution outside the propagation path and introduces it only for residual
+comparison. A blind orbit accuracy result requires a longer arc and an
+archived pre discovery solution.}
+\label{fig:ds9-codes-verification}
+\end{figure}
+
 \subsection{Integrated CODES desktop interface}
 \label{sec:codes-gui}
 
@@ -1471,18 +1588,17 @@ directory remains explicit for every science mode.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{appendixC_assets/codes_gui.png}
-\caption{Integrated CODES desktop interface with the NEO dynamics tab open.
-The tab separates authoritative JPL products from the local force-model
-calculation. The clone-count and seed controls launch the full JPL-covariance
-virtual-asteroid ensemble. The full multi-body 1PN switch controls both
-nominal and ensemble propagation. The other tabs expose comet apparition
-histories, apparent sky positions, and the validation suites. The run log
-records the executed command and returned file paths.}
+\includegraphics[width=\textwidth]{appendixC_assets/codes_gui_openorb_actual.png}
+\caption{Actual CODES desktop run of the NEO astrometry workflow. The GUI
+ingests five DAD/DECam positions exported by DS9 for observatory W84 and
+requests 2,000 OpenOrb ranging samples. The completed run reports a
+0.036\,arcsec preliminary-fit RMS and writes the OpenOrb orbit samples and
+the DE442 CODES refinement. This is a direct X11 capture of the running Tk
+application.}
 \label{fig:codes-gui}
 \end{figure}
 
-\noindent\begin{tabularx}{\textwidth}{@{}P{31mm}P{58mm}Y@{}}
+\begin{tabular}{@{}P{32mm}P{58mm}P{64mm}@{}}
 \toprule
 \color{cGold}\textbf{GUI tab} &
 \color{cGold}\textbf{Operation} &
@@ -1495,25 +1611,33 @@ request an SPK, retrieve Horizons vectors, run the nominal propagator, or run
 the covariance ensemble. &
 Authoritative binary SPK, sampled state-vector CSV, local orbit projection,
 full-covariance clone products, and residual summary against Horizons\\
-\cmidrule(lr){1-3}
+\midrule
+\textbf{NEO astrometry} &
+Imports a DS9 astrometry CSV with UTC, right ascension, declination,
+observatory code, ranging sample count, integrator, and ephemeris. The action
+runs OpenOrb statistical ranging before the CODES refinement. &
+MPC-format observations, OpenOrb \code{.sor} and \code{.orb} samples,
+preliminary orbit JSON, CODES refined-state CSV, and logged residual
+statistics\\
+\midrule
 \textbf{Comet evolution} &
 Selects a comet and an apparition-year interval. Known return years may be
 entered when Horizons aliases are incomplete. &
 CSV of the separate JPL apparition solutions and a plot of return interval,
 semimajor axis, and perihelion distance\\
-\cmidrule(lr){1-3}
+\midrule
 \textbf{Sky positions} &
 Accepts UTC epochs and a Horizons observer code for a selected comet. &
 Apparent right ascension, declination, heliocentric distance, observer
 distance, IAU constellation, and a labeled sky track\\
-\cmidrule(lr){1-3}
+\midrule
 \textbf{Validation} &
 Runs the ten-object NEO close-approach comparison or the historical
 1P/Halley return comparison. &
 Traceable CSV and JSON results, diagnostic figures, and direct residuals
 against NASA/JPL or observation-constrained historical solutions\\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 
 The GUI does not convert a sensitivity integration into an operational hazard
 solution. Impact probability still requires a fitted covariance and virtual
@@ -1582,7 +1706,9 @@ gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
 \end{warningbox}
 
 \clearpage
-\ifdefined\APPENDIXCBOOK\else
+\ifdefined\APPENDIXCBOOK
+\renewcommand{\bibname}{References}
+\else
 \renewcommand{\refname}{References}
 \fi
 \begin{thebibliography}{99}
@@ -1622,6 +1748,19 @@ Gustafson, B. A. S. 1996,
 ``Physics of zodiacal dust,''
 \textit{Annual Review of Earth and Planetary Sciences}, 24, 553.
 \href{https://doi.org/10.1146/annurev.earth.24.1.553}{doi:10.1146/annurev.earth.24.1.553}.
+
+\bibitem{Granvik2009}
+Granvik, M., Virtanen, K., Oszkiewicz, D., \& Muinonen, K. 2009,
+``OpenOrb: Open-source asteroid orbit computation software including
+statistical ranging,''
+\textit{Meteoritics \& Planetary Science}, 44, 1853.
+\href{https://doi.org/10.1111/j.1945-5100.2009.tb01194.x}
+{doi:10.1111/j.1945-5100.2009.tb01194.x}.
+
+\bibitem{DataLabDAD}
+NOIRLab Astro Data Lab,
+``DECam Asteroid Database DR2 and Simple Image Access service.''
+\url{https://datalab.noirlab.edu/data/decam-asteroid-database}.
 
 \bibitem{Grav2023}
 Grav, T., et al. 2023,
@@ -1709,14 +1848,12 @@ Nesvorn\'y, D., et al. 2024,
 \bibitem{NASAEmergency2021}
 NASA 2021,
 \textit{Report on Near-Earth Object Impact Threat Emergency Protocols}.
-\href{https://www.nasa.gov/wp-content/uploads/2015/12/neo-impact-threat-emergency-protocols-jan2021.pdf}
-{NASA report archive}.
+\url{https://www.nasa.gov/wp-content/uploads/2015/12/neo-impact-threat-emergency-protocols-jan2021.pdf}.
 
 \bibitem{NASASDT2017}
 NASA 2017,
 ``New Report Assesses Status of Detecting Near-Earth Asteroids.''
-\href{https://www.nasa.gov/solar-system/new-report-assesses-status-of-detecting-near-earth-asteroids/}
-{NASA planetary-defense report summary}.
+\url{https://www.nasa.gov/solar-system/new-report-assesses-status-of-detecting-near-earth-asteroids/}.
 
 \bibitem{MPCObservations}
 International Astronomical Union Minor Planet Center,
@@ -1748,5 +1885,6 @@ Yeomans, D. K., \& Kiang, T. 1981,
 \href{https://doi.org/10.1093/mnras/197.3.633}{doi:10.1093/mnras/197.3.633}.
 
 \end{thebibliography}
+
 
 \appendixCfinish
