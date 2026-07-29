@@ -1,0 +1,16 @@
+U Gem Monte Carlo line recovery
+n_trials: 300
+n_recovered: 300
+recovery_fraction: 1.0
+expected_centroid_A: 6561.0340091962225
+centroid_bias_kms: 1.6014827766067932
+centroid_scatter_kms: 20.016808283752113
+median_reported_centroid_sigma_kms: 6.224835960330587
+expected_line_snr: 19.999998843733987
+line_snr_median: 20.67818621623004
+line_snr_scatter: 1.099046587050529
+peak_separation_expected_kms: None
+peak_separation_bias_kms: None
+peak_separation_scatter_kms: None
+
+All source spectra retain their public-data provenance in the CSV.

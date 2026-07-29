@@ -1,0 +1,3 @@
+roll_mode,roll_angles_deg,n_trials,n_recovered,recovery_fraction,injected_velocity_kms,median_velocity_kms,velocity_bias_kms,velocity_scatter_kms,median_reported_sigma_kms,effective_resolving_power,number_of_rolls,exposure_s_per_roll,total_exposure_s
+one_roll,0,80,80,1.0,120.0,56.611301429612325,-63.19301473403775,2.5850570354638,3.982337913183649,1800.0,1,60.0,60.0
+three_roll_joint,0 60 120,80,80,1.0,120.0,119.42185451957806,1.2241483217881615,4.700046886846479,2.7509304565348156,1800.0,3,20.0,60.0
