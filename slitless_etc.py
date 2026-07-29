@@ -3,6 +3,10 @@ r"""
 slitless_etc.py  --  Emission-line exposure-time / depth calculator for a
 wide-field slitless grism survey (3.5 m segmented-mirror R=1000 concept).
 
+This file is the backwards-compatible numerical kernel.  New user-facing work
+should use ``python -m mission_etc <mode>`` or import ``mission_etc`` so that
+imaging, isolated-line, template-spectrum, and MIR inputs remain distinct.
+
 Fidelity target: Euclid/Roman-class ETC.  Key ingredients that the proposal's
 closed-form Eq.(16) collapses into single numbers are here computed
 wavelength-by-wavelength:
@@ -44,7 +48,10 @@ be replaced by measured hardware values or by a CSV throughput/QE/zodi file.
 """
 from __future__ import annotations
 from dataclasses import dataclass, field, replace
+from pathlib import Path
 import numpy as np
+
+_MODULE_DIR = Path(__file__).resolve().parent
 
 # ---------------------------------------------------------------- constants (CGS)
 H  = 6.62607015e-27          # erg s
@@ -222,6 +229,11 @@ class InstrumentConfig:
     tel_temp: float = 270.0             # K  (passively cooled optics)
     tel_emissivity: float = 0.10
     include_thermal: bool = True
+    # Optional MIR zodiacal levels. Each entry is
+    # (band_min_A, band_max_A, nu*I_nu [nW m^-2 sr^-1]). The convention
+    # matches the DIRBE-based values quoted for NEO Surveyor. The override
+    # replaces the analytic zodiacal term only for the matching imaging band.
+    imaging_sky_nuinu_nw_m2_sr: tuple[tuple[float, float, float], ...] = ()
     # --- galactic cirrus (diffuse galactic light; Ienaka et al. 2013 scaling) ---
     include_cirrus: bool = True
     gal_lat_deg: float = 60.0           # survey caps sit at |b| >~ 60 deg
@@ -580,12 +592,39 @@ def background_per_pixel(cfg: InstrumentConfig, band_A, imaging=False):
     so integrate radiance * throughput * (lambda/hc) over the transmitted band.
     With imaging=True the direct-imaging throughput (no grism) is used.
     """
-    lo, hi = band_A
-    lam = np.linspace(lo, hi, 400)
-    I = cfg.sky_flambda(lam)                     # erg/s/cm^2/A/arcsec^2
+    lo, hi = map(float, band_A)
+    # Preserve the established optical/NIR integration grid. The denser grid
+    # is used only by the broad MIR background override.
+    lam = np.linspace(lo, hi, 600 if imaging and
+                      cfg.imaging_sky_nuinu_nw_m2_sr else 400)
     eta = cfg.throughput_imaging(lam) if imaging else cfg.throughput(lam)
+
+    override = None
+    if imaging:
+        for band_lo, band_hi, nuinu in cfg.imaging_sky_nuinu_nw_m2_sr:
+            if np.isclose(lo, band_lo, rtol=0.0, atol=1.0) and np.isclose(
+                    hi, band_hi, rtol=0.0, atol=1.0):
+                override = float(nuinu)
+                break
+
+    if override is None:
+        I = cfg.sky_flambda(lam)                 # erg/s/cm^2/A/arcsec^2
+    else:
+        pivot_A = np.sqrt(lo * hi)
+        nu_hz = C_A / pivot_A
+        # DIRBE-style nu*I_nu to a flat I_nu across the rectangular band.
+        # 1 nW m^-2 = 1e-6 erg s^-1 cm^-2.
+        Inu = override * 1e-6 / nu_hz * SR_PER_ARCSEC2
+        I = Inu * C_A / lam**2
+        if cfg.include_thermal:
+            I = I + telescope_flambda(lam, cfg.tel_temp, cfg.tel_emissivity)
+        if cfg.stray_star_mag is not None:
+            I = I + stray_star_flambda(
+                lam, cfg.stray_star_mag, cfg.stray_star_sep_arcsec,
+                cfg.stray_star_wing_index, cfg.stray_star_wing_norm_60as)
+
     integrand = I * _photon_factor(lam) * eta    # e-/s/cm^2/A/arcsec^2
-    surf = np.trapezoid(integrand, lam)              # e-/s/cm^2/arcsec^2
+    surf = np.trapezoid(integrand, lam)          # e-/s/cm^2/arcsec^2
     return surf * cfg.area_cm2 * cfg.omega_pix   # e-/s/pixel
 
 
@@ -720,6 +759,174 @@ def imaging_maglimit(cfg: InstrumentConfig, lam_A, filter_width_A, t_s,
     return -2.5 * np.log10(F_nu) - 48.60                  # AB mag
 
 
+def _imaging_aperture(cfg, band_A, aper_fwhm_mult=1.0):
+    """Return the fixed broad-band aperture radius and pixel count."""
+    lo, hi = map(float, band_A)
+    pivot_A = np.sqrt(lo * hi)
+    r_ap = max(aper_fwhm_mult * cfg.psf_fwhm(pivot_A),
+               1.5 * cfg.pix_scale)
+    return pivot_A, float(r_ap), float(np.pi * (r_ap / cfg.pix_scale)**2)
+
+
+def imaging_source_rate_jy(cfg: InstrumentConfig, flux_jy, band_A,
+                           aper_fwhm_mult=1.0):
+    """Detected point-source rate [e-/s] for a flat-F_nu source.
+
+    The source spectrum, throughput, photon energy, and encircled energy are
+    integrated across the full rectangular imaging band. This avoids the
+    narrow-band pivot approximation used by imaging_maglimit and is the
+    preferred calculation for the broad 4--5.2 and 6--10 micron MIR bands.
+    """
+    lo, hi = map(float, band_A)
+    lam = np.linspace(lo, hi, 600)
+    _, r_ap, _ = _imaging_aperture(cfg, band_A, aper_fwhm_mult)
+    eta = cfg.throughput_imaging(lam)
+    ee = np.array([aperture_ee(cfg, wavelength, r_ap)
+                   for wavelength in lam])
+    fnu_cgs = float(flux_jy) * 1e-23
+    flam = fnu_cgs * C_A / lam**2
+    rate = cfg.area_cm2 * np.trapezoid(
+        flam * _photon_factor(lam) * eta * ee, lam)
+    return float(rate)
+
+
+def imaging_snr_jy(cfg: InstrumentConfig, flux_jy, band_A, t_s,
+                   aper_fwhm_mult=1.0):
+    """Broad-band point-source S/N for a flux density in Jy."""
+    pivot_A, _, npix = _imaging_aperture(
+        cfg, band_A, aper_fwhm_mult)
+    source = imaging_source_rate_jy(
+        cfg, flux_jy, band_A, aper_fwhm_mult) * t_s
+    background = background_per_pixel(
+        cfg, band_A, imaging=True) * npix * t_s
+    _, dark = cfg.detector_at(pivot_A)
+    dark_e = dark * npix * t_s
+    read_var = cfg.read_noise_variance_total(pivot_A, t_s, npix)
+    g = cfg.ramp_shot_noise_factor()
+    variance = (g * (source + background + dark_e) + read_var
+                + (cfg.flat_error * source)**2)
+    return float(source / np.sqrt(variance))
+
+
+def imaging_flux_limit_jy(cfg: InstrumentConfig, band_A, t_s, snr=5.0,
+                          aper_fwhm_mult=1.0):
+    """Broad-band point-source flux-density limit [Jy].
+
+    The quadratic solution includes source, diffuse-sky, dark, read, ramp-fit,
+    and flat-field terms. The source and sky use full-band photon integrals.
+    """
+    pivot_A, _, npix = _imaging_aperture(
+        cfg, band_A, aper_fwhm_mult)
+    source_per_jy = imaging_source_rate_jy(
+        cfg, 1.0, band_A, aper_fwhm_mult) * t_s
+    background = background_per_pixel(
+        cfg, band_A, imaging=True) * npix * t_s
+    _, dark = cfg.detector_at(pivot_A)
+    non_source = background + dark * npix * t_s
+    read_var = cfg.read_noise_variance_total(pivot_A, t_s, npix)
+    g = cfg.ramp_shot_noise_factor()
+    a = 1.0 - (snr * cfg.flat_error)**2
+    if a <= 0:
+        return float("inf")
+    required_e = (
+        snr**2 * g
+        + np.sqrt(snr**4 * g**2
+                  + 4.0 * a * snr**2 * (g * non_source + read_var))
+    ) / (2.0 * a)
+    return float(required_e / source_per_jy)
+
+
+def imaging_noise_budget(cfg: InstrumentConfig, band_A, t_s,
+                         aper_fwhm_mult=1.0):
+    """Diagnostic MIR imaging noise terms for one point-source aperture."""
+    pivot_A, r_ap, npix = _imaging_aperture(
+        cfg, band_A, aper_fwhm_mult)
+    sky_rate = background_per_pixel(cfg, band_A, imaging=True)
+    _, dark = cfg.detector_at(pivot_A)
+    return {
+        "pivot_um": pivot_A / 1e4,
+        "psf_fwhm_arcsec": float(cfg.psf_fwhm(pivot_A)),
+        "aperture_radius_arcsec": r_ap,
+        "n_pix": npix,
+        "sky_e": sky_rate * npix * t_s,
+        "dark_e": dark * npix * t_s,
+        "read_e2": cfg.read_noise_variance_total(pivot_A, t_s, npix),
+    }
+
+
+MIR_CHANNELS = {
+    "NC1": {
+        "band_um": (4.0, 5.2),
+        "nuinu_nw_m2_sr": {"low": 220.0, "nominal": 960.0, "high": 4200.0},
+    },
+    "NC2": {
+        "band_um": (6.0, 10.0),
+        "nuinu_nw_m2_sr": {"low": 1700.0, "nominal": 6100.0, "high": 22000.0},
+    },
+}
+
+
+def diffraction_nyquist_pixel_scale_arcsec(wavelength_um, diameter_cm):
+    """Nyquist detector sampling lambda/(2D), in arcsec per pixel."""
+    wavelength_cm = float(wavelength_um) * 1e-4
+    return 206265.0 * wavelength_cm / (2.0 * float(diameter_cm))
+
+
+def mir_imaging_cfg(channel="NC2", background="nominal",
+                    observatory="3.5mST", **overrides):
+    """Construct a cooled MIR survey-imaging configuration.
+
+    Channel edges and low/high zodiacal levels follow Mainzer et al. (2023).
+    The 3.5ST values are explicit proposal requirements rather than measured
+    hardware performance. The NEO Surveyor option is a literature-validation
+    configuration for the same ETC calculation.
+    """
+    channel = channel.upper()
+    if channel not in MIR_CHANNELS:
+        raise ValueError(f"Unknown MIR channel {channel!r}")
+    if background not in MIR_CHANNELS[channel]["nuinu_nw_m2_sr"]:
+        raise ValueError(f"Unknown MIR background level {background!r}")
+    lo_um, hi_um = MIR_CHANNELS[channel]["band_um"]
+    nuinu = MIR_CHANNELS[channel]["nuinu_nw_m2_sr"][background]
+    band_A = (lo_um * 1e4, hi_um * 1e4)
+
+    if observatory == "3.5mST":
+        pivot_um = np.sqrt(lo_um * hi_um)
+        values = dict(
+            diameter_cm=350.0, obstruction=0.15, pix_scale=0.0,
+            read_noise=15.0, dark_current=0.01, n_exp=6, n_groups=8,
+            eta_peak=0.30, band_min_A=band_A[0], band_max_A=band_A[1],
+            edge_roll_A=500.0, dichroic_split_A=0.0, tel_temp=55.0,
+            tel_emissivity=0.10, include_thermal=True, include_cirrus=False,
+            psf_floor=0.10, t_single=30.0, extraction_eff=1.0,
+        )
+    elif observatory == "NEO Surveyor":
+        # Effective end-to-end values reproduce the logarithmic midpoint of
+        # the published 65--120 and 110--280 microJy NESI5 ranges. They include
+        # the losses represented by the mission PSF fitting and extraction.
+        eta_validation = 0.08 if channel == "NC1" else 0.12
+        values = dict(
+            diameter_cm=50.0, obstruction=0.0, pix_scale=3.0,
+            read_noise=15.0, dark_current=0.01, n_exp=6,
+            n_groups=18 if channel == "NC1" else 2,
+            eta_peak=eta_validation,
+            band_min_A=band_A[0], band_max_A=band_A[1],
+            edge_roll_A=500.0, dichroic_split_A=0.0, tel_temp=57.0,
+            tel_emissivity=0.10, include_thermal=True, include_cirrus=False,
+            psf_floor=1.0, t_single=30.0, extraction_eff=1.0,
+        )
+    else:
+        raise ValueError(f"Unknown MIR observatory {observatory!r}")
+
+    values.update(overrides)
+    if observatory == "3.5mST" and "pix_scale" not in overrides:
+        values["pix_scale"] = diffraction_nyquist_pixel_scale_arcsec(
+            pivot_um, values["diameter_cm"])
+    values["imaging_sky_nuinu_nw_m2_sr"] = (
+        (band_A[0], band_A[1], nuinu),)
+    return InstrumentConfig(**values)
+
+
 # Zodiacal pointing levels (Leinert et al. 1998): AB mu at 0.5 um
 ZODI_LEVELS = {"low (ecliptic pole)": 23.3, "typical": 22.1, "high (near ecliptic)": 21.0}
 
@@ -732,6 +939,10 @@ ZODI_LEVELS = {"low (ecliptic pole)": 23.3, "typical": 22.1, "high (near eclipti
 TELESCOPE_PRESETS = {
     "3.5mST":         dict(det="HgCdTe (concept)", diam=350., obstruction=0.15,  pix=0.11,  eta=0.30,
                            read=8., dark=0.010, nexp=3, fw=100000., ttel=270., R=1000., band=(0.36, 3.00), lam=1.6, split=10000., realistic=True),
+    "3.5mST MIR":     dict(det="40 K HgCdTe MIR array (requirement)", diam=350., obstruction=0.15,
+                           pix=0.134, eta=0.30, read=15., dark=0.010, nexp=6,
+                           fw=100000., ttel=55., R=10., band=(4.00, 10.00),
+                           lam=7.75, split=0., realistic=False),
     "Roman WFI":      dict(det="H4RG-10", diam=240., obstruction=0.31,  pix=0.11,  eta=0.42,
                            read=6., dark=0.020, nexp=4, fw=100000., ttel=270., R=461.,  band=(0.48, 2.30), lam=1.5, split=0., realistic=False),
     "Euclid":         dict(det="H2RG (NISP)", diam=120., obstruction=0.40,  pix=0.30,  eta=0.30,
@@ -742,13 +953,41 @@ TELESCOPE_PRESETS = {
                            read=6., dark=0.034, nexp=4, fw=80000.,  ttel=45.,  R=1600., band=(2.40, 5.00), lam=3.5, split=0., realistic=False),
 }
 
+# Standard imaging passbands represented by pivot wavelength and rectangular-
+# equivalent bandwidth in microns. The values are suitable for broadband ETC
+# calculations. They do not replace a measured total-system response curve.
+STANDARD_FILTERS = {
+    "Johnson U": (0.365, 0.066),
+    "Johnson B": (0.445, 0.094),
+    "Johnson V": (0.551, 0.088),
+    "Cousins R": (0.658, 0.138),
+    "Cousins I": (0.806, 0.149),
+    "SDSS u": (0.3551, 0.0558),
+    "SDSS g": (0.4686, 0.1158),
+    "SDSS r": (0.6166, 0.1111),
+    "SDSS i": (0.7480, 0.1045),
+    "SDSS z": (0.8932, 0.1124),
+    "2MASS J": (1.235, 0.162),
+    "2MASS H": (1.662, 0.251),
+    "2MASS Ks": (2.159, 0.262),
+}
+
 # Filters (imaging) and dispersers (spectroscopy) per telescope.
-# Imaging element -> (central lambda [um], width [um]); spectral -> (lam, width, R).
+# Imaging element -> (pivot lambda [um], rectangular-equivalent width [um]).
+# Spectral element -> (representative lambda [um], band width [um], R).
 INSTRUMENT_ELEMENTS = {
-    "3.5mST": {"Imaging": {"g~0.5": (0.50, 0.15), "z~0.9": (0.90, 0.20), "J~1.2": (1.25, 0.30),
-                           "H~1.6": (1.60, 0.40), "K~2.2": (2.20, 0.50)},
-               "Spectroscopy": {"R1000 opt": (0.70, 0.40, 1000), "R1000 NIR": (1.60, 0.40, 1000),
-                                "R1000 K": (2.50, 0.50, 1000)}},
+    "3.5mST": {"Imaging": dict(STANDARD_FILTERS),
+               "Spectroscopy": {"R1000 opt": (0.70, 0.40, 1000),
+                                "R1000 NIR": (1.60, 0.40, 1000),
+                                "R1000 K": (2.50, 0.50, 1000),
+                                "R5000 opt": (0.70, 0.40, 5000),
+                                "R5000 NIR": (1.60, 0.40, 5000),
+                                "R5000 K": (2.50, 0.50, 5000)}},
+    "3.5mST MIR": {"Imaging": {
+                        "MIR-1 (4.0-5.2)": (np.sqrt(4.0 * 5.2), 1.2),
+                        "MIR-2 (6.0-10.0)": (np.sqrt(6.0 * 10.0), 4.0),
+                    },
+                    "Spectroscopy": {}},
     "Roman WFI": {"Imaging": {"F062": (0.62, 0.28), "F087": (0.87, 0.22), "F106": (1.06, 0.27),
                               "F129": (1.29, 0.31), "F158": (1.58, 0.40), "F184": (1.84, 0.32),
                               "F213": (2.13, 0.35), "F146 (wide)": (1.46, 1.03)},
@@ -1121,12 +1360,14 @@ def compare_proposal():
 def realistic_cfg(**kw):
     """3.5 m concept using the tabulated CALSPEC-solar zodi and component
     throughput/QE curves written by make_etc_data.py."""
-    import os
+    throughput = _MODULE_DIR / "etc_throughput.csv"
+    throughput_imaging = _MODULE_DIR / "etc_throughput_imaging.csv"
+    zodi = _MODULE_DIR / "etc_zodi.csv"
     base = dict(extraction_eff=0.70,
-                throughput_csv="etc_throughput.csv" if os.path.exists("etc_throughput.csv") else "",
-                throughput_imaging_csv=("etc_throughput_imaging.csv"
-                                        if os.path.exists("etc_throughput_imaging.csv") else ""),
-                zodi_csv="etc_zodi.csv" if os.path.exists("etc_zodi.csv") else "")
+                throughput_csv=str(throughput) if throughput.exists() else "",
+                throughput_imaging_csv=(str(throughput_imaging)
+                                        if throughput_imaging.exists() else ""),
+                zodi_csv=str(zodi) if zodi.exists() else "")
     base.update(kw)
     return InstrumentConfig(**base)
 
@@ -1140,9 +1381,8 @@ def segmented_cfg(**kw):
     aperture-photometry functions (imaging_maglimit, imaging_snr,
     saturation_maglimit, count_rates); spectroscopic depth (f_limit/line_sn)
     does not call aperture_ee() and is unaffected."""
-    import os
-    base = dict(psf_ee_csv="segmented_ee_table.csv"
-                if os.path.exists("segmented_ee_table.csv") else "")
+    table = _MODULE_DIR / "segmented_ee_table.csv"
+    base = dict(psf_ee_csv=str(table) if table.exists() else "")
     base.update(kw)
     return realistic_cfg(**base)
 
@@ -1282,7 +1522,7 @@ def main(cfg=None):
         a1.plot(lam/1e4, -2.5*np.log10(zodi_flambda(lam)*lam**2/C_A)-48.6,
                 color="#333", lw=1, ls="--", label="zodiacal only")
         a1.set_ylabel(r"sky $\mu$  [AB arcsec$^{-2}$]"); a1.invert_yaxis()
-        a1.legend(fontsize=8, loc="lower left"); a1.grid(alpha=0.2)
+        a1.legend(fontsize=8, loc="upper left"); a1.grid(alpha=0.2)
         a1.tick_params(labelbottom=False)
         for tt, c in [(0.75*hr, "#3898ec"), (3*hr, "#4ec9b0"), (12*hr, "#d97757")]:
             f = [f_limit(cfg, l, tt) for l in lam]
