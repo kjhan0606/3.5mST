@@ -896,42 +896,25 @@ The larger field requires a separate focal-plane, optical, telemetry, and
 cost trade.
 \end{resultbox}
 
-\subsection{Earth-centered detection area and ideal warning time}
+\subsection{Single-exposure detection area and ideal warning time}
 
 Figure~\ref{fig:neo-single-visit-reach} converts the optical ETC limit into
-an Earth-centered detection area. The calculation uses a 145\,s Johnson
-$V$ exposure with a $5\sigma$ limit of $V_{\rm AB}=26.39$. The assumed
-geometric albedo is $p_V=0.15$. The standard diameter relation in
+a heliocentric detection area. The calculation uses a 145\,s Johnson $V$
+exposure with a $5\sigma$ limit of $V_{\rm AB}=26.39$. The geometric albedo
+is $p_V=0.15$. The standard diameter relation in
 Equation~\ref{eq:h-diameter} and the $H,G$ phase law with $G=0.15$ determine
 the reflected flux \cite{Bowell1989}. The observer is placed at Sun--Earth
-L2, 0.01\,au from Earth in the figure geometry.
+L2, 0.01\,au beyond Earth.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{appendixC_assets/neo_single_visit_reach.png}
-\caption{Earth-centered single-exposure detection area for reflected light.
-The radial coordinate is the distance from Earth on a logarithmic scale, and
-the radial tick labels are given in au.
-The colored contours show where each representative asteroid reaches
-$\mathrm{S/N}\geq5$ in a 145\,s Johnson $V$ exposure. The Sun is one au from
-Earth. The L2 observer is 0.01\,au from Earth. Every contour adopts
-$p_V=0.15$ and the $H,G$ phase law. The greatest radial reach occurs near
-opposition because the illuminated fraction and reflected-light geometry
-are favorable. The contours are instantaneous flux limits. Trailing,
-confusion, cadence, linking losses, and orbit uncertainty are not included.}
-\label{fig:neo-single-visit-reach}
-\end{figure}
-
-The same flux limit becomes easier to interpret in a heliocentric frame.
-Figure~\ref{fig:neo-single-visit-heliocentric} places the Sun at the origin
-and marks the orbital radii of Mars and Jupiter together with the main
-asteroid belt. The $140$\,m contour intersects the $2.1$--$3.3$\,au main
-belt where the phase angle and observer distance are favorable. A
-$140$\,m main-belt asteroid can therefore exceed the single-exposure
-$5\sigma$ threshold in the accessible near-side geometry. The 1\,km
-reference contour crosses the $5.20$\,au orbit of Jupiter and extends beyond
-that orbit near opposition. These intersections describe instantaneous flux
-reach. They do not imply complete coverage of either orbital population.
+The Sun-centered panel marks the orbital radii of Mars and Jupiter together
+with the main asteroid belt. The $140$\,m contour intersects the
+$2.1$--$3.3$\,au main belt where the phase angle and observer distance are
+favorable. Asteroids down to approximately 140\,m can therefore exceed the
+single-exposure threshold in the accessible near side of the belt. The
+1\,km contour crosses the $5.20$\,au orbit of Jupiter and extends beyond it
+near opposition. The inset gives the corresponding maximum distance from
+Earth for each diameter. It retains the distance scale needed for the ideal
+warning-time calculation below.
 
 \begin{figure}[H]
 \centering
@@ -940,12 +923,13 @@ reach. They do not imply complete coverage of either orbital population.
 The radial coordinate is heliocentric distance on a logarithmic scale. The
 orbit guides mark Earth at $1.00$\,au, Mars at $1.52$\,au, the main asteroid
 belt from $2.1$ to $3.3$\,au, and Jupiter at $5.20$\,au. The colored contours
-use the same 145\,s Johnson $V$ exposure, $p_V=0.15$, and $H,G$ phase law as
-Figure~\ref{fig:neo-single-visit-reach}. The $140$\,m contour reaches the
-near-side main belt under favorable illumination. The 1\,km contour extends
-beyond Jupiter's orbit near opposition. The contours omit trailing,
+use a 145\,s Johnson $V$ exposure, $p_V=0.15$, and the $H,G$ phase law. The
+$140$\,m contour reaches the near side of the main belt under favorable
+illumination. The 1\,km contour extends beyond Jupiter's orbit near
+opposition. The inset reports the favorable maximum Earth-centered distance
+for each diameter. These are instantaneous flux limits. They omit trailing,
 confusion, cadence, linking losses, and orbit uncertainty.}
-\label{fig:neo-single-visit-heliocentric}
+\label{fig:neo-single-visit-reach}
 \end{figure}
 
 The direction of easiest discovery is not the physical source direction of

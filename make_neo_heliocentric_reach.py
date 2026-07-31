@@ -7,8 +7,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 import numpy as np
+from matplotlib.font_manager import FontProperties
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
+from matplotlib.textpath import TextPath
 
 import slitless_etc as etc
 from neo_population_model import hg_phase_function
@@ -95,6 +97,60 @@ def detected_mask(diameter_m, geometry, field_of_regard, limiting_magnitude):
     return field_of_regard & (apparent_magnitude <= limiting_magnitude)
 
 
+def earth_centered_reach_au(limiting_magnitude):
+    """Return the favorable maximum Earth-centered reach by diameter."""
+    theta = np.linspace(-np.pi, np.pi, 901)
+    earth_distance_au = np.geomspace(0.001, 12.0, 3000)
+    theta_grid, distance_grid = np.meshgrid(
+        theta,
+        earth_distance_au,
+        indexing="ij",
+    )
+    x_grid = distance_grid * np.cos(theta_grid)
+    y_grid = distance_grid * np.sin(theta_grid)
+
+    observer_x = L2_RADIUS_AU - EARTH_ORBIT_AU
+    delta_au = np.hypot(x_grid - observer_x, y_grid)
+    heliocentric_distance_au = np.hypot(x_grid + EARTH_ORBIT_AU, y_grid)
+    delta_safe = np.maximum(delta_au, 1.0e-8)
+    radius_safe = np.maximum(heliocentric_distance_au, 1.0e-8)
+
+    asteroid_to_sun_x = -EARTH_ORBIT_AU - x_grid
+    asteroid_to_sun_y = -y_grid
+    asteroid_to_l2_x = observer_x - x_grid
+    asteroid_to_l2_y = -y_grid
+    phase_cosine = (
+        asteroid_to_sun_x * asteroid_to_l2_x
+        + asteroid_to_sun_y * asteroid_to_l2_y
+    ) / (radius_safe * delta_safe)
+    phase_deg = np.degrees(np.arccos(np.clip(phase_cosine, -1.0, 1.0)))
+    phase_function = hg_phase_function(phase_deg)
+
+    elongation_cosine = -(x_grid - observer_x) / delta_safe
+    elongation_deg = np.degrees(
+        np.arccos(np.clip(elongation_cosine, -1.0, 1.0))
+    )
+    accessible = (
+        (elongation_deg >= ELONGATION_MIN_DEG)
+        & (heliocentric_distance_au >= 0.08)
+    )
+    geometry_term = (
+        5.0 * np.log10(radius_safe * delta_safe)
+        - 2.5 * np.log10(np.maximum(phase_function, 1.0e-12))
+    )
+
+    reach = {}
+    for diameter_m in DIAMETERS_M:
+        absolute_magnitude = 5.0 * np.log10(
+            1329.0 / ((diameter_m / 1000.0) * np.sqrt(ALBEDO))
+        )
+        detected = accessible & (
+            absolute_magnitude + geometry_term <= limiting_magnitude
+        )
+        reach[diameter_m] = float(np.max(distance_grid[detected]))
+    return reach
+
+
 def add_orbit_guides(axis, theta):
     """Draw Solar System orbit guides behind the detection contours."""
     axis.fill_between(
@@ -149,8 +205,22 @@ def add_orbit_guides(axis, theta):
 
 def add_arc_text(axis, text, radius_au, color, span_deg):
     """Place text along an orbit arc centered on the nine-o'clock direction."""
+    font_size = 9.0
+    font_properties = FontProperties(family="DejaVu Sans", weight="bold")
     glyphs = list(text)
-    weights = np.array([0.45 if glyph == " " else 1.0 for glyph in glyphs])
+    glyph_widths = []
+    for glyph in glyphs:
+        if glyph == " ":
+            glyph_widths.append(0.38 * font_size)
+            continue
+        bounds = TextPath(
+            (0.0, 0.0),
+            glyph,
+            size=font_size,
+            prop=font_properties,
+        ).get_extents()
+        glyph_widths.append(max(bounds.width, 0.20 * font_size))
+    weights = np.asarray(glyph_widths)
     cumulative = np.cumsum(weights) - 0.5 * weights
     offsets = (cumulative / weights.sum() - 0.5) * np.radians(span_deg)
     angles = np.pi + offsets[::-1]
@@ -167,7 +237,7 @@ def add_arc_text(axis, text, radius_au, color, span_deg):
             rotation=rotation,
             rotation_mode="anchor",
             color=color,
-            fontsize=9.0,
+            fontsize=font_size,
             weight="bold",
             path_effects=[
                 path_effects.withStroke(linewidth=2.8, foreground="white")
@@ -243,24 +313,84 @@ def add_solar_system_labels(axis):
     add_arc_text(
         axis,
         "Mars orbit  1.52 au",
-        MARS_ORBIT_AU,
+        1.72,
         "#B6462E",
-        span_deg=72,
+        span_deg=49,
     )
     add_arc_text(
         axis,
         "Main belt  2.1 to 3.3 au",
         2.60,
         "#645647",
-        span_deg=88,
+        span_deg=60,
     )
     add_arc_text(
         axis,
         "Jupiter orbit  5.20 au",
-        JUPITER_ORBIT_AU,
+        5.85,
         "#68468C",
-        span_deg=75,
+        span_deg=48,
     )
+
+
+def add_earth_reach_inset(figure, reach_by_diameter):
+    """Add a compact log-scale summary that supports warning-time estimates."""
+    inset = figure.add_axes((0.028, 0.295, 0.225, 0.285))
+    y_positions = np.arange(len(DIAMETERS_M))
+    for y_position, diameter_m in zip(y_positions, DIAMETERS_M):
+        reach_au = reach_by_diameter[diameter_m]
+        color = DIAMETER_COLORS[diameter_m]
+        inset.hlines(
+            y_position,
+            0.1,
+            reach_au,
+            color=color,
+            linewidth=2.4,
+            zorder=2,
+        )
+        inset.scatter(
+            reach_au,
+            y_position,
+            s=30,
+            color=color,
+            edgecolor="white",
+            linewidth=0.7,
+            zorder=3,
+        )
+        inset.annotate(
+            f"{reach_au:.2f}",
+            (reach_au, y_position),
+            xytext=(4, 0),
+            textcoords="offset points",
+            ha="left",
+            va="center",
+            fontsize=7.4,
+            color="#2E3944",
+        )
+
+    inset.set_xscale("log")
+    inset.set_xlim(0.1, 10.0)
+    inset.set_ylim(-0.65, len(DIAMETERS_M) - 0.35)
+    inset.set_xticks((0.1, 0.3, 1.0, 3.0, 10.0))
+    inset.set_xticklabels(("0.1", "0.3", "1", "3", "10"), fontsize=7.2)
+    inset.set_yticks(y_positions)
+    inset.set_yticklabels(
+        ("5 m", "10 m", "20 m", "50 m", "140 m", "1 km"),
+        fontsize=7.4,
+    )
+    inset.set_title(
+        "Favorable Earth-centered reach [au]",
+        fontsize=8.8,
+        weight="bold",
+        pad=5,
+    )
+    inset.set_xlabel("Maximum distance from Earth", fontsize=7.5, labelpad=2)
+    inset.grid(axis="x", color="#8E99A5", alpha=0.25, linewidth=0.6)
+    inset.tick_params(axis="both", length=2.5, width=0.6, pad=2)
+    for spine in inset.spines.values():
+        spine.set_color("#AEB7C0")
+        spine.set_linewidth(0.8)
+    inset.set_facecolor("white")
 
 
 def main():
@@ -287,6 +417,7 @@ def main():
         snr=5.0,
     )
     limiting_magnitude = FIGURE_C8_LIMITING_MAGNITUDE
+    earth_reach = earth_centered_reach_au(limiting_magnitude)
 
     figure, axis = plt.subplots(
         1,
@@ -336,6 +467,7 @@ def main():
         zorder=8,
     )
     add_solar_system_labels(axis)
+    add_earth_reach_inset(figure, earth_reach)
 
     axis.set_theta_zero_location("E")
     axis.set_theta_direction(1)
@@ -363,12 +495,6 @@ def main():
             rf"$t_{{\rm exp}}={EXPOSURE_S:.0f}\,\mathrm{{s}}$",
             rf"$V_{{AB,5\sigma}}={limiting_magnitude:.2f}$",
             r"observer at Sun--Earth L2",
-            "",
-            "Orbit guides",
-            rf"Earth  {EARTH_ORBIT_AU:.2f} au",
-            rf"Mars  {MARS_ORBIT_AU:.2f} au",
-            rf"main belt  {MAIN_BELT_INNER_AU:.1f} to {MAIN_BELT_OUTER_AU:.1f} au",
-            rf"Jupiter  {JUPITER_ORBIT_AU:.2f} au",
         )
     )
     figure.text(
@@ -460,6 +586,13 @@ def main():
         f"Figure C.8 reference limit is {limiting_magnitude:.3f} AB mag. "
         f"The current local ETC returns {current_etc_limiting_magnitude:.3f} "
         "AB mag for the same exposure."
+    )
+    print(
+        "Maximum Earth-centered reach: "
+        + ", ".join(
+            f"{diameter_m:g} m = {earth_reach[diameter_m]:.3f} au"
+            for diameter_m in DIAMETERS_M
+        )
     )
 
 
