@@ -164,20 +164,26 @@ In summary, the mission design guidelines for the 3.5-meter Segmented-Mirror Rob
 
 \section{Telescope Overview}
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=1.0\linewidth,height=0.45\textheight,keepaspectratio]{book_media/image1.png}
-\end{figure}
+Figure~\ref{fig:mission-architecture-overview} summarizes the telescope and
+its ultraviolet, visible, and infrared instrument suite. The baseline
+parameters are listed in
+Table~\ref{tab:baseline-telescope-specifications}.
 
-Fig. 1. Schematic diagram of the 3.5-meter segmented-mirror robotic space telescope and its UV, VIS, and IR instruments
-\par
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-\textbf{Table 1}. Basic Specifications of the 3.5 m Segmented-Mirror Robotic Space Telescope
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1.0\linewidth,height=0.45\textheight,keepaspectratio]{book_media/image1.png}
+  \caption{Schematic diagram of the 3.5-meter segmented-mirror robotic space
+  telescope and its ultraviolet, visible, and infrared instruments.}
+  \label{fig:mission-architecture-overview}
+\end{figure}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3336}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1083}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5581}}@{}}
+\caption{Basic specifications of the 3.5-meter segmented-mirror robotic
+space telescope.}
+\label{tab:baseline-telescope-specifications}\\
 \toprule\noalign{}
 \multicolumn{2}{@{}>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4419} + 2\tabcolsep}}{%
 \begin{minipage}[b]{\linewidth}\raggedright
@@ -231,10 +237,6 @@ At the core of the observatory is a 3.5-meter-class segmented primary mirror and
 
 The scientific payload is centered on wide-field imaging, precision time-series observations, and spectroscopic measurements. The entire observatory is designed around the capability for rapid target acquisition and the execution of highly automated observing sequences. As a result, the mission functions not merely as a single scientific instrument, but as an integrated observational platform capable of supporting a broad range of astrophysical investigations.
 
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-\vspace{\baselineskip}
 \section{Spacecraft Bus}\label{spacecraft-bus}
 
 The scientific payload is integrated with a proven spacecraft bus that provides propulsion, attitude and orbit control, power generation and distribution, communications, and command and data handling functions. The bus design is based on technological heritage accumulated through previous space missions requiring deep-space operations and highly stable pointing performance. It incorporates the reliability and redundancy necessary for long-duration mission operations.
@@ -255,20 +257,26 @@ The optical design is optimized to provide uniform image quality across a wide f
 
 The overall OTA design is intended to achieve three key objectives simultaneously: near-diffraction-limited optical performance, long-term thermal stability, and rapid thermal settling following target repointing maneuvers. These capabilities are essential for supporting both precision time-domain observations and long-duration scientific monitoring programs while maintaining consistent observational quality throughout the mission lifetime.
 
-\vspace{\baselineskip}
-\begin{figure}[htbp]\centering
+Figures~\ref{fig:kasi-segment-phasing} and
+\ref{fig:kasi-segment-integration} show the demonstrated KASI segment
+phasing and integration hardware.
+
+\begin{figure}[htbp]
+  \centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image2.png}
+  \caption{Demonstration of segmented-mirror phasing technology developed
+  by KASI.}
+  \label{fig:kasi-segment-phasing}
 \end{figure}
 
-Fig. 2. Demonstration of segmented mirror phasing technology developed by KASI
-\vspace{\baselineskip}
-
-\begin{figure}[htbp]\centering
+\begin{figure}[htbp]
+  \centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image3.jpeg}
+  \caption{Attachment of fabricated mirror segments to the support
+  structure, installation of actuators and micrometers, and alignment and
+  control using an interferometer.}
+  \label{fig:kasi-segment-integration}
 \end{figure}
-
-Fig. 3. Attachment of fabricated segmented mirrors to the support structure, installation of actuators and micrometers, and alignment/control using an interferometer
-\vspace{\baselineskip}
 
 \section{Wide-Field Imaging and Time-Domain Observation Instrument}\label{wide-field-imaging-and-time-domain-observation-instrument}
 
@@ -280,13 +288,16 @@ The instrument is optimized for high-precision photometry through the minimizati
 
 \section{Spectroscopic Instruments}\label{spectroscopic-instruments}
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image4.png}
-\end{figure}
+The conceptual instrument arrangement is shown in
+Figure~\ref{fig:spectrograph-concept}.
 
-Fig. 4. Conceptual illustration of the spectroscopic instrument(AI)
-\par
-\vspace{\baselineskip}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image4.png}
+  \caption{Conceptual illustration of the spectroscopic instrument. This is
+  an AI-generated design study.}
+  \label{fig:spectrograph-concept}
+\end{figure}
 
 The spectroscopic instrument suite is designed to provide continuous wavelength coverage across the optical and near-infrared regimes, with an emphasis on high-precision spectroscopy at low- to moderate-spectral resolution. These instruments support the physical characterization of astronomical sources required for time-domain astronomy, compact-object studies, and galaxy evolution research.
 
@@ -310,11 +321,16 @@ This approach ensures that the mission is not limited solely to its near-term sc
 
 In summary, the mission does not impose an exoplanet coronagraph as a core requirement of the initial science payload, while strategically preserving the architectural flexibility needed to accommodate future expansion toward high-contrast observations. This represents a balanced design choice that manages mission risk without prematurely closing off future scientific opportunities.
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image5.png}
-\end{figure}
+Figure~\ref{fig:roman-coronagraph} shows the Nancy Grace Roman Space
+Telescope coronagraph as a reference implementation.
 
-Fig. 5. Exoplanet coronagraph of the Nancy Grace Roman Space Telescope (Vanessa et al. 2023)
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image5.png}
+  \caption{Exoplanet coronagraph of the Nancy Grace Roman Space Telescope
+  from Vanessa et al. (2023).}
+  \label{fig:roman-coronagraph}
+\end{figure}
 
 \section{Summary of Design Performance and Expandability}\label{summary-of-design-performance-and-expandability}
 
@@ -453,12 +469,16 @@ In conclusion, a 3.5 m space telescope would make a unique and transformative co
 
 \subsection{Analyzing Circumstellar Material Around High-Density Compact Objects}\label{analyzing-circumstellar-material-around-high-density-compact-objects}
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image6.jpeg}
-\end{figure}
+The white-dwarf system considered in this section is illustrated in
+Figure~\ref{fig:white-dwarf-concept}.
 
-Fig. 6. White dwarf(AI)
-\vspace{\baselineskip}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image6.jpeg}
+  \caption{Conceptual illustration of a white dwarf. This is an
+  AI-generated design study.}
+  \label{fig:white-dwarf-concept}
+\end{figure}
 
 The distribution and physical properties of circumstellar material around high-density compact objects, particularly white dwarfs, preserve valuable records of planetary systems that survived the final stages of stellar evolution. Because white dwarfs possess extremely strong gravitational fields, the detection of metal accretion onto their surfaces indicates the presence of material that remains in stable orbit around the star. This material is generally believed to originate from remnant planetary systems, such as asteroid belts, minor planets, or disrupted planetary bodies that survived the host star's evolution [41,42].
 
@@ -524,12 +544,15 @@ The study of the equation of state (EOS) and particle interactions in dense matt
 
 On the theoretical side, a wide range of approaches are employed to model dense matter. Traditional methods based on effective nucleon interaction potentials---including the Skyrme, Gogny, and Relativistic Mean Field (RMF) frameworks---are extensively used alongside approaches derived more directly from quantum chromodynamics (QCD). Among these, the RMF model describes strong interactions through the exchange of meson fields and has become one of the most widely used tools for calculating neutron star mass--radius relations and other macroscopic properties of compact objects. Ongoing comparisons between effective nuclear models and QCD-based approaches play a crucial role in reducing uncertainties in the EOS of dense matter.
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image7.png}
-\end{figure}
+The nucleosynthetic products associated with compact-star collisions are
+summarized in Figure~\ref{fig:compact-object-nucleosynthesis}.
 
-Fig. 7. Elements produced in collisions of compact stars
-\vspace{\baselineskip}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image7.png}
+  \caption{Elements produced in collisions of compact stars.}
+  \label{fig:compact-object-nucleosynthesis}
+\end{figure}
 
 \subsubsection{Contributions of a 3.5 m Space Telescope}
 
@@ -559,12 +582,18 @@ Although thousands of exoplanets have been discovered to date, only a relatively
 
 In 2025, reports indicated that the James Webb Space Telescope (JWST) directly detected a gas-giant exoplanet around TWA 7 using a coronagraph developed in France. This object is considered one of the lowest-mass planets ever detected through direct imaging, with a mass comparable to that of Saturn. The result demonstrates that high-contrast imaging technologies are steadily extending their capabilities toward lower-mass planets and targets located at smaller orbital separations from their host stars.
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image8.png}
-\end{figure}
+Figure~\ref{fig:hr8799-alpha-centauri-simulation} compares a demonstrated
+direct-imaging result with the proposed mission concept.
 
-Fig. 8. Keck observations of HR 8799 (left) and an AI-simulated image of an exoplanet located at 1 AU from Alpha Centauri A as expected to be observed with a 3.5-meter segmented-mirror space telescope
-\vspace{\baselineskip}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image8.png}
+  \caption{Keck observations of HR 8799 in the left panel and an
+  AI-simulated image of an exoplanet at 1\,au from Alpha Centauri A in the
+  right panel. The simulation represents an expected observation with the
+  3.5-meter segmented-mirror space telescope.}
+  \label{fig:hr8799-alpha-centauri-simulation}
+\end{figure}
 
 \subsubsection{Direct Imaging Potential of a 3.5-Meter Space Telescope}
 
@@ -586,7 +615,6 @@ A 3.5-meter-class space telescope can significantly expand the applicability of 
 
 Despite these advantages, significant technical challenges remain for achieving high-performance direct imaging with a 3.5-meter-class space telescope. Wavefront control within the coronagraph system requires extremely precise optical alignment and stability. Achieving deeper contrast levels and reducing the inner working angle to access planets at smaller angular separations demand increasingly sophisticated optical architectures, wavefront-sensing techniques, and post-processing algorithms. These challenges have motivated recent theoretical investigations into advanced approaches, including quantum-information-based signal processing and methods that explore the fundamental quantum limits of high-contrast imaging [65].
 
-\vspace{\baselineskip}
 \textbf{Future Prospects and Challenges}
 
 Direct imaging is expected to advance along several important directions in the coming decades:
@@ -640,12 +668,16 @@ Future high-performance observatories, including a \textbf{3.5-meter-class space
 The study of \textbf{exoplanet habitability} is one of the most challenging and significant areas of modern astronomy. This field extends beyond merely confirming the existence of exoplanets and seeks to determine whether a planet possesses the physical, chemical, and environmental conditions necessary to support or sustain life. Habitability assessments focus on several key factors, including the potential presence of liquid water on the planetary surface, the existence of stable temperature and pressure conditions, and the detectability of atmospheric \textbf{biosignatures} that may indicate biological activity [71,72].
 
 
-\begin{figure}[htbp]\centering
-  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image9.png}
-\end{figure}
+The classical Solar System habitable zone is illustrated in
+Figure~\ref{fig:solar-system-habitable-zone}.
 
-Fig. 9. Schematic diagram of the habitable zone in the Solar System(AI)
-\vspace{\baselineskip}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image9.png}
+  \caption{Schematic diagram of the habitable zone in the Solar System. This
+  is an AI-generated design study.}
+  \label{fig:solar-system-habitable-zone}
+\end{figure}
 
 \subsubsection{Habitability and the Habitable Zone}
 
@@ -722,19 +754,27 @@ The surveillance of \textbf{Near-Earth Objects (NEOs)} is a critical area of spa
 
 NEO surveillance using space-based telescopes offers significant advantages over ground-based observations. Ground observatories are constrained by atmospheric scattering, the day--night cycle, weather conditions, and seasonal visibility limitations, all of which directly affect observational efficiency. In contrast, space-based platforms operate free from these restrictions and can provide more continuous and comprehensive sky coverage. In particular, telescopes with high \textbf{near infrared (NIR) sensitivity} and wide-field survey capabilities are especially effective for detecting and tracking NEOs through their \textbf{thermal emission}, enabling the discovery of objects that may be difficult to detect in reflected visible light [13].
 
-\begin{figure}[htbp]\centering
+Figures~\ref{fig:known-neo-distribution} and
+\ref{fig:owl-observatory} show the current NEO census context and the KASI
+ground-based surveillance capability.
+
+\begin{figure}[htbp]
+  \centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image10.png}
+  \caption{Visualization of the distribution of more than 37,000 known
+  near-Earth objects using NASA's Eyes on Asteroids. This is an AI-generated
+  design study.}
+  \label{fig:known-neo-distribution}
 \end{figure}
 
-Fig. 10. Visualization of the distribution of more than 37,000 currently known near-Earth objects using NASA's Eyes on Asteroids(AI)
-\vspace{\baselineskip}
-
-\begin{figure}[htbp]\centering
+\begin{figure}[htbp]
+  \centering
   \includegraphics[width=1.00\linewidth,height=0.5\textheight,keepaspectratio]{book_media/image11.jpeg}
+  \caption{KASI's Optical Wide-field Patrol system for space-object
+  surveillance in the left panel and the OWL observatory in Mongolia in the
+  right panel.}
+  \label{fig:owl-observatory}
 \end{figure}
-
-Fig. 11. KASI's Optical Wide-field Patrol (OWL) system for space object surveillance (left). The right panel shows the OWL observatory in Mongolia.
-\vspace{\baselineskip}
 
 \subsubsection{Scientific Motivation for Near-Earth Object Surveillance}
 
@@ -936,15 +976,29 @@ Several orbital candidates were evaluated for the 3.5-meter segmented-mirror rob
 
 These orbital environments have already been well demonstrated by previous space missions and are expected to provide high downlink capacity and excellent spacecraft stability. They offer access to nearly the entire sky, while their stable orbital characteristics minimize the need for station-keeping maneuvers, thereby reducing propellant consumption and extending the operational lifetime of the mission. In particular, the L2 orbit requires only minimal station-keeping and does not necessitate a dedicated disposal maneuver at the end of the mission.
 
-The left panel of Figure 12 does not explicitly represent the characteristics of a Sun-synchronous orbit (SSO), such as its orbit--Sun geometry. Instead, it is more accurately interpreted as a map of the annual observable days for a space telescope operating under a solar avoidance angle constraint of 60°, regardless of its specific orbit. The Field of Regard was calculated by counting the number of days during which the angular separation between a target and the Sun is greater than or equal to 60°. Under this condition, the theoretical minimum visibility is approximately 243 days per year for targets near the ecliptic plane, while the maximum visibility reaches 365 days per year for targets near the ecliptic poles. The right panel shows the corresponding result for an observatory operating at the Sun--Earth L2 point, yielding essentially the same visibility distribution.
+The left panel of Figure~\ref{fig:annual-field-of-regard} does not explicitly
+represent the orbit--Sun geometry of a Sun-synchronous orbit (SSO). It is
+more accurately interpreted as a map of the annual observable days for a
+space telescope operating with a solar avoidance angle of $60^\circ$,
+regardless of its specific orbit. The field of regard was calculated by
+counting the days when the angular separation between a target and the Sun
+is at least $60^\circ$. The theoretical visibility ranges from approximately
+243 days per year near the ecliptic plane to 365 days per year near the
+ecliptic poles. The right panel gives the corresponding result for a
+Sun--Earth L2 observatory and yields essentially the same distribution.
 
 
-\begin{figure}[htbp]\centering
+\begin{figure}[htbp]
+  \centering
   \includegraphics[width=0.85\linewidth,height=0.42\textheight,keepaspectratio]{book_media/image12.png}
+  \caption{Annual field of regard for the 3.5-meter space telescope under a
+  $60^\circ$ solar avoidance constraint. The left panel shows the 700\,km
+  Sun-synchronous-orbit case and the right panel shows the Sun--Earth L2
+  case. The color scale gives the annual observable time from 243 days near
+  the ecliptic plane to 365 days near the ecliptic poles. This is an
+  AI-generated design study.}
+  \label{fig:annual-field-of-regard}
 \end{figure}
-
-Fig. 12. The above figure illustrates the field of regard of the 3.5-meter space telescope for operation in a 700 km Sun-synchronous orbit (SSO) (left) and at the Sun--Earth L2 point (right). The color bar represents the annual number of observable days corresponding to each color, ranging from 243 days near the ecliptic plane to 365 days near the ecliptic poles for both orbital configurations(AI).
-\vspace{\baselineskip}
 
 \section{Operations Concept}\label{operations-concept}
 
@@ -1157,4 +1211,3 @@ This work was supported by the 2026 Korea Astronomy and Space Science Institute 
 83. Vokrouhlický D., Bottke W.F., Chesley S.R., Scheeres D.J., Statler T.S., The Yarkovsky and YORP Effects, In: Michel P., DeMeo F.E., Bottke W.F. (eds.), Asteroids IV, University of Arizona Press, Tucson, AZ, pp. 509--531 (2015)
 
 84. Harris AW, D\textquotesingle Abramo G., The population of near-Earth asteroids, Icarus 257:302. (2015).
-
