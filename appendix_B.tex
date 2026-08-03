@@ -1,5 +1,6 @@
 \chapter{Exoplanet Science with a Coronagraph}\label{app:exoplanets}
 
+\vspace{8mm}
 \begin{leadbox}[title=Summary]{teal}
 \textbf{This key science defines the exoplanet science program that a
 coronagraphic high-contrast module adds to the \facility.}
@@ -7,9 +8,10 @@ The mission baseline is optimized for time-domain and multi-messenger
 astronomy. The optical design nevertheless preserves the optical path,
 wavefront-sensing capacity, and operations software needed to install a
 coronagraph. With that module the telescope becomes a direct-imaging
-facility for the solar neighborhood. Its diffraction limit sets a
-reflected-light horizon of roughly 10--15\,pc for planets at 1\,AU and
-roughly 50--80\,pc for Jupiter analogs. Within those horizons the
+facility for the solar neighborhood. 
+The observing strategy gives priority to the nearest stellar systems, recognizing that they provide the most accessible laboratories for planetary exploration and the most likely destinations of future interstellar missions. 
+By establishing a systematic observational census of our nearest stellar neighbors, the mission creates a lasting reference for both exoplanet science and future space exploration.
+Its diffraction limit sets a reflected-light horizon of roughly 10--15\,pc for planets at 1\,AU and roughly 50--80\,pc for Jupiter analogs. Within those horizons the
 telescope can image nearby giant planets, obtain reflected-light spectra
 of their atmospheres, survey young systems and circumstellar disks, and
 feed the habitability and biosignature programs that flagship missions
@@ -20,6 +22,149 @@ of stellar magnetic activity. This key science follows the exoplanet
 science case of the mission white paper and anchors every quoted number
 to the published literature or to the NASA Exoplanet Archive.
 \end{leadbox}
+\vspace{8mm}
+
+\section{Exploring the Nearest Stellar Systems}
+\label{sec:horizon}
+
+Throughout the history of exploration, humanity has advanced step by step, beginning
+with the nearest accessible destinations before expanding toward more distant frontiers. This principle remains equally relevant to astronomical exploration beyond the Solar System. Rather than selecting targets solely according to known planetary systems or observational convenience, this mission adopts a distance-prioritized strategy in which the nearest stellar systems are explored first \cite{Henry2018,Gaia2022}. 
+Within the limited observing lifetime of the mission, the primary exploration program is therefore focused on the 20 nearest stellar components, belonging to 13 stellar systems, providing a complete and repeatedly observed benchmark sample of the Solar neighborhood. Beyond their exceptional scientific value for direct imaging of exoplanets, these nearby stellar systems are also likely to remain the highest-priority destinations for future exploration beyond the Solar System \cite{Lubin2016}. Establishing a
+comprehensive observational legacy for these neighboring stars therefore represents
+both an immediate scientific objective and a long-term investment in humanity's future
+exploration of interstellar space.
+
+\subsection{Scientific Rationale for Exploring the Nearest Stars}
+The nearest stellar systems provide the most favorable environment for the direct 
+imaging of exoplanets. At a given orbital radius, planets around nearby stars exhibit larger angular separations, allowing observations closer to their host stars within the same inner working angle of the coronagraph \cite{Traub2010}. 
+Their proximity also results in higher photon fluxes, enabling improved signal-to-noise ratios and more efficient spectroscopic characterization \cite{LUVOIR2019}. 
+Furthermore, repeated observations over the mission lifetime allow orbital motion, common proper motion, and temporal variability to be measured with significantly higher precision than for more distant targets \cite{Macintosh2015}. Consequently, nearby stars maximize the scientific return of a
+high-contrast imaging mission by providing the best opportunity not only to detect
+exoplanets but also to characterize their physical and dynamical properties
+\cite{LUVOIR2019}.
+
+Most direct-imaging surveys inevitably introduce target-selection biases by prioritizing stars with known planets, favorable stellar properties, or expected high detection probabilities \cite{Nielsen2019}. 
+While such strategies maximize the likelihood of discovery, they do not necessarily provide a representative view of the planetary systems in the Solar neighborhood. In contrast, a distance-ranked sample minimizes prior selection effects by adopting proximity as the sole primary criterion \cite{Henry2018}. 
+This approach naturally includes stars of different spectral types, ages, multiplicities, and planetary architectures, regardless of whether planets have already been detected \cite{Henry2018}. 
+Such a distance-ranked nearest-neighbor strategy ensures that both detections and non-detections contribute equally to constraining the diversity and occurrence of nearby planetary systems \cite{Bowler2016}.
+
+A complete survey of every nearby star is beyond the scope of a single mission. Direct imaging requires repeated observations to confirm planetary candidates, reject background contaminants, measure orbital motion, and obtain spectroscopic follow-up \cite{Currie2022}. 
+These requirements become even more demanding for multiple stellar systems \cite{HabEx2020}. 
+The primaryexploration sample is therefore defined as the 20 nearest stellar components belonging to 13 stellar systems. This sample size represents a practical
+balance between exploration and scientific depth: it is sufficiently small to permit repeated and comprehensive observations throughout the mission, while sufficiently diverse to include single stars, binaries, hierarchical multiple systems, and a broad range of stellar types. Rather than defining a physical boundary, the nearest 20 stars establish a mission-scale benchmark for systematic exploration of the Solar neighborhood.
+
+The nearest stellar sample provides an observational benchmark that extends well beyond the discovery of individual exoplanets. Its proximity enables sensitive searches for long-period giant planets, circumstellar debris structures, and faint companions that remain inaccessible around more distant stars \cite{Bowler2016}. 
+When combined with radial velocity, astrometric, and transit observations, direct imaging can establish comprehensive architectures of nearby planetary systems, including orbital geometry and dynamical evolution \cite{LUVOIR2019}. 
+Equally important, the absence of detectable planets around individual stars provides quantitative constraints on planetary occurrence rates and formation scenarios 
+\cite{Bowler2016}. 
+The resulting dataset will therefore serve as the definitive observational reference for the nearest planetary systems and as a calibration sample for larger statistical surveys extending to greater distances \cite{LUVOIR2019}.
+
+The primary exploration program is designed to balance the goals of systematic exploration and detailed scientific investigation \cite{LUVOIR2019,HabEx2020}. 
+Rather than allocating observing time exclusively to either a few well-known planetary systems or a large statistical sample, the mission adopts a tiered strategy.
+The nearest 20 stellar components constitute the highest-priority exploration sample, receiving repeated observations throughout the mission to establish the most complete observational legacy of the Solar neighborhood. This foundation is complemented by an extended survey of additional nearby stars and specialized observing programs targeting known planetary systems, young stars, and debris disks
+\cite{LUVOIR2019,HabEx2020}. 
+Such a strategy combines the completeness expected of an exploration mission with the statistical and astrophysical investigations required for modern exoplanet science.
+
+\subsection{The Primary Sample of the 20 Nearest Stellar Components}
+
+\begin{table*}[ht]
+\small
+\begin{tabularx}{\textwidth}{l l c c X c}
+\hline
+\textbf{Stellar System} &
+\textbf{Star} &
+\textbf{Distance} &
+\textbf{Spectral} &
+\textbf{Known Planets} &
+\textbf{Separation} \\
+&
+&
+\textbf{(pc)} &
+\textbf{Type} &
+&
+\textbf{($^{\prime\prime}$)}\\
+\hline
+Alpha Centauri & Proxima Cen & 1.301 & M5.5 Ve & b, d (c candidate) & $>$10000 \\
+Alpha Centauri & $\alpha$ Cen A & 1.338 & G2 V & None confirmed & 17.5 \\
+Alpha Centauri & $\alpha$ Cen B & 1.338 & K1 V & None confirmed & 17.5 \\
+Barnard's Star & Barnard & 1.826 & M4 V & b, c, d, e & --- \\
+Wolf 359 & Wolf 359 & 2.386 & M6 V & None confirmed & --- \\
+Lalande 21185 & GJ 411 & 2.547 & M2 V & b, c & --- \\
+Sirius & Sirius A & 2.637 & A1 V & None confirmed & 7.5 \\
+Sirius & Sirius B & 2.637 & DA2 & None confirmed & 7.5 \\
+GJ 65 & BL Ceti & 2.687 & M5.5 Ve & Candidate & 2.1 \\
+GJ 65 & UV Ceti & 2.687 & M6 Ve & Candidate & 2.1 \\
+Ross 154 & Ross 154 & 2.973 & M3.5 Ve & None confirmed & --- \\
+Ross 248 & Ross 248 & 3.156 & M5.5 V & None confirmed & --- \\
+$\epsilon$ Eridani & $\epsilon$ Eri & 3.216 & K2 V & b & --- \\
+Lacaille 9352 & GJ 887 & 3.289 & M1 V & b, c & --- \\
+Ross 128 & Ross 128 & 3.374 & M4 V & b & --- \\
+EZ Aquarii & Aa & 3.401 & M5 V & None confirmed & 0.009 \\
+EZ Aquarii & Ab & 3.401 & M5 V & None confirmed & 0.009 \\
+EZ Aquarii & B & 3.401 & M5 V & None confirmed & 0.36$^{a}$ \\
+61 Cygni & A & 3.497 & K5 V & None confirmed & 24 \\
+61 Cygni & B & 3.497 & K7 V & None confirmed & 24 \\
+\hline
+\end{tabularx}
+\vspace{2mm}
+\caption{
+The 20 nearest stars to the Sun selected as the primary exploration sample of the mission.
+The sample contains 20 stellar components belonging to 13 stellar systems.
+Distances and spectral classifications were compiled from the volume-complete nearby-star census \cite{reyle21}
+and Gaia DR3 \cite{gaiadr3}.
+Planetary information follows the NASA Exoplanet Archive.
+For multiple systems, the listed separation gives the characteristic angular separation to the nearest stellar companion.
+}
+\label{tab:nearest20}
+\footnotesize
+$^{a}$ For hierarchical multiple systems, the listed separation refers to the angular separation from the nearest stellar companion.
+\end{table*}
+
+The primary target sample consists of the 20 nearest stellar components to the Sun,
+which belong to 13 stellar systems \cite{Henry2018,Gaia2022}. 
+The targets were selected strictly in order of distance, without excluding stars on the basis of spectral type, stellar activity, multiplicity, or the prior detection of planets. Consequently, the outer boundary of the sample lies near 3.5 pc, at the distance of the 61 Cygni system, but this distance is a result of the 20-star selection rather than an independently imposed volume limit. Stellar distances, spectral classifications, and system membership were compiled from modern nearby-star catalogues and Gaia astrometry \cite{Henry2018,Gaia2022,Golovin2023}, 
+while the status of confirmed and candidate planets was assessed using the NASA Exoplanet Archive and the relevant discovery literature \cite{Akeson2013}. 
+For multiple systems, angular separations were adopted from published orbital solutions or representative projected separations \cite{Hartkopf2001}.
+Because these separations vary with orbital phase, the values listed in Table~\ref{tab:nearest20} should be interpreted as characteristic angular scales for planning coronagraphic observations rather than fixed instantaneous separations.
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=0.82\textwidth]{20nearist_projected.png}
+\caption{Spatial distribution of the 20 nearest stellar components to the Sun projected onto the Galactic plane. The positions of the 20 nearest stellar components are shown in Galactic Cartesian coordinates, assuming the Sun at the origin. The map is viewed from the North Galactic Pole, with the Galactic center ($\ell=0^\circ$) at the top, Galactic longitude $\ell=90^\circ$ to the left, $\ell=180^\circ$ at the bottom, and $\ell=270^\circ$ to the right. Concentric circles indicate heliocentric distances of 1, 2, 3, and 3.5 pc. The coordinates were calculated from the heliocentric distance and Galactic longitude and latitude of each star. Components of multiple stellar systems are plotted individually, although their separations are too small to be resolved on this parsec-scale map.}
+\label{fig:faceon}
+\end{figure}
+
+
+A substantial fraction of the sample can be approached using conventional single-star coronagraphic observing strategies \cite{Guyon2006}. 
+Isolated systems such as Barnard's Star, Wolf 359, Lalande 21185, Ross 154, Ross 248, $\epsilon$ Eridani, Lacaille 9352, and Ross 128 are not known to contain bright stellar companions close enough to generate a second dominant diffraction pattern within the high-contrast search region. Proxima Centauri is gravitationally associated with Alpha Centauri AB, but its very wide separation allows it to be treated as an effectively independent coronagraphic target \cite{Beichman2020}. 
+These systems are therefore comparatively favorable with respect to stellar multiplicity, although their overall detectability still depends on stellar brightness, activity, planetary angular separation, dust emission, and the contrast between the star and its planets. In particular, the predominance of M dwarfs in the
+nearest-star sample offers favorable planet-to-star flux ratios in some observing bands, but their compact habitable zones and frequent magnetic activity introduce separate limitations \cite{Shields2016}. 
+Thus, “favorable” in this context refers primarily to the absence of contaminating light from a nearby stellar companion, rather than to uniformly high sensitivity to all classes of planets.
+
+Several high-priority targets are spatially resolved multiple systems whose stellar components can, in principle, be observed separately. Alpha Centauri A and B, Sirius A and B, and 61 Cygni A and B have angular separations larger than the nominal inner working angle of the coronagraph. Nevertheless, a resolved companion does not cease to be an important source of contamination \cite{Guyon2006}. 
+Light from the off-axis star can generate diffraction features, scattered light, detector dynamic-range requirements, and time-variable speckle structures across the planetary discovery region \cite{Sirbu2017}. 
+The severity of these effects depends on the instantaneous projected separation, position angle, brightness ratio, observing wavelength, and optical field of view. The relatively wide 61 Cygni system is expected to be the least demanding of these resolved binaries, whereas Alpha Centauri and Sirius require more careful control of companion light because of their high apparent brightness and, in the case of Sirius, the extreme contrast between the stellar components \cite{Beichman2020}. 
+Observations of these systems should therefore be planned for favorable orbital configurations and telescope orientations, with the usable discovery region and achieved contrast evaluated separately for each component \cite{LUVOIR2019}.
+
+The most challenging targets in the primary sample are the close binary GJ 65 and the hierarchical triple EZ Aquarii. In GJ 65, the two M-dwarf components are separated by only a few arcseconds, so the diffraction and speckle fields of both stars may affect the same high-contrast search region \cite{Thomas2015}. 
+EZ Aquarii presents a still more complex configuration: its inner Aa--Ab pair is unresolved at conventional coronagraphic angular resolution, while the third component lies sufficiently close to influence observations of the inner subsystem. The 20 stellar components therefore do not correspond to 20 equivalent and independently suppressible coronagraphic targets. For an unresolved subsystem such as EZ Aquarii Aa--Ab, the appropriate objective is not necessarily an independent circumstellar search around each component, but a search for planets or other companions in dynamically stable circumbinary regions \cite{Holman1999}. 
+Close multiple systems may require multi-star wavefront control, restricted discovery zones, specialized reference-star subtraction, observations at selected orbital phases, or a combination of these methods \cite{Sirbu2017}. 
+Their sensitivity and completeness must consequently be calculated separately from those of conventional single-star observations \cite{Currie2022}.
+
+The scientific inventory will retain all 20 stellar components, but observing time and operational planning will be assigned primarily at the level of the 13 stellar systems. The number of pointings, visits, telescope orientations, and specialized observing modes will therefore differ among targets according to system architecture and coronagraphic complexity \cite{LUVOIR2019}.
+Conventional single-star systems may be observed through a common multi-epoch sequence, whereas resolved or close multiple systems will receive customized strategies and, where necessary, additional calibration time \cite{LUVOIR2019}. 
+No target will be removed from the primary sample solely because its multiplicity reduces the expected sensitivity. Excluding difficult systems would compromise the completeness of a distance-ranked census and reintroduce a selection bias in favor of simple stellar environments \cite{Henry2018}. 
+Instead, the mission will report target-specific discovery regions, contrast limits, and completeness functions, clearly distinguishing regions that have been observationally excluded from regions that remain technically unconstrained \cite{Bowler2016}. 
+This system-level policy preserves the exploration principle of surveying the 20 nearest stars while maintaining a physically realistic allocation of mission resources
+\cite{LUVOIR2019}.
+
+Although the present survey is intentionally limited to the 20 nearest stellar components, it is designed as the first stage of a progressively expanding nearby-star imaging program \cite{LUVOIR2019}. 
+The initial sample provides the highest angular resolution, the greatest sensitivity to planets at small physical separations, and the most comprehensive characterization of the stellar environments closest to the Solar System \cite{Guyon2006}. 
+These observations will establish a homogeneous reference dataset against which future observations of more distant stars can be directly compared. As coronagraph performance, wavefront-control techniques, and post-processing algorithms continue to improve, the survey can naturally expand to increasingly larger distance-limited samples while preserving the same objective target-selection criteria \cite{Currie2022}. 
+Consequently, the scientific value of the nearest-star survey extends well beyond its immediate discoveries. It establishes a long-term legacy archive for comparative exoplanet science, provides benchmark targets for future space and ground-based high-contrast instruments, and forms the observational foundation for a complete census of planetary systems in the Solar neighborhood \cite{LUVOIR2019}.
+
+
+
 
 \section{High-Contrast Observing Capability of the Mission}
 \label{sec:context}
@@ -113,6 +258,7 @@ of the selected coronagraph must establish the actual stability budget.
 The tens-of-picometre regime remains a useful scale for the long-term
 Earth-analog goal \cite{bailey23}.
 
+
 \begin{figure}[tp]
 \centering
 \includegraphics[width=\textwidth]{coronagraph_contrast.png}
@@ -130,8 +276,12 @@ $10^{-9}$ level is a development goal for mature-giant imaging
 \label{fig:contrast}
 \end{figure}
 
+
+
+
 \section{The Distance Horizon of Coronagraphic Imaging}
 \label{sec:horizon}
+
 
 A coronagraph does not survey the Galaxy. It surveys a small sphere
 around the Sun, and the radius of that sphere follows directly from the
@@ -1043,6 +1193,7 @@ constraints.
  & mission year & hr & \\
 \midrule
 Commissioning and wavefront ramp & Year 1 & 300--500 hr & Demonstrate a calibrated dark hole near $10^{-8}$ and measure the achieved contrast, throughput, bandwidth, and stability.\\
+Nearest Stellar Systems Survey & Year 1--2 & 300--500 hr & Systematic direct-imaging survey of the 20 nearest stellar components; reference atlas of nearby stellar systems; initial census of giant planets, circumstellar disks, and reflected-light companions.\\
 Young giants and debris disks & Years 1--2 & 250--450 hr & Thermal-emission imaging of nearby moving-group giants and scattered-light disks while the wavefront control matures.\\
 First-light known giants & Years 1--2 & 300--500 hr & Attempt reflected-light recovery of the candidates in Table~\ref{tab:firstlight} after phase and throughput review.\\
 Mature-giant search program & Years 2--4 & 3800--5200 hr & Search a reviewed stellar sample after $10^{-9}$ performance is demonstrated. Confirmed detections receive spectroscopic follow-up.\\
@@ -1063,7 +1214,7 @@ confirmation visits, and calibration overhead.}
 
 \begin{figure}[tp]
 \centering
-\includegraphics[width=\textwidth]{exo_timeline.png}
+\includegraphics[width=\textwidth]{exo_timeline_rev.png}
 \caption{Illustrative five-year coronagraph program. The top panel shows
 the technical phases in Table~\ref{tab:exotimeline}. Cell shade tracks the
 planning reserve per month. The EEID study remains unallocated. The bottom
@@ -1118,6 +1269,61 @@ Section~\ref{sec:horizon}.
 
 \begin{thebibliography}{99}\small
 
+\bibitem{Henry2018} Henry, T.~J., Jao, W.-C., Winters, J.~G., Dieterich, S.~B., Finch, C.~T., Ianna, P.~A., Riedel, A.~R., Silverstein, M.~L., Subasavage, J.~P., \& Vrijmoet, E.~H. 2018, The Solar Neighborhood XLIV: RECONS Discoveries within 10 Parsecs, AJ, 156, 102.
+
+\bibitem{Gaia2022}
+Gaia Collaboration, Vallenari, A., Brown, A.~G.~A., et al. 2022,
+Gaia Data Release 3: Summary of the contents and survey properties,
+Astronomy \& Astrophysics, 674, A1.
+
+\bibitem{Lubin2016}
+Lubin, P. 2016,
+A Roadmap to Interstellar Flight,
+Journal of the British Interplanetary Society,
+69, 40--72.
+
+\bibitem{Traub2010} Traub, W.~A., \& Oppenheimer, B.~R. 2010, Direct Imaging of Exoplanets, in \textit{Exoplanets}, ed. S. Seager, University of Arizona Press, 111--156.
+
+\bibitem{LUVOIR2019}
+The LUVOIR Team. 2019, The LUVOIR Mission Concept Study Final Report, NASA, arXiv:1912.06219.
+
+\bibitem{Macintosh2015} Macintosh, B., Graham, J.~R., Barman, T., et al. 2015, Discovery and spectroscopy of the young Jovian planet 51 Eridani b with the Gemini Planet Imager, Science, 350, 64--67.
+
+\bibitem{Nielsen2019} Nielsen, E.~L., De Rosa, R.~J., Macintosh, B., et al. 2019, The Gemini Planet Imager Exoplanet Survey: Giant Planet and Brown Dwarf Demographics from 10--100 au, Astronomical Journal, 158, 13.
+
+\bibitem{Bowler2016} Bowler, B.~P. 2016, Imaging Extrasolar Giant Planets, Annual Review of Astronomy and Astrophysics, 54, 271--305.
+
+\bibitem{Currie2022} Currie, T., Biller, B., Lagrange, A.-M., Marois, C., Guyon, O., Nielsen, E.~L., Bonnefoy, M., \& De Rosa, R.~J. 2022, Direct Imaging and Spectroscopy of Extrasolar Planets, arXiv:2205.05696.
+
+\bibitem{HabEx2020} Gaudi, B.~S., Seager, S., Mennesson, B., et al. 2020, The Habitable Exoplanet Observatory (HabEx) Mission Concept Study Final Report, NASA, arXiv:2001.06683.
+
+\bibitem{reyle21} Reyl\'{e} C., Jardine K., Fouqu\'{e} P., et al., The 10 parsec sample in the Gaia era, A\&A 650:A201 (2021).
+
+\bibitem{gaiadr3} Gaia Collaboration (Vallenari A., et al.), Gaia Data Release 3: summary of the content and survey properties, A\&A 674:A1 (2023).
+
+\bibitem{Golovin2023} Golovin, A., Reffert, S., Just, A., Jordan, S., Vani, A., \& Jahrei{\ss}, H. 2023, The Fifth Catalogue of Nearby Stars (CNS5), A\&A, 670, A19.
+
+\bibitem{Akeson2013} Akeson, R.~L., Chen, X., Ciardi, D., et al. 2013, The NASA Exoplanet Archive: Data and Tools for Exoplanet Research, PASP, 125, 989.
+
+\bibitem{Hartkopf2001} Hartkopf, W.~I., Mason, B.~D., \& Worley, C.~E. 2001, The 2001 US Naval Observatory Double Star CD-ROM. II. The Fifth Catalog of Orbits of Visual Binary Stars, AJ, 122, 3472.
+
+\bibitem{Guyon2006} Guyon, O., Pluzhnik, E. A., Kuchner, M. J., Collier Cameron, A., Ridgway, S. T., \& Woodruff, R. A. 2006, Theoretical Limits on Extrasolar Terrestrial Planet Detection with Coronagraphs, ApJS, 167, 81.
+
+\bibitem{Beichman2020} Beichman, C., Ygouf, M., Llop-Sayson, J., Mawet, D., Yung, Y., Choquet, E., Kervella, P., Boccaletti, A.,
+Belikov, R., Lissauer, J.~J., Quarles, B., Lagage, P.-O., Dicken, D., Hu, R., Mennesson, B., Ressler, M., Serabyn, E., Krist, J., Bendek, E., Leisenring, J., \& Pueyo, L. 2020, Searching for Planets Orbiting Alpha Centauri A with the James Webb Space Telescope,
+PASP, 132, 018002.
+
+\bibitem{Shields2016} Shields, A. L., Ballard, S., \& Johnson, J. A. 2016, The Habitability of Planets Orbiting M-Dwarf Stars,
+Phys. Rep., 663, 1. 
+
+\bibitem{Sirbu2017} Sirbu, D., Thomas, S.~J., Belikov, R., \& Bendek, E. 2017, Techniques for High-Contrast Imaging in Multi-Star Systems II: Multi-Star Wavefront Control, ApJ, 849, 142.
+
+\bibitem{Thomas2015} Thomas, S.~J., Belikov, R., \& Bendek, E.~A. 2015, Techniques for High-Contrast Imaging in Multi-Star Systems I: Super-Nyquist Wavefront Control, ApJ, 810, 81.
+
+\bibitem{Holman1999} Holman, M.~J., \& Wiegert, P.~A. 1999, Long-Term Stability of Planets in Binary Systems, AJ, 117, 621.
+
+
+
 \bibitem{galicher23} Galicher R., Mazoyer J., Imaging exoplanets with coronagraphic instruments, C.~R.~Physique 24:69 (2023).
 
 \bibitem{zurlo24} Zurlo A., Direct imaging of exoplanets, arXiv:2404.05797 (2024).
@@ -1125,6 +1331,7 @@ Section~\ref{sec:horizon}.
 \bibitem{traub10} Traub W.~A., Oppenheimer B.~R., Direct imaging of exoplanets, in Seager S. (ed.), \emph{Exoplanets}, University of Arizona Press, Tucson, pp.~111--156 (2010).
 
 \bibitem{bailey23} Bailey V.~P., Bendek E., Monacelli B., et al., Nancy Grace Roman Space Telescope Coronagraph Instrument overview and status, Proc.~SPIE 12680:126800T (2023), doi:10.1117/12.2679036.
+
 
 \bibitem{llopsayson25} Llop-Sayson J., Bailey V.~P., Hom J., et al., Roman coronagraph simulations of exozodi observations in the presence of wavefront errors, JATIS 11:045009 (2025), doi:10.1117/1.JATIS.11.4.045009.
 
@@ -1196,9 +1403,6 @@ Section~\ref{sec:horizon}.
 
 \bibitem{willmer18} Willmer C.~N.~A., The absolute magnitude of the Sun in several filters, ApJS 236:47 (2018).
 
-\bibitem{reyle21} Reyl\'{e} C., Jardine K., Fouqu\'{e} P., et al., The 10 parsec sample in the Gaia era, A\&A 650:A201 (2021).
-
-\bibitem{gaiadr3} Gaia Collaboration (Vallenari A., et al.), Gaia Data Release 3: summary of the content and survey properties, A\&A 674:A1 (2023).
 
 \bibitem{lindegren21} Lindegren L., Klioner S.~A., Hern\'{a}ndez J., et al., Gaia Early Data Release 3: the astrometric solution, A\&A 649:A2 (2021).
 
