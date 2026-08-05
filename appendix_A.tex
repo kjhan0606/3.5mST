@@ -480,6 +480,10 @@ The number of lines allowed by wavelength coverage is a geometric upper bound. A
 \toprule
 \textbf{Emission line} & \textbf{Observed wavelength at $z=3$}\\
 \midrule
+\multicolumn{2}{@{}l}{\textbf{Rest-UV supplementary diagnostic}}\\
+Ly$\alpha$ $1215.67$\,\AA & $0.486\,\mu$m\\
+\addlinespace[0.35em]
+\multicolumn{2}{@{}l}{\textbf{Rest-optical systemic-redshift lines}}\\
 {[O\,II]} $3727$\,\AA & $1.491\,\mu$m\\
 H$\beta$ $4861$\,\AA & $1.944\,\mu$m\\
 {[O\,III]} $4959$\,\AA & $1.984\,\mu$m\\
@@ -490,14 +494,14 @@ H$\alpha$ $6563$\,\AA & $2.625\,\mu$m\\
 {[S\,II]} $6731$\,\AA & $2.692\,\mu$m\\
 \bottomrule
 \end{tabularx}
-\caption{Observed wavelengths of the principal rest-optical ELG lines at $z=3$, computed from $\lambda_{\rm obs}=\lambda_0(1+z)$. Rest wavelengths are from the NIST Atomic Spectra Database \cite{nistlines}. A $2.0\,\mu$m cutoff contains [O\,II], H$\beta$, and the blue [O\,III] component at this redshift, but line placement alone does not guarantee that the weaker H$\beta$ line is detected. Calibrated throughput to $2.70\,\mu$m retains the independent H$\alpha$+[N\,II]+[S\,II] complex.}
+\caption{Observed wavelengths of the principal ELG diagnostic lines at $z=3$, computed from $\lambda_{\rm obs}=\lambda_0(1+z)$. Rest wavelengths are from the NIST Atomic Spectra Database \cite{nistlines}. Ly$\alpha$ enters the $0.3\,\mu$m blue edge at $z=1.47$ and appears at $0.486\,\mu$m by $z=3$. Resonant transfer through neutral hydrogen changes the Ly$\alpha$ visibility and can shift the line centroid from the systemic redshift. Ly$\alpha$ is therefore a supplementary diagnostic rather than a guaranteed systemic-redshift line \cite{dijkstra2014}. A $2.0\,\mu$m cutoff contains [O\,II], H$\beta$, and the blue [O\,III] component at this redshift. The line placement alone does not guarantee that the weaker H$\beta$ line is detected. Calibrated throughput to $2.70\,\mu$m retains the independent H$\alpha$+[N\,II]+[S\,II] complex.}
 \label{tab:z3lineplacement}
 \end{table}
 
 \newpage
 The four cutoff cases have distinct scientific consequences.
 \begin{itemize}[leftmargin=1.7em,itemsep=0.45em,topsep=0.4em]
-\item \textbf{$1.30\,\mu$m cutoff.} The cutoff cannot execute the stated BAO and RSD survey. [O\,III] leaves the band above $z=1.60$ and H$\beta$ leaves above $z=1.67$. Only [O\,II] remains between $z\simeq1.67$ and $2.49$, and none of the principal lines remains over $2.49<z<3$.
+\item \textbf{$1.30\,\mu$m cutoff.} The cutoff cannot execute the stated BAO and RSD survey. [O\,III] leaves the band above $z=1.60$ and H$\beta$ leaves above $z=1.67$. Only [O\,II] among the principal rest-optical lines remains between $z\simeq1.67$ and $2.49$. No principal rest-optical line remains over $2.49<z<3$. Ly$\alpha$ remains available as a supplementary rest-UV line but cannot define the systemic redshift by itself.
 \item \textbf{$2.00\,\mu$m cutoff.} [O\,II] and H$\beta$ are formally inside the band at $z=3$, while [O\,III] $5007$ lies immediately beyond the nominal edge at $2.003\,\mu$m. H$\beta$ is weaker than H$\alpha$ and [O\,III] in many ELGs. Wavelength coverage alone therefore does not ensure a two-line redshift. H$\alpha$ also disappears above $z=2.05$, which makes the highest-redshift sample predominantly oxygen selected.
 \item \textbf{$2.70\,\mu$m science threshold.} All lines in Table~\ref{tab:z3lineplacement} remain in band through $z=3$. The H$\alpha$+[N\,II]+[S\,II] complex supplies an independent strong feature for redshift confirmation and provides line ratios that diagnose active nuclei and changing nebular conditions.
 \item \textbf{$3.00\,\mu$m operational band edge.} The additional $0.30\,\mu$m keeps the $2.70\,\mu$m science boundary away from filter transitions, detector quantum-efficiency roll-off, wavelength-calibration edge losses, and flight margin. The same band edge extends H$\alpha$ to $z=3.57$ and [O\,III] to $z=4.99$.
@@ -506,7 +510,7 @@ The four cutoff cases have distinct scientific consequences.
 The transition at $2.0\,\mu$m is not only a loss of targets. Above $z\simeq2.05$, the catalog changes from a mixed Balmer and oxygen-line selection to a predominantly oxygen-line selection. The transition changes galaxy bias, redshift success, and completeness because H$\alpha$ is a recombination line tied to the ionizing massive-star population, while [O\,III] and [O\,II] respond strongly to metallicity and ionization state \cite{kennicutt1998,khostovan2015,saito2020}. The selection change occurs in the same redshift range where the mission aims to interpret the anisotropic clustering amplitude as growth rather than as an evolving tracer systematic. Retaining the Balmer-selected population also protects the effective number density $n(z)$ and the effective clustering volume defined later in Equation~\eqref{eq:veff}. A loss of one tracer is amplified when $nP$ approaches unity because the statistical weight scales as $[nP/(1+nP)]^2$.
 
 \begin{leadbox}[title=Cosmology Wavelength Requirement]{green}
-The broad wavelength coverage is required to secure multiple-line redshifts across the full survey volume. Calibrated throughput to $2.70\,\mu$m retains the H$\alpha$+[N\,II]+[S\,II] complex at $z=3$ while the $3.0\,\mu$m operational band edge keeps the complex away from throughput roll-off and calibration losses. The extended redshift reach is added capability rather than the basis of the threshold. Phase A shall compare $1.30$, $2.00$, $2.70$, and $3.00\,\mu$m cutoffs with the same luminosity functions, ETC, deblending model, and survey time. The decision data products are $n(z)$, secure-redshift fraction, line-confusion rate, $nP$, $V_{\rm eff}$, and forecast uncertainties in $D_M/r_d$, $Hr_d$, and $f\sigma_8$.
+The broad wavelength coverage is required to secure multiple-line redshifts across the full survey volume. Calibrated throughput to $2.70\,\mu$m retains the H$\alpha$+[N\,II]+[S\,II] complex at $z=3$ while the $3.0\,\mu$m operational band edge keeps the complex away from throughput roll-off and calibration losses. The baseline requirement is set by secure multiple-line redshifts through $z=3$. The additional reach beyond $z=3$ provides a secondary high-redshift science return. Phase A shall compare $1.30$, $2.00$, $2.70$, and $3.00\,\mu$m cutoffs with the same luminosity functions, ETC, deblending model, and survey time. The decision data products are $n(z)$, secure-redshift fraction, line-confusion rate, $nP$, $V_{\rm eff}$, and forecast uncertainties in $D_M/r_d$, $Hr_d$, and $f\sigma_8$.
 \end{leadbox}
 
 \subsection{Survey Precedent and Redshift Precision}
@@ -1835,7 +1839,7 @@ Stellar-kinematic analyses of individual dwarfs give boson masses clustering nea
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fdm_halo_density_slice.png}
-\caption{A halo from the mission team's cuRAMSES wave-dark-matter simulation at $z=1.49$ with $m=10^{-22}$\,eV. The panels show direct density slices through the densest level-11 wave cell over widths of $1.2$\,cMpc\,$h^{-1}$, $300$\,ckpc\,$h^{-1}$, and $75$\,ckpc\,$h^{-1}$. The finest leaf-cell scale present in the output is $0.59$\,ckpc\,$h^{-1}$. Density is computed as $|\psi|^2$ and is divided by the volume-averaged wave-dark-matter density. The slice displays the resolved interference field and the central density enhancement expected around a collapsed FDM halo \cite{schive2014}. A soliton classification is not imposed without a profile fit.}
+\caption{Successive zoom into a halo from the mission team's cuRAMSES wave-dark-matter simulation at $z=1.49$ with $m=10^{-22}$\,eV. Panel (a) shows the complete $1.2$\,cMpc\,$h^{-1}$ periodic simulation box. The periodic origin is translated to place the selected halo near the upper-left corner without changing the density field. Panels (b)--(d) follow the marked region through widths of $300$, $75$, and $18.75$\,ckpc\,$h^{-1}$. The finest leaf-cell scale present in the output is $0.59$\,ckpc\,$h^{-1}$. Density is computed as $|\psi|^2$ and is divided by the volume-averaged wave-dark-matter density. A common colour scale follows the resolved interference field from the cosmic environment to the central density enhancement expected around a collapsed FDM halo \cite{schive2014}. A soliton classification is not imposed without a profile fit.}
 \label{fig:fdmslice}
 \end{figure}
 
@@ -2893,6 +2897,13 @@ G. C. Rudie, C. C. Steidel, A. E. Shapley, and M. Pettini,
 \emph{The Astrophysical Journal}, 769, 146, 2013.
 \url{https://arxiv.org/abs/1304.6719}
 \doi{10.1088/0004-637X/769/2/146}
+
+\bibitem{dijkstra2014}
+M. Dijkstra,
+``Ly$\alpha$ Emitting Galaxies as a Probe of Reionisation,''
+\emph{Publications of the Astronomical Society of Australia}, 31, e040, 2014.
+\url{https://arxiv.org/abs/1406.7292}
+\doi{10.1017/pasa.2014.33}
 
 \bibitem{mortlock2011}
 D. J. Mortlock et al.,

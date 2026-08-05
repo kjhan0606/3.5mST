@@ -15,6 +15,7 @@ from pathlib import Path
 import struct
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import ConnectionPatch, Rectangle
 import numpy as np
 
 
@@ -26,7 +27,8 @@ OCTANT_OFFSET = np.array(
      [0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 1]],
     dtype=float,
 )
-PANELS = ((1.0, 1024), (0.25, 1024), (0.0625, 256))
+# Successive factors of four from the complete periodic box to the halo centre.
+PANELS = ((1.0, 1024), (0.25, 1024), (0.0625, 256), (0.015625, 256))
 PEAK_LEVEL = 11
 
 
@@ -294,11 +296,22 @@ def main() -> None:
             "axes.labelsize": 13,
         }
     )
-    fig, axes = plt.subplots(1, 3, figsize=(14.2, 4.75), facecolor="white")
+    fig = plt.figure(figsize=(10.8, 9.0), facecolor="white")
+    axes = [
+        fig.add_axes((0.025, 0.035, 0.750, 0.900), zorder=1),
+        fig.add_axes((0.385, 0.505, 0.370, 0.444), zorder=3),
+        fig.add_axes((0.065, 0.205, 0.300, 0.360), zorder=4),
+        fig.add_axes((0.345, 0.055, 0.330, 0.396), zorder=5),
+    ]
     widths_kpc_h = [1200.0 * width for width, _ in PANELS]
-    titles = ("Cosmic environment", "Resolved halo", "Wave-interference core")
+    base_peak = (-0.34 * widths_kpc_h[0], 0.34 * widths_kpc_h[0])
+    selection_centers = (base_peak, (0.0, 0.0), (0.0, 0.0))
     image = None
-    for ax, density, width, title in zip(axes, maps, widths_kpc_h, titles):
+    for index, (ax, density, width) in enumerate(zip(axes, maps, widths_kpc_h)):
+        if index == 0:
+            shift_y = int(round(base_peak[1] / width * density.shape[0]))
+            shift_x = int(round(base_peak[0] / width * density.shape[1]))
+            density = np.roll(density, shift=(shift_y, shift_x), axis=(0, 1))
         image = ax.imshow(
             np.log10(np.maximum(density, 1.0e-3)),
             origin="lower",
@@ -308,17 +321,95 @@ def main() -> None:
             extent=(-width / 2, width / 2, -width / 2, width / 2),
             interpolation="nearest",
         )
-        ax.set_title(title)
-        ax.set_xlabel(r"$x-x_{\rm peak}$ [ckpc $h^{-1}$]")
-        ax.tick_params(direction="in", top=True, right=True, colors="white", labelcolor="black")
-    axes[0].set_ylabel(r"$y-y_{\rm peak}$ [ckpc $h^{-1}$]")
-    for ax in axes[1:]:
-        ax.set_yticklabels([])
-    colorbar = fig.colorbar(image, ax=axes, fraction=0.025, pad=0.018)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for spine in ax.spines.values():
+            spine.set_color("white")
+            spine.set_linewidth(0.9 if index == 0 else 1.15)
+        ax.text(
+            0.035,
+            0.035 if index == 0 else 0.965,
+            f"({chr(97 + index)})",
+            transform=ax.transAxes,
+            ha="left",
+            va="bottom" if index == 0 else "top",
+            color="white",
+            fontsize=13 if index == 0 else 11,
+            fontweight="bold",
+        )
+
+        scale = (300.0, 75.0, 20.0, 5.0)[index]
+        ybar = -0.42 * width
+        xbar_left = -0.43 * width
+        ax.plot(
+            [xbar_left, xbar_left + scale],
+            [ybar, ybar],
+            color="white",
+            linewidth=2.2,
+            solid_capstyle="butt",
+        )
+        ax.text(
+            xbar_left + 0.5 * scale,
+            ybar + 0.035 * width,
+            rf"{scale:g} ckpc $h^{{-1}}$",
+            ha="center",
+            va="bottom",
+            color="white",
+            fontsize=9 if index == 0 else 7.5,
+        )
+
+    highlight = "#F5F7FA"
+    for index in range(len(axes) - 1):
+        current = axes[index]
+        following = axes[index + 1]
+        next_width = widths_kpc_h[index + 1]
+        half = 0.5 * next_width
+        center_x, center_y = selection_centers[index]
+        current.add_patch(
+            Rectangle(
+                (center_x - half, center_y - half),
+                next_width,
+                next_width,
+                fill=False,
+                edgecolor=highlight,
+                linewidth=1.1,
+                zorder=5,
+            )
+        )
+        if index == 0:
+            connectors = (
+                ((center_x + half, center_y + half), (0.0, 1.0)),
+                ((center_x + half, center_y - half), (0.0, 0.0)),
+            )
+        elif index == 1:
+            connectors = (
+                ((center_x - half, center_y - half), (0.0, 1.0)),
+                ((center_x + half, center_y - half), (1.0, 1.0)),
+            )
+        else:
+            connectors = (
+                ((center_x + half, center_y + half), (0.0, 1.0)),
+                ((center_x + half, center_y - half), (0.0, 0.0)),
+            )
+        for source, target in connectors:
+            fig.add_artist(
+                ConnectionPatch(
+                    xyA=source,
+                    coordsA=current.transData,
+                    xyB=target,
+                    coordsB=following.transAxes,
+                    color=highlight,
+                    linewidth=0.8,
+                    alpha=0.85,
+                    clip_on=False,
+                    zorder=2.0 if index == 0 else index + 2.5,
+                )
+            )
+
+    colorbar_axis = fig.add_axes((0.825, 0.155, 0.025, 0.690))
+    colorbar = fig.colorbar(image, cax=colorbar_axis)
     colorbar.set_label(r"$\log_{10}(\rho_{\rm FDM}/\bar\rho_{\rm FDM})$")
-    fig.suptitle(r"Wave-dark-matter halo at $z=1.49$", fontsize=18)
-    fig.subplots_adjust(left=0.065, right=0.91, bottom=0.15, top=0.84, wspace=0.08)
-    fig.savefig(FIGURE, dpi=220, bbox_inches="tight")
+    fig.savefig(FIGURE, dpi=220)
     print(FIGURE)
 
 
