@@ -471,12 +471,42 @@ Table~\ref{tab:wavecut} applies Equation~\eqref{eq:zmaxcut} to the principal ELG
 \label{tab:wavecut}
 \end{table}
 
-A $1.3\,\mu$m cutoff cannot execute the stated BAO and RSD survey. The cutoff removes H$\alpha$ before the survey reaches $z=1$ and removes [O\,III] above $z=1.60$. A $2.0\,\mu$m cutoff is a substantial improvement, but it is not equivalent to continuous rest-optical coverage through $z=3$. Above $z\simeq2.05$, the catalog changes from a mixed Balmer and oxygen-line selection to an oxygen-line selection. This discontinuity changes galaxy bias, redshift success, and completeness because H$\alpha$ is a recombination line tied to the ionizing massive-star population, while [O\,III] and [O\,II] respond strongly to metallicity and ionization state \cite{kennicutt1998,khostovan2015,saito2020}. The resulting selection change occurs in the same redshift range where the mission aims to interpret the anisotropic clustering amplitude as growth rather than as an evolving tracer systematic.
+The number of lines allowed by wavelength coverage is a geometric upper bound. A secure redshift also requires sufficient line flux after the wavelength-dependent background, throughput, source size, and spectral overlap are included. Table~\ref{tab:z3lineplacement} shows the observed locations of the full diagnostic set at the upper boundary of the flagship survey.
 
-The physically traceable threshold is therefore $2.70\,\mu$m. At $z=3$, H$\alpha$, [N\,II] $6584$\,\AA, and [S\,II] $6731$\,\AA\ appear at $2.625$, $2.634$, and $2.692\,\mu$m. Keeping the complete complex in band provides a Balmer-selected control population, confirms oxygen-line redshifts, and measures line ratios that diagnose active nuclei and changing nebular conditions. Retaining these galaxies also protects the effective number density $n(z)$ and hence the effective clustering volume defined later in Equation~\eqref{eq:veff}. A loss of one tracer is amplified when $nP$ approaches unity because the statistical weight scales as $[nP/(1+nP)]^2$.
+\begin{table}[htbp]
+\centering
+\sffamily\small
+\begin{tabularx}{0.74\textwidth}{@{}Y c@{}}
+\toprule
+\textbf{Emission line} & \textbf{Observed wavelength at $z=3$}\\
+\midrule
+{[O\,II]} $3727$\,\AA & $1.491\,\mu$m\\
+H$\beta$ $4861$\,\AA & $1.944\,\mu$m\\
+{[O\,III]} $4959$\,\AA & $1.984\,\mu$m\\
+{[O\,III]} $5007$\,\AA & $2.003\,\mu$m\\
+H$\alpha$ $6563$\,\AA & $2.625\,\mu$m\\
+{[N\,II]} $6584$\,\AA & $2.634\,\mu$m\\
+{[S\,II]} $6716$\,\AA & $2.686\,\mu$m\\
+{[S\,II]} $6731$\,\AA & $2.692\,\mu$m\\
+\bottomrule
+\end{tabularx}
+\caption{Observed wavelengths of the principal rest-optical ELG lines at $z=3$, computed from $\lambda_{\rm obs}=\lambda_0(1+z)$. Rest wavelengths are from the NIST Atomic Spectra Database \cite{nistlines}. A $2.0\,\mu$m cutoff contains [O\,II], H$\beta$, and the blue [O\,III] component at this redshift, but line placement alone does not guarantee that the weaker H$\beta$ line is detected. Calibrated throughput to $2.70\,\mu$m retains the independent H$\alpha$+[N\,II]+[S\,II] complex.}
+\label{tab:z3lineplacement}
+\end{table}
+
+\newpage
+The four cutoff cases have distinct scientific consequences.
+\begin{itemize}[leftmargin=1.7em,itemsep=0.45em,topsep=0.4em]
+\item \textbf{$1.30\,\mu$m cutoff.} The cutoff cannot execute the stated BAO and RSD survey. [O\,III] leaves the band above $z=1.60$ and H$\beta$ leaves above $z=1.67$. Only [O\,II] remains between $z\simeq1.67$ and $2.49$, and none of the principal lines remains over $2.49<z<3$.
+\item \textbf{$2.00\,\mu$m cutoff.} [O\,II] and H$\beta$ are formally inside the band at $z=3$, while [O\,III] $5007$ lies immediately beyond the nominal edge at $2.003\,\mu$m. H$\beta$ is weaker than H$\alpha$ and [O\,III] in many ELGs. Wavelength coverage alone therefore does not ensure a two-line redshift. H$\alpha$ also disappears above $z=2.05$, which makes the highest-redshift sample predominantly oxygen selected.
+\item \textbf{$2.70\,\mu$m science threshold.} All lines in Table~\ref{tab:z3lineplacement} remain in band through $z=3$. The H$\alpha$+[N\,II]+[S\,II] complex supplies an independent strong feature for redshift confirmation and provides line ratios that diagnose active nuclei and changing nebular conditions.
+\item \textbf{$3.00\,\mu$m operational band edge.} The additional $0.30\,\mu$m keeps the $2.70\,\mu$m science boundary away from filter transitions, detector quantum-efficiency roll-off, wavelength-calibration edge losses, and flight margin. The same band edge extends H$\alpha$ to $z=3.57$ and [O\,III] to $z=4.99$.
+\end{itemize}
+
+The transition at $2.0\,\mu$m is not only a loss of targets. Above $z\simeq2.05$, the catalog changes from a mixed Balmer and oxygen-line selection to a predominantly oxygen-line selection. The transition changes galaxy bias, redshift success, and completeness because H$\alpha$ is a recombination line tied to the ionizing massive-star population, while [O\,III] and [O\,II] respond strongly to metallicity and ionization state \cite{kennicutt1998,khostovan2015,saito2020}. The selection change occurs in the same redshift range where the mission aims to interpret the anisotropic clustering amplitude as growth rather than as an evolving tracer systematic. Retaining the Balmer-selected population also protects the effective number density $n(z)$ and the effective clustering volume defined later in Equation~\eqref{eq:veff}. A loss of one tracer is amplified when $nP$ approaches unity because the statistical weight scales as $[nP/(1+nP)]^2$.
 
 \begin{leadbox}[title=Cosmology Wavelength Requirement]{green}
-The near-infrared channel shall provide calibrated science throughput through $2.70\,\mu$m. The adopted operational band edge is $3.0\,\mu$m. The guard band keeps the $z=3$ H$\alpha$+[N\,II]+[S\,II] complex inside the high-throughput region after filter transitions, detector quantum-efficiency roll-off, wavelength-calibration edge losses, and flight margin are included. The $3.0\,\mu$m value also extends H$\alpha$ to $z=3.57$ and [O\,III] to $z=4.99$. The extended redshift reach is added capability rather than the basis of the threshold. Phase A shall compare $1.30$, $2.00$, $2.70$, and $3.00\,\mu$m cutoffs with the same luminosity functions, ETC, deblending model, and survey time. The decision data products are $n(z)$, secure-redshift fraction, line-confusion rate, $nP$, $V_{\rm eff}$, and forecast uncertainties in $D_M/r_d$, $Hr_d$, and $f\sigma_8$.
+The broad wavelength coverage is required to secure multiple-line redshifts across the full survey volume. Calibrated throughput to $2.70\,\mu$m retains the H$\alpha$+[N\,II]+[S\,II] complex at $z=3$ while the $3.0\,\mu$m operational band edge keeps the complex away from throughput roll-off and calibration losses. The extended redshift reach is added capability rather than the basis of the threshold. Phase A shall compare $1.30$, $2.00$, $2.70$, and $3.00\,\mu$m cutoffs with the same luminosity functions, ETC, deblending model, and survey time. The decision data products are $n(z)$, secure-redshift fraction, line-confusion rate, $nP$, $V_{\rm eff}$, and forecast uncertainties in $D_M/r_d$, $Hr_d$, and $f\sigma_8$.
 \end{leadbox}
 
 \subsection{Survey Precedent and Redshift Precision}
