@@ -164,9 +164,9 @@
 {\sffamily\color{white}\fontsize{23}{28}\selectfont\bfseries
 Appendix C: Solar-System Small Bodies and Planetary Defense}\\[2.2mm]
 {\sffamily\color{white}\fontsize{14}{18}\selectfont on the \facility}\\[3mm]
-{\sffamily\color{white!78}\normalsize NEO discovery, physical
-characterization, MIR survey feasibility, orbit propagation, and
-historical close-approach validation}
+{\sffamily\color{white!78}\normalsize NEO recovery, optical and
+near-infrared characterization, orbit propagation, and close-approach
+validation}
 \end{tcolorbox}
 \phantomsection
 \label{app:solar-system}
@@ -176,11 +176,11 @@ historical close-approach validation}
 \textbf{\color{cGold}Central design conclusion.}
 The baseline 0.2--1.5\,$\mu$m observatory is strongest as a rapid-response
 facility for astrometry, visible and near-infrared taxonomy, rotation and
-phase curves, recovery, and long-arc orbit improvement. Active cooling makes
-NEO discovery substantially stronger only when it is coupled to a dedicated
-4--10\,$\mu$m detector, cold fore-optics, low-emissivity baffling, a wide
-field, and access to small solar elongations. Cooling by itself does not, however,
-create a thermal-infrared survey.
+phase curves, recovery, and long-arc orbit improvement. The \facility\ does
+not carry a mid-infrared channel. Ground-based MIR telescopes provide the
+thermal fluxes needed for diameter and albedo inference. The mission supplies
+the contemporaneous reflected-light measurements and observing geometry that
+make the joint thermal analysis physically useful.
 \end{resultbox}
 
 \vspace{2mm}
@@ -192,10 +192,10 @@ separation between discovery and post-discovery characterization.}\\
 \topcell{\bfseries\color{cGold}Baseline claim} &
 \topcell{High-value follow-up, physical characterization, and orbit refinement
 are feasible within the present optical and near-infrared concept.}\\
-\topcell{\bfseries\color{cGold}Upgrade claim} &
-\topcell{A cooled 4--10\,$\mu$m wide-field channel would provide a credible
-thermal discovery mode. The field of regard and survey cadence remain
-first-order requirements.}\\
+\topcell{\bfseries\color{cGold}Coordination claim} &
+\topcell{Targeted ground-based MIR observations provide thermal fluxes.
+The \facility\ provides optical and near-infrared photometry, spectra,
+astrometry, and rotational phase information.}\\
 \topcell{\bfseries\color{cGold}Feasibility \& Scope} &
 \topcell{Performance is stated as a requirement or a demonstrated comparison.
 Unverified limiting magnitudes and completeness claims are not treated as
@@ -217,8 +217,8 @@ quasar-defined inertial reference frame used for high-accuracy celestial
 astrometry for recently discovered objects, and extend the observational arc
 before ephemeris uncertainty grows.
 \item \textbf{\color{cGold}Physical characterization.} Measure colors,
-spectra, light curves, phase behavior, and thermal flux when a mid-infrared
-channel is present.
+spectra, light curves, and phase behavior. Combine the measurements with
+thermal flux from coordinated ground-based MIR observations.
 \item \textbf{\color{cOrange}Dynamical refinement.} Fit gravitational and
 non-gravitational accelerations, including Yarkovsky drift when the data arc
 and physical priors support the fit.
@@ -243,9 +243,10 @@ power of this approach for repeated optical imaging over a very large field
 \cite{Ivezic2019}. A space survey should therefore not be justified as a
 smaller copy of a ground survey. The case for a space survey rests on access
 to a different observational phase space. The additional phase space
-includes low-background thermal infrared imaging, stable calibration without
-an atmosphere, a larger usable time window, and a field of regard that can
-be engineered closer to the Sun.
+includes stable optical and near-infrared calibration without an atmosphere,
+a larger usable time window, and a field of regard that can be engineered
+closer to the Sun. The MIR measurement belongs to the coordinated ground
+segment rather than the 3.5ST payload.
 
 \subsection{Atmosphere, airmass, and the usable sky window}
 
@@ -261,41 +262,39 @@ The restrictions produce a smaller ground-based sky window. The excluded
 region is set by data-quality and scheduling requirements, not only by
 whether the target is geometrically above the horizon.
 
-Mid-infrared astronomy is possible from exceptional dry sites but only
-through restricted atmospheric windows. For example, ESO/VISIR operates in
-the M, N, and Q windows near 5, 10, and 19\,$\mu$m. The atmosphere absorbs
-most MIR radiation outside those windows while the warm atmosphere and
-telescope create a very high photon background that requires rapid
-chopping and nodding \cite{ESOVISIR2019}. Thus, it would be inaccurate to
-state that all ground-based MIR observations are impossible. The defensible
-mission statement is stronger and more specific. A sensitive, wide-field,
-continuous 4--10\,$\mu$m NEO survey cannot be performed competitively from
-the ground. A cold space telescope removes atmospheric absorption and can
-reduce instrumental thermal emission enough to exploit the full band.
+Mid-infrared astronomy from the ground uses restricted atmospheric windows
+at exceptional dry sites. ESO/VISIR provides one established example through
+the M, N, and Q windows near 5, 10, and 19\,$\mu$m. The warm atmosphere and
+telescope produce a high photon background. Ground observations address the
+background with chopping, nodding, and short targeted integrations
+\cite{ESOVISIR2019}. The resulting mode does not support a continuous
+all-sky MIR census. The mode does support thermal characterization of a
+selected target with a sufficiently accurate ephemeris. This targeted role
+defines the adopted division of responsibility.
 
 \begin{table}[H]
 \centering
-\caption{NEO-survey capabilities of ground and space observatories. The
-comparison separates intrinsic platform advantages from requirements that
-still depend on the actual field, detector, cadence, and thermal design.}
+\caption{Division of NEO responsibilities between ground facilities and
+the 3.5ST space observatory. MIR denotes targeted ground-based follow-up and
+does not denote a 3.5ST observing mode.}
 \small
 \begin{tabularx}{\textwidth}{@{}P{30mm}YY@{}}
 \toprule
 \textbf{\color{cGold}Survey property} &
-\textbf{\color{cGold}Ground-based survey} &
-\textbf{\color{cGold}Space-based survey}\\
+\textbf{\color{cGold}Ground surveys and MIR facilities} &
+\textbf{\color{cGold}3.5ST optical and near-infrared program}\\
 \midrule
 Primary strength &
-Large optical étendue, mature operations, upgradeability, and economical
-survey-area coverage &
-Atmosphere-free stability, thermal-IR access, continuous scheduling, and
+Large optical étendue, long temporal baselines, upgradeable instruments,
+and targeted MIR thermal measurements &
+Atmosphere-free stability, rapid scheduling, precise astrometry, and
 engineered solar-elongation access\\
 \addlinespace
 Usable wavelength range &
-Visible/NIR plus restricted MIR atmospheric windows. Transmission and sky
-background vary with water vapor and airmass &
-Detector- and thermal-design limited. A cooled system can use broad
-4--10\,$\mu$m bands continuously\\
+Visible and near-infrared survey bands plus restricted MIR atmospheric
+windows. Transmission and sky background vary with water vapor and airmass &
+The baseline 0.2--1.5\,$\mu$m range. No MIR detector or MIR survey mode is
+included\\
 \addlinespace
 Sky and time window &
 Night, horizon, airmass, weather, Moon, twilight, and season constrain each
@@ -310,11 +309,11 @@ Stable PSF and throughput are achievable. Detector persistence, cosmic
 rays, pointing, and calibration must still be controlled\\
 \addlinespace
 NEO selection &
-Reflected-light discovery is biased against low-albedo objects and is weak
-in bright twilight and near-Sun directions &
-MIR thermal emission is substantially less albedo biased. A suitable
-sunshade can extend coverage toward smaller solar elongation
-\cite{Mainzer2023}\\
+Optical discovery remains biased against low-albedo objects. Targeted MIR
+flux constrains diameter after an ephemeris becomes available &
+Reflected-light detection has the same albedo dependence. Space access and
+stable calibration improve recovery but do not remove the diameter and
+albedo degeneracy\\
 \addlinespace
 Cadence and recovery &
 Weather and daylight can interrupt tracklets. A longitude-distributed
@@ -332,13 +331,13 @@ limited servicing after launch\\
 \end{table}
 
 \clearpage
-\subsection{Space-survey advantages relevant to the \facility}
+\subsection{Space-observatory advantages relevant to the \facility}
 
 \begin{enumerate}[leftmargin=7mm,itemsep=2mm]
-\item \textbf{\color{cTeal}Thermal detection and physical size.}
-A cooled 4--10\,$\mu$m channel detects sunlight re-radiated by an NEO,
-reducing the strong visible-light selection against dark objects and
-providing a diameter constraint that is much less dependent on $p_V$.
+\item \textbf{\color{cTeal}Stable optical and near-infrared characterization.}
+The atmosphere-free measurements provide repeatable colors, spectra, phase
+curves, and astrometry. The data constrain taxonomy, rotation, and the
+reflected-light state at the epoch of a ground-based MIR observation.
 \item \textbf{\color{cGold}Larger effective observing window.}
 The absence of weather, daylight, horizon, and airmass restrictions supports
 uniform revisit timing and more reliable tracklet linking. The gain must be
@@ -356,21 +355,20 @@ calibration, pointing reconstruction, detector effects, and the inertial
 reference catalog.
 \item \textbf{\color{cRed}Complementarity with ground assets.}
 The efficient architecture is a joint system. Ground surveys provide optical
-étendue and long temporal baselines while the space mission supplies MIR
-diameters, near-Sun discovery, weather-independent cadence, and rapid
-follow-up.
+étendue, long temporal baselines, radar constraints, and MIR thermal flux.
+The space mission provides weather-independent optical and near-infrared
+follow-up, precise astrometry, and rapid scheduling.
 \end{enumerate}
 
 \begin{resultbox}
 \textbf{\color{cGold}Mission consequence.}
-The competitive claim for a cooled \facility\ is not greater raw optical
-survey speed than the largest ground facilities. The mission advantage lies
-in recovery and characterization from a stable space platform together with
-an optional MIR discovery mode in wavelength and solar-elongation regimes
-that the ground cannot survey efficiently.
+The \facility\ does not claim MIR discovery or MIR sensitivity. The mission
+advantage lies in rapid recovery, stable reflected-light characterization,
+and orbit refinement. A ground-based MIR partner supplies the independent
+thermal measurement needed to infer diameter and albedo.
 \end{resultbox}
 
-\section{Size, Albedo, and Thermal Flux}
+\section{Size, Albedo, and Coordinated Thermal Follow-up}
 
 For an asteroid with absolute magnitude $H$ and visible geometric albedo
 $p_V$, the standard optical diameter relation \cite{RyanWoodward2010} is
@@ -402,9 +400,9 @@ $r=1$\,au, and $\Phi=1$, the corresponding thresholds are 0.36, 3.6, and
 36\,m for $\Delta=0.01$, 0.1, and 1\,au, respectively.
 The equation shows why reflected-light discovery does not determine impact
 energy and consequently the hazard level of the source. A dark and large body may have the same $H$ as a bright and smaller
-body. On the other hand, thermal-infrared flux breaks much of this degeneracy and supports a
-diameter estimate when the observing geometry and thermal model are known
-\cite{Mainzer2011,Mainzer2023}.
+body. Ground-based thermal-infrared flux breaks much of the degeneracy and
+supports a diameter estimate when the observing geometry and thermal model
+are known \cite{Mainzer2011,Mainzer2023}.
 
 \begin{figure}[H]
 \centering
@@ -420,13 +418,13 @@ flux threshold relation rather than a survey-completeness prediction.}
 \label{fig:neo-h-albedo-diameter}
 \end{figure}
 
-\subsection{Why mid-infrared imaging is required}
+\subsection{Why ground-based mid-infrared follow-up is required}
 
-Mid-infrared imaging is required because reflected light alone does not
-provide an independent size measurement. The reflected flux constrains a
-combination proportional to $p_VD^2$. Equation~\ref{eq:h-diameter} therefore
-leaves the diameter uncertain by $p_V^{-1/2}$. In the mid-infrared, however,
-the Near-Earth Asteroid Thermal Model gives the schematic dependence
+The 3.5ST reflected-light data alone do not provide an independent size
+measurement. The reflected flux constrains a combination proportional to
+$p_VD^2$. Equation~\ref{eq:h-diameter} leaves the diameter uncertain by
+$p_V^{-1/2}$. A ground-based MIR flux measurement adds the thermal constraint.
+The Near-Earth Asteroid Thermal Model gives the schematic dependence
 \begin{equation}
  F_{\nu}^{\rm th}
  \mathrel{\propto}
@@ -443,18 +441,19 @@ temperature as $T\propto\epsilon^{-1/4}$. The dimensionless NEATM beaming
 parameter $\eta$ empirically rescales the surface-temperature distribution
 to account for the combined effects of thermal inertia, rotation, surface
 roughness, and observing geometry. Increasing $\eta$ lowers the modeled
-temperature as $T\propto\eta^{-1/4}$ \cite{Harris1998}. The reference ETC
-calculation below adopts $\epsilon=0.9$ and $\eta=1.4$.
+temperature as $T\propto\eta^{-1/4}$ \cite{Harris1998}. A joint fit must
+either constrain $\epsilon$ and $\eta$ from the thermal data or propagate
+their prior uncertainty into the diameter posterior.
 The diameter enters the emitted flux through the projected area as $D^2$.
 The Bond albedo $A$ enters only through a fourth-root temperature correction
 \cite{Harris1998,Mainzer2011}. A measured thermal spectral energy distribution
 therefore provides a nearly albedo-independent diameter constraint. The
 constraint is independent of the assumed visible geometric albedo $p_V$
 although shape, thermal inertia, surface roughness, rotation, and the beaming
-parameter $\eta$ remain model uncertainties. Combining the MIR diameter with
-$H$ then determines $p_V$ rather than assuming $p_V$. The distinction is
-essential for hazard assessment because impact energy scales approximately
-as $D^3$.
+parameter $\eta$ remain model uncertainties. Combining a ground-based MIR
+diameter with the 3.5ST value of $H$ determines $p_V$ rather than assuming
+$p_V$. The distinction is essential for hazard assessment because impact
+energy scales approximately as $D^3$.
 
 Wien's displacement law gives
 \begin{equation}
@@ -472,224 +471,92 @@ $\lambda_{\rm peak}$ in micrometers when $b$ is expressed in
 $\mu\mathrm{m\,K}$. The numerical constant applies to the peak of
 $B_\lambda$. A spectrum expressed per unit frequency as $B_\nu$ has a
 different numerical peak.
-Objects at 250--400\,K peak near 11.6--7.2\,$\mu$m. The present
-0.2--1.5\,$\mu$m range measures reflected sunlight for most NEOs. It does not
-sample the thermal maximum. NEO Surveyor illustrates the required system
-design. The mission uses 4.0--5.2 and 6.0--10.0\,$\mu$m channels, a broad
-field, a cold optical system, and a field of regard that approaches the Sun
-\cite{Mainzer2023}.
+Objects at 250--400\,K peak near 11.6--7.2\,$\mu$m. The 3.5ST
+0.2--1.5\,$\mu$m range measures reflected sunlight for most NEOs and does not
+sample the thermal maximum. Ground-based M-band and N-band observations
+sample the warm continuum through the available atmospheric windows. NEO
+Surveyor provides a space-based reference for the physical wavelength
+leverage \cite{Mainzer2023}. Its detector bands do not define 3.5ST
+requirements.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.96\textwidth]{appendixC_assets/neo_thermal_windows.png}
 \caption{Normalized blackbody shapes for representative NEO temperatures.
-The gold intervals mark the NEO Surveyor channel ranges. The comparison
-explains the leverage of a cooled mid-infrared option without implying a
-specific 3.5ST flux limit.}
+The gold intervals mark the NEO Surveyor channel ranges as a wavelength
+reference. The \facility\ does not use the intervals. Ground-based MIR
+facilities sample portions of the same thermal continuum through their
+available atmospheric windows.}
 \end{figure}
 
 \begin{warningbox}
-\textbf{\color{cOrange}Cooling is necessary but insufficient.}
-A credible discovery upgrade requires a mid-infrared focal plane, cold
-fore-optics, low detector dark current, low self-emission, a forward baffle,
-a wide field, repeated moving-object cadence, and a data system that links
-tracklets. A cold telescope with only the baseline detector remains an
-optical and near-infrared observatory.
+\textbf{\color{cOrange}Instrument boundary.}
+MIR observations are assigned to ground-based telescopes. No MIR detector,
+cold MIR fore-optics, MIR exposure-time calculation, or MIR discovery yield
+belongs to the 3.5ST baseline. The Appendix uses thermal physics only to
+define the external data needed for diameter and albedo inference.
 \end{warningbox}
 
-\subsection{Cooled MIR imaging mode and exposure-time calculation}
+\subsection{Ground-based MIR follow-up interface}
 
-The proposed discovery option images the same field in two channels. MIR-1
-covers 4.0--5.2\,$\mu$m and MIR-2 covers 6.0--10.0\,$\mu$m. The channel
-definitions follow NEO Surveyor because the shorter channel constrains the
-color temperature while the longer channel covers the thermal emission of
-typical 200--300\,K NEOs \cite{Mainzer2023}. The channel choice does not imply
-that the NEO Surveyor focal plane or survey design transfers directly to a
-3.5\,m segmented telescope.
-
-The MIR imaging ETC integrates the source and background over the full
-rectangular passband. A flat $F_\nu$ point source produces
-\begin{equation}
- \dot N_{\rm src}
- = A_{\rm eff}\int_{\lambda_1}^{\lambda_2}
- F_\nu\frac{c}{\lambda^2}
- \frac{\lambda}{hc}\eta(\lambda)
- {\cal E}(\lambda,r_{\rm ap})\,d\lambda ,
- \label{eq:mir-source-rate}
-\end{equation}
-Here the left-hand side $\dot N_{\rm src}$ is the detected source
-photoelectron rate, in e$^-$\,s$^{-1}$, integrated over the passband and the
-photometric aperture. The factor ${\cal E}$ is the wavelength-dependent
-encircled-energy fraction inside that aperture. The diffuse-background rate
-per detector pixel is
-\begin{equation}
- \dot N_{\rm bg,pix}
- = A_{\rm eff}\Omega_{\rm pix}
- \int_{\lambda_1}^{\lambda_2}
- I_\lambda(\lambda)\frac{\lambda}{hc}
- \eta(\lambda)\,d\lambda .
- \label{eq:mir-background-rate}
-\end{equation}
-The left-hand side $\dot N_{\rm bg,pix}$ is therefore the detected
-background photoelectron rate in one physical pixel, in
-e$^-$\,s$^{-1}$\,pixel$^{-1}$. The rate is not the total background in the
-source aperture. The ETC multiplies the pixel rate by the
-extraction-aperture pixel count before forming the noise variance.
-The zodiacal input uses the DIRBE convention $\nu I_\nu$. The adopted low and
-high levels are 220 and 4200\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-1 and 1700 and
-22,000\,nW\,m$^{-2}$\,sr$^{-1}$ in MIR-2. The values and their variation
-across the field of regard are reported by Mainzer et al. from DIRBE-based
-zodiacal-light models \cite{Mainzer2023,Leinert1998}. The nominal ETC values
-are the geometric means of each range.
+The thermal measurement enters the program as an external data product.
+The 3.5ST observation determines the ICRF position, the optical and
+near-infrared spectral energy distribution, the rotational phase, and the
+phase-angle correction. A ground-based MIR telescope measures calibrated
+thermal flux in one or more available atmospheric windows. CODES evaluates
+the heliocentric and observer distances at both epochs. A joint NEATM or
+thermophysical fit then returns diameter, visible albedo, and their
+covariance.
 
 \begin{table}[H]
 \centering
-\caption{Reference requirements used by the cooled MIR imaging ETC. The
-detector and throughput entries are proposal requirements. They are not
-measured component values.}
-\begin{tabularx}{\textwidth}{@{}P{39mm}YY@{}}
+\caption{Data interface for coordinated physical characterization. The
+MIR entry denotes a ground-based measurement and does not consume 3.5ST
+observing time.}
+\begin{tabularx}{\textwidth}{@{}P{34mm}P{47mm}Y@{}}
 \toprule
-\textbf{\color{cGold}Quantity} &
-\textbf{\color{cGold}MIR-1} &
-\textbf{\color{cGold}MIR-2}\\
+\textbf{\color{cGold}Contributor} &
+\textbf{\color{cGold}Required product} &
+\textbf{\color{cGold}Role in the joint inference}\\
 \midrule
-Bandpass & 4.0--5.2\,$\mu$m & 6.0--10.0\,$\mu$m\\
-Pivot wavelength & 4.56\,$\mu$m & 7.75\,$\mu$m\\
-Nyquist pixel scale at $\lambda_p$ &
-0.134 arcsec pixel$^{-1}$ &
-0.228 arcsec pixel$^{-1}$\\
-End-to-end throughput & 0.30 & 0.30\\
-Telescope temperature & $55$\,K & $55$\,K\\
-Telescope emissivity & 0.10 & 0.10\\
-Detector temperature & $\leq40$\,K & $\leq40$\,K\\
-Read noise &
-15 e$^-$ pixel$^{-1}$ exposure$^{-1}$ &
-15 e$^-$ pixel$^{-1}$ exposure$^{-1}$\\
-Dark current &
-0.01 e$^-$ s$^{-1}$ pixel$^{-1}$ &
-0.01 e$^-$ s$^{-1}$ pixel$^{-1}$\\
-Visit & Six integrations, 145\,s net & Six integrations, 145\,s net\\
-Field & $30'\times30'$ (0.25\,deg$^2$) & $30'\times30'$ (0.25\,deg$^2$)\\
+3.5ST &
+ICRF astrometry, 0.2--1.5\,$\mu$m fluxes, spectrum, light curve, and UTC
+mid-exposure times &
+Constrains $H$, taxonomy, rotation, phase behavior, and reflected flux\\
+Ground-based MIR telescope &
+Calibrated thermal flux, filter response, atmospheric transmission,
+photometric uncertainty, and UTC mid-exposure time &
+Constrains thermal emission and the diameter scale\\
+CODES &
+Observer geometry, heliocentric distance, phase angle, and orbit covariance
+at every exposure &
+Places the optical and thermal measurements in one dynamical geometry\\
+Joint physical model &
+NEATM or thermophysical likelihood with rotational and calibration
+uncertainties &
+Returns posterior distributions for $D$, $p_V$, $\eta$, and derived impact
+energy\\
 \bottomrule
 \end{tabularx}
-\label{tab:mir-etc-requirements}
+\label{tab:ground-mir-interface}
 \end{table}
 
-The tabulated detector sampling is not one wavelength-independent value. It
-uses
-\begin{equation*}
- s_{\rm pix}(\lambda_p)=206265\,\frac{\lambda_p}{2D}
- \quad {\rm arcsec\ pixel^{-1}},
-\end{equation*}
-at each channel's geometric pivot wavelength $\lambda_p$, with $D=3.5$\,m.
-The physical pixel scale of any one focal plane is fixed. The wavelength
-dependence in Table~\ref{tab:mir-etc-requirements} is a two-channel design
-requirement and therefore needs separate detector pixel pitches or re-imaging
-optics. A common 0.35 arcsec pixel$^{-1}$ focal plane would undersample both
-channels, most severely MIR-1, and is no longer used by the ETC.
-
-The reference visit follows the six-dither and 145\,s net-integration format
-used by NEO Surveyor \cite{Mainzer2023}. The 3.5ST field remains much smaller
-than the NEO Surveyor field. The larger aperture improves flux sensitivity
-but does not recover the lost sky coverage.
-
-\begin{table}[H]
-\centering
-\caption{ETC point-source sensitivity for one 145\,s MIR visit. The three
-columns span the published zodiacal-background range.}
-\begin{tabularx}{\textwidth}{@{}P{25mm}P{28mm}P{23mm}YYY@{}}
-\toprule
-\textbf{\color{cGold}Channel} &
-\textbf{\color{cGold}Band} &
-\textbf{\color{cGold}PSF FWHM} &
-\textbf{\color{cGold}Low} &
-\textbf{\color{cGold}Nominal} &
-\textbf{\color{cGold}High}\\
- & & & \multicolumn{3}{c}{\textbf{\color{cMuted}$5\sigma$ limit [$\mu$Jy]}}\\
-\midrule
-MIR-1 & 4.0--5.2\,$\mu$m & 0.29 arcsec & 0.51 & 0.66 & 1.11\\
-MIR-2 & 6.0--10.0\,$\mu$m & 0.48 arcsec & 1.01 & 1.87 & 3.53\\
-\bottomrule
-\end{tabularx}
-\label{tab:mir-etc-depth}
-\end{table}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{appendixC_assets/mir_etc_validation.png}
-\caption{MIR ETC verification and reference sensitivity. The left panel
-evaluates the 50\,cm literature configuration. The blue intervals show the
-published NEO Surveyor NESI5 requirements of 65--120\,$\mu$Jy in NC1 and
-110--280\,$\mu$Jy in NC2 \cite{Mainzer2023}. The channel-level effective
-throughputs in the comparison configuration were adjusted to the logarithmic
-midpoints of those intervals. The comparison verifies units and the noise
-propagation but is not an independent detector prediction. The right panel
-shows the 3.5ST requirement model. The sensitivity follows the expected
-$t^{-1/2}$ behavior once zodiacal photon noise dominates.}
-\label{fig:mir-etc-validation}
-\end{figure}
+The ground observation should occur as close as practical to the 3.5ST
+light-curve sequence. Non-simultaneous measurements require a rotational
+phase model and an uncertainty term for changing geometry. The collaboration
+must exchange calibrated fluxes and filter curves rather than catalog
+diameters alone. The retained observables allow the physical model to be
+recomputed when the orbit, thermal model, or calibration changes.
 
 \begin{resultbox}
-\textbf{\color{cTeal}Verification status.}
-Five regression tests preserve the established optical result, invert the
-MIR signal-to-noise equation, order the low and high background cases, recover
-the expected exposure and aperture trends, and reproduce the literature
-normalization after the stated channel calibration. At 55\,K, telescope
-self-emission contributes less than 0.1 percent of the low-background aperture
-rate in both channels under the reference emissivity. Detector qualification,
-stray-light analysis, and measured throughput remain required before the
-limits in Table~\ref{tab:mir-etc-depth} become mission performance.
+\textbf{\color{cTeal}Scope of the mission ETC.}
+The 3.5ST exposure-time calculator covers only the adopted optical and
+near-infrared instruments. Each ground MIR facility evaluates its own
+sensitivity with measured atmospheric transmission, thermal background,
+detector properties, and observing mode. MIR sensitivity and MIR yield are
+not quoted as 3.5ST performance.
 \end{resultbox}
 
-\subsection{NEOMOD3 reference population and thermal flux}
-
-The reference population comes from the public NEOMOD3 Fortran simulator
-\cite{Nesvorny2024}. We requested the model number of objects between 30\,m
-and 3\,km with seed $-50202002$. The resulting realization contains 344,458
-NEOs. The sample contains 19,694 objects larger than 140\,m and 801 objects
-larger than 1\,km. These counts agree with the published estimates of
-$20,000\pm2,000$ and $830\pm60$ \cite{Nesvorny2024}. The simulation retains
-the NEOMOD3 size-dependent two-Rayleigh albedo distribution and the
-size-dependent orbital distribution.
-
-The simulator supplies $H$, $a$, $e$, $i$, diameter, and visible albedo.
-Longitude of ascending node, argument of perihelion, and mean anomaly were
-drawn uniformly with a recorded random seed. The orbits were propagated with
-the two-body Kepler solution for the survey-selection calculation. The
-authoritative orbit analysis in Section~\ref{sec:calculator-bodies} remains
-an N-body calculation. The two-body propagation is adequate for a reference
-survey selection function but does not represent close encounters.
-
-Thermal flux uses the Near-Earth Asteroid Thermal Model \cite{Harris1998}.
-The adopted emissivity is 0.9 and the reference beaming parameter is
-$\eta=1.4$. The subsolar temperature is
-\begin{equation}
- T_{\rm SS}=
- \left[
- \frac{(1-A)S_\odot}
- {\eta\epsilon\sigma r^2}
- \right]^{1/4}.
- \label{eq:neatm-temperature}
-\end{equation}
-The illuminated visible hemisphere is integrated numerically at the actual
-phase angle. MIR-1 also includes reflected sunlight with
-$p_{\rm IR}=1.6p_V$ clipped to the interval 0.015--0.70. The ratio is a
-reference assumption because the validated NEO Surveyor model draws
-$p_{\rm IR}/p_V$ and $\eta$ from measured distributions
-\cite{Mainzer2023,Masiero2023}.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{appendixC_assets/neo_reference_population.png}
-\caption{Public NEOMOD3 realization and reference thermal flux. The left
-panel verifies the population normalization over the requested diameter
-range. The right panel shows MIR-2 flux at one random orbital epoch. Gold
-points satisfy the 45--$120^\circ$ field of regard, the
-$|\beta|\leq40^\circ$ latitude cut, and at least one MIR ETC threshold.
-The instantaneous count is not a discovery yield because a discovery also
-requires cadence, repeat tracklets, and sky coverage.}
-\label{fig:neo-reference-population}
-\end{figure}
 
 \section{Baseline Optical and Near-Infrared Program}
 
@@ -802,7 +669,7 @@ Partial Bus--DeMeo interval &
 Class confusion matrix versus magnitude, phase angle, and trailing\\
 Diameter and albedo &
 Reflected plus thermal flux &
-Requires a mid-infrared upgrade or external thermal data &
+Requires coordinated ground-based MIR data &
 Joint fit to synthetic thermal models with shape and phase uncertainty\\
 Yarkovsky &
 Long-arc transverse acceleration $A_2$ &
@@ -816,85 +683,71 @@ confusion, and false-link control\\
 \bottomrule
 \end{longtable}
 
-\subsection{Cadence and five-year reference yield}
+\subsection{Cadence for recovery and coordinated characterization}
 
-The adopted moving-object sequence follows the demonstrated NEO Surveyor
-logic \cite{Mainzer2023,Masiero2023}. One visit contains six dithered
-integrations with 145\,s net exposure in a 180\,s allocation. Four visits
-over approximately eight hours form a tracklet. The same survey region is
-sampled again after 13 days to support linking. A valid tracklet requires at
-least four detections with $\mathrm{S/N}>5$ and an angular rate between 0.008
-and 8 degrees per day \cite{Masiero2023}. The measured tracklet efficiency
-of 99 percent enters the yield calculation. The adopted two-tracklet linking
-efficiency of 95 percent is a conservative scenario assumption. Masiero et
-al. use 99 percent for the corresponding linking efficiency.
+The baseline program follows external discoveries rather than conducting a
+blind MIR census. Ground optical surveys and the Minor Planet Center (MPC)
+provide alerts and preliminary ephemerides. The 3.5ST scheduler converts the
+ephemeris and covariance into short exposures that limit trailing. A visit
+should contain at least four astrometric measurements over a time span that
+resolves the angular motion. A second visit on another night or at a later
+geometry extends the orbital arc. CODES determines the repeat interval from
+the predicted covariance rather than imposing one fixed interval on every
+target.
 
-The 30$'\times30'$ field covers 0.25\,deg$^2$. A dedicated day retains
-21.75 hours after the 2.25-hour downlink allocation reported for NEO
-Surveyor \cite{Mainzer2023}. Four visits per field then cover
-27.2 unique deg$^2$ per day before the 13-day repeat. The accessible sky
-outside the $60^\circ$ solar exclusion region and within
-$|\beta|\leq40^\circ$ covers 18,111\,deg$^2$. The 13-day fractional coverage
-is only 1.95 percent.
-
-The survey emulator propagates every NEOMOD3 object at 13-day intervals for
-five years. Each epoch recomputes the L2 geometry, phase angle, optical
-magnitude, both NEATM fluxes, position-dependent zodiacal threshold, and
-angular rate. Discovery requires two adjacent eligible epochs. Sky tiling
-within each 13-day window is represented as a random coverage probability.
-The approximation omits focal-plane gaps, confusion, false links, orbit-fit
-quality, station keeping, and unplanned downtime.
+The 145\,s exposure used in the single-visit sensitivity calculation below
+provides a reference depth. The exposure does not define the operational
+cadence. Fast and nearby targets require shorter integrations while faint
+targets require a longer sequence that preserves measurable motion between
+frames. The observing system records the mid-exposure UTC, observatory state,
+filter, detector location, and distortion solution for every measurement.
 
 \begin{table}[H]
 \centering
-\caption{Five-year reference yield for four visits and a 13-day linking
-interval. ``New'' uses approximate known fractions of 3 percent at 30--50\,m,
-10 percent at 50--140\,m, 38 percent at 140\,m--1\,km, and 95 percent above
-1\,km. The 38-percent value follows the NEO Surveyor Known Object Model
-\cite{Grav2023}. The other fractions are explicit scenario assumptions.}
-\begin{tabularx}{\textwidth}{@{}P{23mm}P{25mm}P{18mm}ZZZZ@{}}
+\caption{Reference sequence for an externally discovered moving object.
+The timing is selected from the orbit covariance and angular rate.}
+\begin{tabularx}{\textwidth}{@{}P{35mm}P{48mm}Y@{}}
 \toprule
-\textbf{\color{cGold}MIR time} &
-\textbf{\color{cGold}Search latitude} &
-\textbf{\color{cGold}13-day coverage} &
-\textbf{\color{cGold}New 30--50 m} &
-\textbf{\color{cGold}New 50--140 m} &
-\textbf{\color{cGold}Cataloged $\geq140$ m} &
-\textbf{\color{cGold}New $\geq140$ m}\\
+\textbf{\color{cGold}Stage} &
+\textbf{\color{cGold}Observation} &
+\textbf{\color{cGold}Decision product}\\
 \midrule
-25 percent & $|\beta|\leq40^\circ$ & 0.49 percent & 75 & 32 & 18 & 11\\
-100 percent & $|\beta|\leq40^\circ$ & 1.95 percent & 1,201 & 514 & 284 & 167\\
-25 percent & $|\beta|\leq20^\circ$ & 0.93 percent & 181 & 81 & 47 & 28\\
-100 percent & $|\beta|\leq20^\circ$ & 3.74 percent & 2,853 & 1,278 & 738 & 435\\
+Ground discovery &
+Tracklet, photometry, preliminary orbit, and covariance submitted through
+the MPC &
+Target priority and a predicted 3.5ST search region\\
+3.5ST recovery &
+At least four untrailed optical or near-infrared frames with calibrated
+timing and distortion &
+ICRF positions, angular rate, light-curve points, and an updated orbit\\
+3.5ST characterization &
+Multiband photometry or spectroscopy at selected rotational phases &
+Taxonomy, color, phase behavior, and reflected-light constraints\\
+Ground MIR follow-up &
+Targeted thermal photometry through an available atmospheric window &
+Joint diameter and albedo posterior through Table~\ref{tab:ground-mir-interface}\\
 \bottomrule
 \end{tabularx}
-\label{tab:neo-reference-yield}
+\label{tab:neo-coordinated-sequence}
 \end{table}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{appendixC_assets/neo_survey_yield.png}
-\caption{Survey-speed and cadence trades from the reference emulator. The
-left panel holds the four-visit cadence, 13-day linking interval, full-time
-allocation, and $|\beta|\leq40^\circ$ search region fixed while changing the
-instantaneous field. The right panel holds the 0.25\,deg$^2$ field fixed.
-Two visits do not satisfy the accepted four-detection tracklet definition.
-Six visits reduce unique sky area and lower the $D\geq140$\,m yield from 284
-to 128. Four visits provide the highest defensible yield per observing time.}
-\label{fig:neo-survey-yield}
-\end{figure}
+The number of characterized targets depends on the external alert rate, the
+fraction visible within the 3.5ST field of regard, the Target-of-Opportunity
+allocation, and the success rate of ground MIR scheduling. A five-year MIR
+discovery yield cannot be assigned to the 3.5ST concept because the mission
+does not carry the detector assumed by the former calculation. The proposal
+will quote a characterized-target yield only after a joint scheduler has
+folded a representative ground alert stream through the 3.5ST allocation and
+the participating MIR facilities.
 
 \begin{resultbox}
-\textbf{\color{cGold}Cadence and field conclusion.}
-Four visits per tracklet are the cost-effective minimum. A fifth or sixth
-visit should be triggered only by weather-equivalent data loss, focal-plane
-gaps, or a high-priority object. The 0.25\,deg$^2$ field is the dominant
-discovery limitation. Full-time use of the baseline field reaches only
-1.44 percent of the NEOMOD3 $D\geq140$\,m population in the full latitude
-search. A 1\,deg$^2$ MIR field raises the reference fraction to 20 percent.
-The larger field requires a separate focal-plane, optical, telemetry, and
-cost trade.
+\textbf{\color{cGold}Cadence conclusion.}
+Four measurements provide a practical minimum for one astrometric visit.
+The repeat time remains target dependent. The NEO program measures success
+through recovered objects, extended orbital arcs, and completed physical
+characterization rather than through a 3.5ST MIR discovery count.
 \end{resultbox}
+
 
 \subsection{Single-exposure detection area and ideal warning time}
 
@@ -984,13 +837,11 @@ coverage, immediate processing, and successful linkage.}
 \end{table}
 
 The tabulated times are upper bounds for one favorable trajectory family.
-The baseline 0.25\,deg$^2$ field covers only 27.2 unique deg$^2$ per
-dedicated day before the repeat. The 13-day cadence can consume most of the
-ideal 5\,m warning interval. Reliable alerts also require a tracklet,
-cross-night linkage, and an orbit solution. Continuous all-sky coverage is
-therefore not provided by the baseline design. Mid-infrared measurements
-remain important after detection because reflected light constrains
-$p_VD^2$ rather than diameter alone.
+Reliable alerts require a ground discovery tracklet, successful 3.5ST
+recovery, cross-night linkage, and an orbit solution. Continuous all-sky
+coverage is not provided by the baseline design. Ground-based MIR
+measurements remain important after recovery because reflected light
+constrains $p_VD^2$ rather than diameter alone.
 
 \begin{resultbox}
 \textbf{\color{cGold}Warning-time interpretation.}
@@ -1690,14 +1541,13 @@ by field of regard.\\
 Extended to 2.45\,$\mu$m &
 More complete Bus--DeMeo coverage and improved mineralogical continuity &
 Still dominated by reflected light for ordinary NEO temperatures\\
-Actively cooled 4--10\,$\mu$m channel &
-Thermal discovery, diameter and albedo constraints, and reduced bias against
-dark objects &
-Requires cold optics, wide field, low-elongation access, and a dedicated
-cadence. Cost and thermal complexity are substantial.\\
+Ground-based MIR coordination &
+Thermal flux provides diameter and albedo constraints for selected targets &
+Atmospheric windows, thermal background, weather, and target ephemeris limit
+the available observations\\
 External-survey follow-up &
 High scientific return per unit mission complexity through coordination with
-NEO Surveyor, Rubin, radar, and ground-based astrometry &
+Rubin, radar, ground-based astrometry, and the MPC &
 Discovery selection function is inherited from external facilities\\
 \bottomrule
 \end{tabularx}
@@ -1707,16 +1557,17 @@ Discovery selection function is inherited from external facilities\\
 \begin{enumerate}[leftmargin=7mm,itemsep=2.2mm]
 \item Commit the baseline mission to rapid NEO follow-up, ICRF astrometry,
 time-resolved photometry, and visible/NIR characterization.
-\item Treat the 4--10\,$\mu$m channel as a costed mission option. Specify
-detector temperature, cold-optics temperature, field, cadence, elongation,
-and survey completeness together.
-\item Use four visits over eight hours and a 13-day repeat as the reference
-discovery cadence. Reserve additional visits for data loss or targeted
-follow-up.
-\item Do not claim a competitive blind NEO census with a 0.25\,deg$^2$ field.
-The reference calculation yields 284 cataloged $D\geq140$\,m objects over
-five years under a full-time MIR allocation. A discovery-led option requires
-at least a 1\,deg$^2$ MIR field trade.
+\item Exclude a 4--10\,$\mu$m detector, MIR optics, MIR ETC predictions, and
+MIR discovery yields from the 3.5ST payload and performance claims.
+\item Establish ground-based MIR coordination for selected objects. The
+agreement must define response time, atmospheric windows, flux calibration,
+filter transmission, timing metadata, and delivery of covariance information.
+\item Use at least four astrometric measurements in one recovery visit.
+Select the exposure time and repeat interval from angular rate and orbit
+covariance.
+\item Do not claim a competitive blind NEO census with the baseline field.
+Quantify the characterized-target yield from an external alert stream, the
+3.5ST Target-of-Opportunity allocation, and ground MIR availability.
 \item Preserve a $60^\circ$ baseline solar avoidance requirement until a
 thermal and stray-light model demonstrates access to $45^\circ$.
 \item Validate orbit products against Horizons SPK output. Use covariance
@@ -1727,12 +1578,12 @@ checksums and orbit-solution identifiers in every derived product.
 
 \begin{warningbox}
 \textbf{\color{cRed}Claim boundary.}
-The present analysis establishes a reproducible reference sensitivity and a
-preliminary yield under the requirements in Tables~\ref{tab:mir-etc-requirements}
-and \ref{tab:neo-reference-yield}. The result is not a mission completeness
-certification. A certified yield requires measured detector performance,
-the final field of regard, a deterministic pointing history, focal-plane
-gaps, synthetic-source recovery, false-link control, and orbit-quality cuts.
+The optical single-visit calculation establishes a reference flux limit and
+an idealized warning geometry. The calculation does not establish blind
+survey completeness. A defensible program yield requires a measured optical
+and near-infrared response, the final field of regard, a deterministic
+Target-of-Opportunity allocation, synthetic-source recovery, false-link
+control, orbit-quality cuts, and the availability of ground MIR observations.
 \end{warningbox}
 
 \clearpage
