@@ -46,7 +46,7 @@ or about 4600 pixels at two pixels per resolution element. The whole-wavelength 
 \midrule
 Telescope & \facility; diffraction-limited segmented aperture, robotic survey operations.\\
 Spectroscopy & Slitless grism/prism channels with native $R_{\rm point}=1000$ over band-limited filters.\\
-Wavelength strategy & 0.3--1.0\,$\mu$m optical channel and 1.0--3.0\,$\mu$m near-IR channel; each channel divided into filters to limit spectrum length.\\
+Wavelength strategy & 0.3--1.0\,$\mu$m optical channel and a near-IR channel with science throughput to at least 2.70\,$\mu$m. The adopted detector and filter band-edge goal is 3.0\,$\mu$m. Each channel is divided into filters to limit spectrum length.\\
 Field of view & \fovsmall\ threshold mode; \fovlarge\ survey mode and strongly preferred cosmology requirement.\\
 Roll strategy & Three slitless orientations per science tile, approximately $0^\circ$, $45^\circ$, and $90^\circ$, to solve spectral overlap in crowded fields.\\
 Direct imaging & Required for source detection, morphology priors, wavelength zero-points, and spectral-overlap modeling.\\
@@ -56,7 +56,7 @@ Direct imaging & Required for source detection, morphology priors, wavelength ze
 
 \subsection{Two-Arm Slitless Spectrograph}
 
-The spectrograph is a slitless two-arm system. A dichroic beam splitter sends 0.3--1.0\,$\mu$m light to the optical arm and 1.0--3.0\,$\mu$m light to the near-IR arm. Each arm uses band-limiting filters and a grism/prism disperser so that a crowded field does not produce decade-long spectra. It is desirable to observe with both arms simultaneously. Otherwise a revisit to the tile should be scheduled with the same orientation and pointing. Because the near-infrared arm reaches $3.0\,\mu$m, its optics should be cooled so that the telescope thermal self-emission stays below the zodiacal background at the reddest wavelengths. The exposure-time calculation of Section~\ref{sec:etc} sets this requirement, with the optics reaching the background-limited floor across the full $1$--$3\,\mu$m band for an operating temperature $\lesssim200$\,K.
+The spectrograph is a slitless two-arm system. A dichroic beam splitter sends 0.3--1.0\,$\mu$m light to the optical arm and 1.0--3.0\,$\mu$m light to the near-IR arm. Each arm uses band-limiting filters and a grism/prism disperser so that a crowded field does not produce decade-long spectra. It is desirable to observe with both arms simultaneously. Otherwise a revisit to the tile should be scheduled with the same orientation and pointing. The near-infrared arm must retain science throughput to at least $2.70\,\mu$m and adopts $3.0\,\mu$m as the operational band-edge goal. The additional $0.30\,\mu$m is a throughput guard band rather than an arbitrary extension of the survey. The guard band keeps the $z=3$ H$\alpha$+[N\,II]+[S\,II] complex away from filter transitions, detector quantum-efficiency roll-off, and wavelength-calibration edge losses. The optics should therefore be cooled so that telescope thermal self-emission stays below the zodiacal background at the reddest wavelengths. The exposure-time calculation of Section~\ref{sec:etc} sets this requirement, with the optics reaching the background-limited floor across the full $1$--$3\,\mu$m band for an operating temperature $\lesssim200$\,K.
 
 The filter plan is shaped by two properties of grism dispersion. First, a grism disperses at nearly constant $\Delta\lambda$ per pixel rather than constant $R=\lambda/\Delta\lambda$. Hence the resolving power rises linearly across any one setting. The quoted $R=1000$ refers to the centre of each setting. Second, a grating produces overlapping orders because second-order light at $\lambda$ lands at the same detector position as first-order light at $2\lambda$. At most one octave, $\lambda_{\max}\leq2\lambda_{\min}$, can therefore be recorded free of cross-order contamination. The survey therefore observes each arm through two band-limiting filters, each obeying the octave limit. On the optical arm they cover $0.36$--$0.70$ and $0.50$--$1.0\,\mu$m, on the near-infrared arm $1.0$--$1.75$ and $1.6$--$3.0\,\mu$m. This is the same order-sorting scheme used by the HST, JWST, Euclid, and Roman slitless instruments. These are the two settings per channel used to compute the exposure times and lay out the survey schedule in this document. Within each setting the resolving power stays between $R\simeq670$ and $1330$ around the central $R=1000$. A first-order trace (the dispersed spectrum) occupies about $1090$--$1330$ pixels assuming two pixels per resolution element. No transmitted wavelength has a second order inside the band of its own setting.
 
@@ -361,7 +361,7 @@ Euclid NISP $H$ (design floor) \cite{scaramella2022} & $24.0$ AB, $5\sigma$ poin
 
 This cross-check also sets how the calculator's raw output should be read wherever it appears later without a matching survey reference. The flagship ELG depth (Eq.~\eqref{eq:f5sigma}) is deliberately anchored to Roman's and Euclid's own published survey limits rather than to this idealised calculator, precisely because Table~\ref{tab:romaneuclidval} shows the calculator running $1.4$--$4.0\times$ deeper than the realised slitless spectroscopy those missions actually deliver. Some companion-program sensitivities instead read directly off the slitless calculator, among them the supernova rest-frame NUV reach (Section~\ref{sec:snia}), the void dark-galaxy star-formation-rate floor (Section~\ref{sec:dwarfvoid}), and the Lyman-$\alpha$ column-density threshold (Section~\ref{sec:lyaforest}). These inherit the same optimistic margin and should be read as an idealised upper bound on reach rather than a validated survey depth. Imaging depths are a different case. Because Table~\ref{tab:romaneuclidval}'s imaging rows agree with the Roman and Euclid published values to within a magnitude, the low-surface-brightness, intracluster-light, and dwarf/void imaging depths quoted later (Sections~\ref{sec:lsb} and~\ref{sec:dwarfvoid}) have a much smaller and better-characterised margin.
 
-The same calculation exposes a hard wavelength limit set by the telescope temperature. Below $\sim2\,\mu$m the background is zodiacal and the depth is nearly independent of the optics temperature, but the telescope thermal self-emission rises steeply to the red, overtaking the zodiacal light at a crossover wavelength that moves blueward as the optics warm (Figure~\ref{fig:etccool}). For passively warm optics near $270$\,K the crossover sits at $\sim1.9\,\mu$m and the $5\sigma$ depth at $2.7\,\mu$m degrades by more than an order of magnitude, whereas cooling the optics to $\lesssim200$\,K pushes the thermal wall beyond $2.5\,\mu$m and keeps the full $1$--$3\,\mu$m channel background-limited. The flagship BAO sample sits at $\lambda\lesssim2\,\mu$m and is insensitive to this term, but the reddest part of the band, and the operating temperature chosen for the near-infrared optics, are governed by it.
+The same calculation exposes a hard wavelength limit set by the telescope temperature. Below $\sim2\,\mu$m the background is zodiacal and the depth is nearly independent of the optics temperature, but the telescope thermal self-emission rises steeply to the red, overtaking the zodiacal light at a crossover wavelength that moves blueward as the optics warm (Figure~\ref{fig:etccool}). For passively warm optics near $270$\,K the crossover sits at $\sim1.9\,\mu$m and the $5\sigma$ depth at $2.7\,\mu$m degrades by more than an order of magnitude. Cooling the optics to $\lesssim200$\,K pushes the thermal wall beyond $2.5\,\mu$m and keeps the full $1$--$3\,\mu$m channel background-limited. Many [O\,II] and [O\,III] redshifts lie below $2\,\mu$m, but the H$\alpha$ control sample that prevents a tracer-selection discontinuity across $2<z<3$ lies at $2.0$--$2.63\,\mu$m. The red [S\,II] component reaches $2.69\,\mu$m at $z=3$. The red tail is therefore part of the flagship selection calibration rather than detached companion science. The $2.70\,\mu$m science-throughput threshold and the $3.0\,\mu$m band-edge goal directly set the near-infrared cooling requirement.
 
 \begin{figure}[htbp]
 \centering
@@ -443,6 +443,41 @@ and therefore to constrain $D_M(z)/r_d$ and $H(z)r_d$. RSD adds the growth obser
   f(z)\equiv\frac{d\ln D}{d\ln a}
 \end{equation}
 is the logarithmic growth rate of the linear growth factor $D(a)$ with scale factor $a$. The wide tier drives the BAO/RSD statistical power. The medium and deep tiers calibrate the redshift selection function that otherwise becomes the dominant systematic.
+
+\subsection{Wavelength Cutoff Requirement}\label{sec:wavecut}
+
+The red cutoff follows from the stated cosmology experiment rather than from a general preference for infrared coverage. A survey advertised over $1<z<3$ must not change its tracer definition halfway through that volume. For a line with rest wavelength $\lambda_0$, a red cutoff $\lambda_{\rm cut}$ gives
+\begin{equation}
+  z_{\max}=\frac{\lambda_{\rm cut}}{\lambda_0}-1.
+  \label{eq:zmaxcut}
+\end{equation}
+Table~\ref{tab:wavecut} applies Equation~\eqref{eq:zmaxcut} to the principal ELG lines. The rest wavelengths are taken from the NIST Atomic Spectra Database \cite{nistlines}.
+
+\begin{table}[htbp]
+\centering
+\sffamily\small
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabularx}{\textwidth}{@{}c c c c c Y@{}}
+\toprule
+\textbf{Red cutoff} & \textbf{$z_{\max}$(H$\alpha$)} & \textbf{$z_{\max}$([S\,II])} & \textbf{$z_{\max}$([O\,III])} & \textbf{$z_{\max}$([O\,II])} & \textbf{Consequence for the $1<z<3$ survey}\\
+\midrule
+1.30\,$\mu$m & 0.98 & 0.93 & 1.60 & 2.49 & H$\alpha$ is absent from the flagship volume. [O\,III] is lost above $z=1.60$, and [O\,II] does not reach $z=3$.\\
+2.00\,$\mu$m & 2.05 & 1.97 & 2.99 & 4.37 & Oxygen lines reach approximately $z=3$, but H$\alpha$ disappears above $z=2.05$. The highest-redshift bins become oxygen selected.\\
+2.70\,$\mu$m & 3.11 & 3.01 & 4.39 & 6.24 & H$\alpha$ and the [S\,II] doublet remain observable through $z=3$. The rest-optical line complex is retained across the full flagship volume.\\
+3.00\,$\mu$m & 3.57 & 3.46 & 4.99 & 7.05 & The adopted band edge provides an 11\% guard band beyond the science threshold. H$\alpha$ also remains available to $z=3.57$.\\
+\bottomrule
+\end{tabularx}
+\caption{Maximum observable redshift as a function of the near-infrared cutoff, computed with Equation~\eqref{eq:zmaxcut}. The calculation uses H$\alpha$ $6563$\,\AA, the red [S\,II] component at $6731$\,\AA, [O\,III] $5007$\,\AA, and [O\,II] $3727$\,\AA. Values are rounded to two decimal places. A Roman-like $1.93\,\mu$m grism cutoff lies close to the $2.00\,\mu$m row and gives $z_{\max}=1.94$ for H$\alpha$ and $2.85$ for [O\,III] \cite{romandocs,wang2021}.}
+\label{tab:wavecut}
+\end{table}
+
+A $1.3\,\mu$m cutoff cannot execute the stated BAO and RSD survey. The cutoff removes H$\alpha$ before the survey reaches $z=1$ and removes [O\,III] above $z=1.60$. A $2.0\,\mu$m cutoff is a substantial improvement, but it is not equivalent to continuous rest-optical coverage through $z=3$. Above $z\simeq2.05$, the catalog changes from a mixed Balmer and oxygen-line selection to an oxygen-line selection. This discontinuity changes galaxy bias, redshift success, and completeness because H$\alpha$ is a recombination line tied to the ionizing massive-star population, while [O\,III] and [O\,II] respond strongly to metallicity and ionization state \cite{kennicutt1998,khostovan2015,saito2020}. The resulting selection change occurs in the same redshift range where the mission aims to interpret the anisotropic clustering amplitude as growth rather than as an evolving tracer systematic.
+
+The physically traceable threshold is therefore $2.70\,\mu$m. At $z=3$, H$\alpha$, [N\,II] $6584$\,\AA, and [S\,II] $6731$\,\AA\ appear at $2.625$, $2.634$, and $2.692\,\mu$m. Keeping the complete complex in band provides a Balmer-selected control population, confirms oxygen-line redshifts, and measures line ratios that diagnose active nuclei and changing nebular conditions. Retaining these galaxies also protects the effective number density $n(z)$ and hence the effective clustering volume defined later in Equation~\eqref{eq:veff}. A loss of one tracer is amplified when $nP$ approaches unity because the statistical weight scales as $[nP/(1+nP)]^2$.
+
+\begin{leadbox}[title=Cosmology Wavelength Requirement]{green}
+The near-infrared channel shall provide calibrated science throughput through $2.70\,\mu$m. The adopted operational band edge is $3.0\,\mu$m. The guard band keeps the $z=3$ H$\alpha$+[N\,II]+[S\,II] complex inside the high-throughput region after filter transitions, detector quantum-efficiency roll-off, wavelength-calibration edge losses, and flight margin are included. The $3.0\,\mu$m value also extends H$\alpha$ to $z=3.57$ and [O\,III] to $z=4.99$. The extended redshift reach is added capability rather than the basis of the threshold. Phase A shall compare $1.30$, $2.00$, $2.70$, and $3.00\,\mu$m cutoffs with the same luminosity functions, ETC, deblending model, and survey time. The decision data products are $n(z)$, secure-redshift fraction, line-confusion rate, $nP$, $V_{\rm eff}$, and forecast uncertainties in $D_M/r_d$, $Hr_d$, and $f\sigma_8$.
+\end{leadbox}
 
 \subsection{Survey Precedent and Redshift Precision}
 
@@ -951,6 +986,7 @@ after marginalizing over galaxy bias in the ELG clustering model. The statistica
 \begin{equation}
   V_{\rm eff}(k,\mu)=
   \int \left[\frac{n(z)P(k,\mu,z)}{1+n(z)P(k,\mu,z)}\right]^2 dV,
+  \label{eq:veff}
 \end{equation}
 so the wide tier sets the cosmological precision while the medium and deep tiers reduce redshift-failure and line-identification systematics.
 
@@ -2097,6 +2133,13 @@ Y. Wang et al.,
 \emph{The Astrophysical Journal}, 928, 1, 2022.
 \url{https://arxiv.org/abs/2110.01829}
 \doi{10.3847/1538-4357/ac4973}
+
+\bibitem{nistlines}
+A. Kramida, Y. Ralchenko, J. Reader, and NIST ASD Team,
+``NIST Atomic Spectra Database, version 5.12,''
+National Institute of Standards and Technology, 2024.
+\url{https://physics.nist.gov/asd}
+\doi{10.18434/T4W30F}
 
 \bibitem{euclid2011}
 R. Laureijs et al.,
