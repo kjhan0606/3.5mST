@@ -165,61 +165,68 @@ In summary, the mission design guidelines for the 3.5-meter Segmented-Mirror Rob
 
 \section{Telescope Overview}
 
+\begin{table}[htbp]
+\centering
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3336}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1083}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5581}}@{}}
+\label{tab:baseline-telescope-specifications}
 
-\label{tab:baseline-telescope-specifications}\\
-\toprule\noalign{}
-\multicolumn{2}{@{}>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4419} + 2\tabcolsep}}{%
-\begin{minipage}[b]{\linewidth}\raggedright
-\textbf{Parameter}
-\end{minipage}} & \begin{minipage}[b]{\linewidth}\raggedright
-\textbf{Specification}
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Optical Configuration & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-3.5 m segmented-mirror on-axis optical system
+\renewcommand{\arraystretch}{1.15}
 
-using 18 hexagonal mirror segments} \\
-Primary Mirror Diameter & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-3.5 m} \\
-Focal Ratio & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-f/4.5} \\
-Wavelength Range & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-0.2 μm -- 1.5 μm} \\
-Field of View & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-10′×10′--30'×30′} \\
-Instruments & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
+\begin{tabularx}{\textwidth}{
+    >{\raggedright\arraybackslash}p{0.30\textwidth}
+    >{\raggedright\arraybackslash}X
+}
+\toprule
+\textbf{Parameter} & \textbf{Specification} \\
+\midrule
+
+Optical Configuration &
+3.5 m segmented-mirror on-axis optical system using 18 hexagonal mirror segments \\
+
+Primary Mirror Diameter &
+3.5 m \\
+
+Focal Ratio &
+f/4.5 \\
+
+Wavelength Range &
+0.2 $\mu$m -- 1.5 $\mu$m \\
+
+Field of View &
+10$'$ $\times$ 10$'$ -- 30$'$ $\times$ 30$'$ \\
+
+Instruments &
 Imaging camera (Ultraviolet--Visible--Infrared, UVOIR),
+spectrograph (UVOIR), stellar coronagraph \\
 
-spectrograph (UVOIR), stellar coronagraph} \\
-Angular Resolution & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-UV/Visible: 0.03″, Near-Infrared: 0.09″} \\
-Sensitivity & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-Approximately 27.7 mag in the visible channel} \\
-Observing Modes & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
+Angular Resolution &
+UV/Visible: 0.03$''$, Near-Infrared: 0.09$''$ \\
+
+Sensitivity &
+Approximately 27.7 mag in the visible channel \\
+
+Observing Modes &
 Survey observations and pointed observations
+(typical exposure time: $\sim$10 min) \\
 
-(typical exposure time: \textasciitilde10 min)} \\
-Pointing Accuracy/Stability & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-0.03″ / 10 min} \\
-Orbit & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-Earth orbit or Sun--Earth L2 (Lagrange Point 2)} \\
-Mission Lifetime & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-Baseline 10 years, with an additional 10 years
+Pointing Accuracy/Stability &
+0.03$''$ / 10 min \\
 
-possible through robotic servicing missions} \\
-Launch Vehicle Constraint & \multicolumn{2}{>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6664} + 2\tabcolsep}@{}}{%
-3 m fairing diameter} \\
-\caption{Basic specifications of the 3.5-meter segmented-mirror robotic
-space telescope.}
-\end{longtable}
+Orbit &
+Earth orbit or Sun--Earth L2 (Lagrange Point 2) \\
+
+Mission Lifetime &
+Baseline 10 years, with an additional 10 years possible through robotic servicing missions \\
+
+Launch Vehicle Constraint &
+3 m fairing diameter \\
+
+\bottomrule
+\end{tabularx}
+\caption{Basic specifications of the 3.5-meter segmented-mirror robotic space telescope.}
+\end{table}
+
+
 
 \begin{figure}[htbp]
   \centering
