@@ -84,8 +84,8 @@ The $R=5000$ spectrum retains the integrated photon-limited S/N after binning an
   \coordinate (dich) at (5.1,3.2);
   \coordinate (optg) at (7.3,4.55);
   \coordinate (nrg) at (7.3,1.85);
-  \coordinate (optd) at (12.2,4.55);
-  \coordinate (nrd) at (12.2,1.85);
+  \coordinate (optd) at (10.55,4.55);
+  \coordinate (nrd) at (10.55,1.85);
 
   \draw[fill=ink!8,draw=ink!50,line width=0.7pt] (tel) ellipse (0.55 and 1.05);
   \draw[fill=white,draw=teal,line width=0.9pt] ($(tel)+(0.1,0)$) ellipse (0.34 and 0.72);
@@ -117,11 +117,11 @@ The $R=5000$ spectrum retains the integrated photon-limited S/N after binning an
   \draw[-{Stealth[length=2.4mm]},line width=1.1pt,color=white!30!teal] (3.45,3.2) -- (4.65,3.2);
   \draw[-{Stealth[length=2.4mm]},line width=1.0pt,color=teal] (5.35,3.37) -- (6.83,4.35);
   \draw[-{Stealth[length=2.4mm]},line width=1.0pt,color=violet] (5.35,3.03) -- (6.83,2.05);
-  \draw[-{Stealth[length=2.4mm]},line width=1.0pt,color=teal] (7.9,4.55) -- (10.8,4.55);
-  \draw[-{Stealth[length=2.4mm]},line width=1.0pt,color=violet] (7.9,1.85) -- (10.8,1.85);
+  \draw[-{Stealth[length=2.4mm]},line width=1.0pt,color=teal] (7.9,4.55) -- (9.15,4.55);
+  \draw[-{Stealth[length=2.4mm]},line width=1.0pt,color=violet] (7.9,1.85) -- (9.15,1.85);
 
-  \node[anchor=west,text width=3.1cm,color=muted] at (12.6,3.15)
-  {Each detector records reformatted field slices. Band-limiting filters shorten the traces and three orientations produce distinct overlap geometries.};
+  \node[anchor=west,text width=3.2cm,align=left,color=muted] at (12.15,3.2)
+  {{\hyphenpenalty=10000 Band-limited \mbox{detectors} record reformatted field slices. Three orientations change the overlap geometry.}};
 \end{tikzpicture}
 \caption{Self-generated 3D-style spectrograph schematic. An image slicer reformats the entrance field. A dichroic then splits the beam into optical and near-infrared arms with separate band-limited dispersers and detectors. The image slicer belongs to both candidate resolving-power designs.}
 \label{fig:spectrograph}
@@ -272,8 +272,10 @@ For a 100 \degti\ survey, the threshold field requires roughly 3,600 pointings b
     \draw[draw=muted,fill=gold!28] (1.25,0) rectangle (2.15,0.9);
     \foreach \xx in {1.55,1.85} \draw[muted!55] (\xx,0) -- (\xx,0.9);
     \foreach \yy in {0.30,0.60} \draw[muted!55] (1.25,\yy) -- (2.15,\yy);
-    \node[anchor=west,color=muted] at (2.45,0.65) {One 30$'$ field covers the same sky as nine 10$'$ fields.};
-    \node[anchor=west,color=muted] at (2.45,0.20) {Nine times fewer pointings reduce slews, guide-star acquisitions, calibration overhead, and orientation changes.};
+    \node[anchor=west,text width=11.8cm,align=left,color=muted] at (2.45,0.72)
+      {One 30$'$ field covers the same sky as nine 10$'$ fields.};
+    \node[anchor=west,text width=11.8cm,align=left,color=muted] at (2.45,0.18)
+      {{\hyphenpenalty=10000 Nine times fewer pointings reduce slews, acquisitions, calibrations, and roll changes.}};
   \end{scope}
 \end{tikzpicture}}
 \caption{Field-of-view scaling for the wide RSD survey. The \fovlarge\ mode covers the same sky with one ninth as many pointings as \fovsmall. After the required three roll orientations, a 100 deg$^2$ survey needs about 1200 rather than 10,800 slitless visits.}
