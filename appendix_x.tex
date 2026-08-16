@@ -115,7 +115,7 @@ Neutron-star and black-hole transients, white dwarfs, and dwarf novae}
 
 \begin{leadbox}{violet}
 \textbf{Central design claim.}
-The compact-object program uses the point-source resolving power of a
+An isolated compact object retains the point-source resolving power of the
 space-based slitless spectrograph. The baseline wavelength range is
 $0.2$--$1.5\micron$ and the point-source resolving power is
 $\Rpoint=5000$, corresponding to approximately $60\,\kms$ per resolution
@@ -148,23 +148,23 @@ without external gravitational-wave and radiative-transfer information.}
 
 \section{Science Scope and Instrument Logic}
 
-The main proposal identifies compact objects as a scientific theme, but the
-science case becomes testable only when each object class is connected to an
-observable and a time requirement. The appendix makes the connection
-explicit through three experiments. Rapid observations of merger counterparts
-measure spectral evolution on a timescale of hours to days. Repeated spectra
-of accreting binaries measure line profiles as a function of orbital phase and
-accretion state. Uninterrupted imaging of white dwarfs measures pulsation
-frequencies while a spectrum fixes the atmospheric state required by the
-asteroseismic model.
+The main proposal identifies compact objects as a scientific theme. A
+testable program must specify the observable and observing interval for each
+source class. Three experiments provide that specification. Rapid observations
+of merger counterparts measure spectral evolution over hours to days.
+Repeated spectra of accreting binaries measure line profiles as functions of
+orbital phase and accretion state. Uninterrupted imaging of white dwarfs
+measures pulsation frequencies while spectroscopy determines the atmospheric
+boundary condition required by the asteroseismic model.
 
 Compact-object angular sizes are normally far below the diffraction scale.
 An isolated target therefore retains the point-source resolution of the
 slitless spectrograph. The result differs from the extended-galaxy case in
 which morphology broadens the dispersed image. Point-like morphology does not,
 however, remove spectral confusion. Each target produces a long trace and an
-unrelated field source may overlap the trace. Direct imaging, a scene model
-and more than one dispersion orientation remain part of the measurement.
+unrelated field source may overlap the trace. Direct imaging, a model of every
+trace in the field, and more than one dispersion orientation remain necessary
+for the measurement.
 
 The baseline is intentionally restricted to optical and near-infrared
 observations. Kilonovae, accretion disks, dwarf novae, and polluted white
@@ -190,11 +190,11 @@ At H$\alpha$, the nominal resolution element is about $1.31$\,\AA.
 The nominal scale does not imply that every line centroid is measured to
 $60\,\kms$.
 For a sufficiently bright and isolated line, centroid precision may be much
-smaller than one resolution element. The limiting factor is then the photon
-noise, calibration stability, line blending and the forward model of the
+smaller than one resolution element. The limiting factors are photon noise,
+calibration stability, line blending, and the forward model of the
 slitless scene.
 
-The native resolving power serves different purposes for different source
+The native resolving power provides different measurements for different source
 classes. Cataclysmic-variable disk lines often span several hundred to more
 than one thousand $\kms$. The line wings and double peaks are consequently
 sampled by several resolution elements at $R=5000$. Kilonova ejecta instead
@@ -215,10 +215,10 @@ information required for velocity, profile-asymmetry, and line-ratio studies.
 
 \section{Observables from \texorpdfstring{$R=5000$}{R=5000} Spectra}
 
-The scientific value of the spectra is not a single redshift or a single
-classification label. The scientific value lies in the joint time-dependent measurement of the
-continuum and line structure. The forward model should report the following
-quantities with a covariance matrix.
+The spectra provide more than a redshift or a classification label. Their
+principal information is the joint time evolution of the continuum and line
+profiles. The spectral fit must report the quantities in
+Table~\ref{tab:observables} together with their covariance matrix.
 
 The covariance is essential because slitless extraction couples neighboring
 wavelength bins and contaminating traces. A profile width obtained after
@@ -251,7 +251,7 @@ He II and Bowen features & He II $\lambda4686$ and nearby blend & Hard
 ionizing continuum and high-state accretion\\
 Continuum slope & Multi-epoch spectral energy distribution & Temperature,
 reddening, cooling, and disk contribution\\
-Line evolution & Changes with time and orbital phase & Reprocessing,
+Line evolution & Temporal and orbital-phase evolution & Reprocessing,
 outflow, disk instability, and transient classification\\
 \bottomrule
 \end{tabularx}
@@ -259,16 +259,16 @@ outflow, disk instability, and transient classification\\
 
 \section{Target Selection and Reference Samples}
 
-The compact-object survey uses a tiered target-selection scheme. The scheme
-combines a controlled reference sample with alert-driven observations and a
-blind discovery channel. The reference sample supplies repeatable measurements
-of line profiles and state changes. The alert channel captures short-lived
-kilonovae and accretion episodes. Blind extraction searches the dispersed data
-for compact emission-line sources that are absent from existing catalogs.
+The compact-object survey combines a controlled reference sample,
+alert-driven observations, and a blind discovery channel. The reference
+sample supplies repeatable line profiles across known accretion states. The
+alert channel records short-lived kilonovae and accretion episodes. Blind
+extraction searches the dispersed data for compact emission-line sources that
+are absent from existing catalogs.
 
-The initial selection is based on catalog classification, optical or X-ray
-variability, orbital information, and expected spectral brightness. The
-selection is refined after the ETC includes the measured throughput, zodiacal
+Catalog classifications, optical or X-ray variability, orbital information,
+and predicted spectral brightness define the initial selection. The final
+selection follows after the ETC includes measured throughput, zodiacal
 background, detector configuration, and trace-overlap loss. The Ritter CV
 catalog provides the initial dwarf-nova classification and subtype labels
 \cite{rittercv}. LVK public alerts provide the kilonova trigger stream
@@ -328,7 +328,8 @@ remains part of the science case.}
 Dwarf nova intensive & U Gem, SS Cyg, Z Cam, SU UMa, WZ Sge, VW Hyi, RU Peg &
 Bright reference systems with complementary outburst behaviour\\
 Dwarf nova population & RX And, SS Aur, ER UMa, YZ Cnc, OY Car, HT Cas,
-VY Aqr, VW Vul & State changes, inclination effects, and population diversity\\
+VY Aqr, VW Vul & Spectral evolution across accretion states, inclination
+effects, and population diversity\\
 KMTNet/KSP dwarf novae & KSP-OT-201503a, KSP-OT-201611a, KSP-OT-201701a,
 KSP-OT-201712a, KSP-OT-202104a & Ground-based discovery history combined
 with regular and alert-driven space spectroscopy\\
@@ -365,8 +366,8 @@ subexposures for bright targets. Fainter systems provide a state-averaged
 spectrum, but the resulting product must not be described as orbital
 tomography.
 
-The reference table also does not constitute a mission time allocation. The
-annual charge is formulated as
+The reference table does not constitute a mission time allocation. The annual
+time requirement is formulated as
 \begin{equation}
  T_{\rm program} =
  \sum_k N_{{\rm target},k}N_{{\rm epoch},k}
@@ -376,13 +377,14 @@ annual charge is formulated as
 \end{equation}
 where the index $k$ denotes a source class. The roll and slew terms may exceed
 the detector integration for bright dwarf novae. The final proposal must
-evaluate Equation~\ref{eq:time_budget} with the spacecraft attitude model and
-must rank the source classes before assigning a five-year yield.
+evaluate Equation~\ref{eq:time_budget} with the spacecraft attitude model. The
+resulting time requirements and predicted scientific return must rank the
+source classes before a five-year yield is assigned.
 
 \subsection{KMTNet/KSP dwarf-nova legacy sample}
 
 The Korea Microlensing Telescope Network (KMTNet) operates three 1.6-m
-wide-field telescopes in Chile, South Africa and Australia
+wide-field telescopes in Chile, South Africa, and Australia
 \cite{kim2016kmtnet}. The longitude distribution supports nearly continuous
 ground-based photometry when weather and seasonal visibility permit. The
 KMTNet Supernova Program (KSP) has published five dwarf-nova discoveries with
@@ -446,13 +448,13 @@ $58.75\pm0.02$ min orbit. Outbursts recur every 6.6 d during standstills and
 about every 15 d outside them. The spectrum contains double-peaked
 H$\alpha$ and weak He~I. &
 Tier 1. Observe every 2 to 3 d during focused 30 to 60 d windows. Resolve
-line-profile changes across standstills and determine the response to the
+line-profile evolution across standstills and determine the response to the
 high mass-transfer state.\\
 KSP-OT-202104a \cite{kim2026ksp} &
 $08^{\rm h}14^{\rm m}20.14^{\rm s}$\newline
 $-26^\circ02^\prime37.21^{\prime\prime}$ &
 Type D WZ Sge system with an amplitude near 8 mag and a 28.5 d outburst.
-The superhump period is about 71.7 min. The measured brightness changes from
+The superhump period is about 71.7 min. The measured brightness spans
 $V\simeq24.05$ in quiescence to $V\simeq16.01$ at maximum. &
 Tier 3. Retain a low-cadence state check only when the ETC supports the
 quiescent exposure. A KMTNet alert starts intensive spectroscopy within
@@ -470,7 +472,7 @@ outburst remains bright for several weeks.
 
 The $R=5000$ sequence links the KMTNet light curve to velocity-resolved
 Balmer and helium profiles. The sequence measures disk peak separation,
-profile asymmetry, line ratios and the change between quiescent emission and
+profile asymmetry, line ratios, and the transition between quiescent emission and
 outburst absorption. The KMTNet/KSP objects do not replace the bright
 reference systems in Table~\ref{tab:compact_candidates}. The bright systems
 measure instrumental repeatability while the KMTNet/KSP sample tests the
@@ -478,10 +480,10 @@ scientific reach at faint flux and unusual evolutionary state.
 
 \subsection{KMTNet transient alerts and near-infrared spectroscopy}
 
-An interface to KMTNet transient observations would provide a practical
-external trigger for the compact-object program. The proposed notice supplies
-a discovery time, a sky position and an optical light curve used to rank a
-target before the spacecraft begins a spectroscopic visit. The notice does
+KMTNet transient observations can provide an external trigger for the
+compact-object program. Each notice supplies a discovery time, a sky position,
+and an optical light curve that rank the target before the spacecraft begins a
+spectroscopic visit. The notice does
 not replace the space-based spectrum. The KMTNet observation identifies the
 transient state while the space-based observation measures the spectral
 response of the state.
@@ -489,11 +491,11 @@ response of the state.
 The standalone appendix does not yet define the KMTNet/KSP alert performance.
 The main proposal must supply the adopted field of view, filter set,
 single-visit depth, revisit interval, astrometric uncertainty, classification
-latency and annual duty cycle. The survey values determine whether KMTNet
+latency, and annual duty cycle. The survey values determine whether KMTNet
 discovers an outburst before the rise is complete and whether a kilonova
-candidate is localized well enough for immediate spectroscopy. An alert link
-without measured latency and sky coverage remains an interface concept rather
-than a feasibility result.
+candidate is localized well enough for immediate spectroscopy. An alert
+mechanism without measured latency and sky coverage does not demonstrate
+operational feasibility.
 
 Near-infrared spectroscopy is especially valuable for transient targets. The
 reddest ejecta component of a kilonova may become dominant after the first
@@ -506,8 +508,8 @@ near-infrared range contains Paschen and helium diagnostics that complement
 the Balmer lines used for dwarf novae and accretion binaries.
 
 The KMTNet/KSP notice supplies the position, discovery time, photometric
-state and classification probability. The mission scheduler then evaluates
-solar elongation, visibility duration, slew cost and the predicted spectral S/N.
+state, and classification probability. The mission scheduler then evaluates
+solar elongation, visibility duration, slew cost, and the predicted spectral S/N.
 A bright target receives an initial $3\times300$ s sequence. Later visits use
 $3\times600$--$1200$ s when the source has faded. The number of roll angles
 should be selected from the direct-image scene. Two orientations may be
@@ -515,19 +517,19 @@ sufficient for an isolated target while a crowded field may require a third.
 The released product combines the KMTNet light curve with the calibrated
 optical and near-infrared spectra.
 
-The KMTNet link selects dwarf-nova outbursts, accretion-state changes and
-optical counterparts of compact mergers. The space-based near-infrared
+KMTNet alerts identify dwarf-nova outbursts, transitions between accretion
+states, and optical counterparts of compact mergers. The space-based near-infrared
 spectrum supplies information that a ground-based optical notice does not
 provide. The proposed program should reserve ToO time for the alert stream in
 addition to the standing KMTNet/KSP dwarf-nova sample.
 
 The priority decision should use a reproducible score based on the probability
 of the source class, the probability of spacecraft visibility, the predicted
-S/N and the remaining lifetime of the transient state. A kilonova candidate
+S/N, and the remaining lifetime of the transient state. A kilonova candidate
 with a rapidly fading near-infrared prediction has a different time cost from
 a dwarf nova that remains near maximum for several days. The alert service
-must preserve the selection probabilities and provenance rather than distribute
-only a binary target flag.
+must preserve the selection probabilities and the origin of every datum rather
+than distribute only a binary target flag.
 
 The most important distinction is between a line that is broad because the
 gas is moving and a line that is broad because the source is extended along
@@ -536,7 +538,7 @@ second effect is minimized. The reduction model must still propagate the point-s
 function, trace curvature, detector sampling, and overlap from unrelated
 field sources in the same forward model.
 
-The scene model must be tested with a transient that changes during the
+The scene model must be tested with a transient that brightens or fades during the
 sequence. A static contamination template may assign the variable flux to the
 wrong trace when the target brightens between the direct image and dispersed
 exposure. The simulation should include this temporal mismatch and should
@@ -547,9 +549,9 @@ separation, and roll angle.
 
 \subsection{Binary neutron-star and neutron-star--black-hole mergers}
 
-Binary neutron-star mergers provide the cleanest compact-object example of
-why rapid space-based spectroscopy is useful. The gravitational-wave signal
-constrains the binary masses, spins, distance, inclination and tidal
+Binary neutron-star mergers demonstrate the need for rapid space-based
+spectroscopy. The gravitational-wave signal
+constrains the binary masses, spins, distance, inclination, and tidal
 deformability. The electromagnetic counterpart supplies information about
 the ejecta, viewing angle, host galaxy and radioactive heating. GW170817
 demonstrated that the optical and near-infrared emission evolves on a
@@ -560,7 +562,7 @@ The compact-object program does not require a mid-infrared channel for the
 central measurement. The early blue component and the later redder
 component are followed from the near-ultraviolet through the near-infrared
 with repeated imaging and spectroscopy. The spectral sequence constrains
-temperature evolution, expansion velocity, opacity and the relative
+temperature evolution, expansion velocity, opacity, and the relative
 contribution of high- and low-electron-fraction ejecta. The identification of
 strontium in the spectrum of GW170817 linked the kilonova directly to
 nucleosynthesis rather than treating the event as a purely
@@ -576,8 +578,9 @@ facility. The proposal should quantify the information lost at the
 $1.5\,\micron$ boundary with radiative-transfer templates instead of describing
 the full red component as internally measured.
 
-The broad ejecta spectrum also changes the role of the resolving power.
-Kilonova features with velocities near $0.1c$ are strongly blended
+The large ejecta velocity shifts the principal requirement from native
+resolving power to continuum sensitivity and wavelength coverage. Kilonova
+features with velocities near $0.1c$ are strongly blended
 \cite{pian2017,chornock2017}. Their detection is controlled mainly by
 continuum S/N, wavelength coverage and response time. The $R=5000$ pixels
 should be combined into lower-resolution spectral bins for ejecta inference.
@@ -585,7 +588,7 @@ The native data remain useful for a narrow host line, an intervening absorber,
 or a contaminating field source. The observing mode must return both products
 from one calibrated likelihood.
 
-For each event, the inference must be joint. The measured data vector is
+Each event requires a joint fit. The observables entering the fit are
 formulated as
 \begin{equation}
   \boldsymbol{D}_{\rm KN} =
@@ -596,8 +599,8 @@ formulated as
 where $F_\lambda(t)$ is the spectral sequence and $F_b(t)$ denotes the
 multi-band light curves. The host redshift is $z_{\rm host}$. The final term is
 the gravitational-wave posterior for luminosity distance $d_L$ and inclination
-$\iota$. A radiative-transfer model maps this data vector to the masses,
-velocities, electron-fraction distributions and geometry of the dynamical
+$\iota$. A radiative-transfer model maps these observables to the masses,
+velocities, electron-fraction distributions, and geometry of the dynamical
 and wind ejecta. Opacity is wavelength dependent and evolves with ionization.
 The opacity should not be treated as a single independent number without a
 specified model. The telescope constrains the electromagnetic likelihood. The
@@ -608,7 +611,7 @@ gravitational-wave posterior and merger simulations.
 \centering
 \includegraphics[width=0.95\textwidth,height=0.62\textheight]{gw170817_xshooter.png}
 \caption{Actual observed optical and near-infrared spectra of the kilonova
-AT~2017gfo associated with GW170817, obtained with the ESO VLT/X-shooter
+AT~2017gfo produced by GW170817, obtained with the ESO VLT/X-shooter
 instrument over twelve days. The sequence becomes progressively redder and
 develops broad, evolving absorption structure, corresponding to the kilonova
 rows in Table~\ref{tab:dwarf_lines}. The published reference montage extends
@@ -622,19 +625,19 @@ discussed by Tanaka et al. (2017) and Watson et al. (2019)
 
 \subsection{ToO sequence and response requirement}
 
-The proposed observing sequence is organized around the short-lived early
-signal. A representative reference sequence is shown in Table~\ref{tab:too}.
+The proposed observing sequence prioritizes the short-lived early signal.
+Table~\ref{tab:too} gives a representative sequence.
 The exact number of visits must be recomputed after the spacecraft slew,
 solar-avoidance, and alert-localization simulations are complete.
 
 The response clock should begin at the external alert time and should end at
 the midpoint of the first science exposure. A spacecraft slew time alone
 understates the latency because counterpart identification, command
-authorization, guide-star acquisition and detector configuration occur
+authorization, guide-star acquisition, and detector configuration occur
 before useful photons are recorded. The first visit should use the minimum
 number of roll angles supported by the direct-image scene. A mandatory
 three-roll sequence may consume the interval in which the ultraviolet and blue
-components change most rapidly.
+components evolve most rapidly in flux and color.
 
 \begin{table}[H]
 \centering
@@ -658,10 +661,10 @@ Accurate reference imaging\\
 \end{tabularx}
 \end{table}
 
-The minimum mission-level requirement is not merely a fast slew. The alert
-must pass through an end-to-end chain consisting of alert validation,
-visibility calculation, dynamic scheduling, target acquisition, data-quality
-assessment, and rapid dissemination. A response time that is fast at the
+The minimum mission-level requirement is not merely a fast slew. Before the
+first exposure, the observatory must validate the alert, calculate visibility,
+update the queue, acquire the target, assess data quality, and disseminate the
+result. A response time that is fast at the
 spacecraft but slow in the ground segment does not recover the early
 kilonova signal.
 
@@ -674,9 +677,9 @@ as
  f_{\rm id}f_{\rm S/N}(D)\,dV ,
  \label{eq:kilonova_yield}
 \end{equation}
-where $R_{\rm merger}$ is the merger rate density. The factors describe
+where $R_{\rm merger}$ is the merger rate density. The factors quantify
 gravitational-wave detection, useful localization, spacecraft visibility,
-counterpart identification and adequate spectral S/N. Every factor depends
+counterpart identification, and adequate spectral S/N. Every factor depends
 on the observing network and several depend on distance. The mission does not
 replace this calculation with the number of public alerts. A credible
 five-year estimate must quote the median yield and the uncertainty from the
@@ -697,20 +700,21 @@ merger-rate posterior.
   \draw[<->,color=gold,line width=1.2pt] (8.5,2.0)--(13,2.0)
     node[midway,above] {velocity and cooling sequence};
 \end{tikzpicture}
-\caption{The compact-object ToO chain. The science requirement is a timed
+\caption{The compact-object ToO sequence. The science requirement is a timed
 sequence of measurements rather than a single rapid exposure.}
 \label{fig:too_timeline}
 \end{figure}
 
 \section{Dwarf Novae and Cataclysmic Variables}
 
-Dwarf novae are a particularly strong match to a robotic $R=5000$ slitless
-spectrograph. Dwarf novae are compact, repeatedly variable and spectroscopically
-rich. The standard disk-instability picture attributes dwarf-nova outbursts to a
+Dwarf novae provide repeatable targets for a robotic $R=5000$ slitless
+spectrograph. They are unresolved, recurrently variable, and rich in emission
+and absorption lines. The standard disk-instability model attributes dwarf-nova outbursts to a
 thermal-viscous instability in the accretion disk of a close binary
-\cite{warner1995,lasota2001}. The observed spectrum changes with accretion state.
-Repeated spectra connect disk physics to the light curve and provide more
-than a static classification.
+\cite{warner1995,lasota2001}. The observed spectrum records the transition
+between the quiescent and outburst states. Repeated spectra tie the disk
+temperature and velocity field to the light curve instead of providing only a
+static classification.
 
 \begin{figure}[H]
 \centering
@@ -739,7 +743,7 @@ below the rate required for a stable hot state.
 The disk instability is a limit cycle rather than an explosion. Mass
 accumulates while hydrogen is mostly neutral and angular-momentum transport is
 inefficient. An annulus becomes thermally unstable when the surface density
-crosses the critical value associated with partial hydrogen ionization. The
+crosses the critical value at partial hydrogen ionization. The
 increased opacity and ionization move the annulus to the hot branch. A heating
 front then travels through the disk and raises the inward mass flux. The
 optical and ultraviolet continuum brightens as a larger disk area enters the
@@ -763,16 +767,17 @@ thermal and viscous times are
  \label{eq:disk_times}
 \end{equation}
 where $\alpha$ is the effective viscosity parameter, $\Omega_{\rm K}$ is the
-Keplerian angular frequency and $H/R$ is the disk aspect ratio. A heating
-front changes the local spectrum on a timescale closer to $t_{\rm th}$. The
+Keplerian angular frequency, and $H/R$ is the disk aspect ratio. A heating
+front shifts the local spectrum from the cool branch to the hot branch on a
+timescale closer to $t_{\rm th}$. The
 redistribution of disk mass follows the longer viscous time. Spectra obtained
 only at maximum light do not separate these processes.
 
 An outside-in outburst begins in the outer disk when mass transfer and surface
 density are high there. An inside-out event begins closer to the white dwarf
 after the inner disk reaches the critical density. The propagation direction
-changes the order in which the continuum, line wings, and peak separation
-respond. A combined light curve and spectral sequence thereby tests the
+sets the order in which the continuum, line wings, and peak separation
+respond. A combined light curve and spectral sequence therefore tests the
 front direction while constraining disk radius and mass-transfer state.
 
 The optical rise does not mean that the white dwarf has exploded. The optical
@@ -830,7 +835,7 @@ quiescent and outburst states. In quiescence, U~Gem has strong Balmer and
 helium emission together with Ca~II emission and donor-star absorption bands.
 Near outburst maximum, the continuum becomes much brighter and bluer, while
 broad absorption features dominate and He~II may appear in emission. The
-observed state change demonstrates that a time series of spectra follows
+observed transition demonstrates that a time series of spectra follows
 the disk-instability cycle rather than merely classify the object.
 
 \begin{figure}[H]
@@ -839,15 +844,15 @@ the disk-instability cycle rather than merely classify the object.
 \caption{Actual observed spectra of the dwarf nova U~Gem from LAMOST. The
 upper spectrum was obtained in quiescence and the lower spectra near the
 2012 December outburst peak. The published labels identify Balmer lines,
-He~I, He~II, Fe~II, TiO bands and the Ca~II infrared triplet. The labelled features
+He~I, He~II, Fe~II, TiO bands, and the Ca~II infrared triplet. The labelled features
 are the observed examples represented by the dwarf-nova rows in
 Table~\ref{tab:dwarf_lines}. Reproduced from Zhi et al. (2020), Figure 1
 \cite{zhi2020}.}
 \label{fig:ugem_observed}
 \end{figure}
 
-The value of $R=5000$ is that the line profiles are resolved without making
-the continuum survey prohibitively expensive. The nominal velocity scale is
+At $R=5000$ the spectrum separates the broad disk-line structure while
+retaining sufficient continuum sensitivity for the reference survey. The nominal velocity scale is
 about $60\,\kms$, while a high-S/N centroid or a phase-folded line profile
 may yield a substantially smaller statistical uncertainty. The physically
 interesting output is the profile as a function of orbital phase and
@@ -863,10 +868,10 @@ For an approximately Keplerian emitting disk, the peak separation scales as
  \label{eq:double_peak}
 \end{equation}
 where $M_{\rm WD}$ is the white-dwarf mass, $R_{\rm em}$ is the characteristic
-outer line-emitting radius and $i$ is the binary inclination
-\cite{horne1986}. The high-velocity wings arise at smaller radii. A change in
+outer line-emitting radius, and $i$ is the binary inclination
+\cite{horne1986}. The high-velocity wings arise at smaller radii. A shift in
 peak separation does not by itself prove that the physical disk edge moved
-because the emissivity distribution and optical depth also change during an
+because the emissivity distribution and optical depth also evolve during an
 outburst. Multi-line fitting and an inclination prior are required.
 
 The line and continuum sequence measures the accretion state in a
@@ -876,12 +881,13 @@ flux-calibrated line measurements are therefore required in addition to
 equivalent widths. Blue-shifted absorption and asymmetric wings identify a
 wind only when the same feature is reproduced at more than one roll angle and
 is inconsistent with a contaminating trace. Balmer, helium, and Paschen
-profiles then test whether the outflow changes with disk ionization.
+profiles then test whether the outflow strengthens or weakens as disk
+ionization rises.
 
 Phase-resolved centroids measure the velocity of an irradiated donor or a
 localized disk component. An emission-line velocity does not automatically
 trace the white dwarf. The inferred semi-amplitude must be combined with
-eclipse geometry, photometric ephemerides and a model for the emitting site.
+eclipse geometry, photometric ephemerides, and a model for the emitting site.
 The same analysis applied across rising, maximum and declining states tests
 whether the disk-instability sequence predicts the observed front propagation
 and line-forming radius. A population sample then relates the state sequence
@@ -907,7 +913,7 @@ survey efficiency. Cropped from Figure~1 of Unda-Sanzana et al. (2006)
 The mission should not treat dwarf novae as isolated targets that receive one
 spectrum per year. Sparse imaging first determines the quiescent level and
 identifies the outburst onset. Triggered spectroscopy then samples the rise,
-maximum and decline. A selected bright subset receives a dense sequence over
+maximum, and decline. A selected bright subset receives a dense sequence over
 at least one binary orbit. The three temporal scales measure recurrence,
 thermal-state evolution, and orbital kinematics respectively.
 
@@ -920,14 +926,13 @@ desires $N_\phi$ independent bins, an individual integration should satisfy
 A reference value of $N_\phi=10$ limits phase smearing to one tenth of an
 orbit. Detector read noise and readout overhead determine whether this
 condition is met for a given source. The observing plan should report the
-number of usable phase bins after occultations, rolls and rejected frames.
+number of usable phase bins after occultations, rolls, and rejected frames.
 The monthly and weekly cadences in Table~\ref{tab:target_selection} describe
 state sampling. The monthly and weekly cadences do not replace the dense
 sequence needed for tomography.
 
-The slitless geometry is an advantage for a population program because the
-source and neighboring field objects are modeled jointly in direct and
-dispersed images. The geometry is also a risk. A nearby contaminating star may
+The direct and dispersed images permit a joint fit of the target and
+neighboring field objects across the full sample. A nearby contaminating star may
 produce an overlapping trace. A dwarf nova in a crowded field may be lost if the
 scene model is based only on a static continuum template. The reduction must
 fit the direct image, all available roll angles, the spectral trace,
@@ -936,12 +941,12 @@ and the time-dependent source flux in one forward model.
 \section{White Dwarfs and Dense-Matter Laboratories}
 
 White dwarfs connect compact-object observations to stellar evolution,
-crystallization and the fate of planetary systems. White-dwarf pulsations probe
-internal chemical stratification, total mass, rotation and magnetic-field
+crystallization, and the fate of planetary systems. White-dwarf pulsations probe
+internal chemical stratification, total mass, rotation, and magnetic-field
 properties when compared with stellar-structure models
 \cite{corsico2019}. The imaging channel provides the long uninterrupted light
 curves needed for asteroseismology. The $R=5000$ spectrum provides effective
-temperature, surface gravity, atmospheric composition, radial velocity and
+temperature, surface gravity, atmospheric composition, radial velocity, and
 metal-pollution diagnostics.
 
 The useful pulsators occupy restricted temperature intervals. Hydrogen
@@ -967,14 +972,14 @@ sample and the expected mode-amplitude threshold. A cadence value without
 these quantities does not establish an asteroseismic yield.
 
 For a polluted white dwarf, the optical spectrum identifies or constrains
-elements such as Ca, Mg, Fe and Si. The interpretation requires diffusion and
+elements such as Ca, Mg, Fe, and Si. The interpretation requires diffusion and
 accretion models. The telescope does not directly measure the composition of
-the disrupted parent body. The spectrum measures atmospheric abundances that are then
-translated into parent-body composition using a physical model.
+the disrupted parent body. The spectrum measures atmospheric abundances. A
+diffusion and accretion model then infers the parent-body composition.
 
 The atmospheric product consists of a calibrated spectrum, effective
-temperature, surface gravity, atmospheric class, line abundances and radial
-velocity. The interior product consists of pulsation frequencies, amplitudes
+temperature, surface gravity, atmospheric class, line abundances, and radial
+velocity. The interior product consists of pulsation frequencies, amplitudes,
 and temporal evolution. The separation avoids attributing an interior
 measurement to spectroscopy alone. The time-series photometry and the
 spectrum are complementary parts of the same white-dwarf experiment.
@@ -991,8 +996,8 @@ systems.
 
 Compact accretors that are not detected through a gravitational-wave alert
 also produce useful optical and near-infrared time series. Stellar-mass black
-hole binaries and neutron-star X-ray binaries show rapid changes in
-continuum slope, emission lines and line asymmetry. X-ray and gamma-ray
+hole binaries and neutron-star X-ray binaries show rapid evolution in
+continuum slope, emission lines, and line asymmetry. X-ray and gamma-ray
 facilities provide the high-energy trigger while the proposed telescope
 measures the lower-energy response. Tidal-disruption events are not included
 in the baseline sample because the extended hosts and nuclear positions
@@ -1012,15 +1017,16 @@ The trigger sample should be restricted to systems for which the predicted
 optical or near-infrared flux reaches the line-S/N requirement. An X-ray alert
 alone does not guarantee a useful spectrum. The target decision requires an
 updated counterpart position, extinction estimate, current optical magnitude,
-and the expected lifetime of the state. Bright benchmark binaries
+and the predicted lifetime of the state. Bright benchmark binaries
 calibrate the relation between the high-energy state and the lower-energy
 spectrum. Fainter events should enter only when the ETC predicts a measurable
 continuum or a specified line flux.
 
 Joint observations distinguish a disk-dominated flare from a jet-dominated
 event only when the spectra are combined with multi-band light curves and
-external high-energy information. The appendix should therefore describe
-the targets as a coordinated-network program, not as a standalone optical
+external high-energy information. The program therefore coordinates the
+space-based spectra with ground-based photometry and high-energy measurements.
+The compact-object program does not operate as a standalone optical
 classification survey.
 
 \section{Science-to-Requirement Feasibility}
@@ -1042,7 +1048,7 @@ velocity structure in accretion-disk profiles. Broad transient features are
 binned to lower resolution\\
 Spectral calibration & Stability set by the velocity error budget & Required
 for line-centroid and radial-velocity comparison across epochs\\
-ToO response & Goal $<4$ hr, baseline $<12$ hr & Captures early kilonova and
+ToO response & Goal $<4$ hr, baseline $<12$ hr & Records early kilonova and
 rapid accretion-state evolution\\
 Photometric cadence & Sub-minute for selected targets & White-dwarf
 pulsations and ultracompact-binary variability\\
@@ -1058,18 +1064,19 @@ and precise time-series subtraction\\
 
 \subsection{Spectroscopic ETC implementation}
 
-The initial spectroscopic ETC is implemented as the \texttt{mission\_etc}
-package. The numerical kernel remains in \texttt{slitless\_etc.py} while the
-user interface separates imaging, isolated-line spectroscopy, template
-spectroscopy, cooled mid-infrared imaging and validation. The separation
-prevents an AB magnitude, an integrated line flux and a calibrated
-$F_\lambda$ spectrum from entering the same calculation without an explicit
-observing mode.
+The \texttt{mission\_etc} package implements the initial spectroscopic ETC.
+The numerical kernel remains in \texttt{slitless\_etc.py}. Distinct observing
+modes separate imaging, isolated-line spectroscopy, template spectroscopy,
+and validation. The compact-object calculation invokes only these spacecraft
+modes. A separate cooled mid-infrared calculator remains available for
+external ground-facility comparisons and does not describe a 3.5-m spacecraft
+instrument. The mode separation prevents an AB magnitude, an integrated line
+flux, and a calibrated $F_\lambda$ spectrum from entering the same calculation.
 
 The template mode reads an observed-frame spectrum in physical flux units.
 The calculation convolves the spectrum with a constant-$R$ Gaussian
 line-spread function and samples the result on detector pixels. Source counts,
-zodiacal and telescope backgrounds, dark current, read variance and
+zodiacal and telescope backgrounds, dark current, read variance, and
 contamination counts remain separate outputs. Each slitless detector pixel
 receives the diffuse background integrated over the complete order-sorting
 band. Relative flux calibration and contamination-model residuals are treated
@@ -1077,7 +1084,7 @@ as correlated terms when pixels are combined. The correlated terms do not
 decrease as the square root of the number of binned pixels.
 
 The current $R=5000$ settings cover 4300--5100\,\AA,
-6200--6900\,\AA\ and $1.0$--$1.5\micron$. Two $R=1000$ settings cover
+6200--6900\,\AA, and $1.0$--$1.5\micron$. Two $R=1000$ settings cover
 $0.4$--$1.0\micron$ and $1.0$--$1.5\micron$ for broad transient spectra. The
 implemented settings test the compact-object diagnostics and the resolution
 trade. The settings do not yet establish continuous sensitivity over the
@@ -1092,12 +1099,12 @@ $1.48\times10^{-17}\,\mathrm{erg\,s^{-1}\,cm^{-2}}$ in 1800\,s. The
 2.55-pixel line footprint under the adopted background. The inverse
 calculation recovers ${\rm S/N}=5$ to numerical precision. These values use
 proposal throughput and detector requirements. The values are not measured
-flight performance and will change when component transmission, detector
-noise and the point-source line-spread function are measured.
+flight performance and will be revised after component transmission, detector
+noise, and the point-source line-spread function are measured.
 
 The ETC returns S/N per detector pixel and per combined spectral bin. The
 same output provides line-flux uncertainty, centroid precision, a
-wavelength-calibration floor and the second velocity moment. A phase-smearing
+wavelength-calibration floor, and the second velocity moment. A phase-smearing
 diagnostic limits each exposure to a specified fraction of the binary period.
 A broadband limiting magnitude alone is not an adequate compact-object
 feasibility metric.
@@ -1141,7 +1148,7 @@ The total velocity error must also include a calibration floor,
  \label{eq:velocity_budget}
 \end{equation}
 where the additional terms arise from the wavelength solution, source
-position and contamination and the adopted line model. The requirement on
+position and contamination, and the adopted line model. The requirement on
 spectral stability should be stated as a limit on these terms. The phrase
 ``stable wavelength solution'' is not a verifiable requirement by itself.
 
@@ -1149,18 +1156,18 @@ The same discipline applies to mission time. The exact integrations in
 Table~\ref{tab:target_selection} are planning values until
 Equation~\ref{eq:snr_budget} is evaluated for the quiescent and outburst
 magnitudes of every benchmark. The proposal should publish a matrix of
-continuum S/N, line-flux S/N and overlap survival probability for each source
+continuum S/N, line-flux S/N, and overlap survival probability for each source
 class. That matrix determines which candidates remain in the baseline and
 which become optional targets.
 
 \subsubsection{Observed-template reference cases}
 
-The second ETC stage assigns provenance and a native resolving power to each
-observed template. The line-spread calculation applies only the Gaussian
+The observed-template calculation records the origin and native resolving
+power of each spectrum. The line-spread calculation applies only the Gaussian
 kernel required between the native resolution and the selected mission
 setting. A template with lower resolution is not sharpened. The same record
-retains the epoch, source state, wavelength frame, flux uncertainty, citation
-and public data address.
+retains the epoch, source state, wavelength frame, flux uncertainty, citation,
+and public data URL.
 
 Figure~\ref{fig:compact_etc_reference} presents reference calculations based
 on the LAMOST spectrum of U~Gem at the peak of its 2012 December outburst
@@ -1179,9 +1186,9 @@ validation stage must fit the complete profile and must report the empirical
 covariance.
 
 The AT~2017gfo calculation uses one broad-feature interval in each channel.
-An integrated S/N of 20 at $0.75\micron$ requires 5.7, 47.7 and 241.5\,s at
-1.43, 4.40 and 7.40 days after GW170817. The corresponding $1.25\micron$
-exposures are 8.9, 14.5 and 45.0\,s. The values demonstrate the fading-rate
+An integrated S/N of 20 at $0.75\micron$ requires 5.7, 47.7, and 241.5\,s at
+1.43, 4.40, and 7.40 days after GW170817. The corresponding $1.25\micron$
+exposures are 8.9, 14.5, and 45.0\,s. The values demonstrate the fading-rate
 calculation and the optical to near-infrared color evolution. The values do
 not include alert latency, slew time, trace overlap or a measured flight
 throughput.
@@ -1210,15 +1217,15 @@ field sources. Each source uses the public LAMOST U~Gem outburst spectrum with
 an independent velocity and flux scale. The target receives an injected
 velocity of $120\,\kms$. The forward calculation disperses the three sources
 onto detector images and adds source shot noise, diffuse background, dark
-current and read noise.
+current, and read noise.
 
 The comparison fixes the total science exposure at 60\,s. The single
 orientation receives the full 60\,s. The multi-orientation sequence receives
-20\,s at each of $0^\circ$, $60^\circ$ and $120^\circ$. A common
+20\,s at each of $0^\circ$, $60^\circ$, and $120^\circ$. A common
 direct-image position prior defines the source coordinates. The extraction
 then fits all source spectra simultaneously and the recovered U~Gem spectrum
 is fitted with the complete H$\alpha$ profile. The profile fit includes a
-velocity shift, an amplitude and a linear continuum.
+velocity shift, an amplitude, and a linear continuum.
 
 Figure~\ref{fig:compact_scene_recovery} shows the result for 80 independent
 detector-noise realizations. All 80 fits converged in both observing
@@ -1231,7 +1238,7 @@ counts do not remove the geometric degeneracy.
 The three-orientation fit gives a median velocity of $119.4\,\kms$. The bias
 falls to $+1.2\,\kms$ and the empirical scatter is $4.7\,\kms$. Dividing the
 exposure among three orientations modestly increases the random error while
-the changed projected separation removes the much larger systematic error.
+the different projected separation removes the much larger systematic error.
 The median diagonal-Fisher estimate is $2.8\,\kms$ for the joint fit. The
 empirical scatter must set the velocity requirement because the diagonal
 estimate omits covariance among overlapping spectra.
@@ -1253,7 +1260,8 @@ double-peak recovery at $R=5000$.}
 
 \section{Network Complementarity and Limitations}
 
-The compact-object program is intentionally network based.
+The compact-object program depends on external facilities for discovery,
+high-energy measurements, and the final physical inference.
 
 \begin{table}[H]
 \centering
@@ -1264,7 +1272,7 @@ The compact-object program is intentionally network based.
 \textbf{Facility class} & \textbf{Primary information} & \textbf{Role of the
 3.5 m space telescope}\\
 \midrule
-Gravitational-wave detectors & Binary masses, distance, tidal information &
+Gravitational-wave detectors & Binary masses, distance, and tidal information &
 Rapid electromagnetic localization and spectral follow-up\\
 X-ray and gamma-ray missions & Jet, disk, and high-energy trigger &
 Optical/NIR response and host identification\\
@@ -1282,7 +1290,7 @@ A wide gravitational-wave localization region makes spectroscopy inefficient
 until an optical counterpart is identified. The mission therefore responds to
 a localized counterpart rather than tiling the full gravitational-wave
 probability map with $R=5000$ spectra. Kilonova ejecta mass, composition,
-opacity, geometry and viewing angle remain degenerate in optical and
+opacity, geometry, and viewing angle remain degenerate in optical and
 near-infrared data. The external gravitational-wave posterior and
 radiative-transfer model are part of the inference.
 
@@ -1296,38 +1304,95 @@ scene-quality flag and the posterior contamination fraction.
 
 White-dwarf interior parameters provide a final example of the division of
 labor. The spectrum supplies the atmospheric boundary condition and the
-imaging supplies the pulsation frequencies. Stellar models connect those data
-to the interior. The proposal should preserve the division of labor in the science
-requirements and projected data products.
+imaging supplies the pulsation frequencies. Stellar models infer the interior
+from both measurements. The science requirements and released data products
+must preserve this distinction.
+
+\section{Five-Year Reference Allocation}
+\label{sec:compact_schedule}
+
+The shared mission scheduler reads the target classes, exposure times,
+cadences, solar-elongation limits, maintenance periods, and Director weeks
+from the observing database. It then assigns every program to a common
+260-week capacity model. The current reference solution reserves 618.3 hr for
+Appendix X. The allocation equals 1.41 per cent of the five-year wall clock.
+Table~\ref{tab:compact_five_year} gives the program totals.
+
+\begin{table}[H]
+\centering
+\caption{Database-driven five-year reference allocation for Appendix X. The
+time values include the programmed science integrations and the reserved ToO
+capacity represented in the shared scheduler.}
+\label{tab:compact_five_year}
+\begin{tabularx}{\textwidth}{@{}P{42mm} C{22mm} C{24mm} Y@{}}
+\toprule
+\textbf{Program} & \textbf{Mission years} & \textbf{Time [hr]} &
+\textbf{Scheduling purpose}\\
+\midrule
+Dwarf-nova intensive sample & 1--2 & 31.5 & Dense sequences for bright
+systems during selected outbursts\\
+Dwarf-nova population sample & 1--2 & 60.0 & Repeated state sampling across
+the controlled catalog sample\\
+AM CVn monitoring & 2--3 & 90.0 & State monitoring and one
+phase-resolved sequence for selected ultracompact binaries\\
+Compact-object ToO reserve & 1--5 & 436.8 & One per cent of the mission wall
+clock retained for merger counterparts and accretion transients\\
+\midrule
+\textbf{Appendix X total} & \textbf{1--5} & \textbf{618.3} &
+\textbf{1.41 per cent of the five-year wall clock}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Figure~\ref{fig:compact_five_year} shows the weekly assignments. Routine
+science begins in Year 1 week 14 after commissioning and performance
+acceptance. The scheduler excludes Director weeks 43 and 44 in every year and
+tests fixed targets against a solar elongation of $90^\circ$--$180^\circ$.
+The compact-object ToO time remains distributed over otherwise eligible weeks
+until an alert supplies a coordinate, a discovery time, and a predicted
+brightness. The figure therefore demonstrates available mission capacity. It
+does not predict the number of gravitational-wave counterparts or accretion
+transients that will satisfy the trigger criteria.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.99\textwidth]{appendix_X_five_year_timeline.png}
+\caption{Weekly Appendix X allocation generated from the shared observing
+database. Color gives the fraction of one 168-hr week assigned to each
+program. The color scale uses the largest Appendix X allocation and the gray
+hatching marks the protected Director weeks. The ToO row represents reserved
+capacity rather than preselected targets.}
+\label{fig:compact_five_year}
+\end{figure}
 
 \section{Required Validation Before Proposal Baseline}
 
-Before this program is treated as a mission-level performance claim, the
-following validation products should be completed.
+The compact-object program becomes a mission-level performance claim only
+after the following validation products meet quantitative acceptance tests.
 
 The first validation product is an ETC grid that spans magnitude, line flux,
-source state, background, detector channel and roll-dependent contamination
-for kilonovae, dwarf novae, white dwarfs and accreting neutron-star or
+source state, background, detector channel, and roll-dependent contamination
+for kilonovae, dwarf novae, white dwarfs, and accreting neutron-star or
 black-hole binaries. The grid must be based on observed spectral templates.
 The second product is a slitless forward simulation that uses direct-image
 priors, detector sampling, multiple dispersion orientations, time-dependent
-source flux and unrelated field sources. A blinded recovery test should then
+source flux, and unrelated field sources. A blinded recovery test should then
 measure bias and covariance for injected line profiles and known velocities.
 
 Operational feasibility requires a separate scheduler simulation. The
 simulation must begin with a realistic alert stream and must include
 classification latency, field of regard, solar avoidance, slew time, roll
-availability, guide-star acquisition, downlink and interrupted visits. The
+availability, guide-star acquisition, downlink, and interrupted visits. The
 output is a five-year yield that distinguishes public triggers, identified
-counterparts, observed targets, spectra with usable line S/N and
+counterparts, observed targets, spectra with usable line S/N, and
 science-grade multi-epoch sequences.
 
 Two class-specific demonstrations complete the validation. Archival spectra
 and light curves of dwarf novae with known orbital periods should test the
-recovery of peak separation, wings, velocity modulation and state changes
+recovery of peak separation, wings, velocity modulation, and transitions between states
 after convolution to the proposed instrument. Injected white-dwarf light
-curves should test how cadence, gaps and photometric noise change the
-recovered pulsation frequencies. The class-specific demonstrations convert the proposed
+curves should quantify the frequency bias produced by cadence, gaps, and
+photometric noise. The class-specific demonstrations convert the proposed
 measurements into traceable performance requirements.
 
 \begin{resultbox}{orange}
@@ -1349,9 +1414,9 @@ The adopted compact-object baseline is a $0.2$--$1.5\micron$ space-based
 slitless spectrograph with $R=5000$, supported by high-cadence imaging and
 robotic ToO operations. The point-source nature of compact objects preserves
 the native resolution for an isolated trace. Direct images, multiple
-orientations and a scene model are still required to control overlap. The
+orientations, and a scene model are still required to control overlap. The
 resulting spectra measure velocities, ionization, outflows, disk kinematics,
-state changes and transient spectral evolution when the ETC establishes the
+transitions between states, and transient spectral evolution when the ETC establishes the
 required S/N.
 
 The strongest transient case is rapid optical and near-infrared follow-up of
@@ -1361,7 +1426,7 @@ instability and binary dynamics. White dwarfs provide a long-baseline program
 in which atmospheric spectroscopy and asteroseismology jointly probe cooling,
 crystallization, and remnant planetary systems. The three experiments share a
 detector but place significantly different requirements on cadence,
-resolution, calibration and mission operations.
+resolution, calibration, and mission operations.
 
 \begin{thebibliography}{99}
 

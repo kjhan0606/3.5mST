@@ -174,13 +174,13 @@ validation}
 
 \begin{resultbox}
 \textbf{\color{cGold}Central design conclusion.}
-The baseline 0.2--1.5\,$\mu$m observatory is strongest as a rapid-response
-facility for astrometry, visible and near-infrared taxonomy, rotation and
-phase curves, recovery, and long-arc orbit improvement. The \facility\ does
-not carry a mid-infrared channel. Ground-based MIR telescopes provide the
-thermal fluxes needed for diameter and albedo inference. The mission supplies
-the contemporaneous reflected-light measurements and observing geometry that
-make the joint thermal analysis physically useful.
+The baseline 0.2--1.5\,$\mu$m observatory provides rapid-response astrometry,
+visible and near-infrared taxonomy, rotation and phase curves, recovery, and
+long-arc orbit improvement. The \facility\ does not carry a mid-infrared
+channel. Ground-based MIR telescopes provide the thermal fluxes needed to
+infer diameter and albedo. The mission supplies contemporaneous
+reflected-light measurements and observing geometry for the joint thermal
+analysis.
 \end{resultbox}
 
 \vspace{2mm}
@@ -204,18 +204,18 @@ mission performance.}
 
 \section{Science Scope}
 
-The original proposal identifies NEO discovery, physical characterization,
-orbit refinement, impact-risk analysis, and early warning as one connected
-program. The scientific logic is sound although the hardware requirements
-for each stage are significantly different. A defensible mission architecture therefore divides
-the program into four products.
+The original proposal combines NEO discovery, physical characterization,
+orbit refinement, impact-risk analysis, and early warning in one program.
+The scientific sequence is coherent although each stage imposes different
+hardware and operational requirements. The mission architecture therefore
+separates the program into four data products.
 
 \begin{enumerate}[leftmargin=7mm,itemsep=2mm]
 \item \textbf{\color{cTeal}Recovery and astrometry.} Measure accurate
-positions in the International Celestial Reference Frame (ICRF), the
-quasar-defined inertial reference frame used for high-accuracy celestial
-astrometry for recently discovered objects, and extend the observational arc
-before ephemeris uncertainty grows.
+positions of recently discovered objects in the International Celestial
+Reference Frame (ICRF). The ICRF is the quasar-defined inertial reference
+frame used for high-accuracy celestial astrometry. The new positions extend
+the observational arc before the ephemeris uncertainty grows.
 \item \textbf{\color{cGold}Physical characterization.} Measure colors,
 spectra, light curves, and phase behavior. Combine the measurements with
 thermal flux from coordinated ground-based MIR observations.
@@ -227,50 +227,51 @@ covariance through close encounters. A nominal trajectory alone is not an
 impact probability.
 \end{enumerate}
 
-The \facility\ contributes most strongly where aperture, angular resolution,
-robotic scheduling, and a stable space environment improve follow-up. A
-dedicated discovery survey additionally requires étendue, repeated cadence,
-moving-object processing, and access toward the Sun.
+The \facility\ provides its greatest gain through its aperture, angular
+resolution, robotic scheduling, and stable space environment. A dedicated
+discovery survey requires the additional capabilities of large étendue,
+repeated cadence, moving-object processing, and access toward the Sun.
 
 \section{Ground-Based and Space-Based NEO Survey Regimes}
 \label{sec:ground-space-surveys}
 
-Ground and space surveys are complementary rather than interchangeable.
-Wide-field ground observatories can deliver large optical étendue at
-comparatively low cost, replace or upgrade instruments, and distribute
-longitude coverage across a network. Rubin Observatory demonstrates the
-power of this approach for repeated optical imaging over a very large field
+Ground and space surveys serve complementary roles. Wide-field ground
+observatories deliver large optical étendue at comparatively low cost.
+Operators can replace or upgrade their instruments and distribute longitude
+coverage across a network. Rubin Observatory demonstrates the resulting
+survey power through repeated optical imaging over a very large field
 \cite{Ivezic2019}. A space survey should therefore not be justified as a
-smaller copy of a ground survey. The case for a space survey rests on access
-to a different observational phase space. The additional phase space
-includes stable optical and near-infrared calibration without an atmosphere,
-a larger usable time window, and a field of regard that can be engineered
-closer to the Sun. The MIR measurement belongs to the coordinated ground
-segment rather than the 3.5ST payload.
+smaller copy of a ground survey. Its scientific case rests on access to a
+different observational phase space. An atmosphere-free platform provides
+stable optical and near-infrared calibration, a larger usable time window,
+and a field of regard that can be engineered closer to the Sun. The
+coordinated ground segment provides the MIR measurement because the 3.5ST
+payload does not include an MIR channel.
 
 \subsection{Atmosphere, airmass, and the usable sky window}
 
-For a ground observation at zenith angle $z$, the airmass is approximately
+For a ground observation at zenith angle $z$ the airmass is approximately
 $X\simeq\sec z$ away from the horizon. Atmospheric extinction contributes
-$A_\lambda=k_\lambda X$. Increasing airmass therefore attenuates the source
-and increases wavelength-dependent extinction, differential refraction,
-seeing, and calibration systematics. A moving-object survey consequently
+$A_\lambda=k_\lambda X$. Increasing airmass attenuates the source and
+increases wavelength-dependent extinction, differential refraction, seeing,
+and calibration systematics. A moving-object survey consequently
 imposes a maximum acceptable airmass rather than using the full geometric
 hemisphere. Daylight and twilight, the horizon, weather, lunar background,
 and seasonal visibility further reduce the effective sky and cadence window.
-The restrictions produce a smaller ground-based sky window. The excluded
+The combined restrictions narrow the ground-based sky window. The excluded
 region is set by data-quality and scheduling requirements, not only by
 whether the target is geometrically above the horizon.
 
 Mid-infrared astronomy from the ground uses restricted atmospheric windows
 at exceptional dry sites. ESO/VISIR provides one established example through
 the M, N, and Q windows near 5, 10, and 19\,$\mu$m. The warm atmosphere and
-telescope produce a high photon background. Ground observations address the
-background with chopping, nodding, and short targeted integrations
+telescope produce a high photon background. Ground observations subtract
+the background through chopping, nodding, and short targeted integrations
 \cite{ESOVISIR2019}. The resulting mode does not support a continuous
-all-sky MIR census. The mode does support thermal characterization of a
-selected target with a sufficiently accurate ephemeris. This targeted role
-defines the adopted division of responsibility.
+all-sky MIR census. Targeted observing instead provides thermal
+characterization of selected targets with sufficiently accurate ephemerides.
+The adopted division of
+responsibility assigns this targeted role to ground-based facilities.
 
 \begin{table}[H]
 \centering
@@ -349,22 +350,23 @@ elongations than night-time ground surveys, improving sensitivity to objects
 approaching from directions that are poorly sampled in optical surveys
 \cite{Mainzer2023}.
 \item \textbf{\color{cBlue}Stable astrometry and photometry.}
-Removing seeing, atmospheric dispersion, extinction changes, and telluric
+Removing seeing, atmospheric dispersion, temporal extinction variations, and telluric
 structure improves repeatability. The remaining floor is set by PSF
 calibration, pointing reconstruction, detector effects, and the inertial
 reference catalog.
 \item \textbf{\color{cRed}Complementarity with ground assets.}
-The efficient architecture is a joint system. Ground surveys provide optical
-étendue, long temporal baselines, radar constraints, and MIR thermal flux.
-The space mission provides weather-independent optical and near-infrared
-follow-up, precise astrometry, and rapid scheduling.
+The program assigns complementary measurements to ground and space
+facilities. Ground surveys provide optical étendue, long temporal baselines,
+radar constraints, and MIR thermal flux. The space mission provides
+weather-independent optical and near-infrared follow-up, precise astrometry,
+and rapid scheduling.
 \end{enumerate}
 
 \begin{resultbox}
 \textbf{\color{cGold}Mission consequence.}
 The \facility\ does not claim MIR discovery or MIR sensitivity. The mission
-advantage lies in rapid recovery, stable reflected-light characterization,
-and orbit refinement. A ground-based MIR partner supplies the independent
+provides rapid recovery, stable reflected-light characterization, and orbit
+refinement. A ground-based MIR partner supplies the independent
 thermal measurement needed to infer diameter and albedo.
 \end{resultbox}
 
@@ -377,9 +379,9 @@ $p_V$, the standard optical diameter relation \cite{RyanWoodward2010} is
   =1.329\times10^6\,p_V^{-1/2}10^{-0.2H}.
   \label{eq:h-diameter}
 \end{equation}
-The absolute magnitude $H$ removes observing geometry. The definition sets
-$r=\Delta=1$\,au and the phase angle to zero. For a real observation, the
-apparent visual magnitude and the corresponding diameter threshold are
+The absolute magnitude $H$ specifies the brightness at the standard geometry
+$r=\Delta=1$\,au and zero phase angle. For a real observation the apparent
+visual magnitude and the corresponding diameter threshold follow
 \cite{Bowell1989}
 \begin{equation*}
 \begin{aligned}
@@ -393,16 +395,16 @@ apparent visual magnitude and the corresponding diameter threshold are
 where $r$ is the heliocentric distance, $\Delta$ is the distance between the
 telescope and the NEO in au, and $\Phi(\alpha)$ is the normalized phase
 function.
-Thus, at fixed albedo and limiting magnitude, the detectable minimum
+At fixed albedo and limiting magnitude the detectable minimum
 diameter grows linearly with both $r$ and $\Delta$ and increases at
-unfavorable phase angle. For example, at $m_{\rm lim}=25$, $p_V=0.14$,
+unfavorable phase angle. For example at $m_{\rm lim}=25$, $p_V=0.14$,
 $r=1$\,au, and $\Phi=1$, the corresponding thresholds are 0.36, 3.6, and
 36\,m for $\Delta=0.01$, 0.1, and 1\,au, respectively.
 The equation shows why reflected-light discovery does not determine impact
-energy and consequently the hazard level of the source. A dark and large body may have the same $H$ as a bright and smaller
-body. Ground-based thermal-infrared flux breaks much of the degeneracy and
-supports a diameter estimate when the observing geometry and thermal model
-are known \cite{Mainzer2011,Mainzer2023}.
+energy or the resulting hazard level. A large dark body may have the same
+$H$ as a smaller reflective body. Ground-based thermal-infrared flux breaks
+much of the degeneracy and supports a diameter estimate when the observing
+geometry and thermal model are known \cite{Mainzer2011,Mainzer2023}.
 
 \begin{figure}[H]
 \centering
@@ -435,11 +437,12 @@ The Near-Earth Asteroid Thermal Model gives the schematic dependence
  \left(\frac{1-A}{\eta\epsilon r^2}\right)^{1/4},
  \label{eq:thermal-diameter}
 \end{equation}
-where $\Delta$ and $r$ are the observer and heliocentric distances.
-The dimensionless quantity $\epsilon$ is the bolometric thermal emissivity, which multiplies the greybody radiance and also enters the radiative-equilibrium
+where $\Delta$ and $r$ are the observer and heliocentric distances. The
+dimensionless quantity $\epsilon$ is the bolometric thermal emissivity. The
+emissivity multiplies the greybody radiance and enters the radiative-equilibrium
 temperature as $T\propto\epsilon^{-1/4}$. The dimensionless NEATM beaming
 parameter $\eta$ empirically rescales the surface-temperature distribution
-to account for the combined effects of thermal inertia, rotation, surface
+and represents the combined effects of thermal inertia, rotation, surface
 roughness, and observing geometry. Increasing $\eta$ lowers the modeled
 temperature as $T\propto\eta^{-1/4}$ \cite{Harris1998}. A joint fit must
 either constrain $\epsilon$ and $\eta$ from the thermal data or propagate
@@ -448,7 +451,7 @@ The diameter enters the emitted flux through the projected area as $D^2$.
 The Bond albedo $A$ enters only through a fourth-root temperature correction
 \cite{Harris1998,Mainzer2011}. A measured thermal spectral energy distribution
 therefore provides a nearly albedo-independent diameter constraint. The
-constraint is independent of the assumed visible geometric albedo $p_V$
+thermal constraint does not require an assumed visible geometric albedo $p_V$
 although shape, thermal inertia, surface roughness, rotation, and the beaming
 parameter $\eta$ remain model uncertainties. Combining a ground-based MIR
 diameter with the 3.5ST value of $H$ determines $p_V$ rather than assuming
@@ -475,9 +478,9 @@ Objects at 250--400\,K peak near 11.6--7.2\,$\mu$m. The 3.5ST
 0.2--1.5\,$\mu$m range measures reflected sunlight for most NEOs and does not
 sample the thermal maximum. Ground-based M-band and N-band observations
 sample the warm continuum through the available atmospheric windows. NEO
-Surveyor provides a space-based reference for the physical wavelength
-leverage \cite{Mainzer2023}. Its detector bands do not define 3.5ST
-requirements.
+Surveyor provides a space-based reference that demonstrates the required
+thermal wavelength coverage \cite{Mainzer2023}. Its detector bands do not
+define 3.5ST requirements.
 
 \begin{figure}[H]
 \centering
@@ -499,13 +502,13 @@ define the external data needed for diameter and albedo inference.
 
 \subsection{Ground-based MIR follow-up interface}
 
-The thermal measurement enters the program as an external data product.
+The program obtains the thermal measurement as an external data product.
 The 3.5ST observation determines the ICRF position, the optical and
 near-infrared spectral energy distribution, the rotational phase, and the
 phase-angle correction. A ground-based MIR telescope measures calibrated
 thermal flux in one or more available atmospheric windows. CODES evaluates
 the heliocentric and observer distances at both epochs. A joint NEATM or
-thermophysical fit then returns diameter, visible albedo, and their
+thermophysical fit then determines diameter, visible albedo, and their
 covariance.
 
 \begin{table}[H]
@@ -530,11 +533,11 @@ Constrains thermal emission and the diameter scale\\
 CODES &
 Observer geometry, heliocentric distance, phase angle, and orbit covariance
 at every exposure &
-Places the optical and thermal measurements in one dynamical geometry\\
+Computes the geometric corrections for the optical and thermal measurements\\
 Joint physical model &
 NEATM or thermophysical likelihood with rotational and calibration
 uncertainties &
-Returns posterior distributions for $D$, $p_V$, $\eta$, and derived impact
+Determines posterior distributions for $D$, $p_V$, $\eta$, and derived impact
 energy\\
 \bottomrule
 \end{tabularx}
@@ -543,10 +546,11 @@ energy\\
 
 The ground observation should occur as close as practical to the 3.5ST
 light-curve sequence. Non-simultaneous measurements require a rotational
-phase model and an uncertainty term for changing geometry. The collaboration
+phase model and an uncertainty term for the evolving geometry. The collaboration
 must exchange calibrated fluxes and filter curves rather than catalog
 diameters alone. The retained observables allow the physical model to be
-recomputed when the orbit, thermal model, or calibration changes.
+recomputed after a revised orbit, thermal model, or calibration becomes
+available.
 
 \begin{resultbox}
 \textbf{\color{cTeal}Scope of the mission ETC.}
@@ -568,11 +572,11 @@ For a well-sampled point-spread function, a useful photon-limit estimate is
   \simeq \frac{\mathrm{FWHM}}{2.355\,\mathrm{S/N}}.
   \label{eq:centroid}
 \end{equation}
-Equation~\ref{eq:centroid} is not the mission astrometric error. Absolute
-accuracy also depends on geometric-distortion stability, detector effects,
-timing, guide-star errors, chromaticity, source trailing, and the reference
-catalog. The mission requirement should therefore specify both centroid
-precision and an externally validated ICRF floor.
+Equation~\ref{eq:centroid} estimates only the photon-limited centroid error.
+The absolute astrometric error also depends on geometric-distortion stability,
+detector effects, timing, guide-star errors, chromaticity, source trailing,
+and the reference catalog. The mission requirement should therefore specify
+both centroid precision and an externally validated ICRF floor.
 
 \begin{figure}[H]
 \centering
@@ -582,12 +586,12 @@ widths. The shaded floor is a calibration target, not a demonstrated
 performance value.}
 \end{figure}
 
-The high-value operational mode is a rapid Target-of-Opportunity sequence
-that acquires several short, untrailed exposures, repeats the sequence after
-a geometry-dependent interval, and publishes astrometry with a complete
-timing and distortion solution. The final cadence must be optimized with
-synthetic moving-object injection rather than adopted from a static-source
-survey.
+The rapid Target-of-Opportunity mode acquires several short exposures that
+limit trailing. A second sequence after a geometry-dependent interval extends
+the orbital arc. The resulting astrometry includes the complete timing and
+distortion solution. Synthetic moving-object injection must determine the
+final cadence because a static-source survey does not measure the relevant
+recovery efficiency.
 
 \subsection{Composition, rotation, and phase behavior}
 
@@ -595,21 +599,22 @@ The Bus--DeMeo system uses spectra from 0.45 to 2.45\,$\mu$m and defines
 24 taxonomic classes \cite{DeMeo2009}. The baseline 0.2--1.5\,$\mu$m
 spectrograph therefore provides a useful but incomplete taxonomic interval.
 Extension to 2.45\,$\mu$m would improve continuity with the established
-classification system. Time-resolved photometry measures rotation, amplitude,
-and changing viewing geometry. These quantities constrain shape and spin
-priors that enter thermal and Yarkovsky models.
+classification system. Time-resolved photometry measures the rotation period,
+light-curve amplitude, and evolving viewing geometry. The measurements
+constrain the shape and spin priors used by thermal and Yarkovsky models.
 
 \section{L2 Field of Regard}
 
-At Sun--Earth L2, the Sun, Earth, and Moon occupy nearly the same sky
-direction. The geometric solar disk is not the relevant exclusion angle.
+At Sun--Earth L2 the Sun, Earth, and Moon occupy nearly the same sky
+direction. The angular radius of the solar disk does not set the operational
+exclusion angle.
 Scattered light, sunshade geometry, thermal stability, Earth thermal
 emission, lunar light, and allowed spacecraft attitudes set a much larger
 keep-out region. The present white-paper visibility calculation adopts a
 minimum solar elongation of $60^\circ$.
 
 For a fixed target at ecliptic latitude $\beta$ and solar exclusion angle
-$\theta$, the purely geometric annual visibility fraction is
+$\theta$ the purely geometric annual visibility fraction is
 \begin{equation}
  f_{\rm vis}(\beta)=
  \begin{cases}
@@ -620,9 +625,9 @@ $\theta$, the purely geometric annual visibility fraction is
  \end{cases}
  \label{eq:visibility}
 \end{equation}
-For $\theta=60^\circ$, Equation~\ref{eq:visibility} gives 243.5 observable
+For $\theta=60^\circ$ Equation~\ref{eq:visibility} gives 243.5 observable
 days per year on the ecliptic and full-year access above
-$|\beta|=60^\circ$. These values describe geometry only.
+$|\beta|=60^\circ$. The visibility fractions describe geometry only.
 
 \begin{figure}[H]
 \centering
@@ -637,14 +642,20 @@ offsets, and sunshade geometry still require a measured rejection model.}
 
 NEO discovery benefits from observing at small elongation because Atira and
 other interior or Earth-approaching populations spend substantial time close
-to the Sun on the sky. A reduction from $60^\circ$ to $45^\circ$ is therefore
-scientifically valuable. Access at $45^\circ$ is not a software setting. The change affects
-the baffle, sunshade, radiator view, detector background, and allowed roll
-angles. Zodiacal emission also rises toward the ecliptic and toward the Sun.
+to the Sun on the sky. A reduction from $60^\circ$ to $45^\circ$ would increase
+sensitivity to these populations. Reaching $45^\circ$ requires corresponding
+designs for the baffle, sunshade, radiator view, detector background, and
+allowed roll angles. Zodiacal emission also rises toward the ecliptic and
+toward the Sun.
 The exposure-time model must use a wavelength-dependent zodiacal map rather
 than one scalar sky level.
 
 \section{Observation Architecture and Feasibility}
+
+The observing architecture assigns a measurable product and an acceptance
+test to each science claim. Product-specific acceptance tests prevent a
+photon-limited sensitivity estimate from being interpreted as a demonstrated
+recovery rate or survey completeness.
 
 \begin{longtable}{@{}P{30mm}P{36mm}P{46mm}P{46mm}@{}}
 \toprule
@@ -686,13 +697,13 @@ confusion, and false-link control\\
 \subsection{Cadence for recovery and coordinated characterization}
 
 The baseline program follows external discoveries rather than conducting a
-blind MIR census. Ground optical surveys and the Minor Planet Center (MPC)
-provide alerts and preliminary ephemerides. The 3.5ST scheduler converts the
-ephemeris and covariance into short exposures that limit trailing. A visit
-should contain at least four astrometric measurements over a time span that
-resolves the angular motion. A second visit on another night or at a later
-geometry extends the orbital arc. CODES determines the repeat interval from
-the predicted covariance rather than imposing one fixed interval on every
+blind MIR census. Ground optical surveys submit astrometry to the Minor Planet
+Center (MPC), which distributes alerts and preliminary ephemerides. The 3.5ST
+scheduler converts the ephemeris and covariance into short exposures that
+limit trailing. A visit should contain at least four astrometric measurements
+over a time span that resolves the angular motion. A second visit on another
+night or at a later geometry extends the orbital arc. CODES determines the
+repeat interval from the predicted covariance rather than imposing one fixed interval on every
 target.
 
 The 145\,s exposure used in the single-visit sensitivity calculation below
@@ -731,14 +742,14 @@ Joint diameter and albedo posterior through Table~\ref{tab:ground-mir-interface}
 \label{tab:neo-coordinated-sequence}
 \end{table}
 
-The number of characterized targets depends on the external alert rate, the
+The characterized-target yield depends on the external alert rate, the
 fraction visible within the 3.5ST field of regard, the Target-of-Opportunity
 allocation, and the success rate of ground MIR scheduling. A five-year MIR
 discovery yield cannot be assigned to the 3.5ST concept because the mission
 does not carry the detector assumed by the former calculation. The proposal
-will quote a characterized-target yield only after a joint scheduler has
-folded a representative ground alert stream through the 3.5ST allocation and
-the participating MIR facilities.
+will quote a characterized-target yield only after a joint scheduler applies
+the 3.5ST allocation and participating MIR availability to a representative
+ground alert stream.
 
 \begin{resultbox}
 \textbf{\color{cGold}Cadence conclusion.}
@@ -762,12 +773,12 @@ L2, 0.01\,au beyond Earth.
 The Sun-centered panel marks the orbital radii of Mars and Jupiter together
 with the main asteroid belt. The $140$\,m contour intersects the
 $2.1$--$3.3$\,au main belt where the phase angle and observer distance are
-favorable. Asteroids down to approximately 140\,m can therefore exceed the
-single-exposure threshold in the accessible near side of the belt. The
-1\,km contour crosses the $5.20$\,au orbit of Jupiter and extends beyond it
+favorable. Asteroids near 140\,m can therefore exceed the single-exposure
+threshold on the accessible near side of the belt. The 1\,km contour crosses
+the $5.20$\,au orbit of Jupiter and extends beyond it
 near opposition. The inset gives the corresponding maximum distance from
-Earth for each diameter. It retains the distance scale needed for the ideal
-warning-time calculation below.
+Earth for each diameter. The Earth-centered distance sets the ideal
+warning-time scale calculated below.
 
 \begin{figure}[H]
 \centering
@@ -780,23 +791,23 @@ use a 145\,s Johnson $V$ exposure, $p_V=0.15$, and the $H,G$ phase law. The
 $140$\,m contour reaches the near side of the main belt under favorable
 illumination. The 1\,km contour extends beyond Jupiter's orbit near
 opposition. The inset reports the favorable maximum Earth-centered distance
-for each diameter. These are instantaneous flux limits. They omit trailing,
-confusion, cadence, linking losses, and orbit uncertainty.}
+for each diameter. The contours are instantaneous flux limits and omit
+trailing, confusion, cadence, linking losses, and orbit uncertainty.}
 \label{fig:neo-single-visit-reach}
 \end{figure}
 
-The direction of easiest discovery is not the physical source direction of
-all impactors. Optical discovery reaches the greatest distance near
-opposition. The resulting catalog therefore contains a strong opposition
-selection effect. Real impactors can approach from a broad range of solar
+The direction of greatest optical reach does not represent the arrival
+direction of every impactor. Reflected-light surveys reach their greatest
+distance near opposition and therefore impose a strong opposition selection
+on the resulting catalog. Real impactors approach from a broad range of solar
 elongations. The 17--20\,m Chelyabinsk impactor approached within
 $15^\circ$ of the Sun and could not be detected by conventional survey
 telescopes in that direction \cite{JPLChelyabinsk2013}. The solar keep-out
 zone therefore prevents a nonzero guaranteed warning time for every
 possible impactor.
 
-An ideal geometric lead time follows from the maximum Earth-centered
-detection distance $d_{\oplus,\max}$,
+The maximum Earth-centered detection distance $d_{\oplus,\max}$ sets the
+ideal geometric lead time
 \begin{equation}
  t_{\rm lead}
  \simeq
@@ -845,10 +856,11 @@ constrains $p_VD^2$ rather than diameter alone.
 
 \begin{resultbox}
 \textbf{\color{cGold}Warning-time interpretation.}
-The baseline ETC can detect a favorable 20\,m object tens of days before
-impact in the idealized speed range. The statement is not a guaranteed
-warning requirement. Solar-direction approaches can remain hidden until
-impact. A defensible alert claim requires deterministic sky coverage,
+The baseline ETC predicts that a favorable 20\,m object can cross the
+detection threshold tens of days before impact within the idealized speed
+range. The upper bound does not define a guaranteed warning requirement.
+Solar-direction approaches can remain hidden until impact. A defensible
+alert claim requires deterministic sky coverage,
 real-time processing, linkage efficiency, and a quantified solar blind
 zone.
 \end{resultbox}
@@ -873,8 +885,8 @@ The vector $\mathbf r(t)$ is the barycentric position of the target in the
 J2000 International Celestial Reference Frame. Its first derivative is the
 barycentric velocity $\mathbf v=\dot{\mathbf r}$. The second derivative
 $\ddot{\mathbf r}$ is the total acceleration rather than a force. CODES treats
-the target as a massless test particle. The target changes neither the
-planetary ephemeris nor the motion of another perturber. Time is measured on
+the target as a massless test particle. The target therefore does not perturb
+the planetary ephemeris or the motion of another body. Time is measured on
 the TDB-compatible ephemeris scale. Positions and accelerations are evaluated
 in km and km\,s$^{-2}$ within the numerical force routine.
 
@@ -889,7 +901,7 @@ toward the perturber and its cubic norm supplies the inverse-square
 acceleration with the correct direction. The coefficient $GM_i\equiv\mu_i$
 is the measured gravitational parameter of the perturber. The implementation
 reads $\mu_i$ directly from the JPL kernel or its associated constant table.
-It does not multiply a separate value of $G$ by a tabulated mass. The direct
+The implementation does not multiply a separate value of $G$ by a tabulated mass. The direct
 use of $\mu_i$ follows the precision structure of modern solar-system
 ephemerides.
 
@@ -897,8 +909,8 @@ ephemerides.
 The term $\mathbf a_{\rm zonal}$ contains the axisymmetric $J_2$, $J_4$, and
 $J_6$ corrections for bodies with measured coefficients. CODES evaluates the
 Legendre expansion in the time-dependent IAU north-pole direction supplied
-by the NAIF planetary constants kernel. The correction is most important
-during a close planetary passage. DE440s supplies a planet-system barycenter
+by the NAIF planetary constants kernel. The zonal acceleration becomes most
+important during a close planetary passage. DE440s supplies a planet-system barycenter
 for Mars and the outer planets. A precision trajectory within a satellite
 system must also load the corresponding planet-center satellite SPK.
 
@@ -923,14 +935,14 @@ and transverse drag. The term $\mathbf a_{\rm SW}$ transfers momentum from a
 radial proton wind after subtracting the target velocity from the wind
 velocity. The default density is 5\,cm$^{-3}$ at 1\,au and the default radial
 speed is 400\,km\,s$^{-1}$. Both quantities and the non-proton momentum factor
-are configurable. The model describes a stationary radial wind. It does not
+are configurable. The model describes a stationary radial wind. The model does not
 predict transient coronal structures. The three terms vanish in the local
 calculation when no credible area-to-mass ratio is supplied.
 
 \textbf{Empirical non-gravitational acceleration.}
-The term $\mathbf a_{\rm NG}$ represents accelerations that are constrained
-from astrometry but are not predicted reliably from the known shape and
-surface state. CODES resolves the term into $A_1$, $A_2$, and $A_3$ along the
+The term $\mathbf a_{\rm NG}$ represents accelerations constrained by
+astrometry but not predicted reliably from the known shape and surface state.
+CODES resolves the term into $A_1$, $A_2$, and $A_3$ along the
 heliocentric radial, transverse, and orbit-normal unit vectors. The adopted
 amplitude scales as the inverse square of heliocentric distance. The
 transverse coefficient $A_2$ provides a compact Yarkovsky sensitivity model
@@ -977,9 +989,9 @@ The implemented multi-body correction for target $i$ is
 \end{equation}
 Here $\mu_j=GM_j$, $\mathbf r_{ij}=\mathbf r_i-\mathbf r_j$,
 $r_{ij}=|\mathbf r_{ij}|$, and $\mathbf v_i$ and $\mathbf v_j$ are
-barycentric velocities. The source acceleration
+barycentric velocities. The Newtonian source acceleration
 $\mathbf a_j^{N}=\sum_{k\ne j}\mu_k(\mathbf r_k-\mathbf r_j)/r_{jk}^3$
-is Newtonian because a post-Newtonian correction inside this factor would
+contains no post-Newtonian term because such a correction inside this factor would
 enter only at order $c^{-4}$. The two sums include the Sun, planetary
 barycenters, Earth, Moon, and the enabled large asteroids. The Python and
 real128 Fortran implementations agree over a two-day Apophis cross-check to
@@ -991,7 +1003,7 @@ Poynting--Robertson term uses the complete first-order photon momentum
 equation \cite{Gustafson1994}. The solar-wind term uses the relative velocity
 of a configurable radial proton wind. The terms matter most for dust,
 meter-scale material, and high area-to-mass artificial objects. For ordinary
-NEOs, fitted thermal recoil often dominates the non-gravitational orbit
+NEOs fitted thermal recoil often dominates the non-gravitational orbit
 correction.
 
 \begin{figure}[H]
@@ -1008,8 +1020,9 @@ The transverse parameter $A_2$ is a compact approximation to thermal recoil
 when the acceleration scales approximately as $r^{-2}$. The Bennu orbit
 solution measured a semimajor-axis drift near $-19\times10^{-4}$\,au\,Myr$^{-1}$
 \cite{Chesley2014}. Interpretation requires diameter, density, spin, thermal
-inertia, roughness, and shape. YORP-driven spin evolution may also change the
-thermal recoil over a sufficiently long interval.
+inertia, roughness, and shape. Over a sufficiently long interval YORP can
+rotate the spin axis or modify the rotation rate and thereby shift the
+magnitude and direction of the thermal recoil.
 
 A 100-year nominal integration does not imply a 100-year hazard prediction.
 Close encounters map a small initial covariance into a non-Gaussian future
@@ -1023,32 +1036,33 @@ reproducible correlated ensemble. The sampled dimensions include the six
 heliocentric elements and fitted $A_1$, $A_2$, $A_3$, or time lag when those
 parameters occur in the JPL matrix. Every draw is transformed to a
 barycentric J2000 state and propagated independently through the same force
-model. For JPL Apophis solution 220, the nominal element-to-state conversion
+model. For JPL Apophis solution 220 the nominal element-to-state conversion
 agrees with the independently requested Horizons state at the covariance
 epoch to 0.714\,m and $1.43\times10^{-4}$\,mm\,s$^{-1}$. The direct
 finite-sample impact fraction is a screening diagnostic, not a replacement
 for Sentry-II rare-event searches. Propagating that nominal local state to the
 2029 encounter gives 38,042.1\,km versus the CNEOS value 38,011.5\,km, with
-local-minus-JPL residuals of $+30.6$\,km and $-228.8$\,s. The covariance path
-is therefore operational. The residual prevents presenting CODES as a
-replacement for the registered JPL force model.
+local-minus-JPL residuals of $+30.6$\,km and $-228.8$\,s. The complete
+uncertainty ensemble therefore propagates as intended. The
+residual prevents presenting CODES as a replacement for the registered JPL
+force model.
 
 \section{CODES Orbit Dynamics and Ephemeris System}
 
 The Close-approach Orbit Dynamics and Ephemeris System
-(CODES)\footnote{\url{https://github.com/kjhan0606/CODES.git}} provides the
-accompanying high-precision NEO calculator. The local Python package remains
+(CODES)\footnote{\url{https://github.com/kjhan0606/CODES.git}} implements the
+accompanying NEO calculations and validation tests. The Python package retains
 \code{neo\_orbit\_calculator} for command-line compatibility. The integrated
-desktop interface groups the calculation into NEO dynamics, comet-orbit
+desktop interface organizes the commands into NEO dynamics, comet-orbit
 evolution, apparent sky positions, and validation. The NEO dynamics tab keeps
-the authoritative JPL product separate from the local sensitivity calculation.
+the authoritative JPL product separate from the CODES sensitivity calculation.
 
 \begin{resultbox}
 \textbf{\color{cGold}Authoritative SPK mode.}
 The Python interface requests a time-continuous small-body SPK from NASA/JPL
 Horizons for the selected interval. A 2026--2126 SPK is the preferred
 reproducibility product. SPK segments store piecewise Chebyshev coefficients.
-Their polynomial degree is not an orbit-integrator order.
+The polynomial degree is not an orbit-integrator order.
 \end{resultbox}
 
 \begin{resultbox}
@@ -1069,8 +1083,9 @@ close-encounter sensitivity, uncertain thermal recoil, or omitted perturbers.
 \subsection{Included gravitational bodies}
 \label{sec:calculator-bodies}
 
-The baseline gravity model contains the following 27 sources. Planet-system
-barycenters are used where appropriate.
+The baseline gravity model includes 27 sources. Planet-system barycenters
+replace individual planets and satellites where the loaded ephemeris provides
+only their combined state.
 
 \noindent
 \begin{tabularx}{\textwidth}{@{}P{43mm}Y@{}}
@@ -1087,8 +1102,9 @@ Juno, Psyche, Camilla, Thisbe, Iris, Euphrosyne, and Cybele\\
 \bottomrule
 \end{tabularx}
 
-SB441-N16 is not defined by a universal mass threshold. It is the JPL set of
-the 16 most massive main-belt perturbers. Cybele is the least massive object
+SB441-N16 is not defined by a universal mass threshold. The designation
+denotes the JPL set of the 16 most massive main-belt perturbers. Cybele is the
+least massive object
 in this set with $GM=0.938105756$\,km$^3$\,s$^{-2}$. Conversion with a
 separately adopted $G$ gives a reference mass near
 $1.41\times10^{19}$\,kg although the integrator uses $GM$ directly.
@@ -1154,17 +1170,17 @@ Required only for charged grains and eclipse geometries\\
 \bottomrule
 \end{tabular}
 
-The status refers to the local CODES integrator. An authoritative Horizons
-SPK may contain additional registered force terms in the JPL orbit solution.
-The presence of such terms in an imported SPK does not imply that the same
-terms have been reproduced by the local integrator.
+The status refers to the CODES integrator. An authoritative Horizons SPK may
+contain additional registered force terms in the JPL orbit solution. An
+imported SPK can therefore include accelerations that the CODES force model
+does not reproduce independently.
 
 \subsection{Reproducibility test}
 
-Every release should record the JPL orbit-solution identifier, solution date,
+Every CODES release should record the JPL orbit-solution identifier, solution date,
 DE and SB kernel names, kernel checksums, TDB epochs, compiler version,
 floating-point kind, tolerances, force switches, and source revision. The
-local state must be compared with Horizons at an independent epoch grid.
+CODES state must be compared with Horizons on an independent epoch grid.
 Residuals should be reported before and after close encounters. A residual
 threshold must be set by the science case, not by the number of printed
 digits.
@@ -1180,13 +1196,13 @@ forces smaller steps independently of the requested output cadence.
 \label{sec:historical-ca-tests}
 
 The regression suite uses ten real NEOs observed between 2019 and 2024.
-For each object, the calculator downloads all available optical ADES
+For each object the calculator downloads all available optical ADES
 astrometry from the Minor Planet Center and retains the observatory codes,
 UTC epochs, reported coordinates, and MPC discovery flag
 \cite{MPCObservations}. The observing arc is therefore traceable to the
 measurements used by the international small-body community.
 
-This test isolates \emph{trajectory propagation}. The current JPL Horizons
+The four-day experiment isolates \emph{trajectory propagation}. The current JPL Horizons
 solution supplies the barycentric initial state two days before the official
 closest-approach epoch. The real128 Fortran model then propagates for four
 days with DE440s, SB441-N16, and solar 1PN enabled. A cubic interpolation of
@@ -1201,7 +1217,7 @@ encounter, before the strongest terrestrial deflection.
 MPC supplies the observed astrometric history, station count, and discovery
 epoch. NASA/JPL supplies the official current initial state, osculating
 elements, closest-approach epoch, and geocentric distance. Every reported
-$\Delta$ is \textbf{local Fortran result minus NASA/JPL official result}.
+$\Delta$ is the \textbf{CODES result minus the NASA/JPL official result}.
 The source snapshot used here was retrieved on 2026-07-26 UTC.
 \end{resultbox}
 
@@ -1216,8 +1232,8 @@ approach. Red bars indicate that the first discovery observation followed
 the flyby. All three horizontal axes use symmetric-log scaling so that zero,
 sign, and decade-level differences remain visible. The linear thresholds are
 12\,h, $10^{-3}$\,s, and $10^{-4}$\,km from left to right. The center and
-right panels compare the local force model with the current official JPL
-solution. Across the ten cases, the maximum absolute
+right panels compare the CODES force model with the current official JPL
+solution. Across the ten cases the maximum absolute
 residual is 0.330\,s in closest-approach epoch, 0.00259\,km in miss distance,
 and 0.00561\,km in pre-encounter semimajor axis.}
 \label{fig:neo-orbit-validation}
@@ -1229,20 +1245,20 @@ The JPL initial state is based on the current orbit solution and can include
 post-encounter observations. Tables~\ref{tab:neo-ca-validation} and
 \ref{tab:neo-element-validation} therefore certify numerical propagation
 against an authoritative trajectory. The tables do not certify an
-independent orbit fit from a discovery-night arc. Operational acceptance additionally
+independent orbit fit from a discovery-night arc. Operational acceptance also
 requires observatory-state reconstruction, catalog-bias correction,
 weighted batch least squares, a six-dimensional covariance, outlier
-handling, and archived discovery-epoch solutions for a blind backtest.
+rejection, and archived discovery-epoch solutions for a blind backtest.
 \end{warningbox}
 
 \subsection{Medium- and long-period comet modes}
 
-CODES also provides two comet products. The \code{comet-orbits} mode
+CODES provides two distinct comet products. The \code{comet-orbits} mode
 assembles the separate NASA/JPL Horizons solution for each identified
-apparition and shows the evolution of the return interval, semimajor axis,
-and perihelion distance. The \code{comet-sky} mode accepts specified UTC
-epochs and returns the geocentric right ascension, declination, distance, and
-IAU constellation. The two products distinguish long-term dynamics from the
+apparition and plots the return interval, semimajor axis, and perihelion
+distance. The \code{comet-sky} mode accepts specified UTC epochs and computes
+the geocentric right ascension, declination, distance, and IAU constellation.
+The first product quantifies long-term dynamics. The second supplies the sky
 position needed to schedule an observation.
 
 A return of 1P/Halley means a passage through perihelion rather than a return
@@ -1272,48 +1288,48 @@ $+227.8$\,km and $-15.3$\,km.}
 \end{figure}
 
 \begin{resultbox}
-\textbf{\color{cGold}What this validates.}
-The comparison tests long-term numerical propagation from one initial state,
-not merely the parsing of a sequence of JPL records. The agreement
-demonstrates that CODES reproduces the two physical perihelion passages
-across 150 years.
+\textbf{\color{cGold}Validated quantity.}
+The comparison tests long-term numerical propagation from one initial state
+rather than the reconstruction of a sequence of JPL records. The agreement
+shows that CODES reproduces the two physical perihelion passages across
+150 years.
 Because JPL solution \#75 was fitted with observations extending through
 1994, the comparison is a propagation-consistency test rather than a blind
 historical orbit determination.
 \end{resultbox}
 
-Replacing the solar-only 1PN term by the full multi-body expression changes
-the 1986 perihelion-time residual by approximately $-0.20$\,s and its
+Replacing the solar-only 1PN term by the full multi-body expression shifts
+the 1986 perihelion-time residual by approximately $-0.20$\,s and the
 semimajor-axis residual by approximately $-3.5$\,km. The remaining
 $1.24\times10^5$\,km semimajor-axis difference is therefore not explained by
-the former relativistic approximation alone. Likewise, covariance propagation
-does not shift the nominal curve. Covariance propagation supplies an
+the former relativistic approximation alone. Covariance propagation also does
+not shift the nominal curve. The covariance supplies an
 uncertainty ensemble around the same fitted central solution. Adding the
 physical adaptive-step limiter
-changes the 150-year trajectory by at most 13.6\,m and the final position by
+shifts the 150-year trajectory by at most 13.6\,m and the final position by
 1.11\,m relative to error control alone, leaving the quoted passage values
 unchanged. Resolving the remaining difference requires a controlled comparison
 of the fitted comet non-gravitational law, source ephemeris, and JPL solution
 metadata.
 
-The modern-state integration cannot be extended honestly through the entire
-ancient record with DE440s. For returns before its supported interval, CODES
-therefore retains a separate historical product. JPL apparition solutions are
-compared with the observation-constrained perihelion times of Yeomans and
-Kiang \cite{Horizons,YeomansKiang1981}. The records diagnose period changes
+DE440s does not support a defensible extension of the modern-state integration
+through the entire ancient record. CODES therefore retains a separate
+historical product for returns before the supported interval. JPL apparition
+solutions are compared with the observation-constrained perihelion times of Yeomans and
+Kiang \cite{Horizons,YeomansKiang1981}. The records diagnose period evolution
 without relabeling an unconstrained modern-state extrapolation as an observed
 trajectory.
 
 \input{halley_return_validation_table.tex}
 
 \begin{resultbox}
-\textbf{\color{cGold}Largest detected change.}
-The largest adjacent change occurs from the 989 solution to the 1066
-solution. The semimajor axis increases by 0.332\,au and the osculating period
+\textbf{\color{cGold}Largest adjacent orbital shift.}
+The largest shift between adjacent solutions occurs from 989 to 1066. The
+semimajor axis increases by 0.332\,au and the osculating period
 increases by 2.133\,yr. The subsequent 1066--1145 return interval is
 79.079\,yr. The 1066 historical solution places the minimum separation from
 the Jupiter barycenter at 1.614\,au on 1067 March 5 TDB. The separation is not
-a close encounter and the complete period change cannot be assigned to one
+a close encounter and the complete period increase cannot be assigned to one
 Jupiter passage. The fitted orbit includes accumulated planetary and
 non-gravitational perturbations. Yeomans and Kiang instead identify the
 0.04\,au Earth encounter in 837 as the severe ancient rectification boundary
@@ -1338,23 +1354,23 @@ python -m neo_orbit_calculator.cli comet-sky 1P \
 \section{DS9 to CODES with OpenOrb}
 \label{sec:ds9-codes-openorb}
 
-The operational path from an image sequence to an orbit product is shown in
-Figure~\ref{fig:ds9-codes-openorb-flow}. DS9 is used for visual inspection
-and candidate marking. The reviewed positions and times are exported as a
-small astrometric CSV. CODES passes that CSV to OpenOrb for statistical
+Figure~\ref{fig:ds9-codes-openorb-flow} defines the operational sequence from
+an image series to an orbit product. DS9 supports visual inspection and
+candidate marking. The reviewer exports the accepted positions and times as
+an astrometric CSV. CODES passes the CSV to OpenOrb for statistical
 ranging, which samples the admissible orbital-element distribution instead
 of selecting one distance from a short optical arc \cite{Granvik2009}.
 CODES then propagates the samples with the selected DE442 or DE441 kernel
 \cite{NAIFDE442,Park2021} and its force model. The final comparison is made
-against a separately
-retrieved NASA/JPL solution. The official solution is therefore a comparison
+against a separately retrieved NASA/JPL solution. The official solution is
+therefore a comparison
 target and is not used as an input to the ranging calculation.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/ds9_codes_openorb_flow.png}
-\caption{Conceptual DS9 to CODES and OpenOrb pipeline. A candidate is
-reviewed in the time ordered image sequence before its astrometry is passed
+\caption{Conceptual DS9 to CODES and OpenOrb workflow. A candidate is
+reviewed in the time-ordered image sequence before its astrometry is passed
 to statistical ranging. The posterior is then propagated by CODES and
 compared with an independent official orbit product.}
 \label{fig:ds9-codes-openorb-flow}
@@ -1365,9 +1381,9 @@ compared with an independent official orbit product.}
 The public NOIRLab Astro Data Lab DECam Asteroid Database DR2 provides the
 real calibrated DECam sequence used for the bridge demonstration
 \cite{DataLabDAD}. The cyan marks and candidate links use the same astrometric
-contract that the DS9 NEO menu exports. The implemented menu runs source
-extraction and frame to frame association before writing an astrometric CSV
-and frame specific DS9 FK5 region files. The observation time, right
+schema that the DS9 NEO menu exports. The implemented menu runs source
+extraction and frame-to-frame association before writing an astrometric CSV
+and frame-specific DS9 FK5 region files. The observation time, right
 ascension, declination, uncertainty, observer code, and output paths are
 retained for auditability. Visual review remains mandatory before the
 astrometry is passed to CODES and OpenOrb.
@@ -1375,12 +1391,12 @@ astrometry is passed to CODES and OpenOrb.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/ogfinder_ds9_neo_runtime.png}
-\caption{Actual OGFinder DS9 runtime capture from five calibrated DECam
+\caption{Actual OGFinder DS9 runtime screen from five calibrated DECam
 exposures in the DECam Asteroid Database DR2. Cyan circles mark four linked
 candidate tracklets with each frame showing detections at the corresponding
 epoch. The right catalog reports the number of detections, median sky position,
 midpoint time, fitted angular rate, position angle, median signal-to-noise
-ratio and astrometric residual for each tracklet. The REVIEW flag identifies
+ratio, and astrometric residual for each tracklet. The REVIEW flag identifies
 candidates that require visual inspection and orbit confirmation. The status
 line records successful association and catalog loading.}
 \label{fig:ds9-ogfinder-interface}
@@ -1388,12 +1404,12 @@ line records successful association and catalog loading.}
 
 \subsection{OpenOrb ranging and CODES propagation}
 
-OpenOrb is called through its command line ranging task. CODES writes an
-MPC current format observation file, records the exact executable and
-configuration path, and preserves the ranging output. The ranging posterior
-is intentionally broad for a five exposure arc. This is the expected
-range and radial velocity degeneracy, not a failure of the angular
-astrometry. Each accepted OpenOrb sample retains its astrometric
+OpenOrb performs statistical ranging through its command-line task. CODES
+writes an MPC-format observation file, records the exact executable and
+configuration file, and preserves the ranging output. The posterior is broad
+because five exposures do not constrain range and radial velocity tightly.
+The broad distribution does not indicate a failure of the angular astrometry.
+Each accepted OpenOrb sample retains its astrometric
 $\chi^2$. The additive offset written by OpenOrb cancels in the likelihood
 ratio
 \[
@@ -1401,13 +1417,13 @@ ratio
   \exp\left[-\frac{\chi_i^2-\chi_{\min}^2}{2}\right].
 \]
 Figure~\ref{fig:codes-openorb-calculation} shows the sampled likelihood
-field in $(a,e)$. The local likelihood sum is divided by the local sample
-count before smoothing. This operation reduces the influence of ranging
-density and its coordinate Jacobian. The right panel retains the posterior
+field in $(a,e)$. Before smoothing the calculation divides the local
+likelihood sum by the local sample count. The normalization reduces the
+dependence on ranging density and its coordinate Jacobian. The right panel gives the posterior
 distribution of $q$. Both horizontal axes use logarithmic scales. The
 NASA/JPL point provides an external comparison.
-The CODES force model can propagate every accepted sample, allowing later
-observations to be tested against a distribution rather than one fragile
+CODES propagates every accepted sample. Later observations can therefore be
+tested against the complete distribution rather than one poorly constrained
 preliminary orbit.
 
 \begin{figure}[H]
@@ -1425,22 +1441,23 @@ object. The official solution does not enter the ranging calculation.}
 
 \subsection{Verification sequence and claim boundary}
 
-The verification sequence is summarized in Figure~\ref{fig:ds9-codes-verification}.
-The image positions are checked in Figure~\ref{fig:ds9-ogfinder-interface},
-and the statistical ranging posterior is shown in
-Figure~\ref{fig:codes-openorb-calculation}. Figure~\ref{fig:ds9-codes-verification}
+Figures~\ref{fig:ds9-ogfinder-interface} and
+\ref{fig:codes-openorb-calculation} establish the inputs to the verification.
+The first figure checks the image positions. The second gives the statistical
+ranging posterior. Figure~\ref{fig:ds9-codes-verification}
 therefore begins with the accepted samples passed to CODES. CODES propagates
 those samples with the selected planetary ephemeris and force switches.
 The predicted astrometry is then compared with a separately retrieved
 official solution. The official solution is not an input to propagation.
-The present demonstration verifies the data handoff, format conversion,
-OpenOrb execution, output preservation, and CODES input path. It does not
-claim an independent orbit determination from five exposures.
+The present demonstration verifies the transfer of astrometric records,
+format conversion, OpenOrb execution, preservation of the output, and CODES
+ingestion. The demonstration does not claim an independent orbit determination
+from five exposures.
 
 An orbit accuracy test requires a longer observing arc, a blind fit that does
-not ingest post discovery observations, the observatory state, weighted
-astrometric uncertainties, outlier handling, and an archived reference orbit
-at the discovery epoch. These requirements are consistent with the
+not ingest post-discovery observations, the observatory state, weighted
+astrometric uncertainties, outlier rejection, and an archived reference orbit
+at the discovery epoch. The requirements are consistent with the
 validation boundary already stated in Section~\ref{sec:historical-ca-tests}.
 
 \begin{figure}[H]
@@ -1452,17 +1469,17 @@ shown in Figures~\ref{fig:ds9-ogfinder-interface} and
 posterior samples passed to CODES. The right panel keeps the NASA/JPL
 solution outside the propagation path and introduces it only for residual
 comparison. A blind orbit accuracy result requires a longer arc and an
-archived pre discovery solution.}
+archived pre-discovery solution.}
 \label{fig:ds9-codes-verification}
 \end{figure}
 
 \subsection{Integrated CODES desktop interface}
 \label{sec:codes-gui}
 
-The desktop interface is launched with
-\code{python -m neo\_orbit\_calculator}. The interface exposes the same
-command-line calculations without changing force switches or numerical
-defaults. Each action displays the complete command in a common run log and
+The command \code{python -m neo\_orbit\_calculator} launches the desktop
+interface. The interface makes the same command-line calculations available
+while preserving the force switches and numerical defaults. Each action writes
+the complete command to a common run log and
 executes the calculation in a background thread. A long Horizons request or
 Fortran propagation therefore does not freeze the window. The output
 directory remains explicit for every science mode.
@@ -1470,11 +1487,11 @@ directory remains explicit for every science mode.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/codes_gui_openorb_actual.png}
-\caption{Actual CODES desktop run of the NEO astrometry workflow. The GUI
+\caption{Actual CODES desktop run of the NEO astrometry workflow. The interface
 ingests five DAD/DECam positions exported by DS9 for observatory W84 and
 requests 2,000 OpenOrb ranging samples. The completed run reports a
 0.036\,arcsec preliminary-fit RMS and writes the OpenOrb orbit samples and
-the DE442 CODES refinement. This is a direct X11 capture of the running Tk
+the DE442 CODES refinement. The panel is an X11 screenshot of the running Tk
 application.}
 \label{fig:codes-gui}
 \end{figure}
@@ -1490,7 +1507,7 @@ Selects the designation, TDB interval, sampling, covariance clone count and
 seed, force terms, and local non-gravitational coefficients. Separate buttons
 request an SPK, retrieve Horizons vectors, run the nominal propagator, or run
 the covariance ensemble. &
-Authoritative binary SPK, sampled state-vector CSV, local orbit projection,
+Authoritative binary SPK, sampled state-vector CSV, CODES orbit projection,
 full-covariance clone products, and residual summary against Horizons\\
 \midrule
 \textbf{NEO astrometry} &
@@ -1522,10 +1539,69 @@ against NASA/JPL or observation-constrained historical solutions\\
 
 The GUI does not convert a sensitivity integration into an operational hazard
 solution. Impact probability still requires a fitted covariance and virtual
-asteroid propagation. The distinction remains visible because authoritative
-JPL retrieval, local propagation, and validation are separate commands.
+asteroid propagation. Separate commands preserve the provenance of
+authoritative JPL retrieval, CODES propagation, and validation.
+
+\section{Five-Year Reference Allocation}
+\label{sec:neo-five-year-schedule}
+
+The shared mission scheduler assigns the Appendix C program within the same
+260-week capacity model used for the other science appendices. The current
+reference scenario reserves 2184.0 hr for an optical blind survey and 873.6 hr
+for alert-driven recovery. The 3057.6 hr total equals 6.98 per cent of the
+five-year wall clock. Table~\ref{tab:neo-five-year} separates the two purposes.
+
+\begin{table}[H]
+\centering
+\caption{Database-driven five-year reference allocation for Appendix C. The
+blind-survey line is a capacity scenario rather than an adopted completeness
+claim.}
+\label{tab:neo-five-year}
+\begin{tabularx}{\textwidth}{@{}P{43mm}C{25mm}C{25mm}Y@{}}
+\toprule
+\color{cGold}\textbf{Program} &
+\color{cGold}\textbf{Mission years} &
+\color{cGold}\textbf{Time [hr]} &
+\color{cGold}\textbf{Interpretation}\\
+\midrule
+NEO optical blind survey & 1--5 & 2184.0 & Five per cent of the mission wall
+clock used to test available survey capacity outside commissioning and
+Director weeks\\
+NEO recovery ToO reserve & 1--5 & 873.6 & Two per cent of the mission wall
+clock retained for externally discovered objects with measured astrometry\\
+\midrule
+\textbf{Appendix C total} & \textbf{1--5} & \textbf{3057.6} &
+\textbf{6.98 per cent of the five-year wall clock}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Figure~\ref{fig:neo-five-year} shows the weekly allocation. Routine science
+begins in Year~1 week~14 after commissioning and performance acceptance. The
+scheduler excludes Director weeks 43 and 44 in every year and applies a
+$90^\circ$--$180^\circ$ solar-elongation field of regard. The blind-survey row
+demonstrates that the shared schedule can reserve the requested time. The
+allocation does not demonstrate a competitive NEO census or the completeness of a fixed
+survey footprint. The recovery row remains unassigned until an alert supplies
+an ephemeris and covariance.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{appendix_C_five_year_timeline.png}
+\caption{Weekly Appendix C allocation generated from the shared observing
+database. Color gives the fraction of one 168-hr week assigned to each
+program. The color scale uses the largest Appendix C allocation and gray
+hatching marks the protected Director weeks. The uniform recovery row
+represents reserved capacity rather than a preselected target list.}
+\label{fig:neo-five-year}
+\end{figure}
 
 \section{Mission Decision Matrix}
+
+The decision matrix separates measurements supported by the baseline payload
+from measurements that require a wavelength extension or a ground-based
+partner. The comparison also identifies the dominant limitation of each
+configuration.
 
 \begin{tabularx}{\textwidth}{@{}P{35mm}P{47mm}Y@{}}
 \toprule
@@ -1554,6 +1630,10 @@ Discovery selection function is inherited from external facilities\\
 
 \section{Recommended Proposal Position}
 
+The proposal should claim the measurements supported by the adopted payload
+and reserve population-yield claims for a validated survey simulation. The
+following commitments define that boundary.
+
 \begin{enumerate}[leftmargin=7mm,itemsep=2.2mm]
 \item Commit the baseline mission to rapid NEO follow-up, ICRF astrometry,
 time-resolved photometry, and visible/NIR characterization.
@@ -1566,8 +1646,9 @@ filter transmission, timing metadata, and delivery of covariance information.
 Select the exposure time and repeat interval from angular rate and orbit
 covariance.
 \item Do not claim a competitive blind NEO census with the baseline field.
-Quantify the characterized-target yield from an external alert stream, the
-3.5ST Target-of-Opportunity allocation, and ground MIR availability.
+Quantify the characterized-target yield by applying the 3.5ST
+Target-of-Opportunity allocation and ground MIR availability to an external
+alert stream.
 \item Preserve a $60^\circ$ baseline solar avoidance requirement until a
 thermal and stray-light model demonstrates access to $45^\circ$.
 \item Validate orbit products against Horizons SPK output. Use covariance

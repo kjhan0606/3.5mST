@@ -1,0 +1,29 @@
+appendix,program,hours,five_year_wall_fraction
+A,Commissioning and reference fields,400.0,0.009126169290440338
+A,Imaging-only wide extension,610.0,0.013917408167921514
+A,Medium/deep ELG tiers,900.0,0.02053388090349076
+A,Pathfinders and contingency,500.0,0.011407711613050422
+A,Quasar and reionization targets,900.0,0.02053388090349076
+A,SN Ia time-domain cadence,412.0,0.009399954369153548
+A,SN Ia time-domain field,788.0,0.017978553502167465
+A,Ultra-deep imaging fields,290.0,0.006616472735569244
+A,Wide ELG BAO/RSD,1850.0,0.04220853296828656
+B,Commissioning and wavefront ramp,400.0,0.009126169290440338
+B,First-light known giants,400.0,0.009126169290440338
+B,Giant orbit determination,800.0,0.018252338580880677
+B,Mature-giant search program,2000.0,0.04563084645220169
+B,Nearest FGK HZ Systems Survey,1999.9999999999995,0.045630846452201675
+B,Nearest Stellar Systems Survey,400.0,0.009126169290440338
+B,Young giants and debris disks,350.0,0.007985398129135296
+C,NEO optical blind survey,2184.0,0.04982888432580424
+C,NEO recovery ToO reserve,873.6,0.019931553730321697
+DDT,Director discretionary time,1428.3153846153846,0.03258762000035101
+OPS,General observatory overhead,5576.6,0.127232489162674
+OPS,L2 station keeping,172.0,0.003924252794889345
+OPS,Momentum unload,129.0,0.0029431895961670087
+OPS,Quarterly calibration block,480.0,0.010951403148528405
+OPS,Wavefront sensing and control,655.2,0.014948665297741274
+X,AM CVn monitoring,90.0,0.002053388090349076
+X,Compact-object ToO reserve,436.8,0.009965776865160848
+X,Dwarf-nova intensive,31.5,0.0007186858316221766
+X,Dwarf-nova population,60.0,0.0013689253935660506

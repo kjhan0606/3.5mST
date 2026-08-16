@@ -1605,16 +1605,14 @@ target-selection precursor for dedicated flagship observatories
 \label{sec:schedule}
 
 The exposure model of Section~\ref{sec:specetc} and the target census of
-Section~\ref{sec:horizon} together suggest a five-year observing plan. Two
-facts shape it. The first is that the Sun governs when a coronagraphic target
-is reachable. A Sun-shielded observatory can point only within a
-solar-elongation band, taken here as $54$--$126^\circ$ in the manner of the
-Roman observatory \cite{romanfor}. Reflected-light imaging at $10^{-9}$ contrast needs the
-darkest possible zodiacal foreground, which favors high ecliptic latitude and
-elongations near quadrature. A given star therefore has one or two observing
-windows per year rather than continuous access, and the darkest sky, with it
-the deepest integrations, falls to the high-ecliptic-latitude quarter of the
-sample.
+Section~\ref{sec:horizon} together define the inputs to a five-year observing
+plan. Two facts shape the allocation. The first is that the Sun governs when a
+coronagraphic target is reachable. The current observatory concept permits
+solar elongations from $90^\circ$ to $180^\circ$. A Roman-type external baffle
+and telescope tube provide Sun rejection rather than a JWST-type deployed
+sunshield. Reflected-light imaging at $10^{-9}$ contrast also favors low
+zodiacal foreground. A given star therefore receives target-specific windows
+rather than continuous access.
 
 The second fact is that search, confirmation, and characterization have
 different cadences. A search visit identifies candidates. Confirmation
@@ -1623,11 +1621,11 @@ is reserved for confirmed planets that meet the brightness and separation
 limits. EEID observations remain an unscheduled stretch activity because
 the present ETC does not establish their feasibility.
 
-Table~\ref{tab:exotimeline} sets out an illustrative five-year envelope, and
-Figure~\ref{fig:exotimeline} shows the same programs against the
-month-by-month field of regard. The year ranges organize mission phases and
-do not establish science completeness. The science-time allocations are
-planning reserves. A validated schedule will require target-specific
+Table~\ref{tab:exotimeline} gives the current database-driven allocation and
+Figure~\ref{fig:exotimeline} shows the corresponding weekly assignments. The
+6350~hr total equals 14.49 per cent of the five-year wall clock. The allocation
+demonstrates seasonal and shared-capacity feasibility but does not establish
+planet completeness. A validated target sequence will require target-specific
 integration times, reference-star visits, dark-hole maintenance, roll
 diversity, acquisition, calibration, confirmation epochs, and orbital-phase
 constraints.
@@ -1635,46 +1633,44 @@ constraints.
 \begin{table}[tp]
 \centering
 \sffamily\small
-\begin{tabularx}{\textwidth}{@{}p{3.5cm}p{2.15cm}p{2.4cm}>{\raggedright\arraybackslash}X@{}}
+\begin{tabularx}{\textwidth}{@{}
+  >{\raggedright\arraybackslash}p{3.5cm}
+  >{\raggedright\arraybackslash}p{2.15cm}
+  >{\raggedright\arraybackslash}p{2.4cm}
+  >{\raggedright\arraybackslash}X@{}}
 \toprule
 \textbf{Mission phase} & \textbf{Nominal period} & \textbf{Science time} & \textbf{Main deliverable}\\
  & mission year & hr & \\
 \midrule
-Commissioning and wavefront ramp & Year 1 & 300--500 hr & Demonstrate a calibrated dark hole near $10^{-8}$ and measure the achieved contrast, throughput, bandwidth, and stability.\\
-Nearest Stellar Systems Survey & Year 1--2 & 300--500 hr & Systematic direct-imaging survey of the 20 nearest stellar components; reference atlas of nearby stellar systems; initial census of giant planets, circumstellar disks, and reflected-light companions.\\
-
-Nearest FGK HZ Systems Survey & Year 1--2 & 1600--2400 hr & Direct-imaging survey of the 20 nearest FGK main-sequence stars, prioritizing fully accessible conservative HZs; search for potentially habitable planets, orbital confirmation, and reflected-light spectroscopic characterization of the most promising candidates.\\
-
-Young giants and debris disks & Years 2--3 & 250--450 hr & Thermal-emission imaging of nearby moving-group giants and scattered-light disks while the wavefront control matures.\\
-First-light known giants & Years 2--3 & 300--500 hr & Attempt reflected-light recovery of the candidates in Table~\ref{tab:firstlight} after phase and throughput review.\\
-Mature-giant search program & Years 3--5 & 1600--2400 hr & Search a reviewed stellar sample after $10^{-9}$ performance is demonstrated. Confirmed detections receive spectroscopic follow-up.\\
-Giant orbit determination & Years 3--5 & 600--1000 hr & Repeat epochs across the mission for orbital arcs and dynamical masses.\\
-EEID feasibility study & Years 3--5 & unallocated & Reassess the reviewed EEID candidates after on-orbit contrast, throughput, and stability are measured.\\
-Stellar-activity monitoring & Years 1--5 & shared & Flare and rotation statistics from the wide-field time-domain program, without dedicated coronagraph time.\\
+Commissioning and wavefront ramp & Year 1 & 400 hr & Demonstrate a calibrated dark hole near $10^{-8}$ and measure the achieved contrast, throughput, bandwidth, and stability.\\
+Nearest Stellar Systems Survey & Years 1--2 & 400 hr & Obtain a reference atlas of the 20 nearest stellar components and search for giant planets, circumstellar disks, and reflected-light companions.\\
+Nearest FGK HZ Systems Survey & Years 1--2 & 2000 hr & Survey the 20 nearest FGK main-sequence stars with priority given to fully accessible conservative habitable zones.\\
+First-light known giants & Years 2--3 & 400 hr & Attempt reflected-light recovery of the candidates in Table~\ref{tab:firstlight} after phase and throughput review.\\
+Young giants and debris disks & Year 3 & 350 hr & Observe nearby moving-group giants and scattered-light disks after commissioning establishes wavefront-control performance.\\
+Mature-giant search program & Years 3--5 & 2000 hr & Search a reviewed stellar sample after $10^{-9}$ performance is demonstrated. Confirmed detections receive spectroscopic follow-up.\\
+Giant orbit determination & Years 3--5 & 800 hr & Repeat epochs across the mission to measure orbital arcs and dynamical masses.\\
+\midrule
+\textbf{Appendix B total} & \textbf{Years 1--5} & \textbf{6350 hr} & \textbf{14.49 per cent of the five-year wall clock.}\\
 \bottomrule
 \end{tabularx}
-\caption{Illustrative five-year coronagraph program organized by technical
-maturity. The listed hours are planning reserves rather than a completed
-schedule. The mature-giant search begins only after on-orbit performance
-demonstrates the required contrast. Earth-analog observations remain an
-unallocated feasibility study. A later end-to-end analysis must include
-reference stars, dark-hole maintenance, target acquisition, roll diversity,
-confirmation visits, and calibration overhead.}
+\caption{Database-driven five-year reference allocation for Appendix B. The
+mature-giant search begins only after on-orbit performance demonstrates the
+required contrast. Earth-analog EEID observations remain an unallocated
+feasibility study. Stellar-activity measurements use the wide-field program
+and do not consume the coronagraph allocation.}
 \label{tab:exotimeline}
 \end{table}
 
 \begin{figure}[tp]
 \centering
-\includegraphics[width=\textwidth]{exo_timeline_rev.png}
-\caption{Illustrative five-year coronagraph program. The top panel shows
-the technical phases in Table~\ref{tab:exotimeline}. Cell shade tracks the
-planning reserve per month. The EEID study remains unallocated. The bottom
-panel shows the monthly fraction of the 143 photometric candidates and 12
-reviewed EEID candidates inside the $54$--$126^\circ$ solar-elongation
-field of regard. The fractions use an \texttt{astropy} Sun-position
-calculation on the fifteenth of each month. The field of regard provides
-seasonal visibility only. The figure does not include a validated overhead
-or exposure-time model.}
+\includegraphics[width=\textwidth]{appendix_B_five_year_timeline.png}
+\caption{Weekly Appendix B allocation generated from the shared observing
+database. Color gives the fraction of one 168-hr week assigned to each
+program. The color scale uses the largest Appendix B allocation and gray
+hatching marks Director weeks 43 and 44 in every mission year. Named targets
+are scheduled only within their $90^\circ$--$180^\circ$ solar-elongation
+windows and under the mission-wide weekly capacity. The calculation does not
+yet impose planet-phase posteriors or measured coronagraph overheads.}
 \label{fig:exotimeline}
 \end{figure}
 
