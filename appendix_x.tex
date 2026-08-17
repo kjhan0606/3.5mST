@@ -2,6 +2,9 @@
 % Standalone Appendix X
 % Compact-object time-domain science with R=5000 slitless spectroscopy.
 
+\ifdefined\APPENDIXXBOOK
+% The book supplies the document class and shared packages.
+\else
 \documentclass[10pt,onecolumn]{article}
 
 \usepackage[a4paper,margin=18mm,top=17mm,bottom=18mm]{geometry}
@@ -85,7 +88,7 @@
   arc=2mm,
   left=2.2mm,right=2.2mm,top=1.8mm,bottom=1.8mm
 }
-\newtcolorbox{resultbox}[1]{
+\newtcolorbox{xresultbox}[1]{
   enhanced,
   colback=white,
   colframe=#1,
@@ -100,6 +103,16 @@
 \newcommand{\kms}{\mathrm{km\,s^{-1}}}
 \newcommand{\micron}{\,\mu\mathrm{m}}
 
+\fi
+
+\ifdefined\APPENDIXXBOOK
+\let\appendixXfinish\relax
+\else
+\def\appendixXfinish{\end{document}}
+\fi
+
+\ifdefined\APPENDIXXBOOK
+\else
 \begin{document}
 \thispagestyle{empty}
 
@@ -112,6 +125,7 @@ with $R=5000$ slitless spectroscopy}\\[3mm]
 {\sffamily\color{white!80}\normalsize
 Neutron-star and black-hole transients, white dwarfs, and dwarf novae}
 \end{tcolorbox}
+\fi
 
 \begin{leadbox}{violet}
 \textbf{Central design claim.}
@@ -205,13 +219,13 @@ late epochs while the unbinned data retain narrow host-galaxy and foreground
 features. The proposal must quantify this trade with spectra degraded to the
 instrument line-spread function and injected into realistic backgrounds.
 
-\begin{resultbox}{violet}
+\begin{xresultbox}{violet}
 \textbf{Operational requirement.}
 The spectroscopic program must preserve the point-source $R=5000$ mode for
 compact objects. Binning to a lower resolution may be used for faint
 continuum measurements, but the native data must retain the line-profile
 information required for velocity, profile-asymmetry, and line-ratio studies.
-\end{resultbox}
+\end{xresultbox}
 
 \section{Observables from \texorpdfstring{$R=5000$}{R=5000} Spectra}
 
@@ -1395,7 +1409,7 @@ curves should quantify the frequency bias produced by cadence, gaps, and
 photometric noise. The class-specific demonstrations convert the proposed
 measurements into traceable performance requirements.
 
-\begin{resultbox}{orange}
+\begin{xresultbox}{orange}
 \textbf{Recommended proposal position.}
 The compact-object program is scientifically credible as a point-source
 optical and near-infrared time-domain program. Mission feasibility remains
@@ -1406,7 +1420,7 @@ science claims require joint inference with gravitational-wave, high-energy,
 and radiative-transfer information. The program does not require a
 mid-infrared instrument and does not claim a direct equation-of-state or
 interior measurement from one spectrum.
-\end{resultbox}
+\end{xresultbox}
 
 \section{Summary}
 
@@ -1569,4 +1583,4 @@ of the dwarf nova U Geminorum,'' \emph{Mon. Not. R. Astron. Soc.} 369,
 
 \end{thebibliography}
 
-\end{document}
+\appendixXfinish
