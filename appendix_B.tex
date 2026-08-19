@@ -394,7 +394,7 @@ Optimistic (light blue) and conservative (dark blue) habitable-zone (HZ) boundar
 \centering
 \includegraphics[width=1.0\textwidth]{book_media/HZ_obser.png}
 \caption{Observability of the conservative habitable zones around FGK stars with the 3.5-m telescope.
-The accessible distance range is shown as a function of spectral type from F1V to K9V, adopting a coronagraphic inner working angle of 3λ/D=0.097 arcsec at 550 nm. The observability classification is based on the conservative habitable zone (HZ), bounded by the runaway-greenhouse inner limit and the maximum-greenhouse outer limit. Dark blue indicates systems for which the entire conservative HZ lies outside the IWA (Entire HZ Observable), light blue indicates systems for which only part of the conservative HZ is accessible (Partial HZ Observable), and white indicates systems for which the conservative HZ remains inaccessible within the IWA. The solid and dashed curves mark the maximum distances for entire and partial HZ accessibility, respectively. These boundaries define the primary geometric criterion for selecting the nearby FGK target sample.}
+The accessible distance range is shown as a function of spectral type from F1V to K9V, adopting a coronagraphic inner working angle of 3λ/D=0.097 arcsec at 550 nm. The observability classification is based on the conservative habitable zone (HZ), bounded by the runaway-greenhouse inner limit and the maximum-greenhouse outer limit. Dark blue indicates systems for which the entire conservative HZ lies outside the IWA (Entire HZ Observable), light blue indicates systems for which only part of the conservative HZ is accessible (Partial HZ Observable), and white indicates systems for which the conservative HZ remains inaccessible within the IWA. The solid and dashed curves mark the maximum distances for entire and partial HZ accessibility, respectively. These boundaries define the primary geometric criterion for selecting the nearby FGK target sample.The red horizontal line marks the approximate K4 boundary beyond which Earth-like reflected-light contrasts approach the $10^{-9}$ regime, while the red box highlights the nearby late-K targets discussed further in Section~\ref{sec:earthlike_multi_epoch}.}
 \label{fig:fgk20-observability}
 \end{figure}
 
@@ -521,12 +521,7 @@ located within the HZ in three-dimensional space, while a planet that appears cl
 to the star at one epoch may move into an observable portion of the HZ at another
 orbital phase \cite{GuimondCowan2019}. The derived orbit will therefore be combined
 with the stellar luminosity and the conservative and optimistic HZ boundaries
-defined in Section~\ref{sec:hz-target-selection}. Particular attention will be given to planets whose
-orbits lie wholly or substantially within the conservative HZ, while planets
-occupying the optimistic HZ will remain part of the broader habitability assessment.
-Repeated observations are especially important for systems with partially accessible
-HZs, where orbital motion can bring a planet outside the IWA and provide additional
-opportunities for detection and characterization.
+defined in Section~\ref{sec:hz-target-selection}. Particular attention will be given to planets whose orbits lie wholly or substantially within the conservative HZ, while planets occupying the optimistic HZ will remain part of the broader habitability assessment. Repeated observations are especially important for systems with partially accessible HZs, where orbital motion can bring a planet outside the IWA and provide additional opportunities for detection and characterization.
 
 Once a planet is confirmed as a potentially habitable candidate, the observing
 strategy will shift from discovery to characterization. Such objects will receive
@@ -707,12 +702,281 @@ $10^{-9}$ level is a development goal for mature-giant imaging
 \label{fig:contrast}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%% B.4
+
+\section{From the $10^{-9}$ Contrast Limit to Nearby Earth-like Worlds}
+\label{sec:earthlike_detectability}
+
+\subsection{The Challenge of Earth-like Planet Detection}
+\label{sec:earthlike_challenge}
+
+The high-contrast performance discussed in Section~B.3 poses a fundamental
+challenge for terrestrial-planet science with the 3.5-meter Segmented-Mirror
+Robotic Space Telescope. An Earth--Sun analog observed in reflected light has
+a characteristic planet-to-star contrast of order $10^{-10}$, approximately
+one order of magnitude deeper than the $\sim10^{-9}$ post-processing
+development goal considered for the 3.5mST coronagraph. At first sight, this
+appears to place Earth--Sun analogs beyond the practical reach of the mission.
+
+The nominal inner working angle (IWA) introduces an additional limitation.
+The IWA should not be interpreted as a sharp boundary beyond which the full
+limiting contrast is immediately achieved. Residual stellar light remains
+significant immediately outside the IWA, while both achievable contrast and
+coronagraphic throughput improve progressively with angular separation.
+Consequently, a habitable zone lying nominally outside the IWA is
+geometrically accessible, but this condition alone does not guarantee that an
+Earth-sized planet within that zone can be detected.
+
+These limitations motivate a more specific question: does the solar
+neighborhood contain stellar systems in which an Earth-like planet has a more
+favorable reflected-light contrast while its habitable zone remains
+sufficiently separated from the host star for coronagraphic detection?
+Addressing this question requires the contrast limit and the IWA constraint to
+be considered simultaneously rather than independently.
 
 
+\subsection{Earth-like Planet Contrast around Cooler Stars}
+\label{sec:earthlike_contrast}
 
+The contrast limit discussed in Section~\ref{sec:earthlike_multi_epoch} does not apply equally to Earth-like planets around all main-sequence stars. In reflected light, the planet-to-star flux ratio can be written as
+
+\begin{equation}
+\frac{F_p}{F_\star}
+=
+A_g \Phi(\alpha)
+\left(\frac{R_p}{a}\right)^2 ,
+\label{eq:reflected_contrast}
+\end{equation}
+
+where $A_g$ is the geometric albedo, $\Phi(\alpha)$ is the phase function,
+$R_p$ is the planetary radius, and $a$ is the orbital separation. For a
+planet receiving the same bolometric irradiation as the Earth, the
+Earth-equivalent insolation distance (EEID) scales approximately as
+
+\begin{equation}
+a_{\rm EEID}
+=
+\sqrt{\frac{L_\star}{L_\odot}}\ {\rm AU}.
+\label{eq:eeid}
+\end{equation}
+
+As the stellar luminosity decreases toward later spectral types, the EEID
+moves closer to the host star. For a planet with the same radius, albedo, and
+illumination phase, the smaller orbital separation increases the
+planet-to-star reflected-light contrast. Thus, while an Earth--Sun analog has
+a characteristic contrast of order $10^{-10}$, an Earth-like planet receiving
+comparable irradiation around a sufficiently cool K dwarf can approach the
+$\sim10^{-9}$ regime. As illustrated in Figure~\ref{fig:fgk20-observability}, 
+this transition occurs approximately in the late-K regime, near K4 and later
+under the assumptions adopted here.
+
+This apparent advantage, however, introduces a competing limitation. The same
+decrease in stellar luminosity that improves the planet-to-star contrast also
+moves the habitable zone inward, reducing its angular separation from the
+host star. Moreover, as shown in the left panel of Figure~\ref{fig:contrast}, 
+the nominal inner working angle is not a sharp boundary at which the full limiting
+contrast is suddenly achieved. Residual stellar light remains significant
+immediately outside the IWA, and the achievable contrast improves only
+gradually with increasing separation. A planet located only slightly outside
+the nominal IWA may therefore remain more difficult to detect than a simple
+IWA threshold would imply.
+
+These two effects define a narrow observational trade-off. Earlier-type stars
+provide larger habitable-zone angular separations but less favorable
+Earth-like planet contrasts, whereas cooler stars provide increasingly
+favorable contrasts at progressively smaller angular separations. The most
+promising targets for the 3.5mST should therefore occur where these two
+requirements overlap: the host star must be cool enough for an Earth-like
+planet to approach the $10^{-9}$ contrast regime, but sufficiently nearby
+that its habitable zone remains accessible outside the most challenging
+near-IWA region.
+
+%------------------------------------------------------------
+\begin{figure}[tp]
+\centering
+\includegraphics[width=1.0\textwidth]{book_media/fgkm_earth_analog_contrast.png}
+\caption{Left: separation-dependent coronagraphic contrast, demonstrating that the nominal IWA is not a hard contrast boundary. Right: reflected-light contrast of an Earth-like planet versus host-star spectral type, showing the approach to the $10^{-9}$ regime toward late-K stars.}
+\label{fig:fgk20-observability}
+\end{figure}
+%------------------------------------------------------------
+
+\subsection{Prime Nearby Targets for Earth-like Planet Searches}
+\label{sec:prime_earthlike_targets}
+
+The contrast--separation trade-off described above can now be combined with
+the habitable-zone accessibility analysis of Section~\ref{sec:Search-Habitable}. 
+Figure~\ref{fig:fgk20-observability} shows the nearby FGK sample in the plane of 
+spectral type and distance, together with the boundaries at which the habitable 
+zone becomes fully or partially accessible outside the nominal $3\lambda/D$ IWA. 
+The late-K regime identified in Section~\ref{sec:earthlike_contrast} 
+adds a second requirement to this 
+geometric selection: an Earth-like planet must not only reach a sufficiently 
+large angular separation, but must also provide a reflected-light contrast 
+approaching the $\sim10^{-9}$ performance goal of the coronagraph.
+
+Combining these two criteria substantially narrows the terrestrial-planet
+search space. As indicated in Figure~\ref{fig:fgk20-observability}, only a 
+small number of nearby late-K stars occupy the region in which both conditions 
+become favorable. Among them, 61~Cyg~A and $\epsilon$~Ind~A are particularly 
+noteworthy. Both are K5~V stars located within approximately 4~pc of the Sun, 
+allowing their compact habitable zones to subtend unusually large angles 
+on the sky.
+
+For an Earth-sized planet placed at the Earth-equivalent insolation distance,
+the current estimates give
+$a_{\rm EEID}\simeq0.38$~AU and
+$\theta_{\rm EEID}\simeq108$~mas for 61~Cyg~A, and
+$a_{\rm EEID}\simeq0.50$~AU and
+$\theta_{\rm EEID}\simeq137$~mas for $\epsilon$~Ind~A.
+These separations correspond to approximately $1.1$ and $1.4$ times,
+respectively, the nominal $3\lambda/D\simeq97$~mas IWA at 550~nm.
+Under the adopted Earth-like assumptions, the corresponding reflected-light
+contrasts are approximately $1.2\times10^{-9}$ for 61~Cyg~A and
+$6.9\times10^{-10}$ for $\epsilon$~Ind~A.
+
+These two systems illustrate the narrowness of the accessible parameter
+space rather than representing straightforward detections. 61~Cyg~A offers
+the more favorable planet-to-star contrast, but its Earth-equivalent orbit
+lies only slightly outside the nominal IWA, where stellar leakage and
+coronagraphic throughput are particularly critical. $\epsilon$~Ind~A
+provides a larger angular separation, but its predicted Earth-like contrast
+falls somewhat below the nominal $10^{-9}$ development goal. Their practical
+detectability therefore depends on the delivered contrast as a function of
+separation, near-IWA throughput, wavefront stability, stellar leakage,
+planetary phase, and orbital geometry.
+
+The search was also extended from late-K stars toward early-M stars to test
+whether still cooler hosts provide more favorable targets. Although the
+intrinsic reflected-light contrast continues to improve toward cooler stars,
+their habitable zones move progressively inward and become more difficult to
+resolve. Under the adopted 3.5mST IWA, this extension does not identify
+additional nearby systems that clearly improve upon the best late-K cases.
+The nearest late-K stars therefore define a narrow but scientifically
+compelling regime in which the competing requirements of Earth-like
+planet contrast and habitable-zone angular separation simultaneously
+approach the capabilities of the 3.5mST.
+
+The quoted angular separations represent favorable projected configurations
+and should not be interpreted as single-visit detection guarantees.
+For planets on inclined orbits, the projected separation varies throughout
+the orbit and can fall inside the effective high-contrast working region.
+The implications for discovery completeness, observing cadence, and
+multi-epoch orbital recovery are considered in 
+Section~\ref{sec:earthlike_multi_epoch}.
+
+\subsection{Multi-Epoch Detection and Atmospheric Characterization}
+\label{sec:earthlike_multi_epoch}
+
+The favorable angular separations discussed in Section~\ref{sec:prime_earthlike_targets}. represent maximum or near-maximum projected configurations and do not imply that an
+Earth-like planet will be observable during every visit. The projected
+star--planet separation depends on both orbital phase and inclination. Even
+when the physical orbit lies within the habitable zone, an inclined orbit
+can carry the planet inside the effective high-contrast working region for a
+substantial fraction of its orbital period. This effect is particularly
+important for 61~Cyg~A and $\epsilon$~Ind~A, whose Earth-equivalent
+insolation distances correspond to only approximately 1.1 and 1.4 times the
+nominal IWA, respectively. A non-detection in a single visit therefore
+provides only limited completeness for terrestrial planets in these systems.
+
+This geometry makes repeated observations an essential part of the search
+strategy. For a circular orbit, the characteristic orbital period at the
+Earth-equivalent insolation distance can be estimated from
+
+\begin{equation}
+P_{\rm EEID}
+\simeq
+\left(
+\frac{a_{\rm EEID}^{3}}{M_\star}
+\right)^{1/2}
+{\rm yr},
+\label{eq:eeid_period}
+\end{equation}
+
+where $a_{\rm EEID}$ is expressed in AU and $M_\star$ in solar masses.
+Rather than repeating observations at arbitrary intervals, successive visits
+should be separated by a significant fraction of the expected orbital
+period so that substantially different orbital phases and projected
+separations are sampled. A cadence of order $P/6$--$P/4$ provides a useful
+starting point for such a search, although the optimum cadence must ultimately
+be evaluated through completeness simulations that include orbital
+inclination, eccentricity, phase-dependent brightness, and the
+separation-dependent coronagraphic response.
+
+Once a candidate is detected, the observing strategy changes from discovery
+to orbital recovery. Multiple astrometric measurements distributed over the
+orbit can constrain the semimajor axis, inclination, and orbital phase,
+allowing subsequent observations to be scheduled near favorable projected
+separations. This is especially valuable for planets whose orbits repeatedly
+cross the effective inner working region. Multi-epoch imaging therefore
+serves two purposes: it increases the probability of initial detection and,
+after discovery, provides the orbital information required to determine
+whether the planet is consistent with long-term residence in the habitable
+zone and to predict the best epochs for spectroscopic follow-up.
+
+The brightness of a detected terrestrial planet provides the next practical
+constraint. At quadrature, its apparent magnitude can be estimated directly
+from the host-star magnitude and the reflected-light contrast,
+
+\begin{equation}
+m_p
+=
+m_\star
+-
+2.5\log_{10}
+\left(
+\frac{F_p}{F_\star}
+\right).
+\label{eq:planet_magnitude}
+\end{equation}
+
+Using the Earth-like contrasts adopted in Section~\ref{sec:prime_earthlike_targets} 
+gives apparent visual magnitudes of approximately $V\simeq27.5$ for an 
+Earth-sized planet at the EEID of both 61~Cyg~A and $\epsilon$~Ind~A. 
+These values illustrate an important distinction between intrinsic planet 
+brightness and detectability: although the planets have comparable apparent 
+magnitudes, their detection difficulty can differ substantially because 
+their angular separations and residual stellar backgrounds are different.
+
+The observing sequence should therefore be considered in three stages:
+broadband discovery imaging, multi-epoch orbital recovery, and
+reflected-light spectroscopy. A broadband detection requires sufficient
+signal-to-noise not only against photon noise but also against residual
+stellar leakage, local and exozodiacal backgrounds, detector noise, and
+the loss of coronagraphic throughput near the IWA. A reliable imaging
+exposure time for 61~Cyg~A and $\epsilon$~Ind~A must consequently be derived
+from an end-to-end, separation-dependent coronagraph model rather than from
+planet magnitude alone.
+
+For atmospheric characterization, the $R=5000$ photon-budget calculation
+developed in Section~B.6 provides a useful first estimate. Under the adopted
+Earth-like assumptions, the current model gives 5$\sigma$ molecular-band
+template-detection times of approximately 8.7~hr for 61~Cyg~A and 12~hr for
+$\epsilon$~Ind~A. These values should be regarded strictly as optimistic
+photon-noise lower bounds. The calculation does not fully include correlated
+residual speckles, detector noise, template mismatch, or the
+separation-dependent loss of coronagraphic throughput and increased stellar
+leakage close to the IWA. The actual spectroscopic integrations could
+therefore be substantially longer, particularly for 61~Cyg~A at its small
+projected separation.
+
+A target-specific observing assessment should ultimately combine these
+quantities in a single framework: the expected orbital period and revisit
+cadence, the fraction of the orbit accessible outside the effective
+high-contrast working region, the apparent planet brightness, the broadband
+discovery exposure, and the spectroscopic characterization time. Such an
+analysis will determine whether the narrow terrestrial-planet window
+identified in Section~\ref{sec:earthlike_contrast} and 
+~\ref{sec:earthlike_contrast} can be exploited in practice. The
+program should therefore be regarded not as a general Earth--Sun twin survey,
+but as a focused, multi-epoch experiment on a small number of exceptionally
+nearby systems where the angular separation and reflected-light contrast of
+an Earth-like planet simultaneously approach the performance limits of the
+3.5mST.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Distance Horizon of Coronagraphic Imaging}
 \label{sec:horizon}
-
 
 A coronagraph does not survey the Galaxy. It surveys a small sphere
 around the Sun, and the radius of that sphere follows directly from the
