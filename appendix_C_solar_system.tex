@@ -176,8 +176,11 @@ validation}
 \textbf{\color{cGold}Central design conclusion.}
 The baseline 0.2--1.5\,$\mu$m observatory provides rapid-response astrometry,
 visible and near-infrared taxonomy, rotation and phase curves, recovery, and
-long-arc orbit improvement. The \facility\ does not carry a mid-infrared
-channel. Ground-based MIR telescopes provide the thermal fluxes needed to
+long-arc orbit improvement. The instrument study also evaluates calibrated
+throughput to 2.70\,$\mu$m with a 3.0\,$\mu$m operational band-edge goal.
+A reduction to 2.5\,$\mu$m remains the formal engineering off-ramp if the
+thermal, detector, cooling, mass, power, or cost budgets require it. The
+\facility\ does not carry a mid-infrared channel. Ground-based MIR telescopes provide the thermal fluxes needed to
 infer diameter and albedo. The mission supplies contemporaneous
 reflected-light measurements and observing geometry for the joint thermal
 analysis.
@@ -294,8 +297,9 @@ engineered solar-elongation access\\
 Usable wavelength range &
 Visible and near-infrared survey bands plus restricted MIR atmospheric
 windows. Transmission and sky background vary with water vapor and airmass &
-The baseline 0.2--1.5\,$\mu$m range. No MIR detector or MIR survey mode is
-included\\
+The baseline 0.2--1.5\,$\mu$m range, with calibrated throughput to
+2.70\,$\mu$m and a 3.0\,$\mu$m band-edge goal under study. No MIR detector or
+MIR survey mode is included\\
 \addlinespace
 Sky and time window &
 Night, horizon, airmass, weather, Moon, twilight, and season constrain each
@@ -607,11 +611,16 @@ constrain the shape and spin priors used by thermal and Yarkovsky models.
 
 At Sun--Earth L2 the Sun, Earth, and Moon occupy nearly the same sky
 direction. The angular radius of the solar disk does not set the operational
-exclusion angle.
+exclusion angle. L2 remains the preferred orbit architecture. MEO is the
+current fallback if launch-vehicle or programmatic constraints prevent L2;
+LEO is not the planning baseline because of its less stable thermal and
+observing environment for a long-duration survey.
 Scattered light, sunshade geometry, thermal stability, Earth thermal
 emission, lunar light, and allowed spacecraft attitudes set a much larger
-keep-out region. The present white-paper visibility calculation adopts a
-minimum solar elongation of $60^\circ$.
+keep-out region. The mission-wide schedule adopts a minimum solar elongation
+of $90^\circ$. The $60^\circ$ value below is retained only as a relaxed
+engineering study, and the $45^\circ$--$60^\circ$ region is not included in
+the nominal time allocation.
 
 For a fixed target at ecliptic latitude $\beta$ and solar exclusion angle
 $\theta$ the purely geometric annual visibility fraction is
@@ -625,17 +634,19 @@ $\theta$ the purely geometric annual visibility fraction is
  \end{cases}
  \label{eq:visibility}
 \end{equation}
-For $\theta=60^\circ$ Equation~\ref{eq:visibility} gives 243.5 observable
-days per year on the ecliptic and full-year access above
-$|\beta|=60^\circ$. The visibility fractions describe geometry only.
+For the relaxed study value $\theta=60^\circ$, Equation~\ref{eq:visibility}
+gives 243.5 observable days per year on the ecliptic and full-year access
+above $|\beta|=60^\circ$. The visibility fractions describe geometry only;
+the database-driven schedule uses $90^\circ$--$180^\circ$ for every nominal
+program.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{appendixC_assets/l2_observability.png}
 \caption{L2 field-of-regard concept. Red marks a $45^\circ$ inner exclusion
 zone. Orange marks the 45--$60^\circ$ region that requires a dedicated
-forward baffle and thermal design. Teal marks the current baseline outside
-$60^\circ$. Earth albedo is suppressed by the near-new-Earth phase as seen
+forward baffle and thermal design. Teal marks the relaxed study region outside
+$60^\circ$; the nominal scheduler begins at $90^\circ$. Earth albedo is suppressed by the near-new-Earth phase as seen
 from L2 although Earth and Moon stray light, thermal emission, halo-orbit
 offsets, and sunshade geometry still require a measured rejection model.}
 \end{figure}

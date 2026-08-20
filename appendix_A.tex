@@ -1,7 +1,7 @@
 \chapter{Wide-Field Cosmology and Galaxy Evolution}\label{app:cosmology}
 
 \begin{leadbox}[title=Executive Summary]{teal}
-\textbf{The \facility\ uses an image slicer for all spectroscopic observations. The instrument study compares $R=1000$ and $R=5000$ before selecting the final resolving power.}
+\textbf{The \facility\ uses an image slicer for all spectroscopic observations. The planning baseline uses $R\simeq1000$ for the wide survey and retains selectable $R\simeq5000$ bands for precision line measurements.}
 The central science case is a dense emission-line galaxy redshift survey for BAO and redshift-space distortions. Supernova and quasar programs exploit the stability, multiplexing, and repeatability of space operations. The supernova tier measures the rest-frame $U$ and near-ultraviolet magnitudes that separate optical twins at subgroup precision ($\sigma_m=0.10$\,mag) to $z\simeq0.9$--$1.1$ in standard visits and to $z\simeq1.3$--$1.5$ in ten-hour stacks. Every wide-survey tile receives three slitless orientations near $0^\circ$, $45^\circ$, and $90^\circ$. A joint scene reconstruction uses the orientation-dependent overlap geometry to recover the spectra. The flagship survey covers 100--300 \degti\ and requires the \fovlarge\ field for efficiency. A deep pencil-beam tier and a supernova time-domain tier complement the wide survey. The same imaging provides a blind census of ultra-diffuse galaxies, low-surface-brightness galaxies, and void dark-galaxy candidates across the survey tiers. Targeted deep integrations map intracluster light in nearby clusters. Emission-line redshifts recover part of the low-surface-brightness population missing from the observed galaxy stellar mass function and turn its faint end into a selection-controlled test of stellar feedback. The common selection function across field, cluster, and void environments supports a dark-matter program that tests cold, self-interacting, and fuzzy dark matter against dwarf-galaxy inner density structure and the abundance of low-mass halos.
 \end{leadbox}
 
@@ -23,7 +23,7 @@ The central science case is a dense emission-line galaxy redshift survey for BAO
 
 \section{Instrument Baseline}
 
-The image slicer forms part of the adopted spectrograph architecture. The slicer reformats a wide entrance region into a pseudo-slit without imposing the light loss of a narrow physical slit. The instrument team has not selected the resolving power. The cosmology study must therefore compare $R=1000$ and $R=5000$ within the same image-slicer architecture. The comparison depends on redshift success, catastrophic line misidentification, spectral overlap, detector format, survey area, $nP$, and the resulting BAO and RSD precision. The numerical yield estimates below use $R=1000$ as a reference calculation rather than an adopted instrument specification.
+The image slicer forms part of the adopted spectrograph architecture. The slicer reformats a wide entrance region into a pseudo-slit without imposing the light loss of a narrow physical slit. The planning baseline assigns $R\simeq1000$ to the wide ELG survey because this choice preserves field and survey efficiency. Selectable bands at $R\simeq5000$ remain available for compact objects, precision line profiles, and tests of line identification. The cosmology study must compare both choices within the same image-slicer architecture. The comparison depends on redshift success, catastrophic line misidentification, spectral overlap, detector format, survey area, $nP$, and the resulting BAO and RSD precision. The numerical yield estimates below use $R=1000$ as the wide-survey reference rather than treating it as a final hardware commitment.
 
 For a point source,
 \begin{equation}
@@ -49,8 +49,8 @@ or about 4600 and 23,000 pixels at two pixels per resolution element. Neither de
 \textbf{Element} & \textbf{Adopted baseline for the proposal}\\
 \midrule
 Telescope & \facility\ with a diffraction-limited segmented aperture and robotic survey operations.\\
-Spectroscopy & Image-sliced grism or prism channels. The resolving-power trade compares $R_{\rm point}=1000$ and $R_{\rm point}=5000$ within the same architecture.\\
-Wavelength strategy & 0.3--1.0\,$\mu$m optical channel and a near-IR channel with science throughput to at least 2.70\,$\mu$m. The adopted detector and filter band-edge goal is 3.0\,$\mu$m. Each channel is divided into filters to limit spectrum length.\\
+Spectroscopy & Image-sliced grism or prism channels. The wide-survey baseline is $R_{\rm point}\simeq1000$ with selectable $R_{\rm point}\simeq5000$ bands for precision spectroscopy.\\
+Wavelength strategy & 0.3--1.0\,$\mu$m optical channel and a near-IR channel with science throughput to at least 2.70\,$\mu$m. The operational band-edge goal is 3.0\,$\mu$m. A reduction to 2.5\,$\mu$m is the formal engineering off-ramp if thermal background, cooling, detector, mass, power, or cost constraints prevent the longer band. Each channel is divided into filters to limit spectrum length.\\
 Field of view & \fovsmall\ threshold and \fovlarge\ goal. Phase A must determine the recorded field at each candidate resolving power from the detector format and spectral length.\\
 Roll strategy & Three image-sliced orientations per science tile near $0^\circ$, $45^\circ$, and $90^\circ$ at the selected resolving power.\\
 Direct imaging & Required for source detection, morphology priors, wavelength zero-points, and spectral-overlap modeling.\\
@@ -60,7 +60,7 @@ Direct imaging & Required for source detection, morphology priors, wavelength ze
 
 \subsection{Two-Arm Image-Sliced Spectrograph}
 
-The spectrograph uses an image slicer and two wavelength arms. A dichroic sends 0.3--1.0\,$\mu$m light to the optical arm and 1.0--3.0\,$\mu$m light to the near-infrared arm. Band-limiting filters and a grism or prism prevent either arm from producing one trace across the full wavelength decade. The baseline operates both arms simultaneously. Sequential operation would require a second visit with the same orientation and pointing. The near-infrared arm must retain science throughput to at least $2.70\,\mu$m and adopts $3.0\,\mu$m as the operational band-edge goal. The additional $0.30\,\mu$m keeps the $z=3$ H$\alpha$+[N\,II]+[S\,II] complex away from filter transitions, detector quantum-efficiency roll-off, and wavelength-calibration edge losses. Section~\ref{sec:etc} shows that an optics temperature below approximately 200\,K keeps telescope thermal emission below the zodiacal background across the full 1--3\,$\mu$m arm.
+The spectrograph uses an image slicer and two wavelength arms. A dichroic sends 0.3--1.0\,$\mu$m light to the optical arm and 1.0--3.0\,$\mu$m light to the near-infrared arm. Band-limiting filters and a grism or prism prevent either arm from producing one trace across the full wavelength decade. The baseline operates both arms simultaneously. Sequential operation would require a second visit with the same orientation and pointing. The near-infrared arm must retain calibrated science throughput to at least $2.70\,\mu$m. The $3.0\,\mu$m value is an operational band-edge goal that provides margin beyond the science threshold. The $2.5\,\mu$m value is a formal off-ramp rather than the preferred design. The additional margin keeps the $z=3$ H$\alpha$+[N\,II]+[S\,II] complex away from filter transitions, detector quantum-efficiency roll-off, and wavelength-calibration edge losses. Section~\ref{sec:etc} compares all three red cutoffs and therefore supplies the engineering trade needed for the final detector and cooling decision.
 
 The filter plan follows two properties of grism dispersion. A grism disperses at nearly constant $\Delta\lambda$ per pixel rather than constant $R=\lambda/\Delta\lambda$. The resolving power rises approximately linearly across one setting. The quoted $R=1000$ and $R=5000$ values refer to the centre of the corresponding setting. A grating also produces overlapping orders because second-order light at $\lambda$ lands at the same detector position as first-order light at $2\lambda$. At most one octave, $\lambda_{\max}\leq2\lambda_{\min}$, therefore remains free of cross-order contamination. The survey observes each arm through two band-limiting filters that obey the octave limit. The optical arm covers $0.36$--$0.70$ and $0.50$--$1.0\,\mu$m. The near-infrared arm covers $1.0$--$1.75$ and $1.6$--$3.0\,\mu$m. HST, JWST, Euclid, and Roman slitless instruments use the same order-sorting principle. The two settings per channel define the exposure times and survey schedule in the proposal. The $R=1000$ reference traces occupy about $1090$--$1330$ pixels at two pixels per resolution element. The $R=5000$ design requires about five times as many spectral samples over the same setting. A fixed detector format must absorb the increase through detector area, wavelength coverage, spatial field, or a combination of the three. The trade belongs to the comparison between resolving powers rather than to the adoption of the image slicer.
 
@@ -69,9 +69,13 @@ The image slicer acts as a wide entrance slit. The slicer accepts the same sourc
 The image-slicer geometry also limits the source width projected into the dispersion direction and reduces blending between different slices. The remaining cosmology trade does not follow from a fundamental photon penalty at $R=5000$. The $R=1000$ design uses shorter traces and reduces detector-format pressure. The $R=5000$ design separates neighbouring lines and lowers the catastrophic redshift rate. Phase A simulations must propagate both effects into the secure ELG density $n(z)$ and the usable survey area. The final comparison must report BAO and RSD covariance rather than S/N alone. Broad supernova features and reionization damping wings need no $R=5000$ resolution while individual Ly$\alpha$ forest absorbers require $R\gtrsim30{,}000$ and remain outside both choices.
 
 \begin{leadbox}[title=Cosmology Selection Rule]{green}
-\textbf{Choose $R=5000$ if both designs preserve the same field, wavelength coverage, throughput, and observing time.}
-The $R=5000$ spectrum retains the integrated photon-limited S/N after binning and adds information that separates the [O\,\textsc{ii}] doublet and rejects incorrect line identities. The $R=1000$ design becomes preferable only when the longer $R=5000$ traces reduce usable sky area or wavelength coverage enough to erase the gain in redshift purity. The deciding quantity is the final BAO and RSD covariance from the recovered catalog.
+\textbf{Use $R\simeq1000$ for the wide survey and reserve $R\simeq5000$ for selectable bands unless the matched forecast supports a wider high-resolution deployment.}
+The $R\simeq5000$ spectrum retains the integrated photon-limited S/N after binning and adds information that separates the [O\,\textsc{ii}] doublet and rejects incorrect line identities. The $R\simeq1000$ design preserves shorter traces and wider survey efficiency. The deciding quantity is the final BAO and RSD covariance from the recovered catalog after secure-redshift density, usable area, and contamination enter the forecast.
 \end{leadbox}
+
+Robotic servicing may later add an $R\gtrsim15000$ high-dispersion module for
+specialized follow-up. That module is an extension path and is excluded from
+the baseline five-year yield, detector budget, and observing-time allocation.
 
 \begin{figure}[htbp]
 \centering
@@ -340,6 +344,8 @@ when the same line interval is used at both resolutions. The $R=5000$ design doe
 
 Table~\ref{tab:etc} lists the inputs required for the image-sliced calculation. The mean zodiacal sky brightness near $1.6\,\mu$m follows the standard reference model \cite{leinert1998}. The collecting area follows from the $3.5$\,m aperture and the detector terms represent near-infrared HgCdTe arrays. The slice geometry must supply $\Omega_{\rm ext}$ and $n_{\rm det}$ before Eq.~\eqref{eq:etc} produces a flight sensitivity. The current proposal therefore retains $1.0\times10^{-16}\,{\rm erg\,s^{-1}\,cm^{-2}}$ at $0.75$\,hr as a conservative planning reference derived from comparable space surveys. The reference depth applies to both candidate resolving powers in the photon-limited comparison. A matched image-slicer ETC must quantify the residual detector penalty at $R=5000$.
 
+The ETC must evaluate the red channel at three explicit cutoffs. The $2.5\,\mu$m case is the formal engineering off-ramp. The $2.70\,\mu$m case is the minimum calibrated science-throughput requirement. The $3.0\,\mu$m case is the operational band-edge goal. The comparison must report wavelength-dependent throughput, thermal background, detector noise, line-flux depth, and secure-redshift fraction for each cutoff. It must also propagate the cutoff into the accessible H$\alpha$ and [S\,II] volume rather than comparing only a single representative wavelength. These three cases separate a science requirement from the additional margin that the instrument team may retain if the cooling and detector design permit it.
+
 \begin{table}[htbp]
 \centering
 \sffamily\small
@@ -349,7 +355,7 @@ Table~\ref{tab:etc} lists the inputs required for the image-sliced calculation. 
 \midrule
 Effective area $A_{\rm tel}$ & $8\times10^{4}$ cm$^{2}$ & $3.5$\,m aperture with central obstruction\\
 Throughput $\eta$ & $0.30$ & optics, disperser, and detector quantum efficiency\\
-Wavelength $\lambda$ & $1.6\,\mu$m & representative near-infrared line\\
+Wavelength $\lambda$ & $1.6\,\mu$m & representative near-infrared line. Repeat the ETC for red cutoffs of $2.5$, $2.70$, and $3.0\,\mu$m\\
 Sky brightness $\bar i_{\rm sky}$ & $9.6\times10^{-19}$ erg s$^{-1}$ cm$^{-2}$ \AA$^{-1}$ arcsec$^{-2}$ & reddened zodiacal light at $1.6\,\mu$m, $\simeq21.6$ AB arcsec$^{-2}$ \cite{leinert1998}\\
 Extraction solid angle $\Omega_{\rm ext}$ & Set by the slice geometry & same accepted source region in both resolving-power calculations\\
 Science interval $\Delta\lambda_{\rm sci}$ & Set by the fitted line profile & identical physical interval for the $R=1000$ and $R=5000$ comparison\\

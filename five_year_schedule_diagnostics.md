@@ -2,9 +2,9 @@
 
 ## Provenance and assumptions
 
-- Latest fetched Overleaf revision: `ca559c8`.
+- Latest fetched Overleaf revision: `ecb7dd2`.
 - Authoritative input database: `observing_schedule_inputs.sqlite`.
-- Input database SHA-256: `9d5a636288cbbf67b60c35355e330680981c80def7f0b75e7038d9a4d35dca94`.
+- Input database SHA-256: `19a80774301c723140592a1e207521dce6b4c0b6caaae41877c94b7ec21af628`.
 - Mission-year template: calendar years 2030-2034.
 - Weekly grid: 52 seven-day bins per mission year.
 - Year 1 commissioning and performance acceptance: W01-W13.
@@ -20,7 +20,7 @@
 - Appendix C NEO recovery reserve: 2.0% of the full mission wall clock, redistributed outside director weeks.
 - Appendix X transient reserve: 1.0% of the full mission wall clock, redistributed outside director weeks.
 - Indirect observatory overhead: 16.0% of the five-year wall clock.
-- The Appendix C blind-survey allocation is a user-requested alternative scenario. The current Appendix C text at the cited Overleaf revision adopts external-alert recovery and states no blind-survey allocation.
+- The Appendix C text explicitly separates the 5.0% optical blind-survey capacity scenario from the 2.0% external-alert recovery reserve. Neither line is a completeness or discovery-yield claim.
 - Appendix X planned monitoring is calculated from the stated visit durations and cadence rather than from a mission-total number.
 - HZ `t_char` values are used as relative weights and normalized to the 2,000 h midpoint. The Appendix states that they are photon-noise lower bounds, not validated exposure requests.
 - Known-planet orbital orientation and phase are not sufficiently specified in the tracked cache. The first run applies target-specific solar visibility but not a claimed planet-phase optimum.

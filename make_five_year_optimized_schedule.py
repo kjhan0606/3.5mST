@@ -1318,7 +1318,7 @@ def write_outputs(
 - Appendix C NEO recovery reserve: {100 * NEO_RESERVE_FRACTION:.1f}% of the full mission wall clock, redistributed outside director weeks.
 - Appendix X transient reserve: {100 * COMPACT_TOO_RESERVE_FRACTION:.1f}% of the full mission wall clock, redistributed outside director weeks.
 - Indirect observatory overhead: {100 * float(OPS['indirect_overhead_fraction']):.1f}% of the five-year wall clock.
-- The Appendix C blind-survey allocation is a user-requested alternative scenario. The current Appendix C text at the cited Overleaf revision adopts external-alert recovery and states no blind-survey allocation.
+- The Appendix C text explicitly separates the 5.0% optical blind-survey capacity scenario from the 2.0% external-alert recovery reserve. Neither line is a completeness or discovery-yield claim.
 - Appendix X planned monitoring is calculated from the stated visit durations and cadence rather than from a mission-total number.
 - HZ `t_char` values are used as relative weights and normalized to the 2,000 h midpoint. The Appendix states that they are photon-noise lower bounds, not validated exposure requests.
 - Known-planet orbital orientation and phase are not sufficiently specified in the tracked cache. The first run applies target-specific solar visibility but not a claimed planet-phase optimum.

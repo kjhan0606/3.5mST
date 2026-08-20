@@ -1,6 +1,6 @@
 % !TEX program = xelatex
 % Standalone Appendix X
-% Compact-object time-domain science with R=5000 slitless spectroscopy.
+% Compact-object time-domain science with selectable R=5000 slitless spectroscopy.
 
 \ifdefined\APPENDIXXBOOK
 % The book supplies the document class and shared packages.
@@ -121,7 +121,7 @@
 {\sffamily\color{white}\fontsize{23}{28}\selectfont\bfseries
 Appendix X: Compact-Object Time-Domain Science}\\[2.2mm]
 {\sffamily\color{white}\fontsize{14}{18}\selectfont
-with $R=5000$ slitless spectroscopy}\\[3mm]
+with $R\simeq1000$ baseline and selectable $R\simeq5000$ spectroscopy}\\[3mm]
 {\sffamily\color{white!80}\normalsize
 Neutron-star and black-hole transients, white dwarfs, and dwarf novae}
 \end{tcolorbox}
@@ -131,22 +131,23 @@ Neutron-star and black-hole transients, white dwarfs, and dwarf novae}
 \textbf{Central design claim.}
 An isolated compact object retains the point-source resolving power of the
 space-based slitless spectrograph. The baseline wavelength range is
-$0.2$--$1.5\micron$ and the point-source resolving power is
-$\Rpoint=5000$, corresponding to approximately $60\,\kms$ per resolution
-element. The native sampling resolves accretion-disk and wind profiles. The
-same spectra may be binned when broad and faint transient features do not
-require the native resolution. The time-domain experiment combines this
-spectral information with rapid target-of-opportunity observations and
-high-cadence imaging. Mid-infrared imaging is not part of the adopted
-compact-object baseline.
+$0.2$--$1.5\micron$. The planning baseline uses $R\simeq1000$ for broad and
+faint transient spectra and reserves selectable bands at $R\simeq5000$ for
+accretion-disk profiles, velocity structure, and precision line ratios. The
+native $R\simeq5000$ data may be binned when broad features do not require
+that resolution. The instrument study must preserve calibrated throughput to
+$2.70\micron$ and evaluate a $3.0\micron$ operational band edge. A reduction
+to $2.5\micron$ is the formal engineering off-ramp. Mid-infrared imaging is
+not part of the adopted compact-object baseline.
 \end{leadbox}
 
 \vspace{2mm}
 \noindent
 \begin{tabularx}{\textwidth}{@{}P{38mm}Y@{}}
 \topcell{\bfseries\color{violet}Baseline mode} &
-\topcell{Point-source slitless spectroscopy with $R=5000$, supplemented by
-multi-band imaging and high-cadence time series.}\\
+\topcell{Point-source slitless spectroscopy with $R\simeq1000$ as the baseline
+and selectable $R\simeq5000$ bands, supplemented by multi-band imaging and
+high-cadence time series.}\\
 \topcell{\bfseries\color{violet}Primary science} &
 \topcell{Rapid optical and near-infrared follow-up of gravitational-wave
 counterparts, plus accretion-disk spectroscopy of white dwarfs, neutron
@@ -196,22 +197,23 @@ For a point source, the resolving power gives
 \begin{equation}
   \Delta\lambda = \frac{\lambda}{\Rpoint},
   \qquad
-  \Delta v \simeq \frac{c}{\Rpoint}
-  \simeq 60\,\kms.
+  \Delta v \simeq \frac{c}{\Rpoint}.
   \label{eq:resolution}
 \end{equation}
-At H$\alpha$, the nominal resolution element is about $1.31$\,\AA.
-The nominal scale does not imply that every line centroid is measured to
-$60\,\kms$.
+At H$\alpha$, the nominal resolution element is about $1.31$\,\AA\ in the
+selectable $R=5000$ setting and about $6.56$\,\AA\ at $R=1000$. The nominal
+scale does not imply that every line centroid is measured to one resolution
+element.
 For a sufficiently bright and isolated line, centroid precision may be much
 smaller than one resolution element. The limiting factors are photon noise,
 calibration stability, line blending, and the forward model of the
 slitless scene.
 
-The native resolving power provides different measurements for different source
-classes. Cataclysmic-variable disk lines often span several hundred to more
-than one thousand $\kms$. The line wings and double peaks are consequently
-sampled by several resolution elements at $R=5000$. Kilonova ejecta instead
+The two resolving-power settings provide different measurements for different
+source classes. Cataclysmic-variable disk lines often span several hundred to
+more than one thousand $\kms$. The line wings and double peaks are consequently
+sampled by several resolution elements in the selectable $R\simeq5000$ bands.
+Kilonova ejecta instead
 produce blended structures with characteristic velocities near a tenth of the
 speed of light. The kilonova structures do not require $R=5000$ for detection.
 The native pixels may be combined to obtain the continuum sensitivity required at
@@ -221,13 +223,20 @@ instrument line-spread function and injected into realistic backgrounds.
 
 \begin{xresultbox}{violet}
 \textbf{Operational requirement.}
-The spectroscopic program must preserve the point-source $R=5000$ mode for
-compact objects. Binning to a lower resolution may be used for faint
-continuum measurements, but the native data must retain the line-profile
-information required for velocity, profile-asymmetry, and line-ratio studies.
+The spectroscopic program must preserve selectable point-source $R\simeq5000$
+bands for compact objects. The wide transient baseline remains $R\simeq1000$.
+Binning to a lower resolution may be used for faint continuum measurements,
+but the high-resolution data must retain the line-profile information required
+for velocity, profile-asymmetry, and line-ratio studies.
 \end{xresultbox}
 
-\section{Observables from \texorpdfstring{$R=5000$}{R=5000} Spectra}
+The present mission baseline does not require a high-dispersion module beyond
+$R\simeq5000$. Robotic servicing could add an $R\gtrsim15000$ module after the
+baseline mission has demonstrated the detector, calibration, and pointing
+performance. That option is an extension path, not an assumption in the
+five-year yield or time allocation below.
+
+\section{Observables from Selectable \texorpdfstring{$R\simeq5000$}{R approximately 5000} Spectra}
 
 The spectra provide more than a redshift or a classification label. Their
 principal information is the joint time evolution of the continuum and line
@@ -661,9 +670,9 @@ components evolve most rapidly in flux and color.
 \toprule
 \textbf{Elapsed time} & \textbf{Mode} & \textbf{Primary information} & \textbf{Requirement}\\
 \midrule
-$<4$ hr & Imaging in several bands & Localization, color, counterpart ranking &
+$\simeq2$ hr goal & Imaging in several bands & Localization, color, counterpart ranking &
 Rapid alert ingestion, slew, and acquisition\\
-$4$--$12$ hr & $R=5000$ spectrum & Early line and continuum state &
+$2$--$12$ hr & Selectable $R\simeq5000$ spectrum & Early line and continuum state &
 Stable wavelength calibration and sufficient S/N per resolution element\\
 $1$--$3$ d & Repeated spectroscopy & Ejecta velocity and ionization evolution &
 Repeatable trace and flux calibration\\
@@ -675,7 +684,9 @@ Accurate reference imaging\\
 \end{tabularx}
 \end{table}
 
-The minimum mission-level requirement is not merely a fast slew. Before the
+The planning goal is approximately two hours from alert to the first useful
+exposure. A fallback response below four hours preserves the early kilonova
+sequence. The minimum mission-level requirement is not merely a fast slew. Before the
 first exposure, the observatory must validate the alert, calculate visibility,
 update the queue, acquire the target, assess data quality, and disseminate the
 result. A response time that is fast at the
@@ -708,7 +719,7 @@ merger-rate posterior.
     \node[align=center,anchor=north] at (\x,-0.12) {\t};
   }
   \draw[<->,color=rose,line width=1.2pt] (0,0.7)--(4,0.7)
-    node[midway,above] {$\lesssim4$ hr response};
+    node[midway,above] {$\simeq2$ hr planning goal};
   \draw[<->,color=teal,line width=1.2pt] (4,1.35)--(8.5,1.35)
     node[midway,above] {early evolution};
   \draw[<->,color=gold,line width=1.2pt] (8.5,2.0)--(13,2.0)
@@ -1054,16 +1065,20 @@ planning values to be verified by an end-to-end ETC and scene simulation.}
 \toprule
 \textbf{Requirement} & \textbf{Reference value} & \textbf{Reason}\\
 \midrule
-Wavelength range & $0.2$--$1.5\micron$ & Covers ultraviolet/optical transient
-continuum, Balmer and helium lines, and selected NIR transitions. Each detector
+Wavelength range & $0.2$--$1.5\micron$ baseline. $2.70\micron$ throughput
+threshold and $3.0\micron$ operational goal & Covers ultraviolet/optical
+transient continuum, Balmer and helium lines, and selected NIR transitions.
+The $2.5\micron$ band is the formal engineering off-ramp. Each detector
 channel requires an independent sensitivity budget\\
-Point-source resolving power & $R=5000$ & Resolves approximately $60\,\kms$
-velocity structure in accretion-disk profiles. Broad transient features are
-binned to lower resolution\\
+Point-source resolving power & $R\simeq1000$ baseline. Selectable
+$R\simeq5000$ bands & The baseline supports broad transient spectra. The
+selectable bands resolve approximately $60\,\kms$ velocity structure in
+accretion-disk profiles. Broad transient features are binned to lower
+resolution\\
 Spectral calibration & Stability set by the velocity error budget & Required
 for line-centroid and radial-velocity comparison across epochs\\
-ToO response & Goal $<4$ hr, baseline $<12$ hr & Records early kilonova and
-rapid accretion-state evolution\\
+ToO response & Planning goal $\simeq2$ hr, fallback $<4$ hr, baseline
+$<12$ hr & Records early kilonova and rapid accretion-state evolution\\
 Photometric cadence & Sub-minute for selected targets & White-dwarf
 pulsations and ultracompact-binary variability\\
 Spectroscopic cadence & Minutes to days, event dependent & Separates orbital
@@ -1414,24 +1429,26 @@ measurements into traceable performance requirements.
 The compact-object program is scientifically credible as a point-source
 optical and near-infrared time-domain program. Mission feasibility remains
 conditional on the ETC, scene-recovery, scheduler, and yield demonstrations
-defined above. The $R=5000$ mode is most valuable for accretion-disk profiles
-and should provide lower-resolution binned products for broad transients. The
-science claims require joint inference with gravitational-wave, high-energy,
-and radiative-transfer information. The program does not require a
-mid-infrared instrument and does not claim a direct equation-of-state or
+defined above. The $R\simeq5000$ bands are most valuable for accretion-disk
+profiles and should provide lower-resolution binned products for broad
+transients. The science claims require joint inference with gravitational-wave,
+high-energy, and radiative-transfer information. The program does not require
+a mid-infrared instrument and does not claim a direct equation-of-state or
 interior measurement from one spectrum.
 \end{xresultbox}
 
 \section{Summary}
 
 The adopted compact-object baseline is a $0.2$--$1.5\micron$ space-based
-slitless spectrograph with $R=5000$, supported by high-cadence imaging and
-robotic ToO operations. The point-source nature of compact objects preserves
-the native resolution for an isolated trace. Direct images, multiple
-orientations, and a scene model are still required to control overlap. The
-resulting spectra measure velocities, ionization, outflows, disk kinematics,
-transitions between states, and transient spectral evolution when the ETC establishes the
-required S/N.
+slitless spectrograph with $R\simeq1000$ as the broad-survey setting and
+selectable $R\simeq5000$ bands for precision line profiles. Calibrated
+throughput to $2.70\micron$ and an operational band-edge goal of
+$3.0\micron$ extend the common instrument study. The point-source nature of
+compact objects preserves the native resolution for an isolated trace. Direct
+images, multiple orientations, and a scene model are still required to control
+overlap. The resulting spectra measure velocities, ionization, outflows, disk
+kinematics, transitions between states, and transient spectral evolution when
+the ETC establishes the required S/N.
 
 The strongest transient case is rapid optical and near-infrared follow-up of
 mergers that contain at least one neutron star. Dwarf novae provide a
