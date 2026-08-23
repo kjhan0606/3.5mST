@@ -171,7 +171,7 @@ habitable worlds around the nearest F-, G-, and K-type stars. The program select
 approximately 20 nearby FGK stars whose habitable zones are fully or substantially 
 accessible outside the coronagraphic inner working angle, providing the most favorable 
 targets for the direct detection and characterization of Earth-like planets
-\cite{Kopparapu2013,Stark2014}. Repeated high-contrast observations will be used to 
+\cite{Kopparapu13,Stark2014}. Repeated high-contrast observations will be used to 
 search for planets, constrain their orbits, and identify candidates located within the 
 habitable zone. If a potentially habitable planet is discovered, it will become a 
 highest-priority target for reflected-light spectroscopy to characterize its atmosphere 
@@ -188,10 +188,10 @@ systems that can be compared directly with the only known example of a life-bear
 planet: the Earth--Sun system. F-, G-, and K-type main-sequence stars provide a natural
 starting point because they include solar-type stars and offer relatively stable stellar
 environments in which terrestrial planets may receive stellar irradiation comparable to
-that received by Earth \cite{Kopparapu2013}. Their habitable zones also lie at
+that received by Earth \cite{Kopparapu13}. Their habitable zones also lie at
 substantially larger orbital separations than those of lower-mass stars, making potentially
 habitable planets more favorable targets for spatially resolved direct imaging
-\cite{Kopparapu2013,Tuchow2024}. This does not imply that planets around M dwarfs
+\cite{Kopparapu13,Tuchow2024}. This does not imply that planets around M dwarfs
 are uninhabitable; rather, FGK systems provide Solar-System-like environments while
 avoiding some of the major uncertainties associated with the very close-in habitable
 zones of low-mass stars, including strong stellar activity and its effects on planetary
@@ -219,12 +219,12 @@ governed by both the physical extent of the habitable zone (HZ) and the angular
 separation accessible to the coronagraph. The location of the HZ depends primarily
 on stellar luminosity and spectral energy distribution and therefore varies
 systematically across the FGK main-sequence spectral sequence
-\cite{Kopparapu2013,Kopparapu2014}. Representative effective temperatures and
+\cite{Kopparapu13,kopparapu14}. Representative effective temperatures and
 luminosities for the individual spectral subtypes are adopted from empirical
-main-sequence stellar calibrations \cite{PecautMamajek2013}.
+main-sequence stellar calibrations \cite{pecaut13}.
 
 The HZ boundaries are calculated using the effective stellar-flux formulation
-developed for main-sequence stars \cite{Kopparapu2013,Kopparapu2014}. Defining
+developed for main-sequence stars \cite{Kopparapu13,kopparapu14}. Defining
 
 \begin{equation}
 T' = T_{\rm eff} - 5780~{\rm K},
@@ -251,14 +251,14 @@ around a solar-temperature star. The coefficients $a$, $b$, $c$, and $d$ are
 polynomial fitting coefficients derived from grids of one-dimensional
 radiative--convective climate-model calculations. Separate coefficient sets are
 provided for the Recent Venus, runaway-greenhouse, maximum-greenhouse, and
-Early Mars boundaries \cite{Kopparapu2013,Kopparapu2014}. These coefficients
+Early Mars boundaries \cite{Kopparapu13,kopparapu14}. These coefficients
 describe the temperature dependence of the calculated climate limits and should
 not be interpreted as separate physical processes.
 
 For the present target-selection analysis, a fiducial $1\,M_{\oplus}$ terrestrial
 planet is adopted. The mass-dependent runaway-greenhouse inner boundary is
 therefore evaluated using the $1\,M_{\oplus}$ coefficients given by
-Kopparapu et al.~\cite{Kopparapu2014}. The Recent Venus, maximum-greenhouse,
+Kopparapu et al.~\cite{kopparapu14}. The Recent Venus, maximum-greenhouse,
 and Early Mars limits use the corresponding coefficient sets given in the same
 work. This provides a uniform Earth-analog reference for constructing the target
 sample before the physical properties of any individual planet are known. Once
@@ -284,7 +284,7 @@ where $L_\star/L_\odot$ is the stellar luminosity relative to the Sun. The
 conservative HZ is defined from the runaway-greenhouse inner limit to the
 maximum-greenhouse outer limit, whereas the optimistic HZ extends from the
 empirical Recent Venus inner limit to the Early Mars outer limit
-\cite{Kopparapu2013,Kopparapu2014}. As illustrated in
+\cite{Kopparapu13,kopparapu14}. As illustrated in
 Figure~\ref{fig:HZ_range}, the HZ occurs at larger orbital radii around more
 luminous F-type stars and progressively moves inward toward later G- and K-type
 stars. The optimistic HZ is retained as a broader discovery region, while the
@@ -477,9 +477,9 @@ its habitable zone and higher planetary photon fluxes for subsequent characteriz
 Table~\ref{tab:fgk20} lists the resulting 20 stellar components and gives the angular extent of
 each conservative habitable zone in units of the coronagraphic inner working angle
 (IWA). The conservative HZ boundaries follow the climate calculations of
-Kopparapu et al. \cite{Kopparapu2013,Kopparapu2014}, while representative
+Kopparapu et al. \cite{kopparapu13,kopparapu14}, while representative
 main-sequence stellar parameters are based on the dwarf sequence of
-Pecaut \& Mamajek \cite{PecautMamajek2013}. Figure~\ref{fig:fgk20-observability} places the same targets
+Pecaut \& Mamajek \cite{pecaut13}. Figure~\ref{fig:fgk20-observability} places the same targets
 on the HZ observability map, showing directly how accessibility depends jointly
 on spectral type and distance.
 
@@ -490,7 +490,7 @@ according to HZ accessibility. Systems for which the entire conservative HZ lies
 outside the IWA receive the highest priority, followed by systems for which only
 a portion of the conservative HZ is accessible. The discovery space can further
 extend into the optimistic HZ, bounded by the Recent Venus and Early Mars limits,
-where geometrically accessible \cite{Kopparapu2013}.
+where geometrically accessible \cite{kopparapu13}.
 
 This tiered approach recognizes that HZ accessibility in direct imaging is not
 simply a binary property. In partially accessible systems, a planet may move outside
@@ -710,19 +710,18 @@ $10^{-9}$ level is a development goal for mature-giant imaging
 \subsection{The Challenge of Earth-like Planet Detection}
 \label{sec:earthlike_challenge}
 
-The high-contrast performance discussed in Section~B.3 poses a fundamental
+The high-contrast performance discussed in Section~\ref{sec:context} poses a fundamental
 challenge for terrestrial-planet science with the 3.5-meter Segmented-Mirror
 Robotic Space Telescope. An Earth--Sun analog observed in reflected light has
-a characteristic planet-to-star contrast of order $10^{-10}$, approximately
-one order of magnitude deeper than the $\sim10^{-9}$ post-processing
+a characteristic planet-to-star contrast of order $10^{-10}$\cite{trauger07,lawson13}, 
+approximately one order of magnitude deeper than the $\sim10^{-9}$ post-processing
 development goal considered for the 3.5mST coronagraph. At first sight, this
 appears to place Earth--Sun analogs beyond the practical reach of the mission.
 
-The nominal inner working angle (IWA) introduces an additional limitation.
-The IWA should not be interpreted as a sharp boundary beyond which the full
-limiting contrast is immediately achieved. Residual stellar light remains
-significant immediately outside the IWA, while both achievable contrast and
-coronagraphic throughput improve progressively with angular separation.
+The nominal inner working angle (IWA) should not be interpreted as
+a sharp boundary beyond which the full limiting contrast is immediately
+achieved; coronagraphic sensitivity depends jointly on residual stellar
+leakage, planet throughput, and angular separation \cite{nemati23}.
 Consequently, a habitable zone lying nominally outside the IWA is
 geometrically accessible, but this condition alone does not guarantee that an
 Earth-sized planet within that zone can be detected.
@@ -738,7 +737,7 @@ be considered simultaneously rather than independently.
 \subsection{Earth-like Planet Contrast around Cooler Stars}
 \label{sec:earthlike_contrast}
 
-The contrast limit discussed in Section~\ref{sec:earthlike_multi_epoch} does not apply equally to Earth-like planets around all main-sequence stars. In reflected light, the planet-to-star flux ratio can be written as
+The contrast limit discussed in Section~\ref{sec:earthlike_multi_epoch} does not apply equally to Earth-like planets around all main-sequence stars. In reflected light, the planet-to-star flux ratio can be written as \cite{traub10}
 
 \begin{equation}
 \frac{F_p}{F_\star}
@@ -751,7 +750,7 @@ A_g \Phi(\alpha)
 where $A_g$ is the geometric albedo, $\Phi(\alpha)$ is the phase function,
 $R_p$ is the planetary radius, and $a$ is the orbital separation. For a
 planet receiving the same bolometric irradiation as the Earth, the
-Earth-equivalent insolation distance (EEID) scales approximately as
+Earth-equivalent insolation distance (EEID) scales approximately as \cite{kopparapu13,kopparapu14}
 
 \begin{equation}
 a_{\rm EEID}
@@ -761,8 +760,8 @@ a_{\rm EEID}
 \end{equation}
 
 As the stellar luminosity decreases toward later spectral types, the EEID
-moves closer to the host star. For a planet with the same radius, albedo, and
-illumination phase, the smaller orbital separation increases the
+moves closer to the host star \cite{kopparapu13}. For a planet with the same radius, 
+albedo, and illumination phase, the smaller orbital separation increases the
 planet-to-star reflected-light contrast. Thus, while an Earth--Sun analog has
 a characteristic contrast of order $10^{-10}$, an Earth-like planet receiving
 comparable irradiation around a sufficiently cool K dwarf can approach the
@@ -876,11 +875,12 @@ substantial fraction of its orbital period. This effect is particularly
 important for 61~Cyg~A and $\epsilon$~Ind~A, whose Earth-equivalent
 insolation distances correspond to only approximately 1.1 and 1.4 times the
 nominal IWA, respectively. A non-detection in a single visit therefore
-provides only limited completeness for terrestrial planets in these systems.
+provides only limited completeness for terrestrial planets in these systems
+\cite{brown05}.
 
 This geometry makes repeated observations an essential part of the search
-strategy. For a circular orbit, the characteristic orbital period at the
-Earth-equivalent insolation distance can be estimated from
+strategy \cite{brown05,brown10}. For a circular orbit, the characteristic 
+orbital period at the Earth-equivalent insolation distance can be estimated from
 
 \begin{equation}
 P_{\rm EEID}
@@ -896,8 +896,9 @@ where $a_{\rm EEID}$ is expressed in AU and $M_\star$ in solar masses.
 Rather than repeating observations at arbitrary intervals, successive visits
 should be separated by a significant fraction of the expected orbital
 period so that substantially different orbital phases and projected
-separations are sampled. A cadence of order $P/6$--$P/4$ provides a useful
-starting point for such a search, although the optimum cadence must ultimately
+separations are sampled. 
+A cadence of order $P/6$--$P/4$ provides a useful starting point
+for the present study, although the optimum cadence must ultimately
 be evaluated through completeness simulations that include orbital
 inclination, eccentricity, phase-dependent brightness, and the
 separation-dependent coronagraphic response.
@@ -945,7 +946,7 @@ stellar leakage, local and exozodiacal backgrounds, detector noise, and
 the loss of coronagraphic throughput near the IWA. A reliable imaging
 exposure time for 61~Cyg~A and $\epsilon$~Ind~A must consequently be derived
 from an end-to-end, separation-dependent coronagraph model rather than from
-planet magnitude alone.
+planet magnitude alone \cite{nemati23,krist23}.
 
 For atmospheric characterization, the $R=5000$ photon-budget calculation
 developed in Section~B.6 provides a useful first estimate. Under the adopted
@@ -1997,7 +1998,7 @@ Phys. Rep., 663, 1.
 \bibitem{Sirbu2017} Sirbu, D., Thomas, S.~J., Belikov, R., \& Bendek, E. 2017, Techniques for High-Contrast Imaging in Multi-Star Systems II: Multi-Star Wavefront Control, ApJ, 849, 142.
 \bibitem{Thomas2015} Thomas, S.~J., Belikov, R., \& Bendek, E.~A. 2015, Techniques for High-Contrast Imaging in Multi-Star Systems I: Super-Nyquist Wavefront Control, ApJ, 810, 81.
 \bibitem{Holman1999} Holman, M.~J., \& Wiegert, P.~A. 1999, Long-Term Stability of Planets in Binary Systems, AJ, 117, 621.
-\bibitem{Kopparapu2013} Kopparapu, R.~K., Ramirez, R., Kasting, J.~F., Eymet, V., Robinson, T.~D., Mahadevan, S., Terrien, R.~C., Domagal-Goldman, S., Meadows, V., \& Deshpande, R. 2013, Habitable Zones Around Main-Sequence Stars: New Estimates, ApJ, 765, 131.
+\bibitem{kopparapu13} Kopparapu, R.~K., Ramirez, R., Kasting, J.~F., Eymet, V., Robinson, T.~D., Mahadevan, S., Terrien, R.~C., Domagal-Goldman, S., Meadows, V., \& Deshpande, R. 2013, Habitable Zones Around Main-Sequence Stars: New Estimates, ApJ, 765, 131.
 \bibitem{Stark2014}
 Stark, C.~C., Roberge, A., Mandell, A., \& Robinson, T.~D. 2014,
 Maximizing the ExoEarth Candidate Yield from a Future Direct Imaging Mission,
@@ -2014,8 +2015,8 @@ AJ, 167, 139.
 Stark, C.~C., Belikov, R., Bolcar, M.~R., et al. 2019,
 The ExoEarth Yield Landscape for Future Direct Imaging Space Telescopes,
 JATIS, 5, 024009.
-\bibitem{Kopparapu2014} Kopparapu, R.~K., Ramirez, R.~M., SchottelKotte, J., Kasting, J.~F., Domagal-Goldman, S., \& Eymet, V. 2014, Habitable Zones Around Main-Sequence Stars: Dependence on Planetary Mass, ApJL, 787, L29.
-\bibitem{PecautMamajek2013} Pecaut, M.~J., \& Mamajek, E.~E.
+\bibitem{kopparapu14} Kopparapu, R.~K., Ramirez, R.~M., SchottelKotte, J., Kasting, J.~F., Domagal-Goldman, S., \& Eymet, V. 2014, Habitable Zones Around Main-Sequence Stars: Dependence on Planetary Mass, ApJL, 787, L29.
+\bibitem{pecaut13} Pecaut, M.~J., \& Mamajek, E.~E.
 2013, Intrinsic Colors, Temperatures, and Bolometric Corrections of
 Pre-Main-Sequence Stars, ApJS, 208, 9.
 \bibitem{DanchiLopez2013}
@@ -2081,6 +2082,37 @@ Sci. Adv., 4, eaao5747.
 \bibitem{lagrange25} Lagrange A.-M., Wilkinson C., M\^{a}lin M., et al., Evidence for a sub-Jovian planet in the young TWA~7 disk, Nature 642:905 (2025), doi:10.1038/s41586-025-09150-4.
 \bibitem{gaudi21} Gaudi B.~S., Meyer M.~R., Christiansen J.~L. (eds.), \emph{ExoFrontiers: Big Questions in Exoplanetary Science}, IOP Publishing, Bristol (2021).
 
+%%%%%%%%%B.4
+\bibitem{trauger07}
+Trauger J.~T., Traub W.~A.,
+A laboratory demonstration of the capability to image an Earth-like extrasolar planet,
+Nature 446:771--773 (2007).
+\bibitem{lawson13}
+Lawson P.~R., Belikov R., Cash W., Clampin M., Glassman T.,
+Guyon O., Kasdin N.~J., Kern B.~D., Lyon R., Mawet D.,
+Moody D., Samuele R., Serabyn E., Sirbu D., Trauger J.,
+Survey of experimental results in high-contrast imaging for future exoplanet missions,
+Proc. SPIE 8864:88641F (2013).
+\bibitem{nemati23}
+Nemati B., Krist J.~E., Poberezhskiy I., Kern B.~D.,
+The Analytical Performance Model and Error Budget for the Roman Coronagraph Instrument,
+J. Astron. Telesc. Instrum. Syst. 9:034007 (2023).
+\bibitem{brown05}
+Brown R.~A.,
+Single-Visit Photometric and Obscurational Completeness,
+ApJ 624:1010--1024 (2005).
+\bibitem{brown10}
+Brown R.~A., Soummer R.,
+New Completeness Methods for Estimating Exoplanet Discoveries by Direct Detection,
+ApJ 715:122--131 (2010).
+\bibitem{krist23}
+Krist J.~E., Steeves J.~B., Dube B.~D., Riggs A.~J.~E.,
+Kern B.~D., Marx D.~S., Cady E.~J., Zhou H.,
+Poberezhskiy I.~Y., Baker C.~W., et al.,
+End-to-End Numerical Modeling of the Roman Space Telescope Coronagraph,
+J. Astron. Telesc. Instrum. Syst. 9:045002 (2023).
+
+
 %%%%%%%%%%%%B.5.1
 \bibitem{fernandes19} Fernandes R.~B., Mulders G.~D., Pascucci I., et al., Hints for a turnover at the snow line in the giant planet occurrence rate, ApJ 874:81 (2019).
 \bibitem{fulton21} Fulton B.~J., Rosenthal L.~J., Hirsch L.~A., et al., California Legacy Survey. II. Occurrence of giant planets beyond the ice line, ApJS 255:14 (2021).
@@ -2097,7 +2129,6 @@ Sci. Adv., 4, eaao5747.
 \bibitem{howe25} Howe A.~R., Becker J.~C., Stark C.~C., Adams F.~C., Architecture classification for extrasolar planetary systems, AJ 169:149 (2025).
 \bibitem{borucki10} Borucki W.~J., Koch D., Basri G., et al., Kepler planet-detection mission: introduction and first results, Science 327:977 (2010).
 \bibitem{seager13} Seager S., Exoplanet habitability, Science 340:577 (2013).
-\bibitem{kopparapu13} Kopparapu R.~K., Ramirez R., Kasting J.~F., et al., Habitable zones around main-sequence stars: new estimates, ApJ 765:131 (2013). Erratum, ApJ 770:82 (2013).
 \bibitem{hong23} Hong S.~E., Kwon R.~Y., Kim Y., Kang H., Kim M., Exoplanets and habitability, PKAS 38:13 (2023).
 \bibitem{claudi19} Claudi R., Alei E., Biosignatures search in habitable planets, Galaxies 7:82 (2019).
 \bibitem{airapetian17escape} Airapetian V.~S., Glocer A., Khazanov G.~V., et al., How hospitable are space weather affected habitable zones? The role of ion escape, ApJL 836:L3 (2017), doi:10.3847/2041-8213/836/1/L3.
