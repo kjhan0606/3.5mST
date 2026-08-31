@@ -669,6 +669,9 @@ photon-limited sensitivity estimate from being interpreted as a demonstrated
 recovery rate or survey completeness.
 
 \begin{longtable}{@{}P{30mm}P{36mm}P{46mm}P{46mm}@{}}
+\caption{Product, observable, baseline status, and acceptance test for
+each characterization step in the coordinated recovery program.}
+\label{tab:c3-acceptance-tests}\\
 \toprule
 \color{cGold}\textbf{Product} &
 \color{cGold}\textbf{Observable} &
@@ -1099,6 +1102,12 @@ replace individual planets and satellites where the loaded ephemeris provides
 only their combined state.
 
 \noindent
+\begin{table}
+\captionsetup{justification=raggedright, singlelinecheck=false}
+\caption{Bodies included in the CODES gravity model, grouped by
+category.}
+\label{tab:c6-gravity-bodies}
+\centering
 \begin{tabularx}{\textwidth}{@{}P{43mm}Y@{}}
 \toprule
 \color{cGold}\textbf{Group} & \color{cGold}\textbf{Bodies}\\
@@ -1112,6 +1121,7 @@ Ceres, Vesta, Pallas, Hygiea, Davida, Interamnia, Europa, Sylvia, Eunomia,
 Juno, Psyche, Camilla, Thisbe, Iris, Euphrosyne, and Cybele\\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 SB441-N16 is not defined by a universal mass threshold. The designation
 denotes the JPL set of the 16 most massive main-belt perturbers. Cybele is the
@@ -1124,6 +1134,11 @@ The SB441 memo also provides a 373-body ephemeris for specialized studies
 
 \subsection{Implemented and deferred force terms}
 
+\begin{table}
+\caption{Force terms implemented in the CODES integrator, and the
+physical regime in which each term is enabled or deferred.}
+\label{tab:c7-force-terms}
+\centering
 \begin{tabular}{@{}M{43mm}C{37mm}M{85mm}@{}}
 \toprule
 \color{cGold}\textbf{Term} &
@@ -1180,6 +1195,7 @@ Lorentz force and radiation shadowing &
 Required only for charged grains and eclipse geometries\\
 \bottomrule
 \end{tabular}
+\end{table}
 
 The status refers to the CODES integrator. An authoritative Horizons SPK may
 contain additional registered force terms in the JPL orbit solution. An
@@ -1507,6 +1523,11 @@ application.}
 \label{fig:codes-gui}
 \end{figure}
 
+\begin{table}
+\caption{Operational summary of the NEO/comet dynamics GUI tabs, the
+action each tab performs, and the resulting scientific data product.}
+\label{tab:c6-gui-operations}
+\centering
 \begin{tabular}{@{}P{32mm}P{58mm}P{64mm}@{}}
 \toprule
 \color{cGold}\textbf{GUI tab} &
@@ -1547,6 +1568,7 @@ Traceable CSV and JSON results, diagnostic figures, and direct residuals
 against NASA/JPL or observation-constrained historical solutions\\
 \bottomrule
 \end{tabular}
+\end{table}
 
 The GUI does not convert a sensitivity integration into an operational hazard
 solution. Impact probability still requires a fitted covariance and virtual
@@ -1614,6 +1636,12 @@ from measurements that require a wavelength extension or a ground-based
 partner. The comparison also identifies the dominant limitation of each
 configuration.
 
+\begin{table}
+\caption{Scientific strength and principal limitation of each NEO
+characterization configuration, from the 0.2--1.5\,$\mu$m baseline
+through ground-based MIR and external-survey coordination.}
+\label{tab:c11-decision-matrix}
+\centering
 \begin{tabularx}{\textwidth}{@{}P{35mm}P{47mm}Y@{}}
 \toprule
 \color{cGold}\textbf{Configuration} &
@@ -1638,6 +1666,7 @@ Rubin, radar, ground-based astrometry, and the MPC &
 Discovery selection function is inherited from external facilities\\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \section{Recommended Proposal Position}
 

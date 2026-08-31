@@ -1,0 +1,227 @@
+% author_page.tex
+% Roman/WFIRST-AFTA-inspired title / author / approval page
+% for the 3.5-meter Segmented-Mirror Robotic Space Telescope Mission White Paper.
+%
+% Usage in whitepaper_book.tex:
+%   \input{whitepaper_front.tex}
+%   \input{covers.tex}
+%   \input{author_page.tex}
+%   ...
+%   \begin{document}
+%   \frontmatter
+%   \MakeFrontCover
+%   \MakeAuthorPage
+%
+% Author affiliations are encoded with Roman/WFIRST-style superscript numbers.
+% Affiliation mapping:
+%   1 KASI, 2 KIAS, 3 STScI, 4 PNU, 5 KNUE, 6 SNU.
+
+% -----------------------------------------------------------------------------
+% Page-specific data
+% -----------------------------------------------------------------------------
+\newcommand{\WPReportYear}{2026}
+%\newcommand{\WPReportStatus}{Draft for internal review --- not for public distribution}
+
+% Roman/WFIRST-style team label.
+\newcommand{\WPTeamLabel}{Mission Study Team}
+
+% Author list taken from the current whitepaper_front.tex / cover material.
+% Keep this separate from \wpauthors so that the cover and the formal author
+% page can be edited independently if desired.
+\newcommand{\WPAuthorList}{%
+Yong-Woo Kang$^{1}$, Sang Hyun Lee$^{1,2}$, Juhan Kim$^{3}$,
+Jeong-Yeol Han$^{1,4}$, Sungwook E. Hong$^{1,4}$, Bongkon Moon$^{1,4}$,
+Donguk Song$^{1}$, Juhyung Kang$^{1}$, Myeong-Gu Park$^{5}$, 
+Sang Chul Kim$^{1,4}$, 
+Chung-Uk Lee$^{1}$, Sangmo Tony Sohn$^{6}$, 
+Arman Shafieloo$^{1,4}$, David Parkinson$^{1,4}$,
+Hong Soo Park$^{1,4}$, Dohyeong Kim$^{7}$, Chan Park$^{1}$,
+Jungjoo Sohn$^{8}$, Young-Beom Jeon$^{1}$,
+Jong-Hak Woo$^{9}$, Hyung Mok Lee$^{9}$, 
+Hong Bae Ann$^{7}$, Myungkook James Jee$^{10}$, Mansoo Choi$^{1}$,
+Changbom Park$^{3}$
+%
+}
+
+% Participating institutions, numbered to match the author superscripts.
+\newcommand{\WPInstitutionList}{%
+$^{1}$ Korea Astronomy and Space Science Institute, \
+$^{2}$ University of Ulsan \\
+$^{3}$ Korea Institute for Advanced Study, \
+$^{4}$ University of Science and Technology\\
+$^{5}$ Kyungpook National University, \
+$^{6}$ Space Telescope Science Institute, \
+$^{7}$ Pusan National University \\
+$^{8}$ Korea National University of Education, \
+$^{9}$ Seoul National University, \
+$^{10}$ Yonsei University
+%
+}
+
+% Four Co-Chairs
+\newcommand{\WPCoChairNameA}{Yong-Woo Kang}
+\newcommand{\WPCoChairRoleA}{Co-Chair}
+
+\newcommand{\WPCoChairNameB}{Sang Hyun Lee}
+\newcommand{\WPCoChairRoleB}{Co-Chair / Corresponding Author}
+\newcommand{\WPCorrespondingEmail}{\mbox{}}
+
+\newcommand{\WPCoChairNameC}{Juhan Kim}
+\newcommand{\WPCoChairRoleC}{Co-Chair}
+
+\newcommand{\WPCoChairNameD}{Jeong-Yeol Han}
+\newcommand{\WPCoChairRoleD}{Co-Chair}
+
+\newcommand{\WPCoChairNameE}{Sungwook E. Hong}
+\newcommand{\WPCoChairRoleE}{Co-Chair}
+
+\newcommand{\WPCoChairNameF}{Bongkon Moon}
+\newcommand{\WPCoChairRoleF}{Co-Chair}
+
+\newcommand{\WPApprovalDate}{10/08/20}
+
+\newcommand{\WPSignatureFileA}{signature_ywkang.png}
+\newcommand{\WPSignatureFileB}{signature_shlee.png}
+\newcommand{\WPSignatureFileC}{signature_juhankim.png}
+\newcommand{\WPSignatureFileD}{signature_jyhan.png}
+\newcommand{\WPSignatureFileE}{signature_sehong.png}
+\newcommand{\WPSignatureFileF}{signature_bmoon.png}
+% Print signature image if the file exists.
+% If the image file does not exist, reserve the same vertical space.
+\newcommand{\WPPrintSignature}[1]{%
+  \IfFileExists{#1}{%
+    \includegraphics[height=10mm,keepaspectratio]{#1}%
+  }{%
+    \rule{0pt}{10mm}%
+  }%
+}
+
+% -----------------------------------------------------------------------------
+% Roman/WFIRST-AFTA-inspired author and approval page
+% -----------------------------------------------------------------------------
+\newcommand{\MakeAuthorPage}{%
+  \clearpage
+  \thispagestyle{empty}
+  \begingroup
+  \sffamily
+
+  % --- report title ----------------------------------------------------------
+  \begin{center}
+    \vspace*{5mm}
+
+    {\color{ink}\bfseries\fontsize{18}{22}\selectfont
+      3.5-meter Segmented-Mirror\\[-0.5mm]
+      Robotic Space Telescope\par}
+
+    \vspace{3mm}
+
+    {\color{ink}\fontsize{13}{16}\selectfont
+      Mission White Paper:\\[-0.5mm]
+      I. Overall Architecture and Scientific Mission\par}
+
+    \vspace{6mm}
+    {\color{Blue3}\bfseries\large \WPReportYear\ Report\par}
+
+    \vspace{4mm}
+
+    {\color{ink}\bfseries\normalsize \WPTeamLabel\par}
+
+    \vspace{2mm}
+
+    \begin{minipage}{0.92\textwidth}
+      \centering
+      \color{ink}\small
+      \setlength{\baselineskip}{1.25em}
+      \WPAuthorList
+    \end{minipage}
+  \end{center}
+
+  \vspace{2mm}
+
+% --- approval / signature area --------------------------------------------
+
+% First row
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+  \centering
+  %\vspace{1mm}
+  \WPPrintSignature{\WPSignatureFileA}\\[-1mm] %%%%%%%%%%%%
+  \rule{0.88\linewidth}{0.45pt}\\[-0.2mm]
+  {\small \WPCoChairNameA}\\[1mm]
+  {\footnotesize\bfseries \WPCoChairRoleA}\\[3mm]
+  %{\footnotesize Date: \WPApprovalDate}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+  \centering
+  %\vspace{1mm}
+  \WPPrintSignature{\WPSignatureFileB}\\[-1mm] %%%%%%%%%%%%%
+  \rule{0.88\linewidth}{0.45pt}\\[-0.2mm]
+  {\small \WPCoChairNameB}\\[1mm]
+  {\footnotesize\bfseries \WPCoChairRoleB}\\[1mm]
+  {\footnotesize \WPCorrespondingEmail}\\[2mm]
+  %{\footnotesize Date: \WPApprovalDate}
+\end{minipage}
+
+\vspace{1mm}
+
+% Second row
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+  \centering
+  \WPPrintSignature{\WPSignatureFileC}\\[-1mm] %%%%%%%%%%%%
+  \rule{0.88\linewidth}{0.45pt}\\[-0.2mm]
+  {\small \WPCoChairNameC}\\[1mm]
+  {\footnotesize\bfseries \WPCoChairRoleC}\\[3mm]
+ % {\footnotesize Date: \WPApprovalDate}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+  \centering
+  \WPPrintSignature{\WPSignatureFileD}\\[-1mm] %%%%%%%%%%%%
+  \rule{0.88\linewidth}{0.45pt}\\[-0.2mm]
+  {\small \WPCoChairNameD}\\[1mm]
+  {\footnotesize\bfseries \WPCoChairRoleD}\\[3mm]
+  %{\footnotesize Date: \WPApprovalDate}
+\end{minipage}
+
+\vspace{1mm}
+
+% 3rd row
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+  \centering
+  \WPPrintSignature{\WPSignatureFileE}\\[-1mm] %%%%%%%%%%%%
+  \rule{0.88\linewidth}{0.45pt}\\[-0.2mm]
+  {\small \WPCoChairNameE}\\[1mm]
+  {\footnotesize\bfseries \WPCoChairRoleE}\\[3mm]
+ % {\footnotesize Date: \WPApprovalDate}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+  \centering
+  \WPPrintSignature{\WPSignatureFileF}\\[-1mm] %%%%%%%%%%%%
+  \rule{0.88\linewidth}{0.45pt}\\[-0.2mm]
+  {\small \WPCoChairNameF}\\[1mm]
+  {\footnotesize\bfseries \WPCoChairRoleF}\\[3mm]
+  %{\footnotesize Date: \WPApprovalDate}
+\end{minipage}
+
+  \vfill
+
+  % --- participating institutions -------------------------------------------
+  \begin{center}
+% {\color{ink}\bfseries\small Participating Institutions\par}
+    \vspace{2.5mm}
+    {\color{muted}\footnotesize
+      \setlength{\baselineskip}{1.22em}
+      \WPInstitutionList\par}
+
+    \vspace{5mm}
+%    {\color{rose}\bfseries\footnotesize \WPReportStatus\par}
+  \end{center}
+
+  \vspace*{4mm}
+  \endgroup
+  \clearpage
+}
