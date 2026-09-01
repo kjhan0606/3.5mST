@@ -113,12 +113,17 @@
 \frontmatter
 \MakeFrontCover
 \MakeColophon
+\thispagestyle{fancy}
+\vspace*{0.5em}
+\noindent{\Large\bfseries Abstract}\par\smallskip
+\noindent\wpabstract\par\medskip
+\noindent\wpkeywords
+\clearpage
 \tableofcontents
 
 \mainmatter
-\appendix
-\renewcommand{\chaptername}{Key Science}
-\renewcommand{\appendixname}{Key Science}
+\renewcommand{\chaptername}{Volume}
+\renewcommand{\thechapter}{\Roman{chapter}}
 \setcounter{chapter}{\wpchapteroffset}
 \MakeVolumeBody
 
