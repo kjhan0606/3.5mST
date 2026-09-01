@@ -1,10 +1,16 @@
 % Stand-alone 3.5-meter Segmented-Mirror Robotic Space Telescope white-paper volume.
 % Build with pdflatex (three passes are recommended for stable references and TOC).
 \documentclass[oneside,a4paper,11pt,explicit]{book}
+\newcommand{\volumeroot}{}
+\IfFileExists{volume_II.tex}{}{%
+  \renewcommand{\volumeroot}{II. Key Scientific Mission: Wide-Field Cosmology and Galaxy Evolution/}}
+\makeatletter
+\edef\input@path{{\volumeroot}}
+\makeatother
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
-\usepackage{kultem}
+\usepackage{\volumeroot kultem}
 
 \setlength{\parindent}{1.5em}
 \setlength{\parskip}{5pt}
@@ -17,6 +23,7 @@
 \usepackage{longtable}
 \usepackage{lscape}
 \usepackage{graphicx}
+\graphicspath{{\volumeroot}}
 \usepackage[dvipsnames,svgnames,table]{xcolor}
 \usepackage[most]{tcolorbox}
 \usepackage{float}
@@ -91,8 +98,8 @@
 \setcounter{topnumber}{3}
 \setcounter{totalnumber}{5}
 
-\input{whitepaper_front.tex}
-\input{covers.tex}
+\input{\volumeroot whitepaper_front.tex}
+\input{\volumeroot covers.tex}
 
 \hypersetup{
   colorlinks=true,
