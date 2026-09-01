@@ -2,8 +2,8 @@
 % Build with pdflatex (three passes are recommended for stable references and TOC).
 \documentclass[oneside,a4paper,11pt,explicit]{book}
 \newcommand{\volumeroot}{}
-\IfFileExists{volume_IV.tex}{}{%
-  \renewcommand{\volumeroot}{IV. Key Scientific Mission: Solar-System Small Bodies and Planetary Defense/}}
+\IfFileExists{IV. Key Scientific Mission: Solar-System Small Bodies and Planetary Defense/whitepaper_front.tex}{%
+  \renewcommand{\volumeroot}{IV. Key Scientific Mission: Solar-System Small Bodies and Planetary Defense/}}{}
 \makeatletter
 \edef\input@path{{\volumeroot}}
 \makeatother

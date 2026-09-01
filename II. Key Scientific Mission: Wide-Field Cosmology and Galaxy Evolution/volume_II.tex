@@ -2,8 +2,8 @@
 % Build with pdflatex (three passes are recommended for stable references and TOC).
 \documentclass[oneside,a4paper,11pt,explicit]{book}
 \newcommand{\volumeroot}{}
-\IfFileExists{volume_II.tex}{}{%
-  \renewcommand{\volumeroot}{II. Key Scientific Mission: Wide-Field Cosmology and Galaxy Evolution/}}
+\IfFileExists{II. Key Scientific Mission: Wide-Field Cosmology and Galaxy Evolution/whitepaper_front.tex}{%
+  \renewcommand{\volumeroot}{II. Key Scientific Mission: Wide-Field Cosmology and Galaxy Evolution/}}{}
 \makeatletter
 \edef\input@path{{\volumeroot}}
 \makeatother
