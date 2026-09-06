@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "usage": "toplevel",
+      "filename": "arxiv_volume_V.tex"
+    }
+  ],
+  "spec_version": 1,
+  "texlive_version": "2025",
+  "process": {
+    "compiler": "pdflatex"
+  }
+}
