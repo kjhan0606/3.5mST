@@ -49,7 +49,9 @@ The primary exploration sample is therefore defined as the 20 nearest stellar co
 balance between exploration and scientific depth: it is sufficiently small to permit repeated and comprehensive observations throughout the mission, while sufficiently diverse to include single stars, binaries, hierarchical multiple systems, and a broad range of stellar types. Rather than defining a physical boundary, the nearest 20 stars establish a mission-scale benchmark for systematic exploration of the Solar neighborhood.
 
 The nearest stellar sample provides an observational benchmark that extends well beyond the discovery of individual exoplanets. Its proximity enables sensitive searches for long-period giant planets, circumstellar debris structures, and faint companions that remain inaccessible around more distant stars \cite{Bowler2016}. 
-When combined with radial velocity, astrometric, and transit observations, direct imaging can establish comprehensive architectures of nearby planetary systems, including orbital geometry and dynamical evolution \cite{LUVOIR2019}. 
+Published radial-velocity, astrometric, and transit measurements complement
+direct imaging by constraining the orbital architecture of nearby planetary
+systems \cite{LUVOIR2019}.
 Equally important, the absence of detectable planets around individual stars provides quantitative constraints on planetary occurrence rates and formation scenarios 
 \cite{Bowler2016}. 
 The resulting dataset will therefore serve as the definitive observational reference for the nearest planetary systems and as a calibration sample for larger statistical surveys extending to greater distances \cite{LUVOIR2019}.
@@ -1482,8 +1484,8 @@ molecular band. One resolution element spans about
 the planet spectrum from the stellar spectrum at this resolution. A
 Doppler-separation gain would require a dedicated high-resolution mode
 near $R=100{,}000$ \cite{snellen15} and is not included here.
-Reflected-light measurements complement transit spectroscopy, which probes
-the upper atmosphere along the terminator, because reflected light
+Reflected-light measurements complement published transmission spectra,
+which probe the upper atmosphere along the terminator, because reflected light
 probes the dayside at depth \cite{robinson18}. The two geometries
 together give a far more complete picture than either alone.
 
@@ -1658,31 +1660,29 @@ the radius versus orbital-period plane. The shaded band marks the
 radius valley at 1.7--2.0\,$R_\oplus$ identified by the
 California-Kepler Survey \cite{fulton17}. Occurrence-rate work built
 on such samples underlies current estimates of $\eta_\oplus$
-\cite{bryson21}.}
+\cite{bryson21}. The published population provides a comparison sample for
+the coronagraphic survey and does not represent a forecast of 3.5ST transit
+detections.}
 \label{fig:radiusvalley}
 \end{figure}
 
-The \facility\ contributes to demographics through two channels.
+The \facility\ measures the population of giant planets at separations
+accessible to its coronagraph \cite{gaudi21,zurlo24}. Published Kepler
+results and catalogued TESS discoveries provide comparison samples for
+the inner planetary systems \cite{borucki10,bryson21,nea}. The transit
+population in Figure~\ref{fig:radiusvalley} supplies observational context
+for the direct-imaging program. The observing plan in this volume assigns
+no independent transit search or transmission-spectroscopy campaign.
 
-\begin{itemize}
-\item \textbf{Transit photometry with the wide-field imager.} The
-baseline imaging instrument is designed for high-precision, high-cadence
-photometry, and exoplanet transits are among its primary science
-objectives. Space-based monitoring free of the day-night cycle
-delivers the long uninterrupted time series that ground surveys do not,
-and it extends occurrence statistics to longer periods and smaller
-radii. Careful treatment of completeness and reliability, following
-the methods developed for Kepler \cite{bryson21}, converts these
-detections into population measurements.
-\item \textbf{Direct imaging of the cold outer population.} Transits
-and radial velocities are strongly biased toward close-in planets.
-Coronagraphic imaging measures the occurrence of giants at
-solar-system-like separations, which is the region where core-accretion
-models make their strongest predictions \cite{gaudi21,zurlo24}. Adding
-this population completes the demographic map and ties the
-architecture classes of multi-planet systems \cite{howe25} to the
-presence or absence of outer giants.
-\end{itemize}
+The comparison must include the selection function of each survey.
+Transit samples depend on orbital alignment, observing duration, and
+photometric completeness. The coronagraphic sample depends on angular
+separation, planet-to-star contrast, and orbital phase. Occurrence rates
+can be compared only after these detection probabilities and the host-star
+distributions have been included in the analysis. Published transit and
+radial-velocity measurements of the same systems can then test whether
+inner planets preferentially coexist with outer giants
+\cite{bryson21,howe25}.
 
 \section{Habitability and Biosignatures}
 \label{sec:habitability}
@@ -1716,10 +1716,11 @@ Observationally the program rests on atmospheric spectroscopy. Gases
 such as O$_2$, O$_3$, CH$_4$, CO$_2$, and H$_2$O are the canonical
 biosignature candidates, and the simultaneous presence of oxygen and
 methane is especially significant because the pair is hard to maintain
-abiotically \cite{schwieterman18,claudi19}. Transit spectroscopy
-samples these gases along the terminator during transits, a technique
-already demonstrated on giant planets by JWST. Reflected-light
-spectroscopy through the coronagraph samples the dayside and adds
+abiotically \cite{schwieterman18,claudi19}. Published transmission spectra
+provide comparative constraints on
+atmospheric absorption along the terminator. The 3.5ST program measures
+reflected-light spectra through the coronagraph. These spectra sample the
+illuminated hemisphere and add
 sensitivity to surface pressure, clouds, and even ultraviolet-band
 biosignatures \cite{damiano23}. Interpretation should confront
 false positives and false negatives, because abiotic photochemistry can
@@ -1834,15 +1835,16 @@ mode.
 \section{Program Integration and Roadmap}
 \label{sec:roadmap}
 
-The programs above share targets, instruments, and calibration
-infrastructure, and direct imaging gains most when combined with the
-complementary techniques. Radial-velocity masses turn imaged
-brightnesses into densities. Transit measurements of the same stars
-anchor radius distributions. Astrometric accelerations from Gaia
-preselect the stars that host wide giants. The imaging visits and external
-monitoring data supply the stellar-activity reference required by
-Section~\ref{sec:activity}. No dedicated time-domain survey is assigned to
-this calibration task.
+The coronagraphic programs share targets, instruments, and calibration
+observations. Published radial velocities and Gaia astrometry provide
+orbital constraints for target selection and companion confirmation.
+External transit measurements provide radii for transiting planets in
+the same systems. A bulk density requires both the mass and radius of
+the same planet. Reflected-light brightness alone leaves a degeneracy
+between radius and albedo. The imaging visits and external monitoring
+data supply the stellar-activity reference required by
+Section~\ref{sec:activity}. The program uses the published transit
+measurements as complementary data.
 
 The roadmap separates demonstrated capability from development goals.
 The baseline program uses $10^{-8}$-class performance for young
