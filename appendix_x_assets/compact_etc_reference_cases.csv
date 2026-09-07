@@ -1,0 +1,8 @@
+object,state_or_phase,channel,metric,target,diagnostic_interval,exposure_s,achieved,feasible,effective_R,source
+U Gem,2012 December outburst peak,compact-red,Halpha line_snr,20.0,+/-1200 km/s,11.467777154273655,19.999998843733987,True,1800.0,LAMOST DR11 obsid 89907231
+AT2017gfo,+1.43 d,optical,integrated_snr,20.0,7425--7575 A,5.712273364422691,20.003085184700797,True,1000.0,ENGRAVE X-shooter v1.0
+AT2017gfo,+1.43 d,NIR,integrated_snr,20.0,12375--12625 A,8.864923814740369,20.004342941506554,True,1000.0,ENGRAVE X-shooter v1.0
+AT2017gfo,+4.40 d,optical,integrated_snr,20.0,7425--7575 A,47.71180176719279,19.997679827872123,True,1000.0,ENGRAVE X-shooter v1.0
+AT2017gfo,+4.40 d,NIR,integrated_snr,20.0,12375--12625 A,14.478702965776673,20.002061317398372,True,1000.0,ENGRAVE X-shooter v1.0
+AT2017gfo,+7.40 d,optical,integrated_snr,20.0,7425--7575 A,241.5244966816287,19.999992618499174,True,1000.0,ENGRAVE X-shooter v1.0
+AT2017gfo,+7.40 d,NIR,integrated_snr,20.0,12375--12625 A,44.9618573859549,20.001506158356758,True,1000.0,ENGRAVE X-shooter v1.0

@@ -1,0 +1,19 @@
+% Book bridge for Appendix X.  The source remains independently compilable.
+\def\APPENDIXXBOOK{1}
+%\graphicspath{{appendix_x_assets/}}
+\providecommand{\Rpoint}{R_{\rm point}}
+\providecommand{\micron}{\,\mu\mathrm{m}}
+\renewcommand{\kms}{\mathrm{km\,s^{-1}}}
+\newtcolorbox{xresultbox}[1]{
+  enhanced,
+  colback=white,
+  colframe=#1,
+  coltext=ink,
+  boxrule=0.75pt,
+  arc=1.5mm,
+  left=2mm,right=2mm,top=1.6mm,bottom=1.6mm
+}
+\chapter{Compact-Object Time-Domain Science}
+\label{app:compact-objects}
+\input{appendix_x.tex}
+\let\APPENDIXXBOOK\undefined

@@ -1,0 +1,7 @@
+% Overleaf subfolder entry file for Volume I.
+% In Overleaf, set this file as the Main document and compile with pdfLaTeX.
+\ifdefined\ARXIVBUILD
+  % The root arXiv entry has already loaded the complete document.
+\else
+  \csname input\endcsname{arxiv_volume_I.tex}
+\fi
