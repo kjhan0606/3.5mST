@@ -6,12 +6,26 @@
 \section{Exploring the Nearest Stellar Systems}
 \label{sec:Nearest_system}
 
-Throughout the history of exploration, humanity has advanced step by step, beginning
-with the nearest accessible destinations before expanding toward more distant frontiers. This principle remains equally relevant to astronomical exploration beyond the Solar System. Rather than selecting targets solely according to known planetary systems or observational convenience, this mission adopts a distance-prioritized strategy in which the nearest stellar systems are explored first \cite{Henry2018,Gaia2022}. 
-Within the limited observing lifetime of the mission, the primary exploration program is therefore focused on the 20 nearest stellar components, belonging to 13 stellar systems, providing a complete and repeatedly observed benchmark sample of the Solar neighborhood. Beyond their exceptional scientific value for direct imaging of exoplanets, these nearby stellar systems are also likely to remain the highest-priority destinations for future exploration beyond the Solar System \cite{Lubin2016}. Establishing a
-comprehensive observational legacy for these neighboring stars therefore represents
-both an immediate scientific objective and a long-term investment in humanity's future
-exploration of interstellar space.
+Recent space-observatory concepts have established the value of combining
+high-contrast imaging, time-domain monitoring, and optical or near-infrared
+spectroscopy \cite{roy2026III,wevers2026III}. This volume defines a more specific
+3.5-metre program. It ranks targets by distance, applies one uniform
+selection rule to the nearest stellar components, and uses repeated
+coronagraphic observations to measure separation, orbital motion, and
+spectral properties. The nearest 20 components in 13 systems therefore form
+a controlled reference sample rather than a list assembled from previously
+known planets or from expected discovery probability \cite{Henry2018,Gaia2022}.
+
+The distance ranking follows a direct geometric argument. At a fixed orbital
+radius, a nearby planet has a larger angular separation and a higher photon
+rate. The same targets also permit repeated measurements of common proper
+motion, orbital curvature, stellar variability, and the stability of the
+coronagraphic subtraction \cite{Traub2010,Macintosh2015}. The program thus
+tests planetary occurrence and system architecture while preserving the
+observational completeness needed to interpret non-detections. This emphasis
+on a defined nearby-star sample and on mission-specific observing cadence
+defines the observing strategy through a nearby-star sample, repeated
+coronagraphic visits, and reflected-light spectroscopy.
 
 \subsection{Scientific Rationale for Exploring the Nearest Stars}
 \label{sec:Rationale_Nearest}
@@ -1725,45 +1739,30 @@ reach Earth analogs \cite{hwo26}. Experience with
 segmented-aperture wavefront control on this mission feeds directly into
 that technology path.
 
-\section{Stellar Magnetic Activity and Planetary Environments}
+\section{Stellar Activity as a Calibration Requirement}
 \label{sec:activity}
 
-Stellar magnetic activity shapes planetary habitability. Flares,
-coronal mass ejections, and X-ray and extreme-ultraviolet radiation
-heat planetary upper atmospheres and drive atmospheric escape
-\cite{airapetian17escape}. The effect is most severe for planets in the habitable
-zones of M dwarfs, because those zones lie very close to the star.
-Three-dimensional simulations show that repeated flaring restructures
-the atmospheric chemistry of tidally locked terrestrial planets and can
-erode protective ozone \cite{ridgway23,chen21}. Activity is not purely
-destructive. Energetic particles from an active young Sun can drive
-nitrogen fixation, greenhouse warming, and the synthesis of amino
-acids in weakly reducing atmospheres \cite{airapetian16,kobayashi23}.
-The same stellar forcing that strips one atmosphere may seed prebiotic
-chemistry in another.
+Stellar activity is retained as a supporting calibration measurement rather
+than as an independent time-domain science program. Flares, coronal mass
+ejections, and high-energy radiation can modify an atmosphere and can also
+introduce variability into reflected-light spectra
+\cite{airapetian17escape,chen21}. The activity state of the host star must
+therefore enter the interpretation of atmospheric features and the assessment
+of biosignature false positives.
 
-These considerations motivate a dynamic view of the habitable zone in
-which stellar irradiance is only one axis and the high-energy radiation
-history is another. The young Sun is the nearest laboratory for this
-history. Coronal-mass-ejection signatures were recently identified on
-the young solar analog EK~Draconis together with a Carrington-class
-flare \cite{namekata26}. The observation demonstrates energetic,
-structured outflows but does not determine the full eruption
-distribution of the early Sun.
-Stellar rotation and magnetic activity decline together over gigayears,
-a coupled evolution that angular-momentum models trace across stellar
-mass \cite{gallet17}. A habitability claim for any planet is therefore
-incomplete without a measurement of its star's activity.
+The 3.5ST measures the required activity indicators during observations of
+the coronagraphic target sample. Long-baseline imaging provides a reference
+level for rotational modulation and flare occurrence. Selected $R=5000$
+spectra measure chromospheric line variability when the activity state could
+affect a planet-spectrum interpretation. These data constrain the stellar
+contamination model and establish whether a putative molecular feature is
+stable across epochs. They do not define a separate flare-monitoring survey,
+and no standalone time-domain yield is assigned in the five-year allocation.
 
-The mission supplies that measurement through its time-domain design.
-Long, uninterrupted photometric monitoring of the coronagraphic target
-stars measures their flare-frequency distributions and rotation periods.
-Simultaneous $R=5000$ spectroscopy of flare events resolves the
-chromospheric line profiles, and coronal-mass-ejection candidates appear
-as Doppler-shifted transients of the kind reported on EK~Draconis
-\cite{namekata26}. The result is an activity record for every star in
-the imaging survey. The radiation environment of a detected planet is
-then observed rather than assumed \cite{chen21,hong23}.
+This restriction keeps the scientific scope focused on direct imaging and
+reflected-light spectroscopy. It also preserves the physical role of stellar
+activity in the habitability analysis without presenting the 3.5ST as a
+general transient or multi-messenger observatory.
 
 \section{Relation to the International Landscape}
 \label{sec:landscape}
@@ -1776,23 +1775,48 @@ to the characterization of temperate terrestrial planets. The roads
 to that destination differ by method, and each
 method suits a different planet population.
 
-The United States has committed its flagship to a single large
-reflected-light coronagraph. The Habitable Worlds Observatory, the
-roughly 6\,m descendant of the LUVOIR and HabEx studies, is sized to
-image and characterize of order 25 Earth analogs around Sun-like stars at
-$10^{-10}$ contrast \cite{astro2020,hwo26}. The Roman Space Telescope
-Coronagraph Instrument is its 2.4\,m technology pathfinder, built to
-demonstrate $10^{-8}$ contrast and to reach a few $\times10^{-9}$
-\cite{bailey23,llopsayson25}. Europe has instead spread its effort across a portfolio.
-Ariel will survey the atmospheres of about one thousand transiting
-planets in the infrared \cite{tinetti18}, PLATO will find and weigh
-terrestrial planets in the habitable zones of bright stars by transit
-\cite{rauer14}, and the LIFE concept would characterize temperate
-terrestrial planets in mid-infrared thermal emission by nulling
-interferometry, where the contrast is a more forgiving $10^{-7}$
-\cite{quanz22}. The ground-based Extremely Large Telescope adds
-high-resolution and high-contrast spectroscopy of the very nearest
-systems.
+The United States has committed its flagship to a large reflected-light
+coronagraph. The Habitable Worlds Observatory, the roughly 6\,m descendant
+of the LUVOIR and HabEx studies, is designed to image and characterize
+Earth analogs around Sun-like stars at the $10^{-10}$ contrast level
+\cite{astro2020,hwo26}. The Roman Space Telescope Coronagraph Instrument is
+a 2.4\,m technology pathfinder that demonstrates the $10^{-8}$ contrast
+regime and seeks a post-processed level of a few $\times10^{-9}$
+\cite{bailey23,llopsayson25}. Ground-based Extremely Large Telescopes add
+high-resolution spectroscopy for the nearest systems, but atmospheric
+turbulence and telluric absorption remain part of their measurement model.
+
+The comparison below places the 3.5ST alongside the facilities that set the
+relevant direct-imaging and high-contrast benchmarks.
+
+\begin{table}[tp]
+\centering
+\caption{Scope comparison for the high-contrast exoplanet program. The
+comparison records the primary measurement and the complementary role of
+each facility.}
+\label{tab:exoplanet_comparison}
+\begin{tabularx}{\textwidth}{@{}p{34mm}p{31mm}X@{}}
+\hline
+\textbf{Facility} & \textbf{Primary regime} & \textbf{Relationship to the 3.5ST}\\
+\hline
+Roman Coronagraph & Technology demonstration near $10^{-8}$ contrast &
+Provides the closest flight reference for high-contrast control. The 3.5ST
+adds a larger aperture, a systematic nearby-star sample, and repeated
+optical/NIR characterization.\\
+Habitable Worlds Observatory & Approximately 6\,m flagship at the
+$10^{-10}$ contrast scale & Targets a larger Earth-analog population. The
+3.5ST provides a nearer-term reflected-light bridge and a wavefront-control
+precursor for the flagship program.\\
+Ground-based ELTs & Adaptive-optics imaging and high-resolution spectroscopy &
+Provide very high spectral resolution for the nearest systems. The 3.5ST
+provides an atmosphere-free PSF, stable time series, and uninterrupted
+moderate-resolution spectroscopy.\\
+3.5ST & 3.5\,m space coronagraph with repeated nearby-star observations &
+Targets mature giants, warm sub-Neptunes, and the few nearest FGK habitable
+zones while measuring stellar activity and reflected-light spectra.\\
+\hline
+\end{tabularx}
+\end{table}
 
 A 3.5\,m reflected-light coronagraph sits between the Roman pathfinder and
 the Habitable Worlds Observatory. At this aperture a full survey of
@@ -1803,14 +1827,10 @@ giants and warm sub-Neptunes, the population that Section~\ref{sec:specetc}
 shows to be reachable in hours. It reaches the habitable zones of the few
 nearest and brightest FGK stars. It matures segmented-aperture wavefront
 control and reflected-light spectroscopy on real targets as a risk
-reduction for the flagship. The same nearby systems that this mission
-would observe in reflected light are the targets that LIFE would observe
-in thermal emission, and the two views together break the degeneracies of
-radius, temperature, and albedo that neither resolves alone
-\cite{quanz22}. The program is therefore best positioned as the
-reflected-light bridge to the Habitable Worlds Observatory and as the
-optical counterpart to the European thermal-infrared effort.
-
+reduction for the flagship. The nearby systems observed by this mission
+provide a reflected-light reference sample for future flagship concepts.
+The present program does not include a separate thermal-infrared observing
+mode.
 \section{Program Integration and Roadmap}
 \label{sec:roadmap}
 
@@ -1819,9 +1839,10 @@ infrastructure, and direct imaging gains most when combined with the
 complementary techniques. Radial-velocity masses turn imaged
 brightnesses into densities. Transit measurements of the same stars
 anchor radius distributions. Astrometric accelerations from Gaia
-preselect the stars that host wide giants. The mission's own wide-field
-time-domain surveys supply the stellar-activity monitoring of
-Section~\ref{sec:activity} without dedicated observing time.
+preselect the stars that host wide giants. The imaging visits and external
+monitoring data supply the stellar-activity reference required by
+Section~\ref{sec:activity}. No dedicated time-domain survey is assigned to
+this calibration task.
 
 The roadmap separates demonstrated capability from development goals.
 The baseline program uses $10^{-8}$-class performance for young
@@ -2127,6 +2148,8 @@ J. Astron. Telesc. Instrum. Syst. 9:045002 (2023).
 \bibitem{rauer14} Rauer H., Catala C., Aerts C., et al., The PLATO 2.0 mission, Experimental Astronomy 38:249 (2014).
 \bibitem{quanz22} Quanz S.~P., Ottiger M., Fontanet E., et al., Large interferometric space missions for exoplanet direct imaging and biosignature detection (LIFE~I), A\&A 664:A21 (2022).
 \bibitem{romanfor} NASA Goddard Space Flight Center, Roman observatory technical information, \url{https://roman.gsfc.nasa.gov/science/observatory_technical.html} (accessed 2026 July 28).
+\bibitem{roy2026III} Roy A., et al., The Lazuli Space Observatory: Architecture \& Capabilities, arXiv:2601.02556 (2026).
+\bibitem{wevers2026III} Wevers T., et al., The Lazuli Space Observatory: Opportunities for time-domain and multi-messenger astronomy, arXiv:2606.17136 (2026).
 \end{thebibliography}
 
 \vspace{2mm}
